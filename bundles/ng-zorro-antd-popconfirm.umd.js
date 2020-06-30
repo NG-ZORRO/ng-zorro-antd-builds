@@ -233,7 +233,6 @@
         function NzPopconfirmDirective(elementRef, hostView, resolver, renderer, noAnimation) {
             var _this = _super.call(this, elementRef, hostView, resolver, renderer, noAnimation) || this;
             _this.nzCondition = false;
-            _this.nzPopconfirmShowArrow = true;
             /**
              * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
              * Please use a more specific API. Like `nzTooltipTrigger`.
@@ -252,8 +251,7 @@
                 'nzOkType',
                 'nzCancelText',
                 'nzCondition',
-                'nzIcon',
-                'nzPopconfirmShowArrow'
+                'nzIcon'
             ];
             return _this;
         }
@@ -314,7 +312,6 @@
             nzCancelText: [{ type: core.Input }],
             nzIcon: [{ type: core.Input }],
             nzCondition: [{ type: core.Input }],
-            nzPopconfirmShowArrow: [{ type: core.Input }],
             nzTrigger: [{ type: core.Input }],
             nzOnCancel: [{ type: core.Output }],
             nzOnConfirm: [{ type: core.Output }]
@@ -323,17 +320,11 @@
             util.InputBoolean(),
             __metadata("design:type", Boolean)
         ], NzPopconfirmDirective.prototype, "nzCondition", void 0);
-        __decorate([
-            util.InputBoolean(),
-            __metadata("design:type", Boolean)
-        ], NzPopconfirmDirective.prototype, "nzPopconfirmShowArrow", void 0);
         return NzPopconfirmDirective;
     }(tooltip.NzTooltipBaseDirective));
     if (false) {
         /** @type {?} */
         NzPopconfirmDirective.ngAcceptInputType_nzCondition;
-        /** @type {?} */
-        NzPopconfirmDirective.ngAcceptInputType_nzPopconfirmShowArrow;
         /** @type {?} */
         NzPopconfirmDirective.prototype.specificTitle;
         /** @type {?} */
@@ -354,8 +345,6 @@
         NzPopconfirmDirective.prototype.nzIcon;
         /** @type {?} */
         NzPopconfirmDirective.prototype.nzCondition;
-        /** @type {?} */
-        NzPopconfirmDirective.prototype.nzPopconfirmShowArrow;
         /**
          * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
          * Please use a more specific API. Like `nzTooltipTrigger`.
@@ -383,7 +372,6 @@
             var _this = _super.call(this, cdr, noAnimation) || this;
             _this.noAnimation = noAnimation;
             _this.nzCondition = false;
-            _this.nzPopconfirmShowArrow = true;
             _this.nzOkType = 'primary';
             _this.nzOnCancel = new rxjs.Subject();
             _this.nzOnConfirm = new rxjs.Subject();
@@ -450,7 +438,7 @@
                         exportAs: 'nzPopconfirmComponent',
                         preserveWhitespaces: false,
                         animations: [animation.zoomBigMotion],
-                        template: "\n    <ng-template\n      #overlay=\"cdkConnectedOverlay\"\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayHasBackdrop]=\"_hasBackdrop\"\n      (backdropClick)=\"hide()\"\n      (detach)=\"hide()\"\n      (positionChange)=\"onPositionChange($event)\"\n      [cdkConnectedOverlayPositions]=\"_positions\"\n      [cdkConnectedOverlayOpen]=\"_visible\"\n    >\n      <div\n        class=\"ant-popover\"\n        [ngClass]=\"_classMap\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@zoomBigMotion]=\"'active'\"\n      >\n        <div class=\"ant-popover-content\">\n          <div class=\"ant-popover-arrow\" *ngIf=\"nzPopconfirmShowArrow\"></div>\n          <div class=\"ant-popover-inner\">\n            <div>\n              <div class=\"ant-popover-inner-content\">\n                <div class=\"ant-popover-message\">\n                  <ng-container *nzStringTemplateOutlet=\"nzTitle\">\n                    <ng-container *nzStringTemplateOutlet=\"nzIcon; let icon\">\n                      <i nz-icon [nzType]=\"icon || 'exclamation-circle'\" nzTheme=\"fill\"></i>\n                    </ng-container>\n                    <div class=\"ant-popover-message-title\">{{ nzTitle }}</div>\n                  </ng-container>\n                </div>\n                <div class=\"ant-popover-buttons\">\n                  <button nz-button [nzSize]=\"'small'\" (click)=\"onCancel()\">\n                    <ng-container *ngIf=\"nzCancelText\">{{ nzCancelText }}</ng-container>\n                    <ng-container *ngIf=\"!nzCancelText\">{{ 'Modal.cancelText' | nzI18n }}</ng-container>\n                  </button>\n                  <button nz-button [nzSize]=\"'small'\" [nzType]=\"nzOkType\" (click)=\"onConfirm()\">\n                    <ng-container *ngIf=\"nzOkText\">{{ nzOkText }}</ng-container>\n                    <ng-container *ngIf=\"!nzOkText\">{{ 'Modal.okText' | nzI18n }}</ng-container>\n                  </button>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  "
+                        template: "\n    <ng-template\n      #overlay=\"cdkConnectedOverlay\"\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayHasBackdrop]=\"_hasBackdrop\"\n      (backdropClick)=\"hide()\"\n      (detach)=\"hide()\"\n      (positionChange)=\"onPositionChange($event)\"\n      [cdkConnectedOverlayPositions]=\"_positions\"\n      [cdkConnectedOverlayOpen]=\"_visible\"\n    >\n      <div\n        class=\"ant-popover\"\n        [ngClass]=\"_classMap\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@zoomBigMotion]=\"'active'\"\n      >\n        <div class=\"ant-popover-content\">\n          <div class=\"ant-popover-arrow\"></div>\n          <div class=\"ant-popover-inner\">\n            <div>\n              <div class=\"ant-popover-inner-content\">\n                <div class=\"ant-popover-message\">\n                  <ng-container *nzStringTemplateOutlet=\"nzTitle\">\n                    <ng-container *nzStringTemplateOutlet=\"nzIcon; let icon\">\n                      <i nz-icon [nzType]=\"icon || 'exclamation-circle'\" nzTheme=\"fill\"></i>\n                    </ng-container>\n                    <div class=\"ant-popover-message-title\">{{ nzTitle }}</div>\n                  </ng-container>\n                </div>\n                <div class=\"ant-popover-buttons\">\n                  <button nz-button [nzSize]=\"'small'\" (click)=\"onCancel()\">\n                    <ng-container *ngIf=\"nzCancelText\">{{ nzCancelText }}</ng-container>\n                    <ng-container *ngIf=\"!nzCancelText\">{{ 'Modal.cancelText' | nzI18n }}</ng-container>\n                  </button>\n                  <button nz-button [nzSize]=\"'small'\" [nzType]=\"nzOkType\" (click)=\"onConfirm()\">\n                    <ng-container *ngIf=\"nzOkText\">{{ nzOkText }}</ng-container>\n                    <ng-container *ngIf=\"!nzOkText\">{{ 'Modal.okText' | nzI18n }}</ng-container>\n                  </button>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  "
                     }] }
         ];
         /** @nocollapse */
@@ -465,8 +453,6 @@
         NzPopconfirmComponent.prototype.nzCancelText;
         /** @type {?} */
         NzPopconfirmComponent.prototype.nzCondition;
-        /** @type {?} */
-        NzPopconfirmComponent.prototype.nzPopconfirmShowArrow;
         /** @type {?} */
         NzPopconfirmComponent.prototype.nzIcon;
         /** @type {?} */

@@ -10,7 +10,6 @@ import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng
 import { Subject } from 'rxjs';
 export declare class NzPopconfirmDirective extends NzTooltipBaseDirective {
     static ngAcceptInputType_nzCondition: BooleanInput;
-    static ngAcceptInputType_nzPopconfirmShowArrow: BooleanInput;
     specificTitle?: NzTSType;
     directiveNameTitle?: NzTSType | null;
     specificTrigger?: NzTooltipTrigger;
@@ -21,7 +20,6 @@ export declare class NzPopconfirmDirective extends NzTooltipBaseDirective {
     nzCancelText?: string;
     nzIcon?: string | TemplateRef<void>;
     nzCondition: boolean;
-    nzPopconfirmShowArrow: boolean;
     /**
      * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
      * Please use a more specific API. Like `nzTooltipTrigger`.
@@ -41,7 +39,6 @@ export declare class NzPopconfirmComponent extends NzToolTipComponent implements
     noAnimation?: NzNoAnimationDirective | undefined;
     nzCancelText?: string;
     nzCondition: boolean;
-    nzPopconfirmShowArrow: boolean;
     nzIcon?: string | TemplateRef<void>;
     nzOkText?: string;
     nzOkType: NzButtonType;

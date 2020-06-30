@@ -30,7 +30,6 @@ class NzPopconfirmDirective extends NzTooltipBaseDirective {
     constructor(elementRef, hostView, resolver, renderer, noAnimation) {
         super(elementRef, hostView, resolver, renderer, noAnimation);
         this.nzCondition = false;
-        this.nzPopconfirmShowArrow = true;
         /**
          * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
          * Please use a more specific API. Like `nzTooltipTrigger`.
@@ -49,8 +48,7 @@ class NzPopconfirmDirective extends NzTooltipBaseDirective {
             'nzOkType',
             'nzCancelText',
             'nzCondition',
-            'nzIcon',
-            'nzPopconfirmShowArrow'
+            'nzIcon'
         ];
     }
     /**
@@ -102,7 +100,6 @@ NzPopconfirmDirective.propDecorators = {
     nzCancelText: [{ type: Input }],
     nzIcon: [{ type: Input }],
     nzCondition: [{ type: Input }],
-    nzPopconfirmShowArrow: [{ type: Input }],
     nzTrigger: [{ type: Input }],
     nzOnCancel: [{ type: Output }],
     nzOnConfirm: [{ type: Output }]
@@ -111,15 +108,9 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzPopconfirmDirective.prototype, "nzCondition", void 0);
-__decorate([
-    InputBoolean(),
-    __metadata("design:type", Boolean)
-], NzPopconfirmDirective.prototype, "nzPopconfirmShowArrow", void 0);
 if (false) {
     /** @type {?} */
     NzPopconfirmDirective.ngAcceptInputType_nzCondition;
-    /** @type {?} */
-    NzPopconfirmDirective.ngAcceptInputType_nzPopconfirmShowArrow;
     /** @type {?} */
     NzPopconfirmDirective.prototype.specificTitle;
     /** @type {?} */
@@ -140,8 +131,6 @@ if (false) {
     NzPopconfirmDirective.prototype.nzIcon;
     /** @type {?} */
     NzPopconfirmDirective.prototype.nzCondition;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.nzPopconfirmShowArrow;
     /**
      * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
      * Please use a more specific API. Like `nzTooltipTrigger`.
@@ -172,7 +161,6 @@ class NzPopconfirmComponent extends NzToolTipComponent {
         super(cdr, noAnimation);
         this.noAnimation = noAnimation;
         this.nzCondition = false;
-        this.nzPopconfirmShowArrow = true;
         this.nzOkType = 'primary';
         this.nzOnCancel = new Subject();
         this.nzOnConfirm = new Subject();
@@ -245,7 +233,7 @@ NzPopconfirmComponent.decorators = [
         [@zoomBigMotion]="'active'"
       >
         <div class="ant-popover-content">
-          <div class="ant-popover-arrow" *ngIf="nzPopconfirmShowArrow"></div>
+          <div class="ant-popover-arrow"></div>
           <div class="ant-popover-inner">
             <div>
               <div class="ant-popover-inner-content">
@@ -286,8 +274,6 @@ if (false) {
     NzPopconfirmComponent.prototype.nzCancelText;
     /** @type {?} */
     NzPopconfirmComponent.prototype.nzCondition;
-    /** @type {?} */
-    NzPopconfirmComponent.prototype.nzPopconfirmShowArrow;
     /** @type {?} */
     NzPopconfirmComponent.prototype.nzIcon;
     /** @type {?} */
