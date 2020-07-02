@@ -3154,18 +3154,6 @@
             return services.NzSingletonService;
         }
     });
-    Object.defineProperty(exports, 'SCROLL_SERVICE_PROVIDER', {
-        enumerable: true,
-        get: function () {
-            return services.SCROLL_SERVICE_PROVIDER;
-        }
-    });
-    Object.defineProperty(exports, 'SCROLL_SERVICE_PROVIDER_FACTORY', {
-        enumerable: true,
-        get: function () {
-            return services.SCROLL_SERVICE_PROVIDER_FACTORY;
-        }
-    });
     Object.defineProperty(exports, 'gridResponsiveMap', {
         enumerable: true,
         get: function () {

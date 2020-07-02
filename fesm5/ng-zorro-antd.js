@@ -139,7 +139,7 @@ export { DEFAULT_CASCADER_POSITIONS, DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_M
 export { NzPipesModule, NzTimeRangePipe, NzToCssUnitPipe } from 'ng-zorro-antd/core/pipe';
 export { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 export { NzResizeObserver, NzResizeObserversModule, ɵa } from 'ng-zorro-antd/core/resize-observers';
-export { NzBreakpointEnum, NzBreakpointService, NzDragService, NzResizeService, NzScrollService, NzSingletonService, SCROLL_SERVICE_PROVIDER, SCROLL_SERVICE_PROVIDER_FACTORY, gridResponsiveMap, siderResponsiveMap } from 'ng-zorro-antd/core/services';
+export { NzBreakpointEnum, NzBreakpointService, NzDragService, NzResizeService, NzScrollService, NzSingletonService, gridResponsiveMap, siderResponsiveMap } from 'ng-zorro-antd/core/services';
 export { FakeViewportRuler, MockNgZone, createFakeEvent, createKeyboardEvent, createMouseEvent, createTouchEvent, dispatchEvent, dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent, dispatchTouchEvent, typeInElement, wrappedErrorMessage, ɵcreateComponentBed } from 'ng-zorro-antd/core/testing';
 export { CandyDate, cloneDate, normalizeRangeValue, sortRangeValue, timeUnits } from 'ng-zorro-antd/core/time';
 export { ɵNzTransitionPatchDirective, ɵNzTransitionPatchModule } from 'ng-zorro-antd/core/transition-patch';

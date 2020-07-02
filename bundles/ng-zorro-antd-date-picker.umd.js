@@ -3026,6 +3026,9 @@
                 this.render();
             }
         };
+        AbstractPanelHeader.decorators = [
+            { type: core.Directive }
+        ];
         AbstractPanelHeader.propDecorators = {
             value: [{ type: core.Input }],
             locale: [{ type: core.Input }],
@@ -3218,6 +3221,9 @@
                 this.activeDate = new time.CandyDate();
             }
         };
+        AbstractTable.decorators = [
+            { type: core.Directive }
+        ];
         AbstractTable.propDecorators = {
             prefixCls: [{ type: core.Input }],
             value: [{ type: core.Input }],

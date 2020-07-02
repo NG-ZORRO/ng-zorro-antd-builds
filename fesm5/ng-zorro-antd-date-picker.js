@@ -1,7 +1,7 @@
 import { __assign, __decorate, __metadata, __extends, __read } from 'tslib';
 import { CdkOverlayOrigin, CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
 import { DOCUMENT, CommonModule } from '@angular/common';
-import { EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, Injectable, ChangeDetectorRef, ElementRef, Inject, ViewChild, ViewChildren, ContentChild, forwardRef, Renderer2, Host, Optional, NgModule, Directive } from '@angular/core';
+import { EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, Injectable, ChangeDetectorRef, ElementRef, Inject, ViewChild, ViewChildren, ContentChild, forwardRef, Renderer2, Host, Optional, Directive, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
@@ -2821,6 +2821,9 @@ var AbstractPanelHeader = /** @class */ (function () {
             this.render();
         }
     };
+    AbstractPanelHeader.decorators = [
+        { type: Directive }
+    ];
     AbstractPanelHeader.propDecorators = {
         value: [{ type: Input }],
         locale: [{ type: Input }],
@@ -3013,6 +3016,9 @@ var AbstractTable = /** @class */ (function () {
             this.activeDate = new CandyDate();
         }
     };
+    AbstractTable.decorators = [
+        { type: Directive }
+    ];
     AbstractTable.propDecorators = {
         prefixCls: [{ type: Input }],
         value: [{ type: Input }],

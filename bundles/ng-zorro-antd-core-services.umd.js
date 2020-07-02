@@ -632,12 +632,15 @@
             polyfill.reqAnimFrame(frameFunc);
         };
         NzScrollService.decorators = [
-            { type: core.Injectable }
+            { type: core.Injectable, args: [{
+                        providedIn: 'root'
+                    },] }
         ];
         /** @nocollapse */
         NzScrollService.ctorParameters = function () { return [
             { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
         ]; };
+        /** @nocollapse */ NzScrollService.ɵprov = core.ɵɵdefineInjectable({ factory: function NzScrollService_Factory() { return new NzScrollService(core.ɵɵinject(common.DOCUMENT)); }, token: NzScrollService, providedIn: "root" });
         return NzScrollService;
     }());
     if (false) {
@@ -647,20 +650,6 @@
          */
         NzScrollService.prototype.doc;
     }
-    /**
-     * @param {?} doc
-     * @param {?} scrollService
-     * @return {?}
-     */
-    function SCROLL_SERVICE_PROVIDER_FACTORY(doc, scrollService) {
-        return scrollService || new NzScrollService(doc);
-    }
-    /** @type {?} */
-    var SCROLL_SERVICE_PROVIDER = {
-        provide: NzScrollService,
-        useFactory: SCROLL_SERVICE_PROVIDER_FACTORY,
-        deps: [common.DOCUMENT, [new core.Optional(), new core.SkipSelf(), NzScrollService]]
-    };
 
     /**
      * @fileoverview added by tsickle
@@ -812,8 +801,6 @@
     exports.NzResizeService = NzResizeService;
     exports.NzScrollService = NzScrollService;
     exports.NzSingletonService = NzSingletonService;
-    exports.SCROLL_SERVICE_PROVIDER = SCROLL_SERVICE_PROVIDER;
-    exports.SCROLL_SERVICE_PROVIDER_FACTORY = SCROLL_SERVICE_PROVIDER_FACTORY;
     exports.gridResponsiveMap = gridResponsiveMap;
     exports.siderResponsiveMap = siderResponsiveMap;
 

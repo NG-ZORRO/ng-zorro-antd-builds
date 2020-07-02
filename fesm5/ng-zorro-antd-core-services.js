@@ -1,4 +1,4 @@
-import { Injectable, NgZone, RendererFactory2, ɵɵdefineInjectable, ɵɵinject, Inject, Optional, SkipSelf } from '@angular/core';
+import { Injectable, NgZone, RendererFactory2, ɵɵdefineInjectable, ɵɵinject, Inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { auditTime, finalize, map, filter, startWith, distinctUntilChanged } from 'rxjs/operators';
 import { environment } from 'ng-zorro-antd/core/environments';
@@ -635,12 +635,15 @@ var NzScrollService = /** @class */ (function () {
         reqAnimFrame(frameFunc);
     };
     NzScrollService.decorators = [
-        { type: Injectable }
+        { type: Injectable, args: [{
+                    providedIn: 'root'
+                },] }
     ];
     /** @nocollapse */
     NzScrollService.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
     ]; };
+    /** @nocollapse */ NzScrollService.ɵprov = ɵɵdefineInjectable({ factory: function NzScrollService_Factory() { return new NzScrollService(ɵɵinject(DOCUMENT)); }, token: NzScrollService, providedIn: "root" });
     return NzScrollService;
 }());
 if (false) {
@@ -650,20 +653,6 @@ if (false) {
      */
     NzScrollService.prototype.doc;
 }
-/**
- * @param {?} doc
- * @param {?} scrollService
- * @return {?}
- */
-function SCROLL_SERVICE_PROVIDER_FACTORY(doc, scrollService) {
-    return scrollService || new NzScrollService(doc);
-}
-/** @type {?} */
-var SCROLL_SERVICE_PROVIDER = {
-    provide: NzScrollService,
-    useFactory: SCROLL_SERVICE_PROVIDER_FACTORY,
-    deps: [DOCUMENT, [new Optional(), new SkipSelf(), NzScrollService]]
-};
 
 /**
  * @fileoverview added by tsickle
@@ -821,5 +810,5 @@ if (false) {
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { NzBreakpointEnum, NzBreakpointService, NzDragService, NzResizeService, NzScrollService, NzSingletonService, SCROLL_SERVICE_PROVIDER, SCROLL_SERVICE_PROVIDER_FACTORY, gridResponsiveMap, siderResponsiveMap };
+export { NzBreakpointEnum, NzBreakpointService, NzDragService, NzResizeService, NzScrollService, NzSingletonService, gridResponsiveMap, siderResponsiveMap };
 //# sourceMappingURL=ng-zorro-antd-core-services.js.map

@@ -1,6 +1,6 @@
 import { CdkOverlayOrigin, CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
 import { DOCUMENT, CommonModule } from '@angular/common';
-import { EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, Injectable, ChangeDetectorRef, ElementRef, Inject, ViewChild, ViewChildren, ContentChild, forwardRef, Renderer2, Host, Optional, NgModule, Directive } from '@angular/core';
+import { EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, Injectable, ChangeDetectorRef, ElementRef, Inject, ViewChild, ViewChildren, ContentChild, forwardRef, Renderer2, Host, Optional, Directive, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
@@ -2660,6 +2660,7 @@ if (false) {
 /**
  * @abstract
  */
+// tslint:disable-next-line:directive-class-suffix
 class AbstractPanelHeader {
     constructor() {
         this.prefixCls = `ant-picker-header`;
@@ -2765,6 +2766,9 @@ class AbstractPanelHeader {
         }
     }
 }
+AbstractPanelHeader.decorators = [
+    { type: Directive }
+];
 AbstractPanelHeader.propDecorators = {
     value: [{ type: Input }],
     locale: [{ type: Input }],
@@ -2872,6 +2876,7 @@ if (false) {
 /**
  * @abstract
  */
+// tslint:disable-next-line:directive-class-suffix
 class AbstractTable {
     constructor() {
         this.isTemplateRef = isTemplateRef;
@@ -2928,6 +2933,9 @@ class AbstractTable {
         }
     }
 }
+AbstractTable.decorators = [
+    { type: Directive }
+];
 AbstractTable.propDecorators = {
     prefixCls: [{ type: Input }],
     value: [{ type: Input }],

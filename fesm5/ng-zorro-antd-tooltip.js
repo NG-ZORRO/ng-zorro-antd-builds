@@ -1,5 +1,5 @@
 import { __spread, __extends } from 'tslib';
-import { EventEmitter, Input, Output, ViewChild, TemplateRef, Directive, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer2, Host, Optional, Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, NgModule } from '@angular/core';
+import { EventEmitter, Directive, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer2, Input, Output, ChangeDetectorRef, ViewChild, TemplateRef, Host, Optional, Component, ChangeDetectionStrategy, ViewEncapsulation, NgModule } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -475,6 +475,17 @@ var NzTooltipBaseDirective = /** @class */ (function () {
             this.delayTimer = undefined;
         }
     };
+    NzTooltipBaseDirective.decorators = [
+        { type: Directive }
+    ];
+    /** @nocollapse */
+    NzTooltipBaseDirective.ctorParameters = function () { return [
+        { type: ElementRef },
+        { type: ViewContainerRef },
+        { type: ComponentFactoryResolver },
+        { type: Renderer2 },
+        { type: NzNoAnimationDirective }
+    ]; };
     NzTooltipBaseDirective.propDecorators = {
         nzTitle: [{ type: Input }],
         nzContent: [{ type: Input }],
@@ -805,12 +816,22 @@ var NzTooltipBaseComponent = /** @class */ (function () {
             this.hide();
         }
     };
+    NzTooltipBaseComponent.decorators = [
+        { type: Directive }
+    ];
+    /** @nocollapse */
+    NzTooltipBaseComponent.ctorParameters = function () { return [
+        { type: ChangeDetectorRef },
+        { type: NzNoAnimationDirective }
+    ]; };
     NzTooltipBaseComponent.propDecorators = {
         overlay: [{ type: ViewChild, args: ['overlay', { static: false },] }]
     };
     return NzTooltipBaseComponent;
 }());
 if (false) {
+    /** @type {?} */
+    NzTooltipBaseComponent.ngAcceptInputType_nzVisible;
     /** @type {?} */
     NzTooltipBaseComponent.prototype.overlay;
     /** @type {?} */

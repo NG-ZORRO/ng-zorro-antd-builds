@@ -437,8 +437,7 @@
             { type: core.NgModule, args: [{
                         declarations: [NzBackTopComponent],
                         exports: [NzBackTopComponent],
-                        imports: [common.CommonModule, platform.PlatformModule],
-                        providers: [services.SCROLL_SERVICE_PROVIDER]
+                        imports: [common.CommonModule, platform.PlatformModule]
                     },] }
         ];
         return NzBackTopModule;

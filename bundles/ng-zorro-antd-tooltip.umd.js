@@ -687,6 +687,17 @@
                 this.delayTimer = undefined;
             }
         };
+        NzTooltipBaseDirective.decorators = [
+            { type: core.Directive }
+        ];
+        /** @nocollapse */
+        NzTooltipBaseDirective.ctorParameters = function () { return [
+            { type: core.ElementRef },
+            { type: core.ViewContainerRef },
+            { type: core.ComponentFactoryResolver },
+            { type: core.Renderer2 },
+            { type: noAnimation.NzNoAnimationDirective }
+        ]; };
         NzTooltipBaseDirective.propDecorators = {
             nzTitle: [{ type: core.Input }],
             nzContent: [{ type: core.Input }],
@@ -1017,12 +1028,22 @@
                 this.hide();
             }
         };
+        NzTooltipBaseComponent.decorators = [
+            { type: core.Directive }
+        ];
+        /** @nocollapse */
+        NzTooltipBaseComponent.ctorParameters = function () { return [
+            { type: core.ChangeDetectorRef },
+            { type: noAnimation.NzNoAnimationDirective }
+        ]; };
         NzTooltipBaseComponent.propDecorators = {
             overlay: [{ type: core.ViewChild, args: ['overlay', { static: false },] }]
         };
         return NzTooltipBaseComponent;
     }());
     if (false) {
+        /** @type {?} */
+        NzTooltipBaseComponent.ngAcceptInputType_nzVisible;
         /** @type {?} */
         NzTooltipBaseComponent.prototype.overlay;
         /** @type {?} */

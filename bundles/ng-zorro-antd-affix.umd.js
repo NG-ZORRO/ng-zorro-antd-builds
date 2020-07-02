@@ -750,8 +750,7 @@
             { type: core.NgModule, args: [{
                         declarations: [NzAffixComponent],
                         exports: [NzAffixComponent],
-                        imports: [common.CommonModule, platform.PlatformModule],
-                        providers: [services.SCROLL_SERVICE_PROVIDER]
+                        imports: [common.CommonModule, platform.PlatformModule]
                     },] }
         ];
         return NzAffixModule;

@@ -3,7 +3,7 @@ import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { DOCUMENT, CommonModule } from '@angular/common';
 import { EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, Inject, NgZone, Renderer2, ViewChild, Input, Output, NgModule } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzScrollService, SCROLL_SERVICE_PROVIDER } from 'ng-zorro-antd/core/services';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { shallowEqual, getStyleAsText, InputNumber } from 'ng-zorro-antd/core/util';
 import { Subscription, ReplaySubject, Subject, merge, fromEvent } from 'rxjs';
 import { takeUntil, map, auditTime } from 'rxjs/operators';
@@ -499,8 +499,7 @@ NzAffixModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NzAffixComponent],
                 exports: [NzAffixComponent],
-                imports: [CommonModule, PlatformModule],
-                providers: [SCROLL_SERVICE_PROVIDER]
+                imports: [CommonModule, PlatformModule]
             },] }
 ];
 

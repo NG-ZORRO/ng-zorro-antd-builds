@@ -2,7 +2,6 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { Provider } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export declare type EasyingFn = (t: number, b: number, c: number, d: number) => number;
 export declare class NzScrollService {
@@ -27,5 +26,3 @@ export declare class NzScrollService {
      */
     scrollTo(containerEl: Element | Window, targetTopValue?: number, easing?: EasyingFn, callback?: () => void): void;
 }
-export declare function SCROLL_SERVICE_PROVIDER_FACTORY(doc: Document, scrollService: NzScrollService): NzScrollService;
-export declare const SCROLL_SERVICE_PROVIDER: Provider;

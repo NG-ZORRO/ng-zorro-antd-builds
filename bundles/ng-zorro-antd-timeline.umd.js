@@ -22,6 +22,9 @@
         function () {
             this.check$.next();
         };
+        TimelineService.decorators = [
+            { type: core.Injectable }
+        ];
         return TimelineService;
     }());
     if (false) {

@@ -852,8 +852,7 @@
             { type: core.NgModule, args: [{
                         declarations: [NzAnchorComponent, NzAnchorLinkComponent],
                         exports: [NzAnchorComponent, NzAnchorLinkComponent],
-                        imports: [common.CommonModule, affix.NzAffixModule, platform.PlatformModule],
-                        providers: [services.SCROLL_SERVICE_PROVIDER]
+                        imports: [common.CommonModule, affix.NzAffixModule, platform.PlatformModule]
                     },] }
         ];
         return NzAnchorModule;

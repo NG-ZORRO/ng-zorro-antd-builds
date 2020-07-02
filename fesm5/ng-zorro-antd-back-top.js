@@ -4,7 +4,7 @@ import { DOCUMENT, CommonModule } from '@angular/common';
 import { EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, Inject, ChangeDetectorRef, NgZone, Input, Output, NgModule } from '@angular/core';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzScrollService, SCROLL_SERVICE_PROVIDER } from 'ng-zorro-antd/core/services';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { InputNumber } from 'ng-zorro-antd/core/util';
 import { Subject, fromEvent } from 'rxjs';
 import { throttleTime, takeUntil } from 'rxjs/operators';
@@ -223,8 +223,7 @@ var NzBackTopModule = /** @class */ (function () {
         { type: NgModule, args: [{
                     declarations: [NzBackTopComponent],
                     exports: [NzBackTopComponent],
-                    imports: [CommonModule, PlatformModule],
-                    providers: [SCROLL_SERVICE_PROVIDER]
+                    imports: [CommonModule, PlatformModule]
                 },] }
     ];
     return NzBackTopModule;

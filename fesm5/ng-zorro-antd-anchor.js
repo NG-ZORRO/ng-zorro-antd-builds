@@ -4,7 +4,7 @@ import { __decorate, __metadata } from 'tslib';
 import { DOCUMENT, CommonModule } from '@angular/common';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
-import { NzScrollService, SCROLL_SERVICE_PROVIDER } from 'ng-zorro-antd/core/services';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { Subject, fromEvent } from 'rxjs';
 import { throttleTime, takeUntil } from 'rxjs/operators';
@@ -639,8 +639,7 @@ var NzAnchorModule = /** @class */ (function () {
         { type: NgModule, args: [{
                     declarations: [NzAnchorComponent, NzAnchorLinkComponent],
                     exports: [NzAnchorComponent, NzAnchorLinkComponent],
-                    imports: [CommonModule, NzAffixModule, PlatformModule],
-                    providers: [SCROLL_SERVICE_PROVIDER]
+                    imports: [CommonModule, NzAffixModule, PlatformModule]
                 },] }
     ];
     return NzAnchorModule;

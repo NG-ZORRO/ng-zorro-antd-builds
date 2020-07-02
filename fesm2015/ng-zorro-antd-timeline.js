@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, ViewChild, Input, ContentChildren, NgModule } from '@angular/core';
+import { Injectable, Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, ViewChild, Input, ContentChildren, NgModule } from '@angular/core';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlatformModule } from '@angular/cdk/platform';
@@ -22,6 +22,9 @@ class TimelineService {
         this.check$.next();
     }
 }
+TimelineService.decorators = [
+    { type: Injectable }
+];
 if (false) {
     /** @type {?} */
     TimelineService.prototype.check$;

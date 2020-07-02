@@ -5,7 +5,7 @@
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import { AfterViewInit, ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, ElementRef, EventEmitter, OnChanges, OnDestroy, Renderer2, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NgClassInterface, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassInterface, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 export declare type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, AfterViewInit {
@@ -95,6 +95,7 @@ export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDes
 export declare abstract class NzTooltipBaseComponent implements OnDestroy {
     cdr: ChangeDetectorRef;
     noAnimation?: NzNoAnimationDirective | undefined;
+    static ngAcceptInputType_nzVisible: BooleanInput;
     overlay: CdkConnectedOverlay;
     nzVisibleChange: Subject<boolean>;
     nzTitle: NzTSType | null;
