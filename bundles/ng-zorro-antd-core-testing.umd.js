@@ -641,7 +641,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * Generated from: componet-bed.ts
+     * Generated from: component-bed.ts
      * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**

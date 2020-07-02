@@ -278,7 +278,7 @@ class NzListItemActionsComponent {
                  */
                 action => (/** @type {?} */ (action.templateRef))));
             }
-            this.cdr.markForCheck();
+            this.cdr.detectChanges();
         }));
     }
     /**

@@ -1,5 +1,5 @@
 import { __extends } from 'tslib';
-import { Directive, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer2, Host, Optional, Input, Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, NgModule } from '@angular/core';
+import { EventEmitter, Directive, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer2, Host, Optional, Input, Output, Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, NgModule } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzTooltipBaseDirective, isTooltipEmpty, NzToolTipComponent, NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -18,6 +18,8 @@ var NzPopoverDirective = /** @class */ (function (_super) {
     function NzPopoverDirective(elementRef, hostView, resolver, renderer, noAnimation) {
         var _this = _super.call(this, elementRef, hostView, resolver, renderer, noAnimation) || this;
         _this.noAnimation = noAnimation;
+        // tslint:disable-next-line:no-output-rename
+        _this.specificVisibleChange = new EventEmitter();
         _this.componentFactory = _this.resolver.resolveComponentFactory(NzPopoverComponent);
         return _this;
     }
@@ -44,7 +46,9 @@ var NzPopoverDirective = /** @class */ (function (_super) {
         directiveNameTitle: [{ type: Input, args: ['nz-popover',] }],
         specificTrigger: [{ type: Input, args: ['nzPopoverTrigger',] }],
         specificPlacement: [{ type: Input, args: ['nzPopoverPlacement',] }],
-        specificOrigin: [{ type: Input, args: ['nzPopoverOrigin',] }]
+        specificOrigin: [{ type: Input, args: ['nzPopoverOrigin',] }],
+        specificVisible: [{ type: Input, args: ['nzPopoverVisible',] }],
+        specificVisibleChange: [{ type: Output, args: ['nzPopoverVisibleChange',] }]
     };
     return NzPopoverDirective;
 }(NzTooltipBaseDirective));
@@ -61,6 +65,10 @@ if (false) {
     NzPopoverDirective.prototype.specificPlacement;
     /** @type {?} */
     NzPopoverDirective.prototype.specificOrigin;
+    /** @type {?} */
+    NzPopoverDirective.prototype.specificVisible;
+    /** @type {?} */
+    NzPopoverDirective.prototype.specificVisibleChange;
     /** @type {?} */
     NzPopoverDirective.prototype.componentFactory;
     /** @type {?} */

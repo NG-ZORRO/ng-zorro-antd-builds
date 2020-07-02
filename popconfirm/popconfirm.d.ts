@@ -25,6 +25,8 @@ export declare class NzPopconfirmDirective extends NzTooltipBaseDirective {
      * Please use a more specific API. Like `nzTooltipTrigger`.
      */
     nzTrigger: NzTooltipTrigger;
+    specificVisible?: boolean;
+    readonly specificVisibleChange: EventEmitter<boolean>;
     readonly nzOnCancel: EventEmitter<void>;
     readonly nzOnConfirm: EventEmitter<void>;
     protected readonly componentFactory: ComponentFactory<NzPopconfirmComponent>;

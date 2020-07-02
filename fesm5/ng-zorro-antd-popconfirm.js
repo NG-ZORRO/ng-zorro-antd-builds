@@ -29,6 +29,8 @@ var NzPopconfirmDirective = /** @class */ (function (_super) {
          * Please use a more specific API. Like `nzTooltipTrigger`.
          */
         _this.nzTrigger = 'click';
+        // tslint:disable-next-line:no-output-rename
+        _this.specificVisibleChange = new EventEmitter();
         _this.nzOnCancel = new EventEmitter();
         _this.nzOnConfirm = new EventEmitter();
         _this.componentFactory = _this.resolver.resolveComponentFactory(NzPopconfirmComponent);
@@ -104,6 +106,8 @@ var NzPopconfirmDirective = /** @class */ (function (_super) {
         nzIcon: [{ type: Input }],
         nzCondition: [{ type: Input }],
         nzTrigger: [{ type: Input }],
+        specificVisible: [{ type: Input, args: ['nzPopconfirmVisible',] }],
+        specificVisibleChange: [{ type: Output, args: ['nzPopconfirmVisibleChange',] }],
         nzOnCancel: [{ type: Output }],
         nzOnConfirm: [{ type: Output }]
     };
@@ -142,6 +146,10 @@ if (false) {
      * @type {?}
      */
     NzPopconfirmDirective.prototype.nzTrigger;
+    /** @type {?} */
+    NzPopconfirmDirective.prototype.specificVisible;
+    /** @type {?} */
+    NzPopconfirmDirective.prototype.specificVisibleChange;
     /** @type {?} */
     NzPopconfirmDirective.prototype.nzOnCancel;
     /** @type {?} */

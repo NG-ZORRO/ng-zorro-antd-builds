@@ -35,6 +35,8 @@ class NzPopconfirmDirective extends NzTooltipBaseDirective {
          * Please use a more specific API. Like `nzTooltipTrigger`.
          */
         this.nzTrigger = 'click';
+        // tslint:disable-next-line:no-output-rename
+        this.specificVisibleChange = new EventEmitter();
         this.nzOnCancel = new EventEmitter();
         this.nzOnConfirm = new EventEmitter();
         this.componentFactory = this.resolver.resolveComponentFactory(NzPopconfirmComponent);
@@ -101,6 +103,8 @@ NzPopconfirmDirective.propDecorators = {
     nzIcon: [{ type: Input }],
     nzCondition: [{ type: Input }],
     nzTrigger: [{ type: Input }],
+    specificVisible: [{ type: Input, args: ['nzPopconfirmVisible',] }],
+    specificVisibleChange: [{ type: Output, args: ['nzPopconfirmVisibleChange',] }],
     nzOnCancel: [{ type: Output }],
     nzOnConfirm: [{ type: Output }]
 };
@@ -137,6 +141,10 @@ if (false) {
      * @type {?}
      */
     NzPopconfirmDirective.prototype.nzTrigger;
+    /** @type {?} */
+    NzPopconfirmDirective.prototype.specificVisible;
+    /** @type {?} */
+    NzPopconfirmDirective.prototype.specificVisibleChange;
     /** @type {?} */
     NzPopconfirmDirective.prototype.nzOnCancel;
     /** @type {?} */

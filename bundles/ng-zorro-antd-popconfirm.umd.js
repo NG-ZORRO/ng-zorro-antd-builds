@@ -238,6 +238,8 @@
              * Please use a more specific API. Like `nzTooltipTrigger`.
              */
             _this.nzTrigger = 'click';
+            // tslint:disable-next-line:no-output-rename
+            _this.specificVisibleChange = new core.EventEmitter();
             _this.nzOnCancel = new core.EventEmitter();
             _this.nzOnConfirm = new core.EventEmitter();
             _this.componentFactory = _this.resolver.resolveComponentFactory(NzPopconfirmComponent);
@@ -313,6 +315,8 @@
             nzIcon: [{ type: core.Input }],
             nzCondition: [{ type: core.Input }],
             nzTrigger: [{ type: core.Input }],
+            specificVisible: [{ type: core.Input, args: ['nzPopconfirmVisible',] }],
+            specificVisibleChange: [{ type: core.Output, args: ['nzPopconfirmVisibleChange',] }],
             nzOnCancel: [{ type: core.Output }],
             nzOnConfirm: [{ type: core.Output }]
         };
@@ -351,6 +355,10 @@
          * @type {?}
          */
         NzPopconfirmDirective.prototype.nzTrigger;
+        /** @type {?} */
+        NzPopconfirmDirective.prototype.specificVisible;
+        /** @type {?} */
+        NzPopconfirmDirective.prototype.specificVisibleChange;
         /** @type {?} */
         NzPopconfirmDirective.prototype.nzOnCancel;
         /** @type {?} */

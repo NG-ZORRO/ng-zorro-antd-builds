@@ -238,6 +238,7 @@
             this.resolver = resolver;
             this.renderer = renderer;
             this.noAnimation = noAnimation;
+            this.specificVisibleChange = new core.EventEmitter();
             /**
              * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
              * Please use a more specific API. Like `nzTooltipTrigger`.
@@ -250,16 +251,9 @@
             this.nzPlacement = 'top';
             this.nzMouseEnterDelay = 0.15;
             this.nzMouseLeaveDelay = 0.1;
-            this.needProxyProperties = [
-                'nzOverlayClassName',
-                'nzOverlayStyle',
-                'nzMouseEnterDelay',
-                'nzMouseLeaveDelay',
-                'nzVisible',
-                'noAnimation'
-            ];
-            this.nzVisibleChange = new core.EventEmitter();
             this.visible = false;
+            this.needProxyProperties = ['nzOverlayClassName', 'nzOverlayStyle', 'nzMouseEnterDelay', 'nzMouseLeaveDelay', 'noAnimation'];
+            this.nzVisibleChange = new core.EventEmitter();
             this.destroy$ = new rxjs.Subject();
             this.triggerDisposables = [];
         }
@@ -312,6 +306,63 @@
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(NzTooltipBaseDirective.prototype, "isVisible", {
+            get: /**
+             * @protected
+             * @return {?}
+             */
+            function () {
+                return this.specificVisible || this.nzVisible || false;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @param {?} changes
+         * @return {?}
+         */
+        NzTooltipBaseDirective.prototype.warnDeprecationByChanges = /**
+         * @param {?} changes
+         * @return {?}
+         */
+        function (changes) {
+            /** @type {?} */
+            var getWarnDeprecation = (/**
+             * @param {?} property
+             * @param {?} newProperty
+             * @param {?=} comp
+             * @param {?=} shared
+             * @return {?}
+             */
+            function (property, newProperty, comp, shared) {
+                if (comp === void 0) { comp = 'nz-tooltip'; }
+                if (shared === void 0) { shared = true; }
+                /** @type {?} */
+                var prefix = "'" + property + "' of '" + comp + "' is deprecated and will be removed in 10.0.0.\n      Please use '" + newProperty + "' instead.";
+                if (shared) {
+                    return prefix + " The same with 'nz-popover' and 'nz-popconfirm'.";
+                }
+                else {
+                    return "" + prefix;
+                }
+            });
+            // warn deprecated things when specific property is not given
+            if (changes.nzTitle && !this.specificTitle && !this.directiveNameTitle) {
+                logger.warnDeprecation(getWarnDeprecation('nzTitle', 'nzTooltipTitle'));
+            }
+            if (changes.nzContent && !this.specificContent) {
+                logger.warnDeprecation(getWarnDeprecation('nzContent', 'nzPopoverContent', 'nz-popover', false));
+            }
+            if (changes.nzPlacement && !this.specificPlacement) {
+                logger.warnDeprecation(getWarnDeprecation('nzPlacement', 'nzTooltipPlacement'));
+            }
+            if (changes.nzTrigger && !this.specificTrigger) {
+                logger.warnDeprecation(getWarnDeprecation('nzTrigger', 'nzTooltipTrigger'));
+            }
+            if (changes.nzVisible && !this.specificVisible) {
+                logger.warnDeprecation(getWarnDeprecation('nzVisible', 'nzTooltipVisible'));
+            }
+        };
         /**
          * @param {?} changes
          * @return {?}
@@ -330,19 +381,7 @@
             if (this.component) {
                 this.updateChangedProperties(changes);
             }
-            // warn deprecated things when specific property is not given
-            if (changes.nzTitle && !this.specificTitle && !this.directiveNameTitle) {
-                logger.warnDeprecation("'nzTitle' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.\nPlease use 'nzTooltipTitle' instead. The same with 'nz-popover' and 'nz-popconfirm'.");
-            }
-            if (changes.nzContent && !this.specificContent) {
-                logger.warnDeprecation("'nzContent' of 'nz-popover' is deprecated and will be removed in 10.0.0.\nPlease use 'nzPopoverContent' instead.");
-            }
-            if (changes.nzPlacement && !this.specificPlacement) {
-                logger.warnDeprecation("'nzPlacement' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.\nPlease use 'nzTooltipContent' instead. The same with 'nz-popover' and 'nz-popconfirm'.");
-            }
-            if (changes.nzTrigger && !this.specificTrigger) {
-                logger.warnDeprecation("'nzTrigger' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.\nPlease use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popconfirm'.");
-            }
+            this.warnDeprecationByChanges(changes);
         };
         /**
          * @return {?}
@@ -431,6 +470,7 @@
              */
             function (visible) {
                 _this.visible = visible;
+                _this.specificVisibleChange.emit(visible);
                 _this.nzVisibleChange.emit(visible);
             }));
         };
@@ -541,6 +581,7 @@
                 this.updateComponentValue('nzContent', this.content);
                 this.updateComponentValue('nzPlacement', this.placement);
                 this.updateComponentValue('nzTrigger', this.trigger);
+                this.updateComponentValue('nzVisible', this.isVisible);
             }
             else {
                 /** @type {?} */
@@ -556,6 +597,9 @@
                 }
                 if (c.specificPlacement || c.nzPlacement) {
                     this.updateComponentValue('nzPlacement', this.placement);
+                }
+                if (c.specificVisible || c.nzVisible) {
+                    this.updateComponentValue('nzVisible', this.isVisible);
                 }
             }
             (_a = this.component) === null || _a === void 0 ? void 0 : _a.updateByDirective();
@@ -672,6 +716,10 @@
         NzTooltipBaseDirective.prototype.specificPlacement;
         /** @type {?} */
         NzTooltipBaseDirective.prototype.specificOrigin;
+        /** @type {?} */
+        NzTooltipBaseDirective.prototype.specificVisible;
+        /** @type {?} */
+        NzTooltipBaseDirective.prototype.specificVisibleChange;
         /**
          * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
          * Please use a more specific API. Like `nzTooltipTitle`.
@@ -712,6 +760,8 @@
          * @protected
          */
         NzTooltipBaseDirective.prototype.componentFactory;
+        /** @type {?} */
+        NzTooltipBaseDirective.prototype.visible;
         /**
          * @type {?}
          * @protected
@@ -719,8 +769,6 @@
         NzTooltipBaseDirective.prototype.needProxyProperties;
         /** @type {?} */
         NzTooltipBaseDirective.prototype.nzVisibleChange;
-        /** @type {?} */
-        NzTooltipBaseDirective.prototype.visible;
         /** @type {?} */
         NzTooltipBaseDirective.prototype.component;
         /**
@@ -1039,6 +1087,8 @@
         __extends(NzTooltipDirective, _super);
         function NzTooltipDirective(elementRef, hostView, resolver, renderer, noAnimation) {
             var _this = _super.call(this, elementRef, hostView, resolver, renderer, noAnimation) || this;
+            // tslint:disable-next-line:no-output-rename
+            _this.specificVisibleChange = new core.EventEmitter();
             _this.componentFactory = _this.resolver.resolveComponentFactory(NzToolTipComponent);
             return _this;
         }
@@ -1064,7 +1114,9 @@
             directiveNameTitle: [{ type: core.Input, args: ['nz-tooltip',] }],
             specificTrigger: [{ type: core.Input, args: ['nzTooltipTrigger',] }],
             specificPlacement: [{ type: core.Input, args: ['nzTooltipPlacement',] }],
-            specificOrigin: [{ type: core.Input, args: ['nzTooltipOrigin',] }]
+            specificOrigin: [{ type: core.Input, args: ['nzTooltipOrigin',] }],
+            specificVisible: [{ type: core.Input, args: ['nzTooltipVisible',] }],
+            specificVisibleChange: [{ type: core.Output, args: ['nzTooltipVisibleChange',] }]
         };
         return NzTooltipDirective;
     }(NzTooltipBaseDirective));
@@ -1079,6 +1131,10 @@
         NzTooltipDirective.prototype.specificPlacement;
         /** @type {?} */
         NzTooltipDirective.prototype.specificOrigin;
+        /** @type {?} */
+        NzTooltipDirective.prototype.specificVisible;
+        /** @type {?} */
+        NzTooltipDirective.prototype.specificVisibleChange;
         /** @type {?} */
         NzTooltipDirective.prototype.componentFactory;
     }

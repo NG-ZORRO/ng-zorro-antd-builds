@@ -4564,7 +4564,7 @@
     exports.transCompatFormat = transCompatFormat;
     exports.ɵAbstractPanelHeader = AbstractPanelHeader;
     exports.ɵAbstractTable = AbstractTable;
-    exports.ɵCalendarFooterComponet = CalendarFooterComponent;
+    exports.ɵCalendarFooterComponent = CalendarFooterComponent;
     exports.ɵDateHeaderComponent = DateHeaderComponent;
     exports.ɵDatePickerService = DatePickerService;
     exports.ɵDateRangePopupComponent = DateRangePopupComponent;

@@ -233,6 +233,8 @@
         function NzPopoverDirective(elementRef, hostView, resolver, renderer, noAnimation) {
             var _this = _super.call(this, elementRef, hostView, resolver, renderer, noAnimation) || this;
             _this.noAnimation = noAnimation;
+            // tslint:disable-next-line:no-output-rename
+            _this.specificVisibleChange = new core.EventEmitter();
             _this.componentFactory = _this.resolver.resolveComponentFactory(NzPopoverComponent);
             return _this;
         }
@@ -259,7 +261,9 @@
             directiveNameTitle: [{ type: core.Input, args: ['nz-popover',] }],
             specificTrigger: [{ type: core.Input, args: ['nzPopoverTrigger',] }],
             specificPlacement: [{ type: core.Input, args: ['nzPopoverPlacement',] }],
-            specificOrigin: [{ type: core.Input, args: ['nzPopoverOrigin',] }]
+            specificOrigin: [{ type: core.Input, args: ['nzPopoverOrigin',] }],
+            specificVisible: [{ type: core.Input, args: ['nzPopoverVisible',] }],
+            specificVisibleChange: [{ type: core.Output, args: ['nzPopoverVisibleChange',] }]
         };
         return NzPopoverDirective;
     }(tooltip.NzTooltipBaseDirective));
@@ -276,6 +280,10 @@
         NzPopoverDirective.prototype.specificPlacement;
         /** @type {?} */
         NzPopoverDirective.prototype.specificOrigin;
+        /** @type {?} */
+        NzPopoverDirective.prototype.specificVisible;
+        /** @type {?} */
+        NzPopoverDirective.prototype.specificVisibleChange;
         /** @type {?} */
         NzPopoverDirective.prototype.componentFactory;
         /** @type {?} */

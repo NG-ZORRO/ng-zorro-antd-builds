@@ -466,7 +466,7 @@
                      */
                     function (action) { return (/** @type {?} */ (action.templateRef)); }));
                 }
-                _this.cdr.markForCheck();
+                _this.cdr.detectChanges();
             }));
         }
         /**

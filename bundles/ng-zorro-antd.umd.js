@@ -658,10 +658,10 @@
             return datePicker.ɵAbstractTable;
         }
     });
-    Object.defineProperty(exports, 'ɵCalendarFooterComponet', {
+    Object.defineProperty(exports, 'ɵCalendarFooterComponent', {
         enumerable: true,
         get: function () {
-            return datePicker.ɵCalendarFooterComponet;
+            return datePicker.ɵCalendarFooterComponent;
         }
     });
     Object.defineProperty(exports, 'ɵDateHeaderComponent', {

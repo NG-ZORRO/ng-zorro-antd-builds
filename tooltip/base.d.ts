@@ -21,6 +21,8 @@ export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDes
     specificTrigger?: NzTooltipTrigger;
     specificPlacement?: string;
     specificOrigin?: ElementRef<HTMLElement>;
+    specificVisible?: boolean;
+    specificVisibleChange: EventEmitter<boolean>;
     /**
      * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
      * Please use a more specific API. Like `nzTooltipTitle`.
@@ -57,14 +59,16 @@ export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDes
     protected get content(): NzTSType | null;
     protected get placement(): string;
     protected get trigger(): NzTooltipTrigger;
+    protected get isVisible(): boolean;
+    visible: boolean;
     protected needProxyProperties: string[];
     readonly nzVisibleChange: EventEmitter<boolean>;
-    visible: boolean;
     component?: NzTooltipBaseComponent;
     protected readonly destroy$: Subject<void>;
     protected readonly triggerDisposables: Array<() => void>;
     private delayTimer?;
     constructor(elementRef: ElementRef, hostView: ViewContainerRef, resolver: ComponentFactoryResolver, renderer: Renderer2, noAnimation?: NzNoAnimationDirective | undefined);
+    warnDeprecationByChanges(changes: SimpleChanges): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
