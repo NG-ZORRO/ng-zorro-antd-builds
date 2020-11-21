@@ -5,13 +5,12 @@
 import { AfterContentInit, ChangeDetectorRef, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzTimelineItemComponent } from './timeline-item.component';
 import { TimelineService } from './timeline.service';
-declare const TimelineModes: readonly ["left", "alternate", "right"];
-export declare type NzTimelineMode = typeof TimelineModes[number];
+import { NzTimelineMode } from './typings';
 export declare class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
     private cdr;
     private timelineService;
     listOfItems: QueryList<NzTimelineItemComponent>;
-    nzMode?: NzTimelineMode;
+    nzMode: NzTimelineMode;
     nzPending?: string | boolean | TemplateRef<void>;
     nzPendingDot?: string | TemplateRef<void>;
     nzReverse: boolean;
@@ -25,4 +24,3 @@ export declare class NzTimelineComponent implements AfterContentInit, OnChanges,
     ngOnDestroy(): void;
     private updateChildren;
 }
-export {};

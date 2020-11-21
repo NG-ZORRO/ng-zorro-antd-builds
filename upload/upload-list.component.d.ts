@@ -30,6 +30,7 @@ export declare class NzUploadListComponent implements OnChanges {
     onRemove: (file: NzUploadFile) => void;
     onDownload?: (file: NzUploadFile) => void;
     previewFile?: (file: NzUploadFile) => Observable<string>;
+    previewIsImage?: (file: NzUploadFile) => boolean;
     iconRender: TemplateRef<NzSafeAny> | null;
     private genErr;
     private extname;

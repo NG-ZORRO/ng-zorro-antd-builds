@@ -3,4 +3,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 export declare type NzSpaceDirection = 'vertical' | 'horizontal';
+export declare type NzSpaceAlign = 'start' | 'end' | 'center' | 'baseline';
 export declare type NzSpaceSize = 'small' | 'middle' | 'large';

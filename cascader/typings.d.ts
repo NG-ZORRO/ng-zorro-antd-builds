@@ -8,10 +8,7 @@ export declare type NzCascaderTriggerType = 'click' | 'hover';
 export declare type NzCascaderSize = 'small' | 'large' | 'default';
 export declare type NzCascaderFilter = (searchValue: string, path: NzCascaderOption[]) => boolean;
 export declare type NzCascaderSorter = (a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string) => number;
-/**
- * @deprecated Use the prefixed version.
- */
-export interface CascaderOption {
+export interface NzCascaderOption {
     value?: NzSafeAny;
     label?: string;
     title?: string;
@@ -22,14 +19,9 @@ export interface CascaderOption {
     children?: NzCascaderOption[];
     [key: string]: NzSafeAny;
 }
-export declare type NzCascaderOption = CascaderOption;
-/**
- * @deprecated Use the prefixed version.
- */
-export interface CascaderSearchOption extends NzCascaderOption {
+export interface NzCascaderSearchOption extends NzCascaderOption {
     path: NzCascaderOption[];
 }
-export declare type NzCascaderSearchOption = CascaderSearchOption;
 export interface NzShowSearchOptions {
     filter?: NzCascaderFilter;
     sorter?: NzCascaderSorter;

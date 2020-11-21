@@ -13,30 +13,10 @@ import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: breadcrumb.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @record
- */
-function BreadcrumbOption() { }
-if (false) {
-    /** @type {?} */
-    BreadcrumbOption.prototype.label;
-    /** @type {?} */
-    BreadcrumbOption.prototype.params;
-    /** @type {?} */
-    BreadcrumbOption.prototype.url;
-}
 class NzBreadCrumbComponent {
-    /**
-     * @param {?} injector
-     * @param {?} ngZone
-     * @param {?} cdr
-     * @param {?} elementRef
-     * @param {?} renderer
-     */
     constructor(injector, ngZone, cdr, elementRef, renderer) {
         this.injector = injector;
         this.ngZone = ngZone;
@@ -44,75 +24,41 @@ class NzBreadCrumbComponent {
         this.nzAutoGenerate = false;
         this.nzSeparator = '/';
         this.nzRouteLabel = 'breadcrumb';
+        this.nzRouteLabelFn = label => label;
         this.breadcrumbs = [];
         this.destroy$ = new Subject();
         renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb');
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         if (this.nzAutoGenerate) {
             this.registerRouterChange();
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
     }
-    /**
-     * @param {?} url
-     * @param {?} e
-     * @return {?}
-     */
     navigate(url, e) {
         e.preventDefault();
-        this.ngZone.run((/**
-         * @return {?}
-         */
-        () => this.injector.get(Router).navigateByUrl(url).then())).then();
+        this.ngZone.run(() => this.injector.get(Router).navigateByUrl(url).then()).then();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     registerRouterChange() {
         try {
-            /** @type {?} */
             const router = this.injector.get(Router);
-            /** @type {?} */
             const activatedRoute = this.injector.get(ActivatedRoute);
             router.events
-                .pipe(filter((/**
-             * @param {?} e
-             * @return {?}
-             */
-            e => e instanceof NavigationEnd)), takeUntil(this.destroy$), startWith(true) // Trigger initial render.
+                .pipe(filter(e => e instanceof NavigationEnd), takeUntil(this.destroy$), startWith(true) // trigger initial render
             )
-                .subscribe((/**
-             * @return {?}
-             */
-            () => {
+                .subscribe(() => {
                 this.breadcrumbs = this.getBreadcrumbs(activatedRoute.root);
                 this.cdr.markForCheck();
-            }));
+            });
         }
         catch (e) {
             throw new Error(`${PREFIX} You should import RouterModule if you want to use 'NzAutoGenerate'.`);
         }
     }
-    /**
-     * @private
-     * @param {?} route
-     * @param {?=} url
-     * @param {?=} breadcrumbs
-     * @return {?}
-     */
     getBreadcrumbs(route, url = '', breadcrumbs = []) {
-        /** @type {?} */
         const children = route.children;
         // If there's no sub root, then stop the recurse and returns the generated breadcrumbs.
         if (children.length === 0) {
@@ -122,26 +68,15 @@ class NzBreadCrumbComponent {
             if (child.outlet === PRIMARY_OUTLET) {
                 // Only parse components in primary router-outlet (in another word, router-outlet without a specific name).
                 // Parse this layer and generate a breadcrumb item.
-                /** @type {?} */
-                const routeURL = child.snapshot.url
-                    .map((/**
-                 * @param {?} segment
-                 * @return {?}
-                 */
-                segment => segment.path))
-                    .filter((/**
-                 * @param {?} path
-                 * @return {?}
-                 */
-                path => path))
+                const routeUrl = child.snapshot.url
+                    .map(segment => segment.path)
+                    .filter(path => path)
                     .join('/');
-                /** @type {?} */
-                const nextUrl = url + `/${routeURL}`;
-                /** @type {?} */
-                const breadcrumbLabel = child.snapshot.data[this.nzRouteLabel];
+                // Do not change nextUrl if routeUrl is falsy. This happens when it's a route lazy loading other modules.
+                const nextUrl = !!routeUrl ? url + `/${routeUrl}` : url;
+                const breadcrumbLabel = this.nzRouteLabelFn(child.snapshot.data[this.nzRouteLabel]);
                 // If have data, go to generate a breadcrumb for it.
-                if (routeURL && breadcrumbLabel) {
-                    /** @type {?} */
+                if (routeUrl && breadcrumbLabel) {
                     const breadcrumb = {
                         label: breadcrumbLabel,
                         params: child.snapshot.params,
@@ -152,7 +87,7 @@ class NzBreadCrumbComponent {
                 return this.getBreadcrumbs(child, nextUrl, breadcrumbs);
             }
         }
-        return undefined;
+        return breadcrumbs;
     }
 }
 NzBreadCrumbComponent.decorators = [
@@ -164,15 +99,14 @@ NzBreadCrumbComponent.decorators = [
                 preserveWhitespaces: false,
                 template: `
     <ng-content></ng-content>
-    <ng-container *ngIf="nzAutoGenerate">
+    <ng-container *ngIf="nzAutoGenerate && breadcrumbs.length">
       <nz-breadcrumb-item *ngFor="let breadcrumb of breadcrumbs">
         <a [attr.href]="breadcrumb.url" (click)="navigate(breadcrumb.url, $event)">{{ breadcrumb.label }}</a>
       </nz-breadcrumb-item>
     </ng-container>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzBreadCrumbComponent.ctorParameters = () => [
     { type: Injector },
     { type: NgZone },
@@ -183,54 +117,19 @@ NzBreadCrumbComponent.ctorParameters = () => [
 NzBreadCrumbComponent.propDecorators = {
     nzAutoGenerate: [{ type: Input }],
     nzSeparator: [{ type: Input }],
-    nzRouteLabel: [{ type: Input }]
+    nzRouteLabel: [{ type: Input }],
+    nzRouteLabelFn: [{ type: Input }]
 };
 __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzBreadCrumbComponent.prototype, "nzAutoGenerate", void 0);
-if (false) {
-    /** @type {?} */
-    NzBreadCrumbComponent.ngAcceptInputType_nzAutoGenerate;
-    /** @type {?} */
-    NzBreadCrumbComponent.prototype.nzAutoGenerate;
-    /** @type {?} */
-    NzBreadCrumbComponent.prototype.nzSeparator;
-    /** @type {?} */
-    NzBreadCrumbComponent.prototype.nzRouteLabel;
-    /** @type {?} */
-    NzBreadCrumbComponent.prototype.breadcrumbs;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBreadCrumbComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBreadCrumbComponent.prototype.injector;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBreadCrumbComponent.prototype.ngZone;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBreadCrumbComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: breadcrumb-item.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzBreadCrumbItemComponent {
-    /**
-     * @param {?} nzBreadCrumbComponent
-     */
     constructor(nzBreadCrumbComponent) {
         this.nzBreadCrumbComponent = nzBreadCrumbComponent;
     }
@@ -262,29 +161,18 @@ NzBreadCrumbItemComponent.decorators = [
       </ng-container>
     </span>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzBreadCrumbItemComponent.ctorParameters = () => [
     { type: NzBreadCrumbComponent }
 ];
 NzBreadCrumbItemComponent.propDecorators = {
     nzOverlay: [{ type: Input }]
 };
-if (false) {
-    /**
-     * Dropdown content of a breadcrumb item.
-     * @type {?}
-     */
-    NzBreadCrumbItemComponent.prototype.nzOverlay;
-    /** @type {?} */
-    NzBreadCrumbItemComponent.prototype.nzBreadCrumbComponent;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: breadcrumb-separator.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzBreadCrumbSeparatorComponent {
 }
@@ -297,13 +185,12 @@ NzBreadCrumbSeparatorComponent.decorators = [
       <ng-content></ng-content>
     </span>
   `
-            }] }
+            },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: breadcrumb.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzBreadCrumbModule {
 }
@@ -316,15 +203,12 @@ NzBreadCrumbModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-breadcrumb.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzBreadCrumbComponent, NzBreadCrumbItemComponent, NzBreadCrumbModule, NzBreadCrumbSeparatorComponent };

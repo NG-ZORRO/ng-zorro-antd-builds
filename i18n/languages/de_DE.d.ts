@@ -102,6 +102,9 @@ declare const _default: {
         sortTitle: string;
         expand: string;
         collapse: string;
+        triggerDesc: string;
+        triggerAsc: string;
+        cancelSort: string;
     };
     Modal: {
         okText: string;

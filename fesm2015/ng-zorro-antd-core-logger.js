@@ -2,26 +2,13 @@ import { isDevMode } from '@angular/core';
 import { environment } from 'ng-zorro-antd/core/environments';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: logger.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const record = {};
-/** @type {?} */
 const PREFIX = '[NG-ZORRO]:';
-/**
- * @param {...?} args
- * @return {?}
- */
 function notRecorded(...args) {
-    /** @type {?} */
-    const asRecord = args.reduce((/**
-     * @param {?} acc
-     * @param {?} c
-     * @return {?}
-     */
-    (acc, c) => acc + c.toString()), '');
+    const asRecord = args.reduce((acc, c) => acc + c.toString(), '');
     if (record[asRecord]) {
         return false;
     }
@@ -30,71 +17,36 @@ function notRecorded(...args) {
         return true;
     }
 }
-/**
- * @param {?} consoleFunc
- * @param {...?} args
- * @return {?}
- */
 function consoleCommonBehavior(consoleFunc, ...args) {
     if (environment.isTestMode || (isDevMode() && notRecorded(...args))) {
         consoleFunc(...args);
     }
 }
 // Warning should only be printed in dev mode and only once.
-/** @type {?} */
-const warn = (/**
- * @param {...?} args
- * @return {?}
- */
-(...args) => consoleCommonBehavior((/**
- * @param {...?} arg
- * @return {?}
- */
-(...arg) => console.warn(PREFIX, ...arg)), ...args));
-/** @type {?} */
-const warnDeprecation = (/**
- * @param {...?} args
- * @return {?}
- */
-(...args) => {
+const warn = (...args) => consoleCommonBehavior((...arg) => console.warn(PREFIX, ...arg), ...args);
+const warnDeprecation = (...args) => {
     if (!environment.isTestMode) {
-        /** @type {?} */
         const stack = new Error().stack;
-        return consoleCommonBehavior((/**
-         * @param {...?} arg
-         * @return {?}
-         */
-        (...arg) => console.warn(PREFIX, 'deprecated:', ...arg, stack)), ...args);
+        return consoleCommonBehavior((...arg) => console.warn(PREFIX, 'deprecated:', ...arg, stack), ...args);
     }
     else {
-        return (/**
-         * @return {?}
-         */
-        () => { });
+        return () => { };
     }
-});
+};
 // Log should only be printed in dev mode.
-/** @type {?} */
-const log = (/**
- * @param {...?} args
- * @return {?}
- */
-(...args) => {
+const log = (...args) => {
     if (isDevMode()) {
         console.log(PREFIX, ...args);
     }
-});
+};
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-core-logger.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { PREFIX, log, warn, warnDeprecation };

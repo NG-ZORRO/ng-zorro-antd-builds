@@ -4,15 +4,18 @@
  */
 import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { NgClassInterface, NgStyleInterface, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
+import { NgClassInterface, NgStyleInterface, NumberInput, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 export declare class NzAvatarComponent implements OnChanges {
     nzConfigService: NzConfigService;
     private elementRef;
     private cdr;
     private platform;
+    static ngAcceptInputType_nzGap: NumberInput;
+    readonly _nzModuleName: NzConfigKey;
     nzShape: NzShapeSCType;
     nzSize: NzSizeLDSType | number;
+    nzGap: number;
     nzText?: string;
     nzSrc?: string;
     nzSrcSet?: string;

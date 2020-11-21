@@ -8,16 +8,10 @@ import { CommonModule } from '@angular/common';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: input-number.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzInputNumberComponent {
-    /**
-     * @param {?} elementRef
-     * @param {?} cdr
-     * @param {?} focusMonitor
-     */
     constructor(elementRef, cdr, focusMonitor) {
         this.elementRef = elementRef;
         this.cdr = cdr;
@@ -25,27 +19,17 @@ class NzInputNumberComponent {
         this.isFocused = false;
         this.disabledUp = false;
         this.disabledDown = false;
-        this.onChange = (/**
-         * @return {?}
-         */
-        () => { });
-        this.onTouched = (/**
-         * @return {?}
-         */
-        () => { });
+        this.onChange = () => { };
+        this.onTouched = () => { };
         this.nzBlur = new EventEmitter();
         this.nzFocus = new EventEmitter();
         this.nzSize = 'default';
         this.nzMin = -Infinity;
         this.nzMax = Infinity;
-        this.nzParser = (/**
-         * @param {?} value
-         * @return {?}
-         */
-        (value) => value
+        this.nzParser = (value) => value
             .trim()
             .replace(/。/g, '.')
-            .replace(/[^\w\.-]+/g, ''));
+            .replace(/[^\w\.-]+/g, '');
         this.nzPrecisionMode = 'toFixed';
         this.nzPlaceHolder = '';
         this.nzStep = 1;
@@ -53,29 +37,15 @@ class NzInputNumberComponent {
         this.nzId = null;
         this.nzDisabled = false;
         this.nzAutoFocus = false;
-        this.nzFormatter = (/**
-         * @param {?} value
-         * @return {?}
-         */
-        value => value);
+        this.nzFormatter = value => value;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     onModelChange(value) {
         this.parsedValue = this.nzParser(value);
         this.inputElement.nativeElement.value = `${this.parsedValue}`;
-        /** @type {?} */
         const validValue = this.getCurrentValidValue(this.parsedValue);
         this.setValue(validValue);
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     getCurrentValidValue(value) {
-        /** @type {?} */
         let val = value;
         if (val === '') {
             val = '';
@@ -84,25 +54,16 @@ class NzInputNumberComponent {
             val = `${this.getValidValue(val)}`;
         }
         else {
-            val = (/** @type {?} */ (this.value));
+            val = this.value;
         }
         return this.toNumber(val);
     }
     // '1.' '1x' 'xx' '' => are not complete numbers
-    /**
-     * @param {?} num
-     * @return {?}
-     */
     isNotCompleteNumber(num) {
-        return isNaN((/** @type {?} */ (num))) || num === '' || num === null || !!(num && num.toString().indexOf('.') === num.toString().length - 1);
+        return isNaN(num) || num === '' || num === null || !!(num && num.toString().indexOf('.') === num.toString().length - 1);
     }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
     getValidValue(value) {
-        /** @type {?} */
-        let val = parseFloat((/** @type {?} */ (value)));
+        let val = parseFloat(value);
         // https://github.com/ant-design/ant-design/issues/7358
         if (isNaN(val)) {
             return value;
@@ -115,22 +76,16 @@ class NzInputNumberComponent {
         }
         return val;
     }
-    /**
-     * @param {?} num
-     * @return {?}
-     */
     toNumber(num) {
         if (this.isNotCompleteNumber(num)) {
-            return (/** @type {?} */ (num));
+            return num;
         }
-        /** @type {?} */
         const numStr = String(num);
         if (numStr.indexOf('.') >= 0 && isNotNil(this.nzPrecision)) {
             if (typeof this.nzPrecisionMode === 'function') {
                 return this.nzPrecisionMode(num, this.nzPrecision);
             }
             else if (this.nzPrecisionMode === 'cut') {
-                /** @type {?} */
                 const numSplit = numStr.split('.');
                 numSplit[1] = numSplit[1].slice(0, this.nzPrecision);
                 return Number(numSplit.join('.'));
@@ -139,12 +94,7 @@ class NzInputNumberComponent {
         }
         return Number(num);
     }
-    /**
-     * @param {?} e
-     * @return {?}
-     */
     getRatio(e) {
-        /** @type {?} */
         let ratio = 1;
         if (e.metaKey || e.ctrlKey) {
             ratio = 0.1;
@@ -154,39 +104,23 @@ class NzInputNumberComponent {
         }
         return ratio;
     }
-    /**
-     * @param {?} e
-     * @param {?=} ratio
-     * @return {?}
-     */
     down(e, ratio) {
         if (!this.isFocused) {
             this.focus();
         }
         this.step('down', e, ratio);
     }
-    /**
-     * @param {?} e
-     * @param {?=} ratio
-     * @return {?}
-     */
     up(e, ratio) {
         if (!this.isFocused) {
             this.focus();
         }
         this.step('up', e, ratio);
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     getPrecision(value) {
-        /** @type {?} */
         const valueString = value.toString();
         if (valueString.indexOf('e-') >= 0) {
             return parseInt(valueString.slice(valueString.indexOf('e-') + 2), 10);
         }
-        /** @type {?} */
         let precision = 0;
         if (valueString.indexOf('.') >= 0) {
             precision = valueString.length - valueString.indexOf('.') - 1;
@@ -198,47 +132,25 @@ class NzInputNumberComponent {
     // then value should be 2.51, rather than 2.5
     // if this.props.precision is undefined
     // https://github.com/react-component/input-number/issues/39
-    /**
-     * @param {?} currentValue
-     * @param {?} ratio
-     * @return {?}
-     */
     getMaxPrecision(currentValue, ratio) {
         if (isNotNil(this.nzPrecision)) {
             return this.nzPrecision;
         }
-        /** @type {?} */
         const ratioPrecision = this.getPrecision(ratio);
-        /** @type {?} */
         const stepPrecision = this.getPrecision(this.nzStep);
-        /** @type {?} */
-        const currentValuePrecision = this.getPrecision((/** @type {?} */ (currentValue)));
+        const currentValuePrecision = this.getPrecision(currentValue);
         if (!currentValue) {
             return ratioPrecision + stepPrecision;
         }
         return Math.max(currentValuePrecision, ratioPrecision + stepPrecision);
     }
-    /**
-     * @param {?} currentValue
-     * @param {?} ratio
-     * @return {?}
-     */
     getPrecisionFactor(currentValue, ratio) {
-        /** @type {?} */
         const precision = this.getMaxPrecision(currentValue, ratio);
         return Math.pow(10, precision);
     }
-    /**
-     * @param {?} val
-     * @param {?} rat
-     * @return {?}
-     */
     upStep(val, rat) {
-        /** @type {?} */
         const precisionFactor = this.getPrecisionFactor(val, rat);
-        /** @type {?} */
         const precision = Math.abs(this.getMaxPrecision(val, rat));
-        /** @type {?} */
         let result;
         if (typeof val === 'number') {
             result = ((precisionFactor * val + precisionFactor * this.nzStep * rat) / precisionFactor).toFixed(precision);
@@ -248,17 +160,9 @@ class NzInputNumberComponent {
         }
         return this.toNumber(result);
     }
-    /**
-     * @param {?} val
-     * @param {?} rat
-     * @return {?}
-     */
     downStep(val, rat) {
-        /** @type {?} */
         const precisionFactor = this.getPrecisionFactor(val, rat);
-        /** @type {?} */
         const precision = Math.abs(this.getMaxPrecision(val, rat));
-        /** @type {?} */
         let result;
         if (typeof val === 'number') {
             result = ((precisionFactor * val - precisionFactor * this.nzStep * rat) / precisionFactor).toFixed(precision);
@@ -268,22 +172,13 @@ class NzInputNumberComponent {
         }
         return this.toNumber(result);
     }
-    /**
-     * @template T
-     * @param {?} type
-     * @param {?} e
-     * @param {?=} ratio
-     * @return {?}
-     */
     step(type, e, ratio = 1) {
         this.stop();
         e.preventDefault();
         if (this.nzDisabled) {
             return;
         }
-        /** @type {?} */
-        const value = this.getCurrentValidValue((/** @type {?} */ (this.parsedValue))) || 0;
-        /** @type {?} */
+        const value = this.getCurrentValidValue(this.parsedValue) || 0;
         let val = 0;
         if (type === 'up') {
             val = this.upStep(value, ratio);
@@ -291,7 +186,6 @@ class NzInputNumberComponent {
         else if (type === 'down') {
             val = this.downStep(value, ratio);
         }
-        /** @type {?} */
         const outOfRange = val > this.nzMax || val < this.nzMin;
         if (val > this.nzMax) {
             val = this.nzMax;
@@ -305,25 +199,15 @@ class NzInputNumberComponent {
         if (outOfRange) {
             return;
         }
-        this.autoStepTimer = setTimeout((/**
-         * @return {?}
-         */
-        () => {
-            ((/** @type {?} */ (this[type])))(e, ratio);
-        }), 300);
+        this.autoStepTimer = setTimeout(() => {
+            this[type](e, ratio);
+        }, 300);
     }
-    /**
-     * @return {?}
-     */
     stop() {
         if (this.autoStepTimer) {
             clearTimeout(this.autoStepTimer);
         }
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     setValue(value) {
         if (`${this.value}` !== `${value}`) {
             this.onChange(value);
@@ -332,7 +216,6 @@ class NzInputNumberComponent {
         this.parsedValue = value;
         this.disabledUp = this.disabledDown = false;
         if (value || value === 0) {
-            /** @type {?} */
             const val = Number(value);
             if (val >= this.nzMax) {
                 this.disabledUp = true;
@@ -342,128 +225,74 @@ class NzInputNumberComponent {
             }
         }
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     updateDisplayValue(value) {
-        /** @type {?} */
         const displayValue = isNotNil(this.nzFormatter(value)) ? this.nzFormatter(value) : '';
         this.displayValue = displayValue;
         this.inputElement.nativeElement.value = `${displayValue}`;
     }
-    /**
-     * @param {?} e
-     * @return {?}
-     */
     onKeyDown(e) {
         if (e.keyCode === UP_ARROW) {
-            /** @type {?} */
             const ratio = this.getRatio(e);
             this.up(e, ratio);
             this.stop();
         }
         else if (e.keyCode === DOWN_ARROW) {
-            /** @type {?} */
             const ratio = this.getRatio(e);
             this.down(e, ratio);
             this.stop();
         }
         else if (e.keyCode === ENTER) {
-            this.updateDisplayValue((/** @type {?} */ (this.value)));
+            this.updateDisplayValue(this.value);
         }
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     writeValue(value) {
         this.value = value;
         this.setValue(value);
         this.updateDisplayValue(value);
         this.cdr.markForCheck();
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnChange(fn) {
         this.onChange = fn;
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnTouched(fn) {
         this.onTouched = fn;
     }
-    /**
-     * @param {?} disabled
-     * @return {?}
-     */
     setDisabledState(disabled) {
         this.nzDisabled = disabled;
         this.cdr.markForCheck();
     }
-    /**
-     * @return {?}
-     */
     focus() {
         this.focusMonitor.focusVia(this.inputElement, 'keyboard');
     }
-    /**
-     * @return {?}
-     */
     blur() {
         this.inputElement.nativeElement.blur();
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
-        this.focusMonitor.monitor(this.elementRef, true).subscribe((/**
-         * @param {?} focusOrigin
-         * @return {?}
-         */
-        focusOrigin => {
+        this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
             if (!focusOrigin) {
                 this.isFocused = false;
-                this.updateDisplayValue((/** @type {?} */ (this.value)));
+                this.updateDisplayValue(this.value);
                 this.nzBlur.emit();
-                Promise.resolve().then((/**
-                 * @return {?}
-                 */
-                () => this.onTouched()));
+                Promise.resolve().then(() => this.onTouched());
             }
             else {
                 this.isFocused = true;
                 this.nzFocus.emit();
             }
-        }));
+        });
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         if (changes.nzFormatter && !changes.nzFormatter.isFirstChange()) {
-            /** @type {?} */
-            const validValue = this.getCurrentValidValue((/** @type {?} */ (this.parsedValue)));
+            const validValue = this.getCurrentValidValue(this.parsedValue);
             this.setValue(validValue);
             this.updateDisplayValue(validValue);
         }
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
         if (this.nzAutoFocus) {
             this.focus();
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.focusMonitor.stopMonitoring(this.elementRef);
     }
@@ -518,10 +347,7 @@ NzInputNumberComponent.decorators = [
                 providers: [
                     {
                         provide: NG_VALUE_ACCESSOR,
-                        useExisting: forwardRef((/**
-                         * @return {?}
-                         */
-                        () => NzInputNumberComponent)),
+                        useExisting: forwardRef(() => NzInputNumberComponent),
                         multi: true
                     }
                 ],
@@ -534,9 +360,8 @@ NzInputNumberComponent.decorators = [
                     '[class.ant-input-number-sm]': `nzSize === 'small'`,
                     '[class.ant-input-number-disabled]': 'nzDisabled'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzInputNumberComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: ChangeDetectorRef },
@@ -568,91 +393,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzInputNumberComponent.prototype, "nzAutoFocus", void 0);
-if (false) {
-    /** @type {?} */
-    NzInputNumberComponent.ngAcceptInputType_nzDisabled;
-    /** @type {?} */
-    NzInputNumberComponent.ngAcceptInputType_nzAutoFocus;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzInputNumberComponent.prototype.autoStepTimer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzInputNumberComponent.prototype.parsedValue;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzInputNumberComponent.prototype.value;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.displayValue;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.isFocused;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.disabledUp;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.disabledDown;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.onChange;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.onTouched;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzBlur;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzFocus;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.inputElement;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzSize;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzMin;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzMax;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzParser;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzPrecision;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzPrecisionMode;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzPlaceHolder;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzStep;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzInputMode;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzId;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzDisabled;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzAutoFocus;
-    /** @type {?} */
-    NzInputNumberComponent.prototype.nzFormatter;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzInputNumberComponent.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzInputNumberComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzInputNumberComponent.prototype.focusMonitor;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: input-number.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzInputNumberModule {
 }
@@ -665,15 +409,12 @@ NzInputNumberModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-input-number.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzInputNumberComponent, NzInputNumberModule };

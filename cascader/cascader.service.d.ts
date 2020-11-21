@@ -30,7 +30,7 @@ export declare class NzCascaderService implements OnDestroy {
      * Emit true if a leaf options is selected.
      */
     readonly $optionSelected: Subject<{
-        option: import("./typings").CascaderOption;
+        option: NzCascaderOption;
         index: number;
     } | null>;
     /**

@@ -11,16 +11,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: pagination.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPaginationComponent {
-    /**
-     * @param {?} i18n
-     * @param {?} cdr
-     * @param {?} breakpointService
-     */
     constructor(i18n, cdr, breakpointService) {
         this.i18n = i18n;
         this.cdr = cdr;
@@ -45,11 +39,6 @@ class NzPaginationComponent {
         this.destroy$ = new Subject();
         this.total$ = new ReplaySubject(1);
     }
-    /**
-     * @param {?} value
-     * @param {?} lastIndex
-     * @return {?}
-     */
     validatePageIndex(value, lastIndex) {
         if (value > lastIndex) {
             return lastIndex;
@@ -61,98 +50,53 @@ class NzPaginationComponent {
             return value;
         }
     }
-    /**
-     * @param {?} index
-     * @return {?}
-     */
     onPageIndexChange(index) {
-        /** @type {?} */
         const lastIndex = this.getLastIndex(this.nzTotal, this.nzPageSize);
-        /** @type {?} */
         const validIndex = this.validatePageIndex(index, lastIndex);
         if (validIndex !== this.nzPageIndex && !this.nzDisabled) {
             this.nzPageIndex = validIndex;
             this.nzPageIndexChange.emit(this.nzPageIndex);
         }
     }
-    /**
-     * @param {?} size
-     * @return {?}
-     */
     onPageSizeChange(size) {
         this.nzPageSize = size;
         this.nzPageSizeChange.emit(size);
-        /** @type {?} */
         const lastIndex = this.getLastIndex(this.nzTotal, this.nzPageSize);
         if (this.nzPageIndex > lastIndex) {
             this.onPageIndexChange(lastIndex);
         }
     }
-    /**
-     * @param {?} total
-     * @return {?}
-     */
     onTotalChange(total) {
-        /** @type {?} */
         const lastIndex = this.getLastIndex(total, this.nzPageSize);
         if (this.nzPageIndex > lastIndex) {
-            Promise.resolve().then((/**
-             * @return {?}
-             */
-            () => this.onPageIndexChange(lastIndex)));
+            Promise.resolve().then(() => this.onPageIndexChange(lastIndex));
         }
     }
-    /**
-     * @param {?} total
-     * @param {?} pageSize
-     * @return {?}
-     */
     getLastIndex(total, pageSize) {
         return Math.ceil(total / pageSize);
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
-        this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.locale = this.i18n.getLocaleData('Pagination');
             this.cdr.markForCheck();
-        }));
-        this.total$.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @param {?} total
-         * @return {?}
-         */
-        total => {
+        });
+        this.total$.pipe(takeUntil(this.destroy$)).subscribe(total => {
             this.onTotalChange(total);
-        }));
+        });
         this.breakpointService
             .subscribe(gridResponsiveMap)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @param {?} bp
-         * @return {?}
-         */
-        bp => {
+            .subscribe(bp => {
             if (this.nzResponsive) {
                 this.size = bp === NzBreakpointEnum.xs ? 'small' : 'default';
                 this.cdr.markForCheck();
             }
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzHideOnSinglePage, nzTotal, nzPageSize, nzSize } = changes;
         if (nzTotal) {
@@ -212,9 +156,8 @@ NzPaginationComponent.decorators = [
                     '[class.ant-pagination-disabled]': 'nzDisabled',
                     '[class.mini]': `!nzSimple && size === 'small'`
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzPaginationComponent.ctorParameters = () => [
     { type: NzI18nService },
     { type: ChangeDetectorRef },
@@ -273,98 +216,12 @@ __decorate([
     InputNumber(),
     __metadata("design:type", Object)
 ], NzPaginationComponent.prototype, "nzPageSize", void 0);
-if (false) {
-    /** @type {?} */
-    NzPaginationComponent.ngAcceptInputType_nzDisabled;
-    /** @type {?} */
-    NzPaginationComponent.ngAcceptInputType_nzShowSizeChanger;
-    /** @type {?} */
-    NzPaginationComponent.ngAcceptInputType_nzHideOnSinglePage;
-    /** @type {?} */
-    NzPaginationComponent.ngAcceptInputType_nzShowQuickJumper;
-    /** @type {?} */
-    NzPaginationComponent.ngAcceptInputType_nzSimple;
-    /** @type {?} */
-    NzPaginationComponent.ngAcceptInputType_nzResponsive;
-    /** @type {?} */
-    NzPaginationComponent.ngAcceptInputType_nzTotal;
-    /** @type {?} */
-    NzPaginationComponent.ngAcceptInputType_nzPageIndex;
-    /** @type {?} */
-    NzPaginationComponent.ngAcceptInputType_nzPageSize;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzPageSizeChange;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzPageIndexChange;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzShowTotal;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzSize;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzPageSizeOptions;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzItemRender;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzDisabled;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzShowSizeChanger;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzHideOnSinglePage;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzShowQuickJumper;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzSimple;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzResponsive;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzTotal;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzPageIndex;
-    /** @type {?} */
-    NzPaginationComponent.prototype.nzPageSize;
-    /** @type {?} */
-    NzPaginationComponent.prototype.showPagination;
-    /** @type {?} */
-    NzPaginationComponent.prototype.locale;
-    /** @type {?} */
-    NzPaginationComponent.prototype.size;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzPaginationComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzPaginationComponent.prototype.total$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzPaginationComponent.prototype.i18n;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzPaginationComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzPaginationComponent.prototype.breakpointService;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: pagination-default.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPaginationDefaultComponent {
-    /**
-     * @param {?} renderer
-     * @param {?} elementRef
-     */
     constructor(renderer, elementRef) {
         this.nzSize = 'default';
         this.itemRender = null;
@@ -382,90 +239,41 @@ class NzPaginationDefaultComponent {
         this.listOfPageItem = [];
         renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
     }
-    /**
-     * @param {?} index
-     * @return {?}
-     */
     jumpPage(index) {
         this.onPageIndexChange(index);
     }
-    /**
-     * @param {?} diff
-     * @return {?}
-     */
     jumpDiff(diff) {
         this.jumpPage(this.pageIndex + diff);
     }
-    /**
-     * @param {?} _
-     * @param {?} value
-     * @return {?}
-     */
     trackByPageItem(_, value) {
         return `${value.type}-${value.index}`;
     }
-    /**
-     * @param {?} index
-     * @return {?}
-     */
     onPageIndexChange(index) {
         this.pageIndexChange.next(index);
     }
-    /**
-     * @param {?} size
-     * @return {?}
-     */
     onPageSizeChange(size) {
         this.pageSizeChange.next(size);
     }
-    /**
-     * @param {?} total
-     * @param {?} pageSize
-     * @return {?}
-     */
     getLastIndex(total, pageSize) {
         return Math.ceil(total / pageSize);
     }
-    /**
-     * @return {?}
-     */
     buildIndexes() {
-        /** @type {?} */
         const lastIndex = this.getLastIndex(this.total, this.pageSize);
         this.listOfPageItem = this.getListOfPageItem(this.pageIndex, lastIndex);
     }
-    /**
-     * @param {?} pageIndex
-     * @param {?} lastIndex
-     * @return {?}
-     */
     getListOfPageItem(pageIndex, lastIndex) {
-        /** @type {?} */
-        const concatWithPrevNext = (/**
-         * @param {?} listOfPage
-         * @return {?}
-         */
-        (listOfPage) => {
-            /** @type {?} */
+        const concatWithPrevNext = (listOfPage) => {
             const prevItem = {
                 type: 'prev',
                 disabled: pageIndex === 1
             };
-            /** @type {?} */
             const nextItem = {
                 type: 'next',
                 disabled: pageIndex === lastIndex
             };
             return [prevItem, ...listOfPage, nextItem];
-        });
-        /** @type {?} */
-        const generatePage = (/**
-         * @param {?} start
-         * @param {?} end
-         * @return {?}
-         */
-        (start, end) => {
-            /** @type {?} */
+        };
+        const generatePage = (start, end) => {
             const list = [];
             for (let i = start; i <= end; i++) {
                 list.push({
@@ -474,31 +282,20 @@ class NzPaginationDefaultComponent {
                 });
             }
             return list;
-        });
+        };
         if (lastIndex <= 9) {
             return concatWithPrevNext(generatePage(1, lastIndex));
         }
         else {
-            /** @type {?} */
-            const generateRangeItem = (/**
-             * @param {?} selected
-             * @param {?} last
-             * @return {?}
-             */
-            (selected, last) => {
-                /** @type {?} */
+            const generateRangeItem = (selected, last) => {
                 let listOfRange = [];
-                /** @type {?} */
                 const prevFiveItem = {
                     type: 'prev_5'
                 };
-                /** @type {?} */
                 const nextFiveItem = {
                     type: 'next_5'
                 };
-                /** @type {?} */
                 const firstPageItem = generatePage(1, 1);
-                /** @type {?} */
                 const lastPageItem = generatePage(lastIndex, lastIndex);
                 if (selected < 4) {
                     listOfRange = [...generatePage(2, 5), nextFiveItem];
@@ -510,14 +307,10 @@ class NzPaginationDefaultComponent {
                     listOfRange = [prevFiveItem, ...generatePage(last - 4, last - 1)];
                 }
                 return [...firstPageItem, ...listOfRange, ...lastPageItem];
-            });
+            };
             return concatWithPrevNext(generateRangeItem(pageIndex, lastIndex));
         }
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { pageIndex, pageSize, total } = changes;
         if (pageIndex || pageSize || total) {
@@ -566,9 +359,8 @@ NzPaginationDefaultComponent.decorators = [
       ></div>
     </ng-template>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzPaginationDefaultComponent.ctorParameters = () => [
     { type: Renderer2 },
     { type: ElementRef }
@@ -589,45 +381,10 @@ NzPaginationDefaultComponent.propDecorators = {
     pageIndexChange: [{ type: Output }],
     pageSizeChange: [{ type: Output }]
 };
-if (false) {
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.template;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.nzSize;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.itemRender;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.showTotal;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.disabled;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.locale;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.showSizeChanger;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.showQuickJumper;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.total;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.pageIndex;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.pageSize;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.pageSizeOptions;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.pageIndexChange;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.pageSizeChange;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.ranges;
-    /** @type {?} */
-    NzPaginationDefaultComponent.prototype.listOfPageItem;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: pagination-item.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPaginationItemComponent {
     constructor() {
@@ -640,39 +397,32 @@ class NzPaginationItemComponent {
         this.gotoIndex = new EventEmitter();
         this.title = null;
     }
-    /**
-     * @return {?}
-     */
     clickItem() {
         if (!this.disabled) {
             if (this.type === 'page') {
-                this.gotoIndex.emit((/** @type {?} */ (this.index)));
+                this.gotoIndex.emit(this.index);
             }
             else {
-                this.diffIndex.emit(((/** @type {?} */ ({
+                this.diffIndex.emit({
                     next: 1,
                     prev: -1,
                     prev_5: -5,
                     next_5: 5
-                })))[(/** @type {?} */ (this.type))]);
+                }[this.type]);
             }
         }
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         var _a, _b, _c, _d;
         const { locale, index, type } = changes;
         if (locale || index || type) {
-            this.title = ((/** @type {?} */ ({
+            this.title = {
                 page: `${this.index}`,
                 next: (_a = this.locale) === null || _a === void 0 ? void 0 : _a.next_page,
                 prev: (_b = this.locale) === null || _b === void 0 ? void 0 : _b.prev_page,
                 prev_5: (_c = this.locale) === null || _c === void 0 ? void 0 : _c.prev_5,
                 next_5: (_d = this.locale) === null || _d === void 0 ? void 0 : _d.next_5
-            })))[(/** @type {?} */ (this.type))];
+            }[this.type];
         }
     }
 }
@@ -686,10 +436,10 @@ NzPaginationItemComponent.decorators = [
     <ng-template #renderItemTemplate let-type let-page="page">
       <ng-container [ngSwitch]="type">
         <a *ngSwitchCase="'page'">{{ page }}</a>
+        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'"><i nz-icon nzType="left"></i></button>
+        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'"><i nz-icon nzType="right"></i></button>
         <ng-container *ngSwitchDefault>
           <a class="ant-pagination-item-link" [ngSwitch]="type">
-            <i nz-icon nzType="left" *ngSwitchCase="'prev'"></i>
-            <i nz-icon nzType="right" *ngSwitchCase="'next'"></i>
             <div class="ant-pagination-item-container" *ngSwitchDefault>
               <ng-container [ngSwitch]="type">
                 <i *ngSwitchCase="'prev_5'" nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></i>
@@ -719,7 +469,7 @@ NzPaginationItemComponent.decorators = [
                     '[attr.title]': 'title',
                     '(click)': 'clickItem()'
                 }
-            }] }
+            },] }
 ];
 NzPaginationItemComponent.propDecorators = {
     active: [{ type: Input }],
@@ -731,35 +481,10 @@ NzPaginationItemComponent.propDecorators = {
     diffIndex: [{ type: Output }],
     gotoIndex: [{ type: Output }]
 };
-if (false) {
-    /** @type {?} */
-    NzPaginationItemComponent.ngAcceptInputType_type;
-    /** @type {?} */
-    NzPaginationItemComponent.ngAcceptInputType_index;
-    /** @type {?} */
-    NzPaginationItemComponent.prototype.active;
-    /** @type {?} */
-    NzPaginationItemComponent.prototype.locale;
-    /** @type {?} */
-    NzPaginationItemComponent.prototype.index;
-    /** @type {?} */
-    NzPaginationItemComponent.prototype.disabled;
-    /** @type {?} */
-    NzPaginationItemComponent.prototype.type;
-    /** @type {?} */
-    NzPaginationItemComponent.prototype.itemRender;
-    /** @type {?} */
-    NzPaginationItemComponent.prototype.diffIndex;
-    /** @type {?} */
-    NzPaginationItemComponent.prototype.gotoIndex;
-    /** @type {?} */
-    NzPaginationItemComponent.prototype.title;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: pagination-options.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPaginationOptionsComponent {
     constructor() {
@@ -775,52 +500,29 @@ class NzPaginationOptionsComponent {
         this.pageSizeChange = new EventEmitter();
         this.listOfPageSizeOption = [];
     }
-    /**
-     * @param {?} size
-     * @return {?}
-     */
     onPageSizeChange(size) {
         if (this.pageSize !== size) {
             this.pageSizeChange.next(size);
         }
     }
-    /**
-     * @param {?} $event
-     * @return {?}
-     */
     jumpToPageViaInput($event) {
-        /** @type {?} */
-        const target = (/** @type {?} */ ($event.target));
-        /** @type {?} */
-        const index = toNumber(target.value, this.pageIndex);
+        const target = $event.target;
+        const index = Math.floor(toNumber(target.value, this.pageIndex));
         this.pageIndexChange.next(index);
         target.value = '';
     }
-    /**
-     * @param {?} _
-     * @param {?} option
-     * @return {?}
-     */
     trackByOption(_, option) {
         return option.value;
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { pageSize, pageSizeOptions, locale } = changes;
         if (pageSize || pageSizeOptions || locale) {
-            this.listOfPageSizeOption = [...new Set([...this.pageSizeOptions, this.pageSize])].map((/**
-             * @param {?} item
-             * @return {?}
-             */
-            item => {
+            this.listOfPageSizeOption = [...new Set([...this.pageSizeOptions, this.pageSize])].map(item => {
                 return {
                     value: item,
                     label: `${item} ${this.locale.items_per_page}`
                 };
-            }));
+            });
         }
     }
 }
@@ -854,7 +556,7 @@ NzPaginationOptionsComponent.decorators = [
                 host: {
                     '[class.ant-pagination-options]': 'true'
                 }
-            }] }
+            },] }
 ];
 NzPaginationOptionsComponent.propDecorators = {
     nzSize: [{ type: Input }],
@@ -869,43 +571,12 @@ NzPaginationOptionsComponent.propDecorators = {
     pageIndexChange: [{ type: Output }],
     pageSizeChange: [{ type: Output }]
 };
-if (false) {
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.nzSize;
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.disabled;
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.showSizeChanger;
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.showQuickJumper;
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.locale;
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.total;
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.pageIndex;
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.pageSize;
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.pageSizeOptions;
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.pageIndexChange;
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.pageSizeChange;
-    /** @type {?} */
-    NzPaginationOptionsComponent.prototype.listOfPageSizeOption;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: pagination-simple.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPaginationSimpleComponent {
-    /**
-     * @param {?} renderer
-     * @param {?} elementRef
-     */
     constructor(renderer, elementRef) {
         this.itemRender = null;
         this.disabled = false;
@@ -918,49 +589,26 @@ class NzPaginationSimpleComponent {
         this.isLastIndex = false;
         renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
     }
-    /**
-     * @param {?} $event
-     * @return {?}
-     */
     jumpToPageViaInput($event) {
-        /** @type {?} */
-        const target = (/** @type {?} */ ($event.target));
-        /** @type {?} */
+        const target = $event.target;
         const index = toNumber(target.value, this.pageIndex);
         this.onPageIndexChange(index);
         target.value = `${this.pageIndex}`;
     }
-    /**
-     * @return {?}
-     */
     prePage() {
         this.onPageIndexChange(this.pageIndex - 1);
     }
-    /**
-     * @return {?}
-     */
     nextPage() {
         this.onPageIndexChange(this.pageIndex + 1);
     }
-    /**
-     * @param {?} index
-     * @return {?}
-     */
     onPageIndexChange(index) {
         this.pageIndexChange.next(index);
     }
-    /**
-     * @return {?}
-     */
     updateBindingValue() {
         this.lastIndex = Math.ceil(this.total / this.pageSize);
         this.isFirstIndex = this.pageIndex === 1;
         this.isLastIndex = this.pageIndex === this.lastIndex;
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { pageIndex, total, pageSize } = changes;
         if (pageIndex || total || pageSize) {
@@ -999,9 +647,8 @@ NzPaginationSimpleComponent.decorators = [
       ></li>
     </ng-template>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzPaginationSimpleComponent.ctorParameters = () => [
     { type: Renderer2 },
     { type: ElementRef }
@@ -1016,35 +663,10 @@ NzPaginationSimpleComponent.propDecorators = {
     pageSize: [{ type: Input }],
     pageIndexChange: [{ type: Output }]
 };
-if (false) {
-    /** @type {?} */
-    NzPaginationSimpleComponent.prototype.template;
-    /** @type {?} */
-    NzPaginationSimpleComponent.prototype.itemRender;
-    /** @type {?} */
-    NzPaginationSimpleComponent.prototype.disabled;
-    /** @type {?} */
-    NzPaginationSimpleComponent.prototype.locale;
-    /** @type {?} */
-    NzPaginationSimpleComponent.prototype.total;
-    /** @type {?} */
-    NzPaginationSimpleComponent.prototype.pageIndex;
-    /** @type {?} */
-    NzPaginationSimpleComponent.prototype.pageSize;
-    /** @type {?} */
-    NzPaginationSimpleComponent.prototype.pageIndexChange;
-    /** @type {?} */
-    NzPaginationSimpleComponent.prototype.lastIndex;
-    /** @type {?} */
-    NzPaginationSimpleComponent.prototype.isFirstIndex;
-    /** @type {?} */
-    NzPaginationSimpleComponent.prototype.isLastIndex;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: pagination.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPaginationModule {
 }
@@ -1063,35 +685,17 @@ NzPaginationModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: pagination.types.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @record
- */
-function PaginationItemRenderContext() { }
-if (false) {
-    /** @type {?} */
-    PaginationItemRenderContext.prototype.$implicit;
-    /** @type {?} */
-    PaginationItemRenderContext.prototype.page;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-pagination.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzPaginationComponent, NzPaginationDefaultComponent, NzPaginationItemComponent, NzPaginationModule, NzPaginationOptionsComponent, NzPaginationSimpleComponent };

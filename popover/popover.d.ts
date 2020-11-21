@@ -4,18 +4,22 @@
  */
 import { ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, ElementRef, EventEmitter, Renderer2, ViewContainerRef } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzTSType } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 export declare class NzPopoverDirective extends NzTooltipBaseDirective {
     noAnimation?: NzNoAnimationDirective | undefined;
-    specificTitle?: NzTSType;
-    specificContent?: NzTSType;
-    directiveNameTitle?: NzTSType | null;
-    specificTrigger?: NzTooltipTrigger;
-    specificPlacement?: string;
-    specificOrigin?: ElementRef<HTMLElement>;
-    specificVisible?: boolean;
-    readonly specificVisibleChange: EventEmitter<boolean>;
+    title?: NzTSType;
+    content?: NzTSType;
+    directiveTitle?: NzTSType | null;
+    trigger?: NzTooltipTrigger;
+    placement?: string | string[];
+    origin?: ElementRef<HTMLElement>;
+    visible?: boolean;
+    mouseEnterDelay?: number;
+    mouseLeaveDelay?: number;
+    overlayClassName?: string;
+    overlayStyle?: NgStyleInterface;
+    readonly visibleChange: EventEmitter<boolean>;
     componentFactory: ComponentFactory<NzPopoverComponent>;
     constructor(elementRef: ElementRef, hostView: ViewContainerRef, resolver: ComponentFactoryResolver, renderer: Renderer2, noAnimation?: NzNoAnimationDirective | undefined);
 }

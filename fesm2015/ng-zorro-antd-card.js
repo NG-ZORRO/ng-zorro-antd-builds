@@ -8,9 +8,8 @@ import { CommonModule } from '@angular/common';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: card-grid.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCardGridDirective {
     constructor() {
@@ -34,17 +33,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzCardGridDirective.prototype, "nzHoverable", void 0);
-if (false) {
-    /** @type {?} */
-    NzCardGridDirective.ngAcceptInputType_nzHoverable;
-    /** @type {?} */
-    NzCardGridDirective.prototype.nzHoverable;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: card-tab.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCardTabComponent {
 }
@@ -59,32 +51,24 @@ NzCardTabComponent.decorators = [
       <ng-content></ng-content>
     </ng-template>
   `
-            }] }
+            },] }
 ];
 NzCardTabComponent.propDecorators = {
     template: [{ type: ViewChild, args: [TemplateRef, { static: true },] }]
 };
-if (false) {
-    /** @type {?} */
-    NzCardTabComponent.prototype.template;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: card.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'card';
+const NZ_CONFIG_MODULE_NAME = 'card';
 class NzCardComponent {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} cdr
-     */
     constructor(nzConfigService, cdr) {
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzBordered = true;
+        this.nzBorderless = false;
         this.nzLoading = false;
         this.nzHoverable = false;
         this.nzBodyStyle = null;
@@ -93,18 +77,12 @@ class NzCardComponent {
         this.nzSize = 'default';
         this.destroy$ = new Subject();
         this.nzConfigService
-            .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+            .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => {
+            .subscribe(() => {
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -151,22 +129,22 @@ NzCardComponent.decorators = [
                 host: {
                     '[class.ant-card]': 'true',
                     '[class.ant-card-loading]': 'nzLoading',
-                    '[class.ant-card-bordered]': 'nzBordered',
+                    '[class.ant-card-bordered]': 'nzBorderless === false && nzBordered',
                     '[class.ant-card-hoverable]': 'nzHoverable',
                     '[class.ant-card-small]': 'nzSize === "small"',
                     '[class.ant-card-contain-grid]': 'listOfNzCardGridDirective && listOfNzCardGridDirective.length',
                     '[class.ant-card-type-inner]': 'nzType === "inner"',
                     '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCardComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ChangeDetectorRef }
 ];
 NzCardComponent.propDecorators = {
     nzBordered: [{ type: Input }],
+    nzBorderless: [{ type: Input }],
     nzLoading: [{ type: Input }],
     nzHoverable: [{ type: Input }],
     nzBodyStyle: [{ type: Input }],
@@ -180,70 +158,32 @@ NzCardComponent.propDecorators = {
     listOfNzCardGridDirective: [{ type: ContentChildren, args: [NzCardGridDirective,] }]
 };
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzCardComponent.prototype, "nzBordered", void 0);
+__decorate([
+    WithConfig(),
+    InputBoolean(),
+    __metadata("design:type", Boolean)
+], NzCardComponent.prototype, "nzBorderless", void 0);
 __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzCardComponent.prototype, "nzLoading", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzCardComponent.prototype, "nzHoverable", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", String)
 ], NzCardComponent.prototype, "nzSize", void 0);
-if (false) {
-    /** @type {?} */
-    NzCardComponent.ngAcceptInputType_nzBordered;
-    /** @type {?} */
-    NzCardComponent.ngAcceptInputType_nzLoading;
-    /** @type {?} */
-    NzCardComponent.ngAcceptInputType_nzHoverable;
-    /** @type {?} */
-    NzCardComponent.prototype.nzBordered;
-    /** @type {?} */
-    NzCardComponent.prototype.nzLoading;
-    /** @type {?} */
-    NzCardComponent.prototype.nzHoverable;
-    /** @type {?} */
-    NzCardComponent.prototype.nzBodyStyle;
-    /** @type {?} */
-    NzCardComponent.prototype.nzCover;
-    /** @type {?} */
-    NzCardComponent.prototype.nzActions;
-    /** @type {?} */
-    NzCardComponent.prototype.nzType;
-    /** @type {?} */
-    NzCardComponent.prototype.nzSize;
-    /** @type {?} */
-    NzCardComponent.prototype.nzTitle;
-    /** @type {?} */
-    NzCardComponent.prototype.nzExtra;
-    /** @type {?} */
-    NzCardComponent.prototype.listOfNzCardTabComponent;
-    /** @type {?} */
-    NzCardComponent.prototype.listOfNzCardGridDirective;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCardComponent.prototype.destroy$;
-    /** @type {?} */
-    NzCardComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCardComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: card-loading.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCardLoadingComponent {
     constructor() {
@@ -276,19 +216,13 @@ NzCardLoadingComponent.decorators = [
                 host: {
                     '[class.ant-card-loading-content]': 'true'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCardLoadingComponent.ctorParameters = () => [];
-if (false) {
-    /** @type {?} */
-    NzCardLoadingComponent.prototype.listOfLoading;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: card-meta.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCardMetaComponent {
     constructor() {
@@ -320,26 +254,17 @@ NzCardMetaComponent.decorators = [
                 host: {
                     '[class.ant-card-meta]': 'true'
                 }
-            }] }
+            },] }
 ];
 NzCardMetaComponent.propDecorators = {
     nzTitle: [{ type: Input }],
     nzDescription: [{ type: Input }],
     nzAvatar: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzCardMetaComponent.prototype.nzTitle;
-    /** @type {?} */
-    NzCardMetaComponent.prototype.nzDescription;
-    /** @type {?} */
-    NzCardMetaComponent.prototype.nzAvatar;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: card.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCardModule {
 }
@@ -352,15 +277,12 @@ NzCardModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-card.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzCardComponent, NzCardGridDirective, NzCardLoadingComponent, NzCardMetaComponent, NzCardModule, NzCardTabComponent };

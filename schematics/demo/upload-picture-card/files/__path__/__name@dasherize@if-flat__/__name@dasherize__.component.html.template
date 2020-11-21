@@ -7,8 +7,10 @@
         [nzShowButton]="fileList.length < 8"
         [nzPreview]="handlePreview"
       >
-        <i nz-icon nzType="plus"></i>
-        <div class="ant-upload-text">Upload</div>
+        <div>
+          <i nz-icon nzType="plus"></i>
+          <div style="margin-top: 8px">Upload</div>
+        </div>
       </nz-upload>
       <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible = false">
         <ng-template #modalContent>

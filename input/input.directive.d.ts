@@ -9,6 +9,8 @@ import { Subject } from 'rxjs';
 export declare class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     ngControl: NgControl;
     static ngAcceptInputType_disabled: BooleanInput;
+    static ngAcceptInputType_nzBorderless: BooleanInput;
+    nzBorderless: boolean;
     nzSize: NzSizeLDSType;
     get disabled(): boolean;
     set disabled(value: boolean);

@@ -18,143 +18,37 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
-/**
- * @fileoverview added by tsickle
- * Generated from: typings.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
- * @deprecated Use the prefixed version.
- * @record
- */
-function CascaderOption() { }
-if (false) {
-    /** @type {?|undefined} */
-    CascaderOption.prototype.value;
-    /** @type {?|undefined} */
-    CascaderOption.prototype.label;
-    /** @type {?|undefined} */
-    CascaderOption.prototype.title;
-    /** @type {?|undefined} */
-    CascaderOption.prototype.disabled;
-    /** @type {?|undefined} */
-    CascaderOption.prototype.loading;
-    /** @type {?|undefined} */
-    CascaderOption.prototype.isLeaf;
-    /** @type {?|undefined} */
-    CascaderOption.prototype.parent;
-    /** @type {?|undefined} */
-    CascaderOption.prototype.children;
-    /* Skipping unhandled member: [key: string]: NzSafeAny;*/
-}
-/**
- * @deprecated Use the prefixed version.
- * @record
- */
-function CascaderSearchOption() { }
-if (false) {
-    /** @type {?} */
-    CascaderSearchOption.prototype.path;
-}
-/**
- * @record
- */
-function NzShowSearchOptions() { }
-if (false) {
-    /** @type {?|undefined} */
-    NzShowSearchOptions.prototype.filter;
-    /** @type {?|undefined} */
-    NzShowSearchOptions.prototype.sorter;
-}
-/**
- * @param {?} options
- * @return {?}
- */
 function isShowSearchObject(options) {
     return typeof options !== 'boolean';
 }
-/**
- * To avoid circular dependency, provide an interface of `NzCascaderComponent`
- * for `NzCascaderService`.
- * @record
- */
-function NzCascaderComponentAsSource() { }
-if (false) {
-    /** @type {?} */
-    NzCascaderComponentAsSource.prototype.inputValue;
-    /** @type {?} */
-    NzCascaderComponentAsSource.prototype.nzShowSearch;
-    /** @type {?} */
-    NzCascaderComponentAsSource.prototype.nzLabelProperty;
-    /** @type {?} */
-    NzCascaderComponentAsSource.prototype.nzValueProperty;
-    /** @type {?} */
-    NzCascaderComponentAsSource.prototype.nzChangeOnSelect;
-    /**
-     * @param {?} option
-     * @param {?} level
-     * @return {?}
-     */
-    NzCascaderComponentAsSource.prototype.nzChangeOn = function (option, level) { };
-    /**
-     * @param {?} node
-     * @param {?} index
-     * @return {?}
-     */
-    NzCascaderComponentAsSource.prototype.nzLoadData = function (node, index) { };
-}
 
-/**
- * @fileoverview added by tsickle
- * Generated from: utils.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @param {?} o
- * @return {?}
- */
 function isChildOption(o) {
     return o.isLeaf || !o.children || !o.children.length;
 }
-/**
- * @param {?} o
- * @return {?}
- */
 function isParentOption(o) {
     return !!o.children && !!o.children.length && !o.isLeaf;
 }
 
 /**
- * @fileoverview added by tsickle
- * Generated from: cascader-li.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCascaderOptionComponent {
-    /**
-     * @param {?} cdr
-     * @param {?} elementRef
-     * @param {?} renderer
-     */
     constructor(cdr, elementRef, renderer) {
         this.cdr = cdr;
         this.optionTemplate = null;
         this.activated = false;
         this.nzLabelProperty = 'label';
+        this.expandIcon = 'right';
         renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
     }
-    /**
-     * @return {?}
-     */
     get optionLabel() {
         return this.option[this.nzLabelProperty];
     }
-    /**
-     * @return {?}
-     */
     markForCheck() {
         this.cdr.markForCheck();
     }
@@ -173,7 +67,12 @@ NzCascaderOptionComponent.decorators = [
       <span [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"></span>
     </ng-template>
     <span *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
-      <i nz-icon [nzType]="option.loading ? 'loading' : 'right'"></i>
+      <i *ngIf="option.loading; else icon" nz-icon nzType="loading"></i>
+      <ng-template #icon>
+        <ng-container *nzStringTemplateOutlet="expandIcon">
+          <i nz-icon [nzType]="$any(expandIcon)"></i>
+        </ng-container>
+      </ng-template>
     </span>
   `,
                 host: {
@@ -182,9 +81,8 @@ NzCascaderOptionComponent.decorators = [
                     '[class.ant-cascader-menu-item-expand]': '!option.isLeaf',
                     '[class.ant-cascader-menu-item-disabled]': 'option.disabled'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCascaderOptionComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: ElementRef },
@@ -196,53 +94,26 @@ NzCascaderOptionComponent.propDecorators = {
     activated: [{ type: Input }],
     highlightText: [{ type: Input }],
     nzLabelProperty: [{ type: Input }],
-    columnIndex: [{ type: Input }]
+    columnIndex: [{ type: Input }],
+    expandIcon: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzCascaderOptionComponent.prototype.optionTemplate;
-    /** @type {?} */
-    NzCascaderOptionComponent.prototype.option;
-    /** @type {?} */
-    NzCascaderOptionComponent.prototype.activated;
-    /** @type {?} */
-    NzCascaderOptionComponent.prototype.highlightText;
-    /** @type {?} */
-    NzCascaderOptionComponent.prototype.nzLabelProperty;
-    /** @type {?} */
-    NzCascaderOptionComponent.prototype.columnIndex;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCascaderOptionComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: cascader.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 /**
  * All data is stored and parsed in NzCascaderService.
  */
 class NzCascaderService {
     constructor() {
-        /**
-         * Activated options in each column.
-         */
+        /** Activated options in each column. */
         this.activatedOptions = [];
-        /**
-         * An array to store cascader items arranged in different layers.
-         */
+        /** An array to store cascader items arranged in different layers. */
         this.columns = [];
-        /**
-         * If user has entered searching mode.
-         */
+        /** If user has entered searching mode. */
         this.inSearchingMode = false;
-        /**
-         * Selected options would be output to user.
-         */
+        /** Selected options would be output to user. */
         this.selectedOptions = [];
         this.values = [];
         this.$loading = new BehaviorSubject(false);
@@ -261,25 +132,15 @@ class NzCascaderService {
          * Only emit when user do select a searching option.
          */
         this.$quitSearching = new Subject();
-        /**
-         * To hold columns before entering searching mode.
-         */
+        /** To hold columns before entering searching mode. */
         this.columnsSnapshot = [[]];
-        /**
-         * To hold activated options before entering searching mode.
-         */
+        /** To hold activated options before entering searching mode. */
         this.activatedOptionsSnapshot = [];
     }
-    /**
-     * Return cascader options in the first layer.
-     * @return {?}
-     */
+    /** Return cascader options in the first layer. */
     get nzOptions() {
         return this.columns[0];
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.$redraw.complete();
         this.$quitSearching.complete();
@@ -288,34 +149,18 @@ class NzCascaderService {
     }
     /**
      * Make sure that value matches what is displayed in the dropdown.
-     * @param {?=} first
-     * @return {?}
      */
     syncOptions(first = false) {
-        /** @type {?} */
         const values = this.values;
-        /** @type {?} */
         const hasValue = values && values.length;
-        /** @type {?} */
         const lastColumnIndex = values.length - 1;
-        /** @type {?} */
-        const initColumnWithIndex = (/**
-         * @param {?} columnIndex
-         * @return {?}
-         */
-        (columnIndex) => {
-            /** @type {?} */
-            const activatedOptionSetter = (/**
-             * @return {?}
-             */
-            () => {
-                /** @type {?} */
+        const initColumnWithIndex = (columnIndex) => {
+            const activatedOptionSetter = () => {
                 const currentValue = values[columnIndex];
                 if (!isNotNil(currentValue)) {
                     this.$redraw.next();
                     return;
                 }
-                /** @type {?} */
                 const option = this.findOptionWithValue(columnIndex, values[columnIndex]) ||
                     (typeof currentValue === 'object'
                         ? currentValue
@@ -332,16 +177,15 @@ class NzCascaderService {
                     this.selectedOptions = [...this.activatedOptions];
                     this.$redraw.next();
                 }
-            });
+            };
             if (this.isLoaded(columnIndex) || !this.cascaderComponent.nzLoadData) {
                 activatedOptionSetter();
             }
             else {
-                /** @type {?} */
                 const option = this.activatedOptions[columnIndex - 1] || {};
                 this.loadChildren(option, columnIndex - 1, activatedOptionSetter);
             }
-        });
+        };
         this.activatedOptions = [];
         this.selectedOptions = [];
         if (first && this.cascaderComponent.nzLoadData && !hasValue) {
@@ -355,16 +199,12 @@ class NzCascaderService {
     }
     /**
      * Bind cascader component so this service could use inputs.
-     * @param {?} cascaderComponent
-     * @return {?}
      */
     withComponent(cascaderComponent) {
         this.cascaderComponent = cascaderComponent;
     }
     /**
      * Reset all options. Rebuild searching options if in searching mode.
-     * @param {?} options
-     * @return {?}
      */
     withOptions(options) {
         this.columnsSnapshot = this.columns = options && options.length ? [options] : [];
@@ -377,11 +217,10 @@ class NzCascaderService {
     }
     /**
      * Try to set a option as activated.
-     * @param {?} option Cascader option
-     * @param {?} columnIndex Of which column this option is in
-     * @param {?=} performSelect Select
-     * @param {?=} loadingChildren Try to load children asynchronously.
-     * @return {?}
+     * @param option Cascader option
+     * @param columnIndex Of which column this option is in
+     * @param performSelect Select
+     * @param loadingChildren Try to load children asynchronously.
      */
     setOptionActivated(option, columnIndex, performSelect = false, loadingChildren = true) {
         if (option.disabled) {
@@ -390,11 +229,10 @@ class NzCascaderService {
         this.activatedOptions[columnIndex] = option;
         this.trackAncestorActivatedOptions(columnIndex);
         this.dropBehindActivatedOptions(columnIndex);
-        /** @type {?} */
         const isParent = isParentOption(option);
         if (isParent) {
             // Parent option that has children.
-            this.setColumnData((/** @type {?} */ (option.children)), columnIndex + 1, option);
+            this.setColumnData(option.children, columnIndex + 1, option);
         }
         else if (!option.isLeaf && loadingChildren) {
             // Parent option that should try to load children asynchronously.
@@ -410,23 +248,11 @@ class NzCascaderService {
         }
         this.$redraw.next();
     }
-    /**
-     * @param {?} option
-     * @param {?} index
-     * @return {?}
-     */
     setOptionSelected(option, index) {
-        /** @type {?} */
         const changeOn = this.cascaderComponent.nzChangeOn;
-        /** @type {?} */
-        const shouldPerformSelection = (/**
-         * @param {?} o
-         * @param {?} i
-         * @return {?}
-         */
-        (o, i) => {
+        const shouldPerformSelection = (o, i) => {
             return typeof changeOn === 'function' ? changeOn(o, i) : false;
-        });
+        };
         if (option.isLeaf || this.cascaderComponent.nzChangeOnSelect || shouldPerformSelection(option, index)) {
             this.selectedOptions = [...this.activatedOptions];
             this.prepareEmitValue();
@@ -434,10 +260,6 @@ class NzCascaderService {
             this.$optionSelected.next({ option, index });
         }
     }
-    /**
-     * @param {?} column
-     * @return {?}
-     */
     setOptionDeactivatedSinceColumn(column) {
         this.dropBehindActivatedOptions(column - 1);
         this.dropBehindColumns(column);
@@ -445,8 +267,7 @@ class NzCascaderService {
     }
     /**
      * Set a searching option as selected, finishing up things.
-     * @param {?} option
-     * @return {?}
+     * @param option
      */
     setSearchOptionSelected(option) {
         this.activatedOptions = [option];
@@ -454,95 +275,50 @@ class NzCascaderService {
         this.prepareEmitValue();
         this.$redraw.next();
         this.$optionSelected.next({ option, index: 0 });
-        setTimeout((/**
-         * @return {?}
-         */
-        () => {
+        setTimeout(() => {
             // Reset data and tell UI only to remove input and reset dropdown width style.
             this.$quitSearching.next();
             this.$redraw.next();
             this.inSearchingMode = false;
             this.columns = [...this.columnsSnapshot];
             this.activatedOptions = [...this.selectedOptions];
-        }), 200);
+        }, 200);
     }
     /**
      * Filter cascader options to reset `columns`.
-     * @param {?} searchValue The string user wants to search.
-     * @return {?}
+     * @param searchValue The string user wants to search.
      */
     prepareSearchOptions(searchValue) {
-        /** @type {?} */
-        const results = [];
-        // Search results only have one layer.
-        /** @type {?} */
+        const results = []; // Search results only have one layer.
         const path = [];
-        /** @type {?} */
-        const defaultFilter = (/**
-         * @param {?} i
-         * @param {?} p
-         * @return {?}
-         */
-        (i, p) => {
-            return p.some((/**
-             * @param {?} o
-             * @return {?}
-             */
-            o => {
-                /** @type {?} */
+        const defaultFilter = (i, p) => {
+            return p.some(o => {
                 const label = this.getOptionLabel(o);
                 return !!label && label.indexOf(i) !== -1;
-            }));
-        });
-        /** @type {?} */
+            });
+        };
         const showSearch = this.cascaderComponent.nzShowSearch;
-        /** @type {?} */
         const filter = isShowSearchObject(showSearch) && showSearch.filter ? showSearch.filter : defaultFilter;
-        /** @type {?} */
         const sorter = isShowSearchObject(showSearch) && showSearch.sorter ? showSearch.sorter : null;
-        /** @type {?} */
-        const loopChild = (/**
-         * @param {?} node
-         * @param {?=} forceDisabled
-         * @return {?}
-         */
-        (node, forceDisabled = false) => {
+        const loopChild = (node, forceDisabled = false) => {
             path.push(node);
-            /** @type {?} */
             const cPath = Array.from(path);
             if (filter(searchValue, cPath)) {
-                /** @type {?} */
                 const disabled = forceDisabled || node.disabled;
-                /** @type {?} */
                 const option = {
                     disabled,
                     isLeaf: true,
                     path: cPath,
-                    [this.cascaderComponent.nzLabelProperty]: cPath.map((/**
-                     * @param {?} p
-                     * @return {?}
-                     */
-                    p => this.getOptionLabel(p))).join(' / ')
+                    [this.cascaderComponent.nzLabelProperty]: cPath.map(p => this.getOptionLabel(p)).join(' / ')
                 };
                 results.push(option);
             }
             path.pop();
-        });
-        /** @type {?} */
-        const loopParent = (/**
-         * @param {?} node
-         * @param {?=} forceDisabled
-         * @return {?}
-         */
-        (node, forceDisabled = false) => {
-            /** @type {?} */
+        };
+        const loopParent = (node, forceDisabled = false) => {
             const disabled = forceDisabled || node.disabled;
             path.push(node);
-            (/** @type {?} */ (node.children)).forEach((/**
-             * @param {?} sNode
-             * @return {?}
-             */
-            sNode => {
+            node.children.forEach(sNode => {
                 if (!sNode.parent) {
                     sNode.parent = node;
                 }
@@ -552,33 +328,23 @@ class NzCascaderService {
                 if (sNode.isLeaf || !sNode.children || !sNode.children.length) {
                     loopChild(sNode, disabled);
                 }
-            }));
+            });
             path.pop();
-        });
+        };
         if (!this.columnsSnapshot.length) {
             this.columns = [[]];
             return;
         }
-        this.columnsSnapshot[0].forEach((/**
-         * @param {?} o
-         * @return {?}
-         */
-        o => (isChildOption(o) ? loopChild(o) : loopParent(o))));
+        this.columnsSnapshot[0].forEach(o => (isChildOption(o) ? loopChild(o) : loopParent(o)));
         if (sorter) {
-            results.sort((/**
-             * @param {?} a
-             * @param {?} b
-             * @return {?}
-             */
-            (a, b) => sorter(a.path, b.path, searchValue)));
+            results.sort((a, b) => sorter(a.path, b.path, searchValue));
         }
         this.columns = [results];
         this.$redraw.next(); // Search results may be empty, so should redraw.
     }
     /**
      * Toggle searching mode by UI. It deals with things not directly related to UI.
-     * @param {?} toSearching If this cascader is entering searching mode
-     * @return {?}
+     * @param toSearching If this cascader is entering searching mode
      */
     toggleSearchingMode(toSearching) {
         this.inSearchingMode = toSearching;
@@ -599,7 +365,6 @@ class NzCascaderService {
     }
     /**
      * Clear selected options.
-     * @return {?}
      */
     clear() {
         this.values = [];
@@ -610,67 +375,38 @@ class NzCascaderService {
         this.$redraw.next();
         this.$optionSelected.next(null);
     }
-    /**
-     * @param {?} o
-     * @return {?}
-     */
     getOptionLabel(o) {
-        return (/** @type {?} */ (o[this.cascaderComponent.nzLabelProperty || 'label']));
+        return o[this.cascaderComponent.nzLabelProperty || 'label'];
     }
-    /**
-     * @param {?} o
-     * @return {?}
-     */
     getOptionValue(o) {
         return o[this.cascaderComponent.nzValueProperty || 'value'];
     }
     /**
      * Try to insert options into a column.
-     * @private
-     * @param {?} options Options to insert
-     * @param {?} columnIndex Position
-     * @param {?} parent
-     * @return {?}
+     * @param options Options to insert
+     * @param columnIndex Position
      */
     setColumnData(options, columnIndex, parent) {
-        /** @type {?} */
         const existingOptions = this.columns[columnIndex];
         if (!arraysEqual(existingOptions, options)) {
-            options.forEach((/**
-             * @param {?} o
-             * @return {?}
-             */
-            o => (o.parent = parent)));
+            options.forEach(o => (o.parent = parent));
             this.columns[columnIndex] = options;
             this.dropBehindColumns(columnIndex);
         }
     }
     /**
      * Set all ancestor options as activated.
-     * @private
-     * @param {?} startIndex
-     * @return {?}
      */
     trackAncestorActivatedOptions(startIndex) {
         for (let i = startIndex - 1; i >= 0; i--) {
             if (!this.activatedOptions[i]) {
-                this.activatedOptions[i] = (/** @type {?} */ (this.activatedOptions[i + 1].parent));
+                this.activatedOptions[i] = this.activatedOptions[i + 1].parent;
             }
         }
     }
-    /**
-     * @private
-     * @param {?} lastReserveIndex
-     * @return {?}
-     */
     dropBehindActivatedOptions(lastReserveIndex) {
         this.activatedOptions = this.activatedOptions.splice(0, lastReserveIndex + 1);
     }
-    /**
-     * @private
-     * @param {?} lastReserveIndex
-     * @return {?}
-     */
     dropBehindColumns(lastReserveIndex) {
         if (lastReserveIndex < this.columns.length - 1) {
             this.columns = this.columns.slice(0, lastReserveIndex + 1);
@@ -678,14 +414,8 @@ class NzCascaderService {
     }
     /**
      * Load children of an option asynchronously.
-     * @param {?} option
-     * @param {?} columnIndex
-     * @param {?=} success
-     * @param {?=} failure
-     * @return {?}
      */
     loadChildren(option, columnIndex, success, failure) {
-        /** @type {?} */
         const loadFn = this.cascaderComponent.nzLoadData;
         if (loadFn) {
             // If there isn't any option in columns.
@@ -693,10 +423,7 @@ class NzCascaderService {
             if (typeof option === 'object') {
                 option.loading = true;
             }
-            loadFn(option, columnIndex).then((/**
-             * @return {?}
-             */
-            () => {
+            loadFn(option, columnIndex).then(() => {
                 option.loading = false;
                 if (option.children) {
                     this.setColumnData(option.children, columnIndex + 1, option);
@@ -706,155 +433,53 @@ class NzCascaderService {
                 }
                 this.$loading.next(false);
                 this.$redraw.next();
-            }), (/**
-             * @return {?}
-             */
-            () => {
+            }, () => {
                 option.loading = false;
                 option.isLeaf = true;
                 if (failure) {
                     failure();
                 }
                 this.$redraw.next();
-            }));
+            });
         }
     }
-    /**
-     * @private
-     * @param {?} index
-     * @return {?}
-     */
     isLoaded(index) {
         return this.columns[index] && this.columns[index].length > 0;
     }
     /**
      * Find a option that has a given value in a given column.
-     * @private
-     * @param {?} columnIndex
-     * @param {?} value
-     * @return {?}
      */
     findOptionWithValue(columnIndex, value) {
-        /** @type {?} */
         const targetColumn = this.columns[columnIndex];
         if (targetColumn) {
-            /** @type {?} */
             const v = typeof value === 'object' ? this.getOptionValue(value) : value;
-            return (/** @type {?} */ (targetColumn.find((/**
-             * @param {?} o
-             * @return {?}
-             */
-            o => v === this.getOptionValue(o)))));
+            return targetColumn.find(o => v === this.getOptionValue(o));
         }
         return null;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     prepareEmitValue() {
-        this.values = this.selectedOptions.map((/**
-         * @param {?} o
-         * @return {?}
-         */
-        o => this.getOptionValue(o)));
+        this.values = this.selectedOptions.map(o => this.getOptionValue(o));
     }
 }
 NzCascaderService.decorators = [
     { type: Injectable }
 ];
-if (false) {
-    /**
-     * Activated options in each column.
-     * @type {?}
-     */
-    NzCascaderService.prototype.activatedOptions;
-    /**
-     * An array to store cascader items arranged in different layers.
-     * @type {?}
-     */
-    NzCascaderService.prototype.columns;
-    /**
-     * If user has entered searching mode.
-     * @type {?}
-     */
-    NzCascaderService.prototype.inSearchingMode;
-    /**
-     * Selected options would be output to user.
-     * @type {?}
-     */
-    NzCascaderService.prototype.selectedOptions;
-    /** @type {?} */
-    NzCascaderService.prototype.values;
-    /** @type {?} */
-    NzCascaderService.prototype.$loading;
-    /**
-     * Emit an event to notify cascader it needs to redraw because activated or
-     * selected options are changed.
-     * @type {?}
-     */
-    NzCascaderService.prototype.$redraw;
-    /**
-     * Emit an event when an option gets selected.
-     * Emit true if a leaf options is selected.
-     * @type {?}
-     */
-    NzCascaderService.prototype.$optionSelected;
-    /**
-     * Emit an event to notify cascader it needs to quit searching mode.
-     * Only emit when user do select a searching option.
-     * @type {?}
-     */
-    NzCascaderService.prototype.$quitSearching;
-    /**
-     * To hold columns before entering searching mode.
-     * @type {?}
-     * @private
-     */
-    NzCascaderService.prototype.columnsSnapshot;
-    /**
-     * To hold activated options before entering searching mode.
-     * @type {?}
-     * @private
-     */
-    NzCascaderService.prototype.activatedOptionsSnapshot;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCascaderService.prototype.cascaderComponent;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: cascader.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'cascader';
-/** @type {?} */
-const defaultDisplayRender = (/**
- * @param {?} labels
- * @return {?}
- */
-(labels) => labels.join(' / '));
+const NZ_CONFIG_MODULE_NAME = 'cascader';
+const defaultDisplayRender = (labels) => labels.join(' / ');
 const ɵ0 = defaultDisplayRender;
 class NzCascaderComponent {
-    /**
-     * @param {?} cascaderService
-     * @param {?} i18nService
-     * @param {?} nzConfigService
-     * @param {?} cdr
-     * @param {?} elementRef
-     * @param {?} renderer
-     * @param {?=} noAnimation
-     */
-    constructor(cascaderService, i18nService, nzConfigService, cdr, elementRef, renderer, noAnimation) {
+    constructor(cascaderService, nzConfigService, cdr, i18nService, elementRef, renderer, noAnimation) {
         this.cascaderService = cascaderService;
-        this.i18nService = i18nService;
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
+        this.i18nService = i18nService;
         this.noAnimation = noAnimation;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzOptionRender = null;
         this.nzShowInput = true;
         this.nzShowArrow = true;
@@ -871,10 +496,11 @@ class NzCascaderComponent {
         this.nzPlaceHolder = '';
         this.nzMenuStyle = null;
         this.nzMouseEnterDelay = 150; // ms
-        // ms
         this.nzMouseLeaveDelay = 150; // ms
-        // ms
-        this.nzTriggerAction = (/** @type {?} */ (['click']));
+        this.nzTriggerAction = ['click'];
+        // TODO: RTL
+        this.nzSuffixIcon = 'down';
+        this.nzExpandIcon = 'right';
         this.nzVisibleChange = new EventEmitter();
         this.nzSelectionChange = new EventEmitter();
         this.nzSelect = new EventEmitter();
@@ -902,112 +528,57 @@ class NzCascaderComponent {
         renderer.addClass(elementRef.nativeElement, 'ant-cascader');
         renderer.addClass(elementRef.nativeElement, 'ant-cascader-picker');
     }
-    /**
-     * @return {?}
-     */
     get nzOptions() {
         return this.cascaderService.nzOptions;
     }
-    /**
-     * @param {?} options
-     * @return {?}
-     */
     set nzOptions(options) {
         this.cascaderService.withOptions(options);
     }
-    /**
-     * @return {?}
-     */
     get inSearchingMode() {
         return this.cascaderService.inSearchingMode;
     }
-    /**
-     * @param {?} inputValue
-     * @return {?}
-     */
     set inputValue(inputValue) {
         this.inputString = inputValue;
         this.toggleSearchingMode(!!inputValue);
     }
-    /**
-     * @return {?}
-     */
     get inputValue() {
         return this.inputString;
     }
-    /**
-     * @return {?}
-     */
     get menuCls() {
         return { [`${this.nzMenuClassName}`]: !!this.nzMenuClassName };
     }
-    /**
-     * @return {?}
-     */
     get menuColumnCls() {
         return { [`${this.nzColumnClassName}`]: !!this.nzColumnClassName };
     }
-    /**
-     * @private
-     * @return {?}
-     */
     get hasInput() {
         return !!this.inputValue;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     get hasValue() {
         return this.cascaderService.values && this.cascaderService.values.length > 0;
     }
-    /**
-     * @return {?}
-     */
     get showPlaceholder() {
         return !(this.hasInput || this.hasValue);
     }
-    /**
-     * @return {?}
-     */
     get clearIconVisible() {
         return this.nzAllowClear && !this.nzDisabled && (this.hasValue || this.hasInput);
     }
-    /**
-     * @return {?}
-     */
     get isLabelRenderTemplate() {
         return !!this.nzLabelRender;
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
-        /** @type {?} */
         const srv = this.cascaderService;
-        srv.$redraw.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        srv.$redraw.pipe(takeUntil(this.destroy$)).subscribe(() => {
             // These operations would not mutate data.
             this.checkChildren();
             this.setDisplayLabel();
             this.reposition();
             this.setDropdownStyles();
             this.cdr.markForCheck();
-        }));
-        srv.$loading.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @param {?} loading
-         * @return {?}
-         */
-        loading => {
+        });
+        srv.$loading.pipe(takeUntil(this.destroy$)).subscribe(loading => {
             this.isLoading = loading;
-        }));
-        srv.$optionSelected.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @param {?} data
-         * @return {?}
-         */
-        data => {
+        });
+        srv.$optionSelected.pipe(takeUntil(this.destroy$)).subscribe(data => {
             if (!data) {
                 this.onChange([]);
                 this.nzSelect.emit(null);
@@ -1015,8 +586,7 @@ class NzCascaderComponent {
             }
             else {
                 const { option, index } = data;
-                /** @type {?} */
-                const shouldClose = option.isLeaf;
+                const shouldClose = option.isLeaf || (this.nzChangeOnSelect && this.nzExpandTrigger === 'hover');
                 if (shouldClose) {
                     this.delaySetMenuVisible(false);
                 }
@@ -1025,98 +595,58 @@ class NzCascaderComponent {
                 this.nzSelect.emit({ option, index });
                 this.cdr.markForCheck();
             }
-        }));
-        srv.$quitSearching.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        });
+        srv.$quitSearching.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.inputString = '';
             this.dropdownWidthStyle = '';
-        }));
-        this.i18nService.localeChange.pipe(startWith(), takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        });
+        this.i18nService.localeChange.pipe(startWith(), takeUntil(this.destroy$)).subscribe(() => {
             this.setLocale();
-        }));
+        });
         this.nzConfigService
-            .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+            .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => {
+            .subscribe(() => {
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
         this.clearDelayMenuTimer();
         this.clearDelaySelectTimer();
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnChange(fn) {
         this.onChange = fn;
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnTouched(fn) {
         this.onTouched = fn;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     writeValue(value) {
         this.cascaderService.values = toArray(value);
         this.cascaderService.syncOptions(true);
     }
-    /**
-     * @param {?} visible
-     * @param {?=} delay
-     * @param {?=} setOpening
-     * @return {?}
-     */
     delaySetMenuVisible(visible, delay = 100, setOpening = false) {
         this.clearDelayMenuTimer();
         if (delay) {
             if (visible && setOpening) {
                 this.isOpening = true;
             }
-            this.delayMenuTimer = setTimeout((/**
-             * @return {?}
-             */
-            () => {
+            this.delayMenuTimer = setTimeout(() => {
                 this.setMenuVisible(visible);
                 this.cdr.detectChanges();
                 this.clearDelayMenuTimer();
                 if (visible) {
-                    setTimeout((/**
-                     * @return {?}
-                     */
-                    () => {
+                    setTimeout(() => {
                         this.isOpening = false;
-                    }), 100);
+                    }, 100);
                 }
-            }), delay);
+            }, delay);
         }
         else {
             this.setMenuVisible(visible);
         }
     }
-    /**
-     * @param {?} visible
-     * @return {?}
-     */
     setMenuVisible(visible) {
         if (this.nzDisabled || this.menuVisible === visible) {
             return;
@@ -1128,20 +658,12 @@ class NzCascaderComponent {
         this.nzVisibleChange.emit(visible);
         this.cdr.detectChanges();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     clearDelayMenuTimer() {
         if (this.delayMenuTimer) {
             clearTimeout(this.delayMenuTimer);
             this.delayMenuTimer = null;
         }
     }
-    /**
-     * @param {?=} event
-     * @return {?}
-     */
     clearSelection(event) {
         if (event) {
             event.preventDefault();
@@ -1153,52 +675,28 @@ class NzCascaderComponent {
         this.setMenuVisible(false);
         this.cascaderService.clear();
     }
-    /**
-     * @return {?}
-     */
     getSubmitValue() {
-        return this.cascaderService.selectedOptions.map((/**
-         * @param {?} o
-         * @return {?}
-         */
-        o => this.cascaderService.getOptionValue(o)));
+        return this.cascaderService.selectedOptions.map(o => this.cascaderService.getOptionValue(o));
     }
-    /**
-     * @return {?}
-     */
     focus() {
         if (!this.isFocused) {
             (this.input ? this.input.nativeElement : this.el).focus();
             this.isFocused = true;
         }
     }
-    /**
-     * @return {?}
-     */
     blur() {
         if (this.isFocused) {
             (this.input ? this.input.nativeElement : this.el).blur();
             this.isFocused = false;
         }
     }
-    /**
-     * @return {?}
-     */
     handleInputBlur() {
         this.menuVisible ? this.focus() : this.blur();
     }
-    /**
-     * @return {?}
-     */
     handleInputFocus() {
         this.focus();
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
     onKeyDown(event) {
-        /** @type {?} */
         const keyCode = event.keyCode;
         if (keyCode !== DOWN_ARROW &&
             keyCode !== UP_ARROW &&
@@ -1237,9 +735,6 @@ class NzCascaderComponent {
             }
         }
     }
-    /**
-     * @return {?}
-     */
     onTriggerClick() {
         if (this.nzDisabled) {
             return;
@@ -1252,41 +747,25 @@ class NzCascaderComponent {
         }
         this.onTouched();
     }
-    /**
-     * @return {?}
-     */
     onTriggerMouseEnter() {
         if (this.nzDisabled || !this.isActionTrigger('hover')) {
             return;
         }
         this.delaySetMenuVisible(true, this.nzMouseEnterDelay, true);
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
     onTriggerMouseLeave(event) {
         if (this.nzDisabled || !this.menuVisible || this.isOpening || !this.isActionTrigger('hover')) {
             event.preventDefault();
             return;
         }
-        /** @type {?} */
-        const mouseTarget = (/** @type {?} */ (event.relatedTarget));
-        /** @type {?} */
+        const mouseTarget = event.relatedTarget;
         const hostEl = this.el;
-        /** @type {?} */
-        const menuEl = this.menu && ((/** @type {?} */ (this.menu.nativeElement)));
+        const menuEl = this.menu && this.menu.nativeElement;
         if (hostEl.contains(mouseTarget) || (menuEl && menuEl.contains(mouseTarget))) {
             return;
         }
         this.delaySetMenuVisible(false, this.nzMouseLeaveDelay);
     }
-    /**
-     * @param {?} option
-     * @param {?} columnIndex
-     * @param {?} event
-     * @return {?}
-     */
     onOptionMouseEnter(option, columnIndex, event) {
         event.preventDefault();
         if (this.nzExpandTrigger === 'hover') {
@@ -1298,24 +777,12 @@ class NzCascaderComponent {
             }
         }
     }
-    /**
-     * @param {?} option
-     * @param {?} _columnIndex
-     * @param {?} event
-     * @return {?}
-     */
     onOptionMouseLeave(option, _columnIndex, event) {
         event.preventDefault();
         if (this.nzExpandTrigger === 'hover' && !option.isLeaf) {
             this.clearDelaySelectTimer();
         }
     }
-    /**
-     * @param {?} option
-     * @param {?} columnIndex
-     * @param {?} event
-     * @return {?}
-     */
     onOptionClick(option, columnIndex, event) {
         if (event) {
             event.preventDefault();
@@ -1325,47 +792,31 @@ class NzCascaderComponent {
         }
         this.el.focus();
         this.inSearchingMode
-            ? this.cascaderService.setSearchOptionSelected((/** @type {?} */ (option)))
+            ? this.cascaderService.setSearchOptionSelected(option)
             : this.cascaderService.setOptionActivated(option, columnIndex, true);
     }
-    /**
-     * @private
-     * @param {?} action
-     * @return {?}
-     */
+    onClickOutside(event) {
+        if (!this.el.contains(event.target)) {
+            this.closeMenu();
+        }
+    }
     isActionTrigger(action) {
         return typeof this.nzTriggerAction === 'string' ? this.nzTriggerAction === action : this.nzTriggerAction.indexOf(action) !== -1;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     onEnter() {
-        /** @type {?} */
         const columnIndex = Math.max(this.cascaderService.activatedOptions.length - 1, 0);
-        /** @type {?} */
         const option = this.cascaderService.activatedOptions[columnIndex];
         if (option && !option.disabled) {
             this.inSearchingMode
-                ? this.cascaderService.setSearchOptionSelected((/** @type {?} */ (option)))
+                ? this.cascaderService.setSearchOptionSelected(option)
                 : this.cascaderService.setOptionActivated(option, columnIndex, true);
         }
     }
-    /**
-     * @private
-     * @param {?} isUp
-     * @return {?}
-     */
     moveUpOrDown(isUp) {
-        /** @type {?} */
         const columnIndex = Math.max(this.cascaderService.activatedOptions.length - 1, 0);
-        /** @type {?} */
         const activeOption = this.cascaderService.activatedOptions[columnIndex];
-        /** @type {?} */
         const options = this.cascaderService.columns[columnIndex] || [];
-        /** @type {?} */
         const length = options.length;
-        /** @type {?} */
         let nextIndex = -1;
         if (!activeOption) {
             // Not selected options in this column
@@ -1379,7 +830,6 @@ class NzCascaderComponent {
             if (nextIndex < 0 || nextIndex >= length) {
                 break;
             }
-            /** @type {?} */
             const nextOption = options[nextIndex];
             if (!nextOption || nextOption.disabled) {
                 continue;
@@ -1388,70 +838,35 @@ class NzCascaderComponent {
             break;
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     moveLeft() {
-        /** @type {?} */
         const options = this.cascaderService.activatedOptions;
         if (options.length) {
             options.pop(); // Remove the last one
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     moveRight() {
-        /** @type {?} */
         const length = this.cascaderService.activatedOptions.length;
-        /** @type {?} */
         const options = this.cascaderService.columns[length];
         if (options && options.length) {
-            /** @type {?} */
-            const nextOpt = options.find((/**
-             * @param {?} o
-             * @return {?}
-             */
-            o => !o.disabled));
+            const nextOpt = options.find(o => !o.disabled);
             if (nextOpt) {
                 this.cascaderService.setOptionActivated(nextOpt, length);
             }
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     clearDelaySelectTimer() {
         if (this.delaySelectTimer) {
             clearTimeout(this.delaySelectTimer);
             this.delaySelectTimer = null;
         }
     }
-    /**
-     * @private
-     * @param {?} option
-     * @param {?} columnIndex
-     * @param {?} performSelect
-     * @return {?}
-     */
     delaySetOptionActivated(option, columnIndex, performSelect) {
         this.clearDelaySelectTimer();
-        this.delaySelectTimer = setTimeout((/**
-         * @return {?}
-         */
-        () => {
+        this.delaySelectTimer = setTimeout(() => {
             this.cascaderService.setOptionActivated(option, columnIndex, performSelect);
             this.delaySelectTimer = null;
-        }), 150);
+        }, 150);
     }
-    /**
-     * @private
-     * @param {?} toSearching
-     * @return {?}
-     */
     toggleSearchingMode(toSearching) {
         if (this.inSearchingMode !== toSearching) {
             this.cascaderService.toggleSearchingMode(toSearching);
@@ -1460,29 +875,16 @@ class NzCascaderComponent {
             this.cascaderService.prepareSearchOptions(this.inputValue);
         }
     }
-    /**
-     * @param {?} option
-     * @param {?} index
-     * @return {?}
-     */
     isOptionActivated(option, index) {
-        /** @type {?} */
         const activeOpt = this.cascaderService.activatedOptions[index];
         return activeOpt === option;
     }
-    /**
-     * @param {?} isDisabled
-     * @return {?}
-     */
     setDisabledState(isDisabled) {
         if (isDisabled) {
             this.closeMenu();
         }
         this.nzDisabled = isDisabled;
     }
-    /**
-     * @return {?}
-     */
     closeMenu() {
         this.blur();
         this.clearDelayMenuTimer();
@@ -1491,46 +893,25 @@ class NzCascaderComponent {
     /**
      * Reposition the cascader panel. When a menu opens, the cascader expands
      * and may exceed the boundary of browser's window.
-     * @private
-     * @return {?}
      */
     reposition() {
         if (this.overlay && this.overlay.overlayRef && this.menuVisible) {
-            Promise.resolve().then((/**
-             * @return {?}
-             */
-            () => {
+            Promise.resolve().then(() => {
                 this.overlay.overlayRef.updatePosition();
-            }));
+            });
         }
     }
     /**
      * When a cascader options is changed, a child needs to know that it should re-render.
-     * @private
-     * @return {?}
      */
     checkChildren() {
         if (this.cascaderItems) {
-            this.cascaderItems.forEach((/**
-             * @param {?} item
-             * @return {?}
-             */
-            item => item.markForCheck()));
+            this.cascaderItems.forEach(item => item.markForCheck());
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     setDisplayLabel() {
-        /** @type {?} */
         const selectedOptions = this.cascaderService.selectedOptions;
-        /** @type {?} */
-        const labels = selectedOptions.map((/**
-         * @param {?} o
-         * @return {?}
-         */
-        o => this.cascaderService.getOptionLabel(o)));
+        const labels = selectedOptions.map(o => this.cascaderService.getOptionLabel(o));
         if (this.isLabelRenderTemplate) {
             this.labelRenderContext = { labels, selectedOptions };
         }
@@ -1538,12 +919,7 @@ class NzCascaderComponent {
             this.labelRenderText = defaultDisplayRender.call(this, labels, selectedOptions);
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     setDropdownStyles() {
-        /** @type {?} */
         const firstColumn = this.cascaderService.columns[0];
         this.shouldShowEmpty =
             (this.inSearchingMode && (!firstColumn || !firstColumn.length)) || // Should show empty when there's no searching result
@@ -1553,10 +929,6 @@ class NzCascaderComponent {
             this.dropdownWidthStyle = this.inSearchingMode || this.shouldShowEmpty ? `${this.input.nativeElement.offsetWidth}px` : '';
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     setLocale() {
         this.locale = this.i18nService.getLocaleData('global');
         this.cdr.markForCheck();
@@ -1598,19 +970,20 @@ NzCascaderComponent.decorators = [
           class="ant-cascader-picker-clear"
           (click)="clearSelection($event)"
         ></i>
-        <i
-          *ngIf="nzShowArrow && !isLoading"
-          nz-icon
-          nzType="down"
-          class="ant-cascader-picker-arrow"
-          [class.ant-cascader-picker-arrow-expand]="menuVisible"
-        >
-        </i>
+        <ng-container *nzStringTemplateOutlet="nzSuffixIcon">
+          <i
+            *ngIf="nzShowArrow && !isLoading"
+            nz-icon
+            [nzType]="$any(nzSuffixIcon)"
+            class="ant-cascader-picker-arrow"
+            [class.ant-cascader-picker-arrow-expand]="menuVisible"
+          ></i>
+        </ng-container>
         <i *ngIf="isLoading" nz-icon nzType="loading" class="ant-cascader-picker-arrow"></i>
         <span
           class="ant-cascader-picker-label"
-          [class.ant-cascader-show-search]="!!nzShowSearch"
-          [class.ant-focusd]="!!nzShowSearch && isFocused && !inputValue"
+          [class.ant-cascader-picker-show-search]="!!nzShowSearch"
+          [class.ant-cascader-picker-focused]="!!nzShowSearch && isFocused && !inputValue"
         >
           <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
           <ng-template #labelTemplate>
@@ -1623,13 +996,12 @@ NzCascaderComponent.decorators = [
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
-      cdkConnectedOverlayHasBackdrop
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayPositions]="positions"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-menus'"
-      (backdropClick)="closeMenu()"
-      (detach)="closeMenu()"
       [cdkConnectedOverlayOpen]="menuVisible"
+      (overlayOutsideClick)="onClickOutside($event)"
+      (detach)="closeMenu()"
     >
       <div
         #menu
@@ -1663,6 +1035,7 @@ NzCascaderComponent.decorators = [
             <li
               nz-cascader-option
               *ngFor="let option of options"
+              [expandIcon]="nzExpandIcon"
               [columnIndex]="i"
               [nzLabelProperty]="nzLabelProperty"
               [optionTemplate]="nzOptionRender"
@@ -1682,10 +1055,7 @@ NzCascaderComponent.decorators = [
                 providers: [
                     {
                         provide: NG_VALUE_ACCESSOR,
-                        useExisting: forwardRef((/**
-                         * @return {?}
-                         */
-                        () => NzCascaderComponent)),
+                        useExisting: forwardRef(() => NzCascaderComponent),
                         multi: true
                     },
                     NzCascaderService
@@ -1699,14 +1069,13 @@ NzCascaderComponent.decorators = [
                     '[class.ant-cascader-picker-with-value]': '!!inputValue',
                     '[class.ant-cascader-focused]': 'isFocused'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCascaderComponent.ctorParameters = () => [
     { type: NzCascaderService },
-    { type: NzI18nService },
     { type: NzConfigService },
     { type: ChangeDetectorRef },
+    { type: NzI18nService },
     { type: ElementRef },
     { type: Renderer2 },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
@@ -1739,6 +1108,8 @@ NzCascaderComponent.propDecorators = {
     nzTriggerAction: [{ type: Input }],
     nzChangeOn: [{ type: Input }],
     nzLoadData: [{ type: Input }],
+    nzSuffixIcon: [{ type: Input }],
+    nzExpandIcon: [{ type: Input }],
     nzOptions: [{ type: Input }],
     nzVisibleChange: [{ type: Output }],
     nzSelectionChange: [{ type: Output }],
@@ -1774,164 +1145,13 @@ __decorate([
     __metadata("design:type", Object)
 ], NzCascaderComponent.prototype, "nzDisabled", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", String)
 ], NzCascaderComponent.prototype, "nzSize", void 0);
-if (false) {
-    /** @type {?} */
-    NzCascaderComponent.ngAcceptInputType_nzShowInput;
-    /** @type {?} */
-    NzCascaderComponent.ngAcceptInputType_nzShowArrow;
-    /** @type {?} */
-    NzCascaderComponent.ngAcceptInputType_nzAllowClear;
-    /** @type {?} */
-    NzCascaderComponent.ngAcceptInputType_nzAutoFocus;
-    /** @type {?} */
-    NzCascaderComponent.ngAcceptInputType_nzChangeOnSelect;
-    /** @type {?} */
-    NzCascaderComponent.ngAcceptInputType_nzDisabled;
-    /** @type {?} */
-    NzCascaderComponent.prototype.input;
-    /** @type {?} */
-    NzCascaderComponent.prototype.menu;
-    /** @type {?} */
-    NzCascaderComponent.prototype.overlay;
-    /** @type {?} */
-    NzCascaderComponent.prototype.cascaderItems;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzOptionRender;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzShowInput;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzShowArrow;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzAllowClear;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzAutoFocus;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzChangeOnSelect;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzDisabled;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzColumnClassName;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzExpandTrigger;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzValueProperty;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzLabelRender;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzLabelProperty;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzNotFoundContent;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzSize;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzShowSearch;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzPlaceHolder;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzMenuClassName;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzMenuStyle;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzMouseEnterDelay;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzMouseLeaveDelay;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzTriggerAction;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzChangeOn;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzLoadData;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzVisibleChange;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzSelectionChange;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzSelect;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzClear;
-    /**
-     * If the dropdown should show the empty content.
-     * `true` if there's no options.
-     * @type {?}
-     */
-    NzCascaderComponent.prototype.shouldShowEmpty;
-    /** @type {?} */
-    NzCascaderComponent.prototype.el;
-    /** @type {?} */
-    NzCascaderComponent.prototype.menuVisible;
-    /** @type {?} */
-    NzCascaderComponent.prototype.isLoading;
-    /** @type {?} */
-    NzCascaderComponent.prototype.labelRenderText;
-    /** @type {?} */
-    NzCascaderComponent.prototype.labelRenderContext;
-    /** @type {?} */
-    NzCascaderComponent.prototype.onChange;
-    /** @type {?} */
-    NzCascaderComponent.prototype.onTouched;
-    /** @type {?} */
-    NzCascaderComponent.prototype.positions;
-    /**
-     * Dropdown's with in pixel.
-     * @type {?}
-     */
-    NzCascaderComponent.prototype.dropdownWidthStyle;
-    /** @type {?} */
-    NzCascaderComponent.prototype.dropdownHeightStyle;
-    /** @type {?} */
-    NzCascaderComponent.prototype.isFocused;
-    /** @type {?} */
-    NzCascaderComponent.prototype.locale;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCascaderComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCascaderComponent.prototype.inputString;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCascaderComponent.prototype.isOpening;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCascaderComponent.prototype.delayMenuTimer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCascaderComponent.prototype.delaySelectTimer;
-    /** @type {?} */
-    NzCascaderComponent.prototype.cascaderService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCascaderComponent.prototype.i18nService;
-    /** @type {?} */
-    NzCascaderComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCascaderComponent.prototype.cdr;
-    /** @type {?} */
-    NzCascaderComponent.prototype.noAnimation;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: cascader.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCascaderModule {
 }
@@ -1955,16 +1175,13 @@ NzCascaderModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-cascader.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
-export { NzCascaderComponent, NzCascaderModule, NzCascaderOptionComponent, NzCascaderService, isChildOption, isParentOption, isShowSearchObject };
+export { NzCascaderComponent, NzCascaderModule, NzCascaderOptionComponent, NzCascaderService, isChildOption, isParentOption, isShowSearchObject, ɵ0 };
 //# sourceMappingURL=ng-zorro-antd-cascader.js.map

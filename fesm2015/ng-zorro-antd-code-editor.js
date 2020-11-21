@@ -1,7 +1,8 @@
-import { InjectionToken, Injectable, Inject, Optional, ɵɵdefineInjectable, ɵɵinject, EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, forwardRef, NgZone, ElementRef, Input, Output, NgModule } from '@angular/core';
 import { __decorate, __metadata } from 'tslib';
+import { Platform } from '@angular/cdk/platform';
+import { ɵɵdefineInjectable, ɵɵinject, Injectable, Inject, EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, forwardRef, NgZone, ElementRef, Input, Output, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { warnDeprecation, warn, PREFIX } from 'ng-zorro-antd/core/logger';
+import { warn, PREFIX } from 'ng-zorro-antd/core/logger';
 import { inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject, BehaviorSubject, of, combineLatest, fromEvent } from 'rxjs';
 import { tap, map, takeUntil, debounceTime, filter, distinctUntilChanged } from 'rxjs/operators';
@@ -11,118 +12,47 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: typings.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @enum {string} */
-const NzCodeEditorLoadingStatus = {
-    UNLOAD: "unload",
-    LOADING: "loading",
-    LOADED: "LOADED",
-};
-/**
- * @record
- */
-function NzCodeEditorConfig() { }
-if (false) {
-    /** @type {?|undefined} */
-    NzCodeEditorConfig.prototype.assetsRoot;
-    /** @type {?|undefined} */
-    NzCodeEditorConfig.prototype.defaultEditorOption;
-    /** @type {?|undefined} */
-    NzCodeEditorConfig.prototype.useStaticLoading;
-    /**
-     * @return {?}
-     */
-    NzCodeEditorConfig.prototype.onLoad = function () { };
-    /**
-     * @return {?}
-     */
-    NzCodeEditorConfig.prototype.onFirstEditorInit = function () { };
-    /**
-     * @return {?}
-     */
-    NzCodeEditorConfig.prototype.onInit = function () { };
-}
-/** @type {?} */
-const NZ_CODE_EDITOR_CONFIG = new InjectionToken('nz-code-editor-config', {
-    providedIn: 'root',
-    factory: NZ_CODE_EDITOR_CONFIG_FACTORY
-});
-/**
- * @return {?}
- */
-function NZ_CODE_EDITOR_CONFIG_FACTORY() {
-    return {};
-}
+var NzCodeEditorLoadingStatus;
+(function (NzCodeEditorLoadingStatus) {
+    NzCodeEditorLoadingStatus["UNLOAD"] = "unload";
+    NzCodeEditorLoadingStatus["LOADING"] = "loading";
+    NzCodeEditorLoadingStatus["LOADED"] = "LOADED";
+})(NzCodeEditorLoadingStatus || (NzCodeEditorLoadingStatus = {}));
 
 /**
- * @fileoverview added by tsickle
- * Generated from: code-editor.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'codeEditor';
-/**
- * @param {?=} fn
- * @return {?}
- */
+const NZ_CONFIG_MODULE_NAME = 'codeEditor';
 function tryTriggerFunc(fn) {
-    return (/**
-     * @param {...?} args
-     * @return {?}
-     */
-    (...args) => {
+    return (...args) => {
         if (fn) {
             fn(...args);
         }
-    });
+    };
 }
 class NzCodeEditorService {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} _document
-     * @param {?=} config
-     */
-    constructor(nzConfigService, _document, config) {
+    constructor(nzConfigService, _document) {
         this.nzConfigService = nzConfigService;
         this.firstEditorInitialized = false;
         this.loaded$ = new Subject();
         this.loadingStatus = NzCodeEditorLoadingStatus.UNLOAD;
+        this.option = {};
         this.option$ = new BehaviorSubject(this.option);
-        /** @type {?} */
-        const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
-        if (config) {
-            warnDeprecation(`'NZ_CODE_EDITOR_CONFIG' is deprecated and will be removed in next minor version. Please use 'NzConfigService' instead.`);
-        }
+        const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
         this.document = _document;
-        this.config = Object.assign(Object.assign({}, config), globalConfig);
+        this.config = Object.assign({}, globalConfig);
         this.option = this.config.defaultEditorOption || {};
-        this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe((/**
-         * @return {?}
-         */
-        () => {
-            /** @type {?} */
-            const newGlobalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
+        this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME).subscribe(() => {
+            const newGlobalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
             if (newGlobalConfig) {
                 this._updateDefaultOption(newGlobalConfig.defaultEditorOption);
             }
-        }));
+        });
     }
-    /**
-     * @param {?} option
-     * @return {?}
-     */
-    updateDefaultOption(option) {
-        warnDeprecation(`'updateDefaultOption' is deprecated and will be removed in next minor version. Please use 'set' of 'NzConfigService' instead.`);
-        this._updateDefaultOption(option);
-    }
-    /**
-     * @private
-     * @param {?} option
-     * @return {?}
-     */
     _updateDefaultOption(option) {
         this.option = Object.assign(Object.assign({}, this.option), option);
         this.option$.next(this.option);
@@ -130,9 +60,6 @@ class NzCodeEditorService {
             monaco.editor.setTheme(option.theme);
         }
     }
-    /**
-     * @return {?}
-     */
     requestToInit() {
         if (this.loadingStatus === NzCodeEditorLoadingStatus.LOADED) {
             this.onInit();
@@ -148,73 +75,42 @@ class NzCodeEditorService {
                 this.loadMonacoScript();
             }
         }
-        return this.loaded$.asObservable().pipe(tap((/**
-         * @return {?}
-         */
-        () => this.onInit())), map((/**
-         * @return {?}
-         */
-        () => this.getLatestOption())));
+        return this.loaded$.asObservable().pipe(tap(() => this.onInit()), map(() => this.getLatestOption()));
     }
-    /**
-     * @private
-     * @return {?}
-     */
     loadMonacoScript() {
         if (this.config.useStaticLoading) {
-            this.onLoad();
+            Promise.resolve().then(() => this.onLoad());
             return;
         }
         if (this.loadingStatus === NzCodeEditorLoadingStatus.LOADING) {
             return;
         }
         this.loadingStatus = NzCodeEditorLoadingStatus.LOADING;
-        /** @type {?} */
         const assetsRoot = this.config.assetsRoot;
-        /** @type {?} */
         const vs = assetsRoot ? `${assetsRoot}/vs` : 'assets/vs';
-        /** @type {?} */
-        const windowAsAny = (/** @type {?} */ (window));
-        /** @type {?} */
+        const windowAsAny = window;
         const loadScript = this.document.createElement('script');
         loadScript.type = 'text/javascript';
         loadScript.src = `${vs}/loader.js`;
-        loadScript.onload = (/**
-         * @return {?}
-         */
-        () => {
+        loadScript.onload = () => {
             windowAsAny.require.config({
                 paths: { vs }
             });
-            windowAsAny.require(['vs/editor/editor.main'], (/**
-             * @return {?}
-             */
-            () => {
+            windowAsAny.require(['vs/editor/editor.main'], () => {
                 this.onLoad();
-            }));
-        });
-        loadScript.onerror = (/**
-         * @return {?}
-         */
-        () => {
+            });
+        };
+        loadScript.onerror = () => {
             throw new Error(`${PREFIX} cannot load assets of monaco editor from source "${vs}".`);
-        });
+        };
         this.document.documentElement.appendChild(loadScript);
     }
-    /**
-     * @private
-     * @return {?}
-     */
     onLoad() {
         this.loadingStatus = NzCodeEditorLoadingStatus.LOADED;
         this.loaded$.next(true);
         this.loaded$.complete();
         tryTriggerFunc(this.config.onLoad)();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     onInit() {
         if (!this.firstEditorInitialized) {
             this.firstEditorInitialized = true;
@@ -222,80 +118,30 @@ class NzCodeEditorService {
         }
         tryTriggerFunc(this.config.onInit)();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     getLatestOption() {
         return Object.assign({}, this.option);
     }
 }
+NzCodeEditorService.ɵprov = ɵɵdefineInjectable({ factory: function NzCodeEditorService_Factory() { return new NzCodeEditorService(ɵɵinject(NzConfigService), ɵɵinject(DOCUMENT)); }, token: NzCodeEditorService, providedIn: "root" });
 NzCodeEditorService.decorators = [
     { type: Injectable, args: [{
                 providedIn: 'root'
             },] }
 ];
-/** @nocollapse */
 NzCodeEditorService.ctorParameters = () => [
     { type: NzConfigService },
-    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] },
-    { type: undefined, decorators: [{ type: Inject, args: [NZ_CODE_EDITOR_CONFIG,] }, { type: Optional }] }
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
-/** @nocollapse */ NzCodeEditorService.ɵprov = ɵɵdefineInjectable({ factory: function NzCodeEditorService_Factory() { return new NzCodeEditorService(ɵɵinject(NzConfigService), ɵɵinject(DOCUMENT), ɵɵinject(NZ_CODE_EDITOR_CONFIG, 8)); }, token: NzCodeEditorService, providedIn: "root" });
-if (false) {
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorService.prototype.document;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorService.prototype.firstEditorInitialized;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorService.prototype.loaded$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorService.prototype.loadingStatus;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorService.prototype.option;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorService.prototype.config;
-    /** @type {?} */
-    NzCodeEditorService.prototype.option$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorService.prototype.nzConfigService;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: code-editor.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCodeEditorComponent {
-    /**
-     * @param {?} nzCodeEditorService
-     * @param {?} ngZone
-     * @param {?} elementRef
-     */
-    constructor(nzCodeEditorService, ngZone, elementRef) {
+    constructor(nzCodeEditorService, ngZone, elementRef, platform) {
         this.nzCodeEditorService = nzCodeEditorService;
         this.ngZone = ngZone;
+        this.platform = platform;
         this.nzEditorMode = 'normal';
         this.nzOriginalText = '';
         this.nzLoading = false;
@@ -307,38 +153,22 @@ class NzCodeEditorComponent {
         this.editorOption$ = new BehaviorSubject({});
         this.value = '';
         this.modelSet = false;
-        this.onChange = (/**
-         * @param {?} _value
-         * @return {?}
-         */
-        (_value) => { });
-        this.onTouch = (/**
-         * @return {?}
-         */
-        () => { });
+        this.onChange = (_value) => { };
+        this.onTouch = () => { };
         this.el = elementRef.nativeElement;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzEditorOption(value) {
         this.editorOption$.next(value);
     }
     /**
      * Initialize a monaco editor instance.
-     * @return {?}
      */
     ngAfterViewInit() {
-        this.nzCodeEditorService.requestToInit().subscribe((/**
-         * @param {?} option
-         * @return {?}
-         */
-        option => this.setup(option)));
+        if (!this.platform.isBrowser) {
+            return;
+        }
+        this.nzCodeEditorService.requestToInit().subscribe(option => this.setup(option));
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         if (this.editorInstance) {
             this.editorInstance.dispose();
@@ -346,44 +176,21 @@ class NzCodeEditorComponent {
         this.destroy$.next();
         this.destroy$.complete();
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     writeValue(value) {
         this.value = value;
         this.setValue();
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnChange(fn) {
         this.onChange = fn;
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnTouched(fn) {
         this.onTouch = fn;
     }
-    /**
-     * @return {?}
-     */
     layout() {
         this.resize$.next();
     }
-    /**
-     * @private
-     * @param {?} option
-     * @return {?}
-     */
     setup(option) {
-        inNextTick().subscribe((/**
-         * @return {?}
-         */
-        () => {
+        inNextTick().subscribe(() => {
             this.editorOptionCached = option;
             this.registerOptionChanges();
             this.initMonacoEditorInstance();
@@ -393,84 +200,41 @@ class NzCodeEditorComponent {
                 this.setValueEmitter();
             }
             this.nzEditorInitialized.emit(this.editorInstance);
-        }));
+        });
     }
-    /**
-     * @private
-     * @return {?}
-     */
     registerOptionChanges() {
         combineLatest([this.editorOption$, this.nzCodeEditorService.option$])
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @param {?} __0
-         * @return {?}
-         */
-        ([selfOpt, defaultOpt]) => {
+            .subscribe(([selfOpt, defaultOpt]) => {
             this.editorOptionCached = Object.assign(Object.assign(Object.assign({}, this.editorOptionCached), defaultOpt), selfOpt);
             this.updateOptionToMonaco();
-        }));
+        });
     }
-    /**
-     * @private
-     * @return {?}
-     */
     initMonacoEditorInstance() {
-        this.ngZone.runOutsideAngular((/**
-         * @return {?}
-         */
-        () => {
+        this.ngZone.runOutsideAngular(() => {
             this.editorInstance =
                 this.nzEditorMode === 'normal'
                     ? monaco.editor.create(this.el, Object.assign({}, this.editorOptionCached))
-                    : monaco.editor.createDiffEditor(this.el, Object.assign({}, ((/** @type {?} */ (this.editorOptionCached)))));
-        }));
+                    : monaco.editor.createDiffEditor(this.el, Object.assign({}, this.editorOptionCached));
+        });
     }
-    /**
-     * @private
-     * @return {?}
-     */
     registerResizeChange() {
-        this.ngZone.runOutsideAngular((/**
-         * @return {?}
-         */
-        () => {
+        this.ngZone.runOutsideAngular(() => {
             fromEvent(window, 'resize')
                 .pipe(debounceTime(300), takeUntil(this.destroy$))
-                .subscribe((/**
-             * @return {?}
-             */
-            () => {
+                .subscribe(() => {
                 this.layout();
-            }));
+            });
             this.resize$
-                .pipe(takeUntil(this.destroy$), filter((/**
-             * @return {?}
-             */
-            () => !!this.editorInstance)), map((/**
-             * @return {?}
-             */
-            () => ({
+                .pipe(takeUntil(this.destroy$), filter(() => !!this.editorInstance), map(() => ({
                 width: this.el.clientWidth,
                 height: this.el.clientHeight
-            }))), distinctUntilChanged((/**
-             * @param {?} a
-             * @param {?} b
-             * @return {?}
-             */
-            (a, b) => a.width === b.width && a.height === b.height)), debounceTime(50))
-                .subscribe((/**
-             * @return {?}
-             */
-            () => {
-                (/** @type {?} */ (this.editorInstance)).layout();
-            }));
-        }));
+            })), distinctUntilChanged((a, b) => a.width === b.width && a.height === b.height), debounceTime(50))
+                .subscribe(() => {
+                this.editorInstance.layout();
+            });
+        });
     }
-    /**
-     * @private
-     * @return {?}
-     */
     setValue() {
         if (!this.editorInstance) {
             return;
@@ -481,24 +245,25 @@ class NzCodeEditorComponent {
         }
         if (this.nzEditorMode === 'normal') {
             if (this.modelSet) {
-                ((/** @type {?} */ (this.editorInstance.getModel()))).setValue(this.value);
+                const model = this.editorInstance.getModel();
+                this.preservePositionAndSelections(() => model.setValue(this.value));
             }
             else {
-                ((/** @type {?} */ (this.editorInstance))).setModel(monaco.editor.createModel(this.value, ((/** @type {?} */ (this.editorOptionCached))).language));
+                this.editorInstance.setModel(monaco.editor.createModel(this.value, this.editorOptionCached.language));
                 this.modelSet = true;
             }
         }
         else {
             if (this.modelSet) {
-                /** @type {?} */
-                const model = (/** @type {?} */ (((/** @type {?} */ (this.editorInstance))).getModel()));
-                model.modified.setValue(this.value);
-                model.original.setValue(this.nzOriginalText);
+                const model = this.editorInstance.getModel();
+                this.preservePositionAndSelections(() => {
+                    model.modified.setValue(this.value);
+                    model.original.setValue(this.nzOriginalText);
+                });
             }
             else {
-                /** @type {?} */
-                const language = ((/** @type {?} */ (this.editorOptionCached))).language;
-                ((/** @type {?} */ (this.editorInstance))).setModel({
+                const language = this.editorOptionCached.language;
+                this.editorInstance.setModel({
                     original: monaco.editor.createModel(this.nzOriginalText, language),
                     modified: monaco.editor.createModel(this.value, language)
                 });
@@ -507,34 +272,44 @@ class NzCodeEditorComponent {
         }
     }
     /**
-     * @private
-     * @return {?}
+     * {@link editor.ICodeEditor}#setValue resets the cursor position to the start of the document.
+     * This helper memorizes the cursor position and selections and restores them after the given
+     * function has been called.
      */
-    setValueEmitter() {
-        /** @type {?} */
-        const model = (/** @type {?} */ ((this.nzEditorMode === 'normal'
-            ? ((/** @type {?} */ (this.editorInstance))).getModel()
-            : (/** @type {?} */ (((/** @type {?} */ (this.editorInstance))).getModel())).modified)));
-        model.onDidChangeContent((/**
-         * @return {?}
-         */
-        () => {
-            this.emitValue(model.getValue());
-        }));
+    preservePositionAndSelections(fn) {
+        if (!this.editorInstance) {
+            fn();
+            return;
+        }
+        const position = this.editorInstance.getPosition();
+        const selections = this.editorInstance.getSelections();
+        fn();
+        if (position) {
+            this.editorInstance.setPosition(position);
+        }
+        if (selections) {
+            this.editorInstance.setSelections(selections);
+        }
     }
-    /**
-     * @private
-     * @param {?} value
-     * @return {?}
-     */
+    setValueEmitter() {
+        const model = (this.nzEditorMode === 'normal'
+            ? this.editorInstance.getModel()
+            : this.editorInstance.getModel().modified);
+        model.onDidChangeContent(() => {
+            this.ngZone.run(() => {
+                this.emitValue(model.getValue());
+            });
+        });
+    }
     emitValue(value) {
+        if (this.value === value) {
+            // If the value didn't change there's no reason to send an update.
+            // Specifically this may happen during an update from the model (writeValue) where sending an update to the model would actually be incorrect.
+            return;
+        }
         this.value = value;
         this.onChange(value);
     }
-    /**
-     * @private
-     * @return {?}
-     */
     updateOptionToMonaco() {
         if (this.editorInstance) {
             this.editorInstance.updateOptions(Object.assign({}, this.editorOptionCached));
@@ -562,20 +337,17 @@ NzCodeEditorComponent.decorators = [
                 providers: [
                     {
                         provide: NG_VALUE_ACCESSOR,
-                        useExisting: forwardRef((/**
-                         * @return {?}
-                         */
-                        () => NzCodeEditorComponent)),
+                        useExisting: forwardRef(() => NzCodeEditorComponent),
                         multi: true
                     }
                 ]
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCodeEditorComponent.ctorParameters = () => [
     { type: NzCodeEditorService },
     { type: NgZone },
-    { type: ElementRef }
+    { type: ElementRef },
+    { type: Platform }
 ];
 NzCodeEditorComponent.propDecorators = {
     nzEditorMode: [{ type: Input }],
@@ -594,80 +366,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzCodeEditorComponent.prototype, "nzFullControl", void 0);
-if (false) {
-    /** @type {?} */
-    NzCodeEditorComponent.ngAcceptInputType_nzLoading;
-    /** @type {?} */
-    NzCodeEditorComponent.ngAcceptInputType_nzFullControl;
-    /** @type {?} */
-    NzCodeEditorComponent.prototype.nzEditorMode;
-    /** @type {?} */
-    NzCodeEditorComponent.prototype.nzOriginalText;
-    /** @type {?} */
-    NzCodeEditorComponent.prototype.nzLoading;
-    /** @type {?} */
-    NzCodeEditorComponent.prototype.nzFullControl;
-    /** @type {?} */
-    NzCodeEditorComponent.prototype.nzToolkit;
-    /** @type {?} */
-    NzCodeEditorComponent.prototype.nzEditorInitialized;
-    /** @type {?} */
-    NzCodeEditorComponent.prototype.editorOptionCached;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorComponent.prototype.el;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorComponent.prototype.resize$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorComponent.prototype.editorOption$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorComponent.prototype.editorInstance;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorComponent.prototype.value;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorComponent.prototype.modelSet;
-    /** @type {?} */
-    NzCodeEditorComponent.prototype.onChange;
-    /** @type {?} */
-    NzCodeEditorComponent.prototype.onTouch;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorComponent.prototype.nzCodeEditorService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCodeEditorComponent.prototype.ngZone;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: code-editor.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCodeEditorModule {
 }
@@ -680,16 +382,13 @@ NzCodeEditorModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-code-editor.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
-export { NZ_CODE_EDITOR_CONFIG, NZ_CODE_EDITOR_CONFIG_FACTORY, NzCodeEditorComponent, NzCodeEditorLoadingStatus, NzCodeEditorModule, NzCodeEditorService };
+export { NzCodeEditorComponent, NzCodeEditorLoadingStatus, NzCodeEditorModule, NzCodeEditorService };
 //# sourceMappingURL=ng-zorro-antd-code-editor.js.map

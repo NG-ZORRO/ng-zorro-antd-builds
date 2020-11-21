@@ -4,10 +4,12 @@
  */
 import { AfterContentChecked, ElementRef, OnChanges, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { NzIconPatchService, NzIconService } from './icon.service';
 export declare class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked {
     iconService: NzIconService;
     renderer: Renderer2;
+    static ngAcceptInputType_nzSpin: BooleanInput;
     cacheClassName: string | null;
     set nzSpin(value: boolean);
     nzRotate: number;

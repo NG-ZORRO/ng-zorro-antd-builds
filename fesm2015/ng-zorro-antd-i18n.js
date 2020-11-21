@@ -1,16 +1,186 @@
-import { InjectionToken, Injectable, Optional, Inject, ɵɵdefineInjectable, ɵɵinject, Pipe, NgModule, Injector, INJECTOR } from '@angular/core';
-import { warn, warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { InjectionToken, ɵɵdefineInjectable, ɵɵinject, Injectable, Optional, Inject, Pipe, NgModule, INJECTOR, Injector } from '@angular/core';
+import { warn } from 'ng-zorro-antd/core/logger';
 import { BehaviorSubject } from 'rxjs';
 import { formatDate } from '@angular/common';
 import fnsFormat from 'date-fns/format';
 import fnsGetISOWeek from 'date-fns/getISOWeek';
 import fnsParse from 'date-fns/parse';
+import { ɵNgTimeParser } from 'ng-zorro-antd/core/time';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/zh_CN.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+var en_US = {
+    locale: 'en',
+    Pagination: {
+        items_per_page: '/ page',
+        jump_to: 'Go to',
+        jump_to_confirm: 'confirm',
+        page: '',
+        prev_page: 'Previous Page',
+        next_page: 'Next Page',
+        prev_5: 'Previous 5 Pages',
+        next_5: 'Next 5 Pages',
+        prev_3: 'Previous 3 Pages',
+        next_3: 'Next 3 Pages'
+    },
+    DatePicker: {
+        lang: {
+            placeholder: 'Select date',
+            yearPlaceholder: 'Select year',
+            quarterPlaceholder: 'Select quarter',
+            monthPlaceholder: 'Select month',
+            weekPlaceholder: 'Select week',
+            rangePlaceholder: ['Start date', 'End date'],
+            rangeYearPlaceholder: ['Start year', 'End year'],
+            rangeMonthPlaceholder: ['Start month', 'End month'],
+            rangeWeekPlaceholder: ['Start week', 'End week'],
+            locale: 'en_US',
+            today: 'Today',
+            now: 'Now',
+            backToToday: 'Back to today',
+            ok: 'Ok',
+            clear: 'Clear',
+            month: 'Month',
+            year: 'Year',
+            timeSelect: 'select time',
+            dateSelect: 'select date',
+            weekSelect: 'Choose a week',
+            monthSelect: 'Choose a month',
+            yearSelect: 'Choose a year',
+            decadeSelect: 'Choose a decade',
+            yearFormat: 'YYYY',
+            dateFormat: 'M/D/YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'M/D/YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Previous month (PageUp)',
+            nextMonth: 'Next month (PageDown)',
+            previousYear: 'Last year (Control + left)',
+            nextYear: 'Next year (Control + right)',
+            previousDecade: 'Last decade',
+            nextDecade: 'Next decade',
+            previousCentury: 'Last century',
+            nextCentury: 'Next century'
+        },
+        timePickerLocale: {
+            placeholder: 'Select time',
+            rangePlaceholder: ['Start time', 'End time']
+        }
+    },
+    TimePicker: {
+        placeholder: 'Select time',
+        rangePlaceholder: ['Start time', 'End time']
+    },
+    Calendar: {
+        lang: {
+            placeholder: 'Select date',
+            yearPlaceholder: 'Select year',
+            quarterPlaceholder: 'Select quarter',
+            monthPlaceholder: 'Select month',
+            weekPlaceholder: 'Select week',
+            rangePlaceholder: ['Start date', 'End date'],
+            rangeYearPlaceholder: ['Start year', 'End year'],
+            rangeMonthPlaceholder: ['Start month', 'End month'],
+            rangeWeekPlaceholder: ['Start week', 'End week'],
+            locale: 'en_US',
+            today: 'Today',
+            now: 'Now',
+            backToToday: 'Back to today',
+            ok: 'Ok',
+            clear: 'Clear',
+            month: 'Month',
+            year: 'Year',
+            timeSelect: 'select time',
+            dateSelect: 'select date',
+            weekSelect: 'Choose a week',
+            monthSelect: 'Choose a month',
+            yearSelect: 'Choose a year',
+            decadeSelect: 'Choose a decade',
+            yearFormat: 'YYYY',
+            dateFormat: 'M/D/YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'M/D/YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Previous month (PageUp)',
+            nextMonth: 'Next month (PageDown)',
+            previousYear: 'Last year (Control + left)',
+            nextYear: 'Next year (Control + right)',
+            previousDecade: 'Last decade',
+            nextDecade: 'Next decade',
+            previousCentury: 'Last century',
+            nextCentury: 'Next century'
+        },
+        timePickerLocale: {
+            placeholder: 'Select time',
+            rangePlaceholder: ['Start time', 'End time']
+        }
+    },
+    global: {
+        placeholder: 'Please select'
+    },
+    Table: {
+        filterTitle: 'Filter menu',
+        filterConfirm: 'OK',
+        filterReset: 'Reset',
+        filterEmptyText: 'No filters',
+        emptyText: 'No data',
+        selectAll: 'Select current page',
+        selectInvert: 'Invert current page',
+        selectionAll: 'Select all data',
+        sortTitle: 'Sort',
+        expand: 'Expand row',
+        collapse: 'Collapse row',
+        triggerDesc: 'Click sort by descend',
+        triggerAsc: 'Click sort by ascend',
+        cancelSort: 'Click to cancel sort'
+    },
+    Modal: {
+        okText: 'OK',
+        cancelText: 'Cancel',
+        justOkText: 'OK'
+    },
+    Popconfirm: {
+        okText: 'OK',
+        cancelText: 'Cancel'
+    },
+    Transfer: {
+        titles: ['', ''],
+        searchPlaceholder: 'Search here',
+        itemUnit: 'item',
+        itemsUnit: 'items',
+        remove: 'Remove',
+        selectCurrent: 'Select current page',
+        removeCurrent: 'Remove current page',
+        selectAll: 'Select all data',
+        removeAll: 'Remove all data',
+        selectInvert: 'Invert current page'
+    },
+    Upload: {
+        uploading: 'Uploading...',
+        removeFile: 'Remove file',
+        uploadError: 'Upload error',
+        previewFile: 'Preview file',
+        downloadFile: 'Download file'
+    },
+    Empty: {
+        description: 'No Data'
+    },
+    Icon: {
+        icon: 'icon'
+    },
+    Text: {
+        edit: 'Edit',
+        copy: 'Copy',
+        copied: 'Copied',
+        expand: 'Expand'
+    },
+    PageHeader: {
+        back: 'Back'
+    }
+};
+
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -126,6 +296,7 @@ var zh_CN = {
         filterTitle: '筛选',
         filterConfirm: '确定',
         filterReset: '重置',
+        filterEmptyText: '无筛选项',
         selectAll: '全选当页',
         selectInvert: '反选当页',
         selectionAll: '全选所有',
@@ -148,7 +319,13 @@ var zh_CN = {
     Transfer: {
         searchPlaceholder: '请输入搜索内容',
         itemUnit: '项',
-        itemsUnit: '项'
+        itemsUnit: '项',
+        remove: '删除',
+        selectCurrent: '全选当页',
+        removeCurrent: '删除当页',
+        selectAll: '全选所有',
+        removeAll: '删除全部',
+        selectInvert: '反选当页'
     },
     Upload: {
         uploading: '文件上传中',
@@ -171,110 +348,38 @@ var zh_CN = {
     },
     PageHeader: {
         back: '返回'
-    },
-    Form: {
-        defaultValidateMessages: {
-            default: '字段验证错误${label}',
-            required: '请输入${label}',
-            enum: '${label}必须是其中一个[${enum}]',
-            whitespace: '${label}不能为空字符',
-            date: {
-                format: '${label}日期格式无效',
-                parse: '${label}不能转换为日期',
-                invalid: '${label}是一个无效日期'
-            },
-            types: {
-                string: '${label}不是一个有效的${type}',
-                method: '${label}不是一个有效的${type}',
-                array: '${label}不是一个有效的${type}',
-                object: '${label}不是一个有效的${type}',
-                number: '${label}不是一个有效的${type}',
-                date: '${label}不是一个有效的${type}',
-                boolean: '${label}不是一个有效的${type}',
-                integer: '${label}不是一个有效的${type}',
-                float: '${label}不是一个有效的${type}',
-                regexp: '${label}不是一个有效的${type}',
-                email: '${label}不是一个有效的${type}',
-                url: '${label}不是一个有效的${type}',
-                hex: '${label}不是一个有效的${type}'
-            },
-            string: {
-                len: '${label}须为${len}个字符',
-                min: '${label}最少${min}个字符',
-                max: '${label}最多${max}个字符',
-                range: '${label}须在${min}-${max}字符之间'
-            },
-            number: {
-                len: '${label}必须等于${len}',
-                min: '${label}最小值为${min}',
-                max: '${label}最大值为${max}',
-                range: '${label}须在${min}-${max}之间'
-            },
-            array: {
-                len: '须为${len}个${label}',
-                min: '最少${min}个${label}',
-                max: '最多${max}个${label}',
-                range: '${label}数量须在${min}-${max}之间'
-            },
-            pattern: {
-                mismatch: '${label}与模式不匹配${pattern}'
-            }
-        }
     }
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-i18n.token.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const NZ_I18N = new InjectionToken('nz-i18n');
-/**
- * Locale for date operations, should import from date-fns, see example: https://github.com/date-fns/date-fns/blob/v1.30.1/src/locale/zh_cn/index.js
- * @type {?}
- */
+/** Locale for date operations, should import from date-fns, see example: https://github.com/date-fns/date-fns/blob/v1.30.1/src/locale/zh_cn/index.js */
 const NZ_DATE_LOCALE = new InjectionToken('nz-date-locale');
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-i18n.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzI18nService {
-    /**
-     * @param {?} locale
-     * @param {?} dateLocale
-     */
     constructor(locale, dateLocale) {
         this._change = new BehaviorSubject(this._locale);
         this.setLocale(locale || zh_CN);
         this.setDateLocale(dateLocale || null);
     }
-    /**
-     * @return {?}
-     */
     get localeChange() {
         return this._change.asObservable();
     }
     // [NOTE] Performance issue: this method may called by every change detections
     // TODO: cache more deeply paths for performance
-    /**
-     * @param {?} path
-     * @param {?=} data
-     * @return {?}
-     */
     translate(path, data) {
         // this._logger.debug(`[NzI18nService] Translating(${this._locale.locale}): ${path}`);
-        /** @type {?} */
-        let content = (/** @type {?} */ (this._getObjectPath(this._locale, path)));
+        let content = this._getObjectPath(this._locale, path);
         if (typeof content === 'string') {
             if (data) {
-                Object.keys(data).forEach((/**
-                 * @param {?} key
-                 * @return {?}
-                 */
-                key => (content = content.replace(new RegExp(`%${key}%`, 'g'), data[key]))));
+                Object.keys(data).forEach(key => (content = content.replace(new RegExp(`%${key}%`, 'g'), data[key])));
             }
             return content;
         }
@@ -285,8 +390,7 @@ class NzI18nService {
      * NOTE: If called at runtime, rendered interface may not change along with the locale change,
      * because this do not trigger another render schedule.
      *
-     * @param {?} locale The translating letters
-     * @return {?}
+     * @param locale The translating letters
      */
     setLocale(locale) {
         if (this._locale && this._locale.locale === locale.locale) {
@@ -295,39 +399,24 @@ class NzI18nService {
         this._locale = locale;
         this._change.next(locale);
     }
-    /**
-     * @return {?}
-     */
     getLocale() {
         return this._locale;
     }
-    /**
-     * @return {?}
-     */
     getLocaleId() {
         return this._locale ? this._locale.locale : '';
     }
-    /**
-     * @param {?} dateLocale
-     * @return {?}
-     */
     setDateLocale(dateLocale) {
         this.dateLocale = dateLocale;
     }
-    /**
-     * @return {?}
-     */
     getDateLocale() {
         return this.dateLocale;
     }
     /**
      * Get locale data
-     * @param {?} path dot paths for finding exist value from locale data, eg. "a.b.c"
-     * @param {?=} defaultValue default value if the result is not "truthy"
-     * @return {?}
+     * @param path dot paths for finding exist value from locale data, eg. "a.b.c"
+     * @param defaultValue default value if the result is not "truthy"
      */
     getLocaleData(path, defaultValue) {
-        /** @type {?} */
         const result = path ? this._getObjectPath(this._locale, path) : this._locale;
         if (!result && !defaultValue) {
             warn(`Missing translations for "${path}" in language "${this._locale.locale}".
@@ -335,22 +424,12 @@ You can use "NzI18nService.setLocale" as a temporary fix.
 Welcome to submit a pull request to help us optimize the translations!
 https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`);
         }
-        return result || defaultValue || {};
+        return result || defaultValue || this._getObjectPath(en_US, path) || {};
     }
-    /**
-     * @private
-     * @param {?} obj
-     * @param {?} path
-     * @return {?}
-     */
     _getObjectPath(obj, path) {
-        /** @type {?} */
         let res = obj;
-        /** @type {?} */
         const paths = path.split('.');
-        /** @type {?} */
         const depth = paths.length;
-        /** @type {?} */
         let index = 0;
         while (res && index < depth) {
             res = res[paths[index++]];
@@ -358,52 +437,25 @@ https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`);
         return index === depth ? res : null;
     }
 }
+NzI18nService.ɵprov = ɵɵdefineInjectable({ factory: function NzI18nService_Factory() { return new NzI18nService(ɵɵinject(NZ_I18N, 8), ɵɵinject(NZ_DATE_LOCALE, 8)); }, token: NzI18nService, providedIn: "root" });
 NzI18nService.decorators = [
     { type: Injectable, args: [{
                 providedIn: 'root'
             },] }
 ];
-/** @nocollapse */
 NzI18nService.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [NZ_I18N,] }] },
     { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [NZ_DATE_LOCALE,] }] }
 ];
-/** @nocollapse */ NzI18nService.ɵprov = ɵɵdefineInjectable({ factory: function NzI18nService_Factory() { return new NzI18nService(ɵɵinject(NZ_I18N, 8), ɵɵinject(NZ_DATE_LOCALE, 8)); }, token: NzI18nService, providedIn: "root" });
-if (false) {
-    /**
-     * @type {?}
-     * @private
-     */
-    NzI18nService.prototype._locale;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzI18nService.prototype._change;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzI18nService.prototype.dateLocale;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-i18n.pipe.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzI18nPipe {
-    /**
-     * @param {?} _locale
-     */
     constructor(_locale) {
         this._locale = _locale;
     }
-    /**
-     * @param {?} path
-     * @param {?=} keyValue
-     * @return {?}
-     */
     transform(path, keyValue) {
         return this._locale.translate(path, keyValue);
     }
@@ -413,22 +465,13 @@ NzI18nPipe.decorators = [
                 name: 'nzI18n'
             },] }
 ];
-/** @nocollapse */
 NzI18nPipe.ctorParameters = () => [
     { type: NzI18nService }
 ];
-if (false) {
-    /**
-     * @type {?}
-     * @private
-     */
-    NzI18nPipe.prototype._locale;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-i18n.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzI18nModule {
 }
@@ -440,584 +483,61 @@ NzI18nModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: date-config.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @record
- */
-function NzDateConfig() { }
-if (false) {
-    /**
-     * Customize the first day of a week
-     * @type {?|undefined}
-     */
-    NzDateConfig.prototype.firstDayOfWeek;
-}
-/** @type {?} */
 const NZ_DATE_CONFIG = new InjectionToken('date-config');
-/** @type {?} */
 const NZ_DATE_CONFIG_DEFAULT = {
     firstDayOfWeek: undefined
 };
-/**
- * @deprecated Will be removed in 10.0.0, please update to date-fns v2 format
- * @type {?}
- */
-const NZ_DATE_FNS_COMPATIBLE = new InjectionToken('date-format-convert');
-/**
- * @param {?} config
- * @return {?}
- */
 function mergeDateConfig(config) {
     return Object.assign(Object.assign({}, NZ_DATE_CONFIG_DEFAULT), config);
 }
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-i18n.interface.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @record
- */
-function NzPaginationI18nInterface() { }
-if (false) {
-    /** @type {?} */
-    NzPaginationI18nInterface.prototype.items_per_page;
-    /** @type {?} */
-    NzPaginationI18nInterface.prototype.jump_to;
-    /** @type {?} */
-    NzPaginationI18nInterface.prototype.jump_to_confirm;
-    /** @type {?} */
-    NzPaginationI18nInterface.prototype.page;
-    /** @type {?} */
-    NzPaginationI18nInterface.prototype.prev_page;
-    /** @type {?} */
-    NzPaginationI18nInterface.prototype.next_page;
-    /** @type {?} */
-    NzPaginationI18nInterface.prototype.prev_5;
-    /** @type {?} */
-    NzPaginationI18nInterface.prototype.next_5;
-    /** @type {?} */
-    NzPaginationI18nInterface.prototype.prev_3;
-    /** @type {?} */
-    NzPaginationI18nInterface.prototype.next_3;
-}
-/**
- * @record
- */
-function NzGlobalI18nInterface() { }
-if (false) {
-    /** @type {?} */
-    NzGlobalI18nInterface.prototype.placeholder;
-}
-/**
- * @record
- */
-function NzDatePickerI18nInterface() { }
-if (false) {
-    /** @type {?} */
-    NzDatePickerI18nInterface.prototype.lang;
-    /** @type {?} */
-    NzDatePickerI18nInterface.prototype.timePickerLocale;
-}
-/**
- * @record
- */
-function NzCalendarI18nInterface() { }
-if (false) {
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.today;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.now;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.backToToday;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.ok;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.clear;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.month;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.year;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.timeSelect;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.dateSelect;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.monthSelect;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.yearSelect;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.decadeSelect;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.yearFormat;
-    /** @type {?|undefined} */
-    NzCalendarI18nInterface.prototype.monthFormat;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.dateFormat;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.dayFormat;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.dateTimeFormat;
-    /** @type {?|undefined} */
-    NzCalendarI18nInterface.prototype.monthBeforeYear;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.previousMonth;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.nextMonth;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.previousYear;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.nextYear;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.previousDecade;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.nextDecade;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.previousCentury;
-    /** @type {?} */
-    NzCalendarI18nInterface.prototype.nextCentury;
-}
-/**
- * @record
- */
-function NzDatePickerLangI18nInterface() { }
-if (false) {
-    /** @type {?|undefined} */
-    NzDatePickerLangI18nInterface.prototype.placeholder;
-    /** @type {?|undefined} */
-    NzDatePickerLangI18nInterface.prototype.yearPlaceholder;
-    /** @type {?|undefined} */
-    NzDatePickerLangI18nInterface.prototype.quarterPlaceholder;
-    /** @type {?|undefined} */
-    NzDatePickerLangI18nInterface.prototype.monthPlaceholder;
-    /** @type {?|undefined} */
-    NzDatePickerLangI18nInterface.prototype.weekPlaceholder;
-    /** @type {?|undefined} */
-    NzDatePickerLangI18nInterface.prototype.rangePlaceholder;
-    /** @type {?|undefined} */
-    NzDatePickerLangI18nInterface.prototype.rangeYearPlaceholder;
-    /** @type {?|undefined} */
-    NzDatePickerLangI18nInterface.prototype.rangeMonthPlaceholder;
-    /** @type {?|undefined} */
-    NzDatePickerLangI18nInterface.prototype.rangeWeekPlaceholder;
-}
-/**
- * @record
- */
-function NzTimePickerI18nInterface() { }
-if (false) {
-    /** @type {?|undefined} */
-    NzTimePickerI18nInterface.prototype.placeholder;
-    /** @type {?|undefined} */
-    NzTimePickerI18nInterface.prototype.rangePlaceholder;
-}
-/**
- * @record
- */
-function NzFormValidateMessages() { }
-if (false) {
-    /** @type {?|undefined} */
-    NzFormValidateMessages.prototype.default;
-    /** @type {?|undefined} */
-    NzFormValidateMessages.prototype.required;
-    /** @type {?|undefined} */
-    NzFormValidateMessages.prototype.enum;
-    /** @type {?|undefined} */
-    NzFormValidateMessages.prototype.whitespace;
-    /** @type {?|undefined} */
-    NzFormValidateMessages.prototype.date;
-    /** @type {?|undefined} */
-    NzFormValidateMessages.prototype.types;
-    /** @type {?|undefined} */
-    NzFormValidateMessages.prototype.string;
-    /** @type {?|undefined} */
-    NzFormValidateMessages.prototype.number;
-    /** @type {?|undefined} */
-    NzFormValidateMessages.prototype.array;
-    /** @type {?|undefined} */
-    NzFormValidateMessages.prototype.pattern;
-}
-/**
- * @record
- */
-function NzTableI18nInterface() { }
-if (false) {
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.filterTitle;
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.filterConfirm;
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.filterReset;
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.selectAll;
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.selectInvert;
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.selectionAll;
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.sortTitle;
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.expand;
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.collapse;
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.triggerDesc;
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.triggerAsc;
-    /** @type {?|undefined} */
-    NzTableI18nInterface.prototype.cancelSort;
-}
-/**
- * @record
- */
-function NzModalI18nInterface() { }
-if (false) {
-    /** @type {?} */
-    NzModalI18nInterface.prototype.okText;
-    /** @type {?} */
-    NzModalI18nInterface.prototype.cancelText;
-    /** @type {?} */
-    NzModalI18nInterface.prototype.justOkText;
-}
-/**
- * @record
- */
-function NzPopconfirmI18nInterface() { }
-if (false) {
-    /** @type {?} */
-    NzPopconfirmI18nInterface.prototype.okText;
-    /** @type {?} */
-    NzPopconfirmI18nInterface.prototype.cancelText;
-}
-/**
- * @record
- */
-function NzTransferI18nInterface() { }
-if (false) {
-    /** @type {?|undefined} */
-    NzTransferI18nInterface.prototype.titles;
-    /** @type {?|undefined} */
-    NzTransferI18nInterface.prototype.searchPlaceholder;
-    /** @type {?|undefined} */
-    NzTransferI18nInterface.prototype.itemUnit;
-    /** @type {?|undefined} */
-    NzTransferI18nInterface.prototype.itemsUnit;
-}
-/**
- * @record
- */
-function NzUploadI18nInterface() { }
-if (false) {
-    /** @type {?|undefined} */
-    NzUploadI18nInterface.prototype.uploading;
-    /** @type {?|undefined} */
-    NzUploadI18nInterface.prototype.removeFile;
-    /** @type {?|undefined} */
-    NzUploadI18nInterface.prototype.uploadError;
-    /** @type {?|undefined} */
-    NzUploadI18nInterface.prototype.previewFile;
-    /** @type {?|undefined} */
-    NzUploadI18nInterface.prototype.downloadFile;
-}
-/**
- * @record
- */
-function NzEmptyI18nInterface() { }
-if (false) {
-    /** @type {?} */
-    NzEmptyI18nInterface.prototype.description;
-}
-/**
- * @record
- */
-function NzTextI18nInterface() { }
-if (false) {
-    /** @type {?} */
-    NzTextI18nInterface.prototype.edit;
-    /** @type {?} */
-    NzTextI18nInterface.prototype.copy;
-    /** @type {?} */
-    NzTextI18nInterface.prototype.copied;
-    /** @type {?} */
-    NzTextI18nInterface.prototype.expand;
-}
-/**
- * @record
- */
-function NzI18nInterface() { }
-if (false) {
-    /** @type {?} */
-    NzI18nInterface.prototype.locale;
-    /** @type {?} */
-    NzI18nInterface.prototype.Pagination;
-    /** @type {?} */
-    NzI18nInterface.prototype.DatePicker;
-    /** @type {?} */
-    NzI18nInterface.prototype.TimePicker;
-    /** @type {?} */
-    NzI18nInterface.prototype.Calendar;
-    /** @type {?|undefined} */
-    NzI18nInterface.prototype.global;
-    /** @type {?} */
-    NzI18nInterface.prototype.Table;
-    /** @type {?} */
-    NzI18nInterface.prototype.Modal;
-    /** @type {?} */
-    NzI18nInterface.prototype.Popconfirm;
-    /** @type {?} */
-    NzI18nInterface.prototype.Transfer;
-    /** @type {?} */
-    NzI18nInterface.prototype.Upload;
-    /** @type {?} */
-    NzI18nInterface.prototype.Empty;
-    /** @type {?|undefined} */
-    NzI18nInterface.prototype.Text;
-    /** @type {?|undefined} */
-    NzI18nInterface.prototype.Form;
-}
-
-/**
- * @fileoverview added by tsickle
- * Generated from: convert-tokens.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
- * @record
- */
-function TokensMap() { }
-/** @type {?} */
-const tokensMap = {
-    M: 'L',
-    Mo: 'Mo',
-    MM: 'LL',
-    MMM: 'LLL',
-    MMMM: 'LLLL',
-    Q: 'q',
-    Qo: 'qo',
-    D: 'd',
-    Do: 'do',
-    DD: 'dd',
-    DDD: 'D',
-    DDDo: 'Do',
-    DDDD: 'DDD',
-    d: 'i',
-    do: 'io',
-    dd: 'iiiiii',
-    ddd: 'iii',
-    dddd: 'iiii',
-    A: 'a',
-    a: 'a',
-    aa: 'aaaa',
-    E: 'i',
-    W: 'I',
-    Wo: 'Io',
-    WW: 'II',
-    YY: 'yy',
-    YYYY: 'yyyy',
-    GG: 'RR',
-    GGGG: 'RRRR',
-    H: 'H',
-    HH: 'HH',
-    h: 'h',
-    hh: 'hh',
-    m: 'm',
-    mm: 'mm',
-    s: 's',
-    ss: 'ss',
-    S: 'S',
-    SS: 'SS',
-    SSS: 'SSS',
-    Z: 'xxx',
-    ZZ: 'xx',
-    X: 't',
-    x: 'T'
-};
-/** @type {?} */
-const v1tokens = Object.keys(tokensMap).sort().reverse();
-// tslint:disable-next-line:prefer-template
-/** @type {?} */
-const tokensRegExp = new RegExp('(\\[[^\\[]*\\])|(\\\\)?' + '(' + v1tokens.join('|') + '|.)', 'g');
-/**
- * @record
- */
-function TokensBuffer() { }
-if (false) {
-    /** @type {?} */
-    TokensBuffer.prototype.formatBuffer;
-    /** @type {?} */
-    TokensBuffer.prototype.textBuffer;
-}
-/**
- * @param {?} format
- * @return {?}
- */
-function convertTokens(format) {
-    warnDeprecation(`'NZ_DATE_FNS_COMPATIBLE' will be removed in 10.0.0, please update to date-fns v2 format.`);
-    /** @type {?} */
-    const tokensCaptures = format.match(tokensRegExp);
-    if (tokensCaptures) {
-        return tokensCaptures
-            .reduce((/**
-         * @param {?} acc
-         * @param {?} tokenString
-         * @param {?} index
-         * @return {?}
-         */
-        (acc, tokenString, index) => {
-            /** @type {?} */
-            const v2token = tokensMap[tokenString];
-            if (!v2token) {
-                /** @type {?} */
-                const escapedCaptures = tokenString.match(/^\[(.+)\]$/);
-                if (escapedCaptures) {
-                    acc.textBuffer.push(escapedCaptures[1]);
-                }
-                else {
-                    acc.textBuffer.push(tokenString);
-                }
-            }
-            /** @type {?} */
-            const endOfString = index === tokensCaptures.length - 1;
-            if (acc.textBuffer.length && (v2token || endOfString)) {
-                acc.formatBuffer.push(`'${acc.textBuffer.join('')}'`);
-                acc.textBuffer = [];
-            }
-            if (v2token) {
-                acc.formatBuffer.push(v2token);
-            }
-            return acc;
-        }), (/** @type {?} */ ({ formatBuffer: [], textBuffer: [] })))
-            .formatBuffer.join('');
-    }
-    else {
-        return format;
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * Generated from: date-helper.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
- * @param {?} injector
- * @param {?} config
- * @param {?} convertFormat
- * @return {?}
- */
-function DATE_HELPER_SERVICE_FACTORY(injector, config, convertFormat) {
-    /** @type {?} */
+function DATE_HELPER_SERVICE_FACTORY(injector, config) {
     const i18n = injector.get(NzI18nService);
-    return i18n.getDateLocale()
-        ? new DateHelperByDateFns(i18n, config, convertFormat)
-        : new DateHelperByDatePipe(i18n, config, convertFormat);
+    return i18n.getDateLocale() ? new DateHelperByDateFns(i18n, config) : new DateHelperByDatePipe(i18n, config);
 }
 /**
  * Abstract DateHelperService(Token via Class)
  * Compatibility: compact for original usage by default which using DatePipe
- * @abstract
  */
 class DateHelperService {
-    /**
-     * @param {?} i18n
-     * @param {?} config
-     * @param {?} convertFormat
-     */
-    constructor(i18n, config, convertFormat) {
+    constructor(i18n, config) {
         this.i18n = i18n;
         this.config = config;
-        this.convertFormat = convertFormat;
         this.config = mergeDateConfig(this.config);
     }
 }
+DateHelperService.ɵprov = ɵɵdefineInjectable({ factory: function DateHelperService_Factory() { return DATE_HELPER_SERVICE_FACTORY(ɵɵinject(INJECTOR), ɵɵinject(NZ_DATE_CONFIG, 8)); }, token: DateHelperService, providedIn: "root" });
 DateHelperService.decorators = [
     { type: Injectable, args: [{
                 providedIn: 'root',
                 useFactory: DATE_HELPER_SERVICE_FACTORY,
-                deps: [Injector, [new Optional(), NZ_DATE_CONFIG], [new Optional(), NZ_DATE_FNS_COMPATIBLE]]
+                deps: [Injector, [new Optional(), NZ_DATE_CONFIG]]
             },] }
 ];
-/** @nocollapse */
 DateHelperService.ctorParameters = () => [
     { type: NzI18nService },
-    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [NZ_DATE_CONFIG,] }] },
-    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [NZ_DATE_FNS_COMPATIBLE,] }] }
+    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [NZ_DATE_CONFIG,] }] }
 ];
-/** @nocollapse */ DateHelperService.ɵprov = ɵɵdefineInjectable({ factory: function DateHelperService_Factory() { return DATE_HELPER_SERVICE_FACTORY(ɵɵinject(INJECTOR), ɵɵinject(NZ_DATE_CONFIG, 8), ɵɵinject(NZ_DATE_FNS_COMPATIBLE, 8)); }, token: DateHelperService, providedIn: "root" });
-if (false) {
-    /**
-     * @type {?}
-     * @protected
-     */
-    DateHelperService.prototype.i18n;
-    /**
-     * @type {?}
-     * @protected
-     */
-    DateHelperService.prototype.config;
-    /**
-     * @type {?}
-     * @protected
-     */
-    DateHelperService.prototype.convertFormat;
-    /**
-     * @abstract
-     * @param {?} date
-     * @return {?}
-     */
-    DateHelperService.prototype.getISOWeek = function (date) { };
-    /**
-     * @abstract
-     * @return {?}
-     */
-    DateHelperService.prototype.getFirstDayOfWeek = function () { };
-    /**
-     * @abstract
-     * @param {?} date
-     * @param {?} formatStr
-     * @return {?}
-     */
-    DateHelperService.prototype.format = function (date, formatStr) { };
-    /**
-     * @abstract
-     * @param {?} text
-     * @param {?=} formatStr
-     * @return {?}
-     */
-    DateHelperService.prototype.parseDate = function (text, formatStr) { };
-    /**
-     * @abstract
-     * @param {?} text
-     * @param {?=} formatStr
-     * @return {?}
-     */
-    DateHelperService.prototype.parseTime = function (text, formatStr) { };
-}
 /**
  * DateHelper that handles date formats with date-fns
  */
 class DateHelperByDateFns extends DateHelperService {
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     getISOWeek(date) {
         return fnsGetISOWeek(date);
     }
     // Use date-fns's "weekStartsOn" to support different locale when "config.firstDayOfWeek" is null
     // https://github.com/date-fns/date-fns/blob/v2.0.0-alpha.27/src/locale/en-US/index.js#L23
-    /**
-     * @return {?}
-     */
     getFirstDayOfWeek() {
-        /** @type {?} */
         let defaultWeekStartsOn;
         try {
-            defaultWeekStartsOn = (/** @type {?} */ ((/** @type {?} */ (this.i18n.getDateLocale().options)).weekStartsOn));
+            defaultWeekStartsOn = this.i18n.getDateLocale().options.weekStartsOn;
         }
         catch (e) {
             defaultWeekStartsOn = 1;
@@ -1027,38 +547,23 @@ class DateHelperByDateFns extends DateHelperService {
     /**
      * Format a date
      * @see https://date-fns.org/docs/format#description
-     * @param {?} date Date
-     * @param {?} formatStr format string
-     * @return {?}
+     * @param date Date
+     * @param formatStr format string
      */
     format(date, formatStr) {
-        /** @type {?} */
-        const mergedStr = this.convertFormat ? convertTokens(formatStr) : formatStr;
-        return date ? fnsFormat(date, mergedStr, { locale: this.i18n.getDateLocale() }) : '';
+        return date ? fnsFormat(date, formatStr, { locale: this.i18n.getDateLocale() }) : '';
     }
-    /**
-     * @param {?} text
-     * @param {?} formatStr
-     * @return {?}
-     */
     parseDate(text, formatStr) {
-        /** @type {?} */
-        const mergedStr = this.convertFormat ? convertTokens(formatStr) : formatStr;
-        return fnsParse(text, mergedStr, new Date(), {
+        return fnsParse(text, formatStr, new Date(), {
             locale: this.i18n.getDateLocale(),
             weekStartsOn: this.getFirstDayOfWeek()
         });
     }
-    /**
-     * @param {?} text
-     * @param {?} formatStr
-     * @return {?}
-     */
     parseTime(text, formatStr) {
         return this.parseDate(text, formatStr);
     }
 }
-/** @nocollapse */ DateHelperByDateFns.ɵprov = ɵɵdefineInjectable({ factory: function DateHelperByDateFns_Factory() { return DATE_HELPER_SERVICE_FACTORY(ɵɵinject(INJECTOR), ɵɵinject(NZ_DATE_CONFIG, 8), ɵɵinject(NZ_DATE_FNS_COMPATIBLE, 8)); }, token: DateHelperByDateFns, providedIn: "root" });
+DateHelperByDateFns.ɵprov = ɵɵdefineInjectable({ factory: function DateHelperByDateFns_Factory() { return DATE_HELPER_SERVICE_FACTORY(ɵɵinject(INJECTOR), ɵɵinject(NZ_DATE_CONFIG, 8)); }, token: DateHelperByDateFns, providedIn: "root" });
 /**
  * DateHelper that handles date formats with angular's date-pipe
  *
@@ -1066,57 +571,29 @@ class DateHelperByDateFns extends DateHelperService {
  *
  */
 class DateHelperByDatePipe extends DateHelperService {
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     getISOWeek(date) {
         return +this.format(date, 'w');
     }
-    /**
-     * @return {?}
-     */
     getFirstDayOfWeek() {
         if (this.config.firstDayOfWeek === undefined) {
-            /** @type {?} */
             const locale = this.i18n.getLocaleId();
             return locale && ['zh-cn', 'zh-tw'].indexOf(locale.toLowerCase()) > -1 ? 1 : 0;
         }
         return this.config.firstDayOfWeek;
     }
-    /**
-     * @param {?} date
-     * @param {?} formatStr
-     * @return {?}
-     */
     format(date, formatStr) {
-        return date ? (/** @type {?} */ (formatDate(date, formatStr, this.i18n.getLocaleId()))) : '';
+        return date ? formatDate(date, formatStr, this.i18n.getLocaleId()) : '';
     }
-    /**
-     * @param {?} text
-     * @return {?}
-     */
     parseDate(text) {
         return new Date(text);
     }
-    /**
-     * @param {?} text
-     * @return {?}
-     */
-    parseTime(text) {
-        if (!text) {
-            return;
-        }
-        return new Date(Date.parse(`1970-01-01 ${text}`));
+    parseTime(text, formatStr) {
+        const parser = new ɵNgTimeParser(formatStr, this.i18n.getLocaleId());
+        return parser.toDate(text);
     }
 }
-/** @nocollapse */ DateHelperByDatePipe.ɵprov = ɵɵdefineInjectable({ factory: function DateHelperByDatePipe_Factory() { return DATE_HELPER_SERVICE_FACTORY(ɵɵinject(INJECTOR), ɵɵinject(NZ_DATE_CONFIG, 8), ɵɵinject(NZ_DATE_FNS_COMPATIBLE, 8)); }, token: DateHelperByDatePipe, providedIn: "root" });
+DateHelperByDatePipe.ɵprov = ɵɵdefineInjectable({ factory: function DateHelperByDatePipe_Factory() { return DATE_HELPER_SERVICE_FACTORY(ɵɵinject(INJECTOR), ɵɵinject(NZ_DATE_CONFIG, 8)); }, token: DateHelperByDatePipe, providedIn: "root" });
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/ar_EG.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -1216,12 +693,22 @@ var ar_EG = {
         dateTimeFormat: 'DD-MM-YYYY HH:mm:ss',
         weekFormat: 'wo-YYYY'
     },
+    global: {
+        placeholder: 'يرجى التحديد'
+    },
     Table: {
         filterTitle: 'الفلاتر',
         filterConfirm: 'تأكيد',
         filterReset: 'إعادة ضبط',
         selectAll: 'اختيار الكل',
-        selectInvert: 'إلغاء الاختيار'
+        selectInvert: 'إلغاء الاختيار',
+        selectionAll: 'حدد جميع البيانات',
+        sortTitle: 'رتب',
+        expand: 'توسيع الصف',
+        collapse: 'طي الصف',
+        triggerDesc: 'ترتيب تنازلي',
+        triggerAsc: 'ترتيب تصاعدي',
+        cancelSort: 'إلغاء الترتيب'
     },
     Modal: {
         okText: 'تأكيد',
@@ -1246,14 +733,149 @@ var ar_EG = {
     },
     Empty: {
         description: 'لا توجد بيانات'
+    },
+    Icon: {
+        icon: 'أيقونة'
+    },
+    Text: {
+        edit: 'تعديل',
+        copy: 'نسخ',
+        copied: 'نقل',
+        expand: 'وسع'
+    },
+    PageHeader: {
+        back: 'عودة'
     }
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/bg_BG.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+var az_AZ = {
+    locale: 'az',
+    Pagination: {
+        items_per_page: '/ səhifə',
+        jump_to: 'Get',
+        jump_to_confirm: 'təsdiqlə',
+        page: '',
+        prev_page: 'Əvvəlki Səhifə',
+        next_page: 'Növbəti Səhifə',
+        prev_5: 'Əvvəlki 5 Səhifə',
+        next_5: 'Növbəti 5 Səhifə',
+        prev_3: 'Əvvəlki 3 Səhifə',
+        next_3: 'Növbəti 3 Səhifə'
+    },
+    DatePicker: {
+        lang: {
+            placeholder: 'Tarix seçin',
+            rangePlaceholder: ['Başlama tarixi', 'Bitmə tarixi'],
+            locale: 'az_AZ',
+            today: 'Bugün',
+            now: 'İndi',
+            backToToday: 'Bugünə qayıt',
+            ok: 'Təsdiq',
+            clear: 'Təmizlə',
+            month: 'Ay',
+            year: 'İl',
+            timeSelect: 'vaxtı seç',
+            dateSelect: 'tarixi seç',
+            weekSelect: 'Həftə seç',
+            monthSelect: 'Ay seç',
+            yearSelect: 'il seç',
+            decadeSelect: 'Onillik seçin',
+            yearFormat: 'YYYY',
+            dateFormat: 'D.M.YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D.M.YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Əvvəlki ay (PageUp)',
+            nextMonth: 'Növbəti ay (PageDown)',
+            previousYear: 'Sonuncu il (Control + left)',
+            nextYear: 'Növbəti il (Control + right)',
+            previousDecade: 'Sonuncu onillik',
+            nextDecade: 'Növbəti onillik',
+            previousCentury: 'Sonuncu əsr',
+            nextCentury: 'Növbəti əsr'
+        },
+        timePickerLocale: {
+            placeholder: 'Vaxtı seç'
+        }
+    },
+    TimePicker: {
+        placeholder: 'Vaxtı seç'
+    },
+    Calendar: {
+        lang: {
+            placeholder: 'Tarix seçin',
+            rangePlaceholder: ['Başlama tarixi', 'Bitmə tarixi'],
+            locale: 'az_AZ',
+            today: 'Bugün',
+            now: 'İndi',
+            backToToday: 'Bugünə qayıt',
+            ok: 'Təsdiq',
+            clear: 'Təmizlə',
+            month: 'Ay',
+            year: 'İl',
+            timeSelect: 'vaxtı seç',
+            dateSelect: 'tarixi seç',
+            weekSelect: 'Həftə seç',
+            monthSelect: 'Ay seç',
+            yearSelect: 'il seç',
+            decadeSelect: 'Onillik seçin',
+            yearFormat: 'YYYY',
+            dateFormat: 'D.M.YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D.M.YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Əvvəlki ay (PageUp)',
+            nextMonth: 'Növbəti ay (PageDown)',
+            previousYear: 'Sonuncu il (Control + left)',
+            nextYear: 'Növbəti il (Control + right)',
+            previousDecade: 'Sonuncu onillik',
+            nextDecade: 'Növbəti onillik',
+            previousCentury: 'Sonuncu əsr',
+            nextCentury: 'Növbəti əsr'
+        },
+        timePickerLocale: {
+            placeholder: 'Vaxtı seç'
+        }
+    },
+    Table: {
+        filterTitle: 'Filter menyu',
+        filterConfirm: 'Axtar',
+        filterReset: 'Sıfırla',
+        emptyText: 'Məlumat yoxdur',
+        selectAll: 'Cari səhifəni seç',
+        selectInvert: 'Invert current page'
+    },
+    Modal: {
+        okText: 'Bəli',
+        cancelText: 'Ləğv et',
+        justOkText: 'Bəli'
+    },
+    Popconfirm: {
+        okText: 'Bəli',
+        cancelText: 'Ləğv et'
+    },
+    Transfer: {
+        titles: ['', ''],
+        notFoundContent: 'Tapılmadı',
+        searchPlaceholder: 'Burada axtar',
+        itemUnit: 'item',
+        itemsUnit: 'items'
+    },
+    Select: {
+        notFoundContent: 'Tapılmadı'
+    },
+    Upload: {
+        uploading: 'Yüklənir...',
+        removeFile: 'Faylı sil',
+        uploadError: 'Yükləmə xətası',
+        previewFile: 'Fayla önbaxış'
+    }
+};
+
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -1379,10 +1001,179 @@ var bg_BG = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/ca_ES.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+var by_BY = {
+    locale: 'by',
+    Pagination: {
+        items_per_page: '/старонка',
+        jump_to: 'Перайсці',
+        jump_to_confirm: 'Пацвердзіць',
+        page: '',
+        prev_page: 'Назад',
+        next_page: 'Наперад',
+        prev_5: 'Папярэднія 5',
+        next_5: 'Наступныя 5',
+        prev_3: 'Папярэднія 3',
+        next_3: 'Наступныя 3'
+    },
+    DatePicker: {
+        lang: {
+            placeholder: 'Выберыце дату',
+            yearPlaceholder: 'Выберыце год',
+            quarterPlaceholder: 'Выберыце квартал',
+            monthPlaceholder: 'Выберыце месяц',
+            weekPlaceholder: 'Выберыце тыдзень',
+            rangePlaceholder: ['Пачатковая дата', 'Канчатковая дата'],
+            rangeYearPlaceholder: ['Пачатковы год', 'Год заканчэння'],
+            rangeMonthPlaceholder: ['Пачатковы месяц', 'Канчатковы месяц'],
+            rangeWeekPlaceholder: ['Пачатковы тыдзень', 'Канчатковы тыдзень'],
+            locale: 'by_BY',
+            today: 'Сёння',
+            now: 'Зараз',
+            backToToday: 'Дадзеная дата',
+            ok: 'Ok',
+            clear: 'Ачысціць',
+            month: 'Месяц',
+            year: 'Год',
+            timeSelect: 'Выбраць час',
+            dateSelect: 'Выбраць дату',
+            weekSelect: 'Выбраць тыдзень',
+            monthSelect: 'Выбраць месяц',
+            yearSelect: 'Выбраць год',
+            decadeSelect: 'Выбраць дзесяцігоддзе',
+            yearFormat: 'YYYY',
+            dateFormat: 'D-M-YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D-M-YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Папярэдні месяц (PageUp)',
+            nextMonth: 'Наступны месяц (PageDown)',
+            previousYear: 'Папярэдні год (Control + left)',
+            nextYear: 'Наступны год (Control + right)',
+            previousDecade: 'Папярэдняе дзесяцігоддзе',
+            nextDecade: 'Наступнае дзесяцігоддзе',
+            previousCentury: 'Папярэдні век',
+            nextCentury: 'Наступны век'
+        },
+        timePickerLocale: {
+            placeholder: 'Выберыце час',
+            rangePlaceholder: ['Час пачатку', 'Час заканчэння']
+        }
+    },
+    TimePicker: {
+        placeholder: 'Выберыце час',
+        rangePlaceholder: ['Час пачатку', 'Час заканчэння']
+    },
+    Calendar: {
+        lang: {
+            placeholder: 'Выберыце дату',
+            yearPlaceholder: 'Выберыце год',
+            quarterPlaceholder: 'Выберыце квартал',
+            monthPlaceholder: 'Выберыце месяц',
+            weekPlaceholder: 'Выберыце тыдзень',
+            rangePlaceholder: ['Пачатковая дата', 'Канчатковая дата'],
+            rangeYearPlaceholder: ['Пачатковы год', 'Год заканчэння'],
+            rangeMonthPlaceholder: ['Пачатковы месяц', 'Канчатковы месяц'],
+            rangeWeekPlaceholder: ['Пачатковы тыдзень', 'Канчатковы тыдзень'],
+            locale: 'by_BY',
+            today: 'Сёння',
+            now: 'Зараз',
+            backToToday: 'Дадзеная дата',
+            ok: 'Ok',
+            clear: 'Ачысціць',
+            month: 'Месяц',
+            year: 'Год',
+            timeSelect: 'Выбраць час',
+            dateSelect: 'Выбраць дату',
+            weekSelect: 'Выбраць тыдзень',
+            monthSelect: 'Выбраць месяц',
+            yearSelect: 'Выбраць год',
+            decadeSelect: 'Выбраць дзесяцігоддзе',
+            yearFormat: 'YYYY',
+            dateFormat: 'D-M-YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D-M-YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Папярэдні месяц (PageUp)',
+            nextMonth: 'Наступны месяц (PageDown)',
+            previousYear: 'Папярэдні год (Control + left)',
+            nextYear: 'Наступны год (Control + right)',
+            previousDecade: 'Папярэдняе дзесяцігоддзе',
+            nextDecade: 'Наступнае дзесяцігоддзе',
+            previousCentury: 'Папярэдні век',
+            nextCentury: 'Наступны век'
+        },
+        timePickerLocale: {
+            placeholder: 'Выберыце час',
+            rangePlaceholder: ['Час пачатку', 'Час заканчэння']
+        }
+    },
+    global: {
+        placeholder: 'Калі ласка выберыце'
+    },
+    Table: {
+        filterTitle: 'Фільтр',
+        filterConfirm: 'OK',
+        filterReset: 'Скінуць',
+        filterEmptyText: 'Без фільтраў',
+        emptyText: 'Няма дадзеных',
+        selectAll: 'Выбраць усе',
+        selectInvert: 'Інвертаваць выбар',
+        selectionAll: 'Выбраць усе дадзеныя',
+        sortTitle: 'Сартаванне',
+        expand: 'Разгарнуць радок',
+        collapse: 'Згарнуць радок',
+        triggerDesc: 'Націсніце для сартавання па змяншэнні',
+        triggerAsc: 'Націсніце для сартавання па ўзросту',
+        cancelSort: 'Націсніце, каб адмяніць сартаванне'
+    },
+    Modal: {
+        okText: 'OK',
+        cancelText: 'Адмена',
+        justOkText: 'OK'
+    },
+    Popconfirm: {
+        okText: 'OK',
+        cancelText: 'Адмена'
+    },
+    Transfer: {
+        titles: ['', ''],
+        searchPlaceholder: 'Пошук',
+        itemUnit: 'элем.',
+        itemsUnit: 'элем.',
+        remove: 'Выдаліць',
+        selectAll: 'Выбраць усе дадзеныя',
+        selectCurrent: 'Вылучыць дадзеную старонку',
+        selectInvert: 'Паказаць у зваротным парадку',
+        removeAll: 'Выдаліць усе дадзеныя',
+        removeCurrent: 'Выдаліць дадзеную старонку'
+    },
+    Upload: {
+        uploading: 'Загрузка...',
+        removeFile: 'Выдаліць файл',
+        uploadError: 'Адбылася памылка пры загрузцы',
+        previewFile: 'Прадпрагляд файла',
+        downloadFile: 'Загрузіць файл'
+    },
+    Empty: {
+        description: 'Няма дадзеных'
+    },
+    Icon: {
+        icon: 'Іконка'
+    },
+    Text: {
+        edit: 'Рэдагаваць',
+        copy: 'Капіяваць',
+        copied: 'Капіяванне завершана',
+        expand: 'Разгарнуць'
+    },
+    PageHeader: {
+        back: 'Назад'
+    }
+};
+
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -1474,42 +1265,69 @@ var ca_ES = {
             placeholder: 'Seleccionar hora'
         }
     },
+    global: {
+        placeholder: 'Seleccionar'
+    },
     Table: {
-        filterTitle: 'Filtrar Menu',
-        filterConfirm: 'OK',
-        filterReset: 'Restablir'
+        filterTitle: 'Filtrar el menú',
+        filterConfirm: 'D’acord',
+        filterReset: 'Reiniciar',
+        filterEmptyText: 'Sense filtres',
+        selectAll: 'Seleccionar la pàgina actual',
+        selectInvert: 'Invertir la selecció',
+        selectionAll: 'Seleccionar-ho tot',
+        sortTitle: 'Ordenar',
+        expand: 'Ampliar la fila',
+        collapse: 'Plegar la fila',
+        triggerDesc: 'Ordre descendent',
+        triggerAsc: 'Ordre ascendent',
+        cancelSort: 'Desactivar l’ordre'
     },
     Modal: {
-        okText: 'OK',
+        okText: 'D’acord',
         cancelText: 'Cancel·lar',
-        justOkText: 'OK'
+        justOkText: 'D’acord'
     },
     Popconfirm: {
-        okText: 'OK',
+        okText: 'D’acord',
         cancelText: 'Cancel·lar'
     },
     Transfer: {
-        searchPlaceholder: 'Cercar aquí',
-        itemUnit: 'item',
-        itemsUnit: 'items'
+        titles: ['', ''],
+        searchPlaceholder: 'Cercar',
+        itemUnit: 'ítem',
+        itemsUnit: 'ítems',
+        remove: 'Eliminar',
+        selectCurrent: 'Seleccionar la pàgina actual',
+        removeCurrent: 'Eliminar la selecció',
+        selectAll: 'Seleccionar-ho tot',
+        removeAll: 'Eliminar-ho tot',
+        selectInvert: 'Invertir la selecció'
     },
     Upload: {
-        uploading: 'Carregant...',
-        removeFile: 'Elimina el fitxer',
+        uploading: 'Carregant…',
+        removeFile: 'Eliminar el fitxer',
         uploadError: 'Error de càrrega',
         previewFile: 'Vista prèvia del fitxer',
-        downloadFile: "Descarrega l'arxiu"
+        downloadFile: 'Baixar el fitxer'
     },
     Empty: {
         description: 'Sense dades'
+    },
+    Icon: {
+        icon: 'icona'
+    },
+    Text: {
+        edit: 'Editar',
+        copy: 'Copiar',
+        copied: 'Copiat',
+        expand: 'Ampliar'
+    },
+    PageHeader: {
+        back: 'Enrere'
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/cs_CZ.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -1601,10 +1419,23 @@ var cs_CZ = {
             placeholder: 'Vybrat čas'
         }
     },
+    global: {
+        placeholder: 'Prosím vyber'
+    },
     Table: {
         filterTitle: 'Filtr',
         filterConfirm: 'Potvrdit',
-        filterReset: 'Obnovit'
+        filterReset: 'Obnovit',
+        filterEmptyText: 'Žádné filtry',
+        selectAll: 'Vybrat všehchny řádky na současné stránce',
+        selectInvert: 'Invertovat výběr na současné stránce',
+        selectionAll: 'Vybrat všechny řádky',
+        sortTitle: 'Řadit',
+        expand: 'Rozbalit řádek',
+        collapse: 'Zabalit řádek',
+        triggerDesc: 'Klikni pro sestupné řazení',
+        triggerAsc: 'Klikni pro vzestupné řazení',
+        cancelSort: 'Klikni pro zrušení řazení'
     },
     Modal: {
         okText: 'Ok',
@@ -1632,11 +1463,6 @@ var cs_CZ = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/da_DK.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -1762,11 +1588,6 @@ var da_DK = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/de_DE.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -1869,7 +1690,10 @@ var de_DE = {
         selectionAll: 'Wählen Sie alle Daten aus',
         sortTitle: 'Sortieren',
         expand: 'Zeile erweitern',
-        collapse: 'Zeile reduzieren'
+        collapse: 'Zeile reduzieren',
+        triggerDesc: 'Klicken zur absteigenden  Sortierung',
+        triggerAsc: 'Klicken zur aufsteigenden Sortierung',
+        cancelSort: 'Klicken zum Abbrechen der Sortierung'
     },
     Modal: {
         okText: 'OK',
@@ -1906,11 +1730,6 @@ var de_DE = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/el_GR.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -2036,11 +1855,6 @@ var el_GR = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/en_GB.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -2164,231 +1978,6 @@ var en_GB = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/en_US.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
-var en_US = {
-    locale: 'en',
-    Pagination: {
-        items_per_page: '/ page',
-        jump_to: 'Go to',
-        jump_to_confirm: 'confirm',
-        page: '',
-        prev_page: 'Previous Page',
-        next_page: 'Next Page',
-        prev_5: 'Previous 5 Pages',
-        next_5: 'Next 5 Pages',
-        prev_3: 'Previous 3 Pages',
-        next_3: 'Next 3 Pages'
-    },
-    DatePicker: {
-        lang: {
-            placeholder: 'Select date',
-            yearPlaceholder: 'Select year',
-            quarterPlaceholder: 'Select quarter',
-            monthPlaceholder: 'Select month',
-            weekPlaceholder: 'Select week',
-            rangePlaceholder: ['Start date', 'End date'],
-            rangeYearPlaceholder: ['Start year', 'End year'],
-            rangeMonthPlaceholder: ['Start month', 'End month'],
-            rangeWeekPlaceholder: ['Start week', 'End week'],
-            locale: 'en_US',
-            today: 'Today',
-            now: 'Now',
-            backToToday: 'Back to today',
-            ok: 'Ok',
-            clear: 'Clear',
-            month: 'Month',
-            year: 'Year',
-            timeSelect: 'select time',
-            dateSelect: 'select date',
-            weekSelect: 'Choose a week',
-            monthSelect: 'Choose a month',
-            yearSelect: 'Choose a year',
-            decadeSelect: 'Choose a decade',
-            yearFormat: 'YYYY',
-            dateFormat: 'M/D/YYYY',
-            dayFormat: 'D',
-            dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-            monthBeforeYear: true,
-            previousMonth: 'Previous month (PageUp)',
-            nextMonth: 'Next month (PageDown)',
-            previousYear: 'Last year (Control + left)',
-            nextYear: 'Next year (Control + right)',
-            previousDecade: 'Last decade',
-            nextDecade: 'Next decade',
-            previousCentury: 'Last century',
-            nextCentury: 'Next century'
-        },
-        timePickerLocale: {
-            placeholder: 'Select time',
-            rangePlaceholder: ['Start time', 'End time']
-        }
-    },
-    TimePicker: {
-        placeholder: 'Select time',
-        rangePlaceholder: ['Start time', 'End time']
-    },
-    Calendar: {
-        lang: {
-            placeholder: 'Select date',
-            yearPlaceholder: 'Select year',
-            quarterPlaceholder: 'Select quarter',
-            monthPlaceholder: 'Select month',
-            weekPlaceholder: 'Select week',
-            rangePlaceholder: ['Start date', 'End date'],
-            rangeYearPlaceholder: ['Start year', 'End year'],
-            rangeMonthPlaceholder: ['Start month', 'End month'],
-            rangeWeekPlaceholder: ['Start week', 'End week'],
-            locale: 'en_US',
-            today: 'Today',
-            now: 'Now',
-            backToToday: 'Back to today',
-            ok: 'Ok',
-            clear: 'Clear',
-            month: 'Month',
-            year: 'Year',
-            timeSelect: 'select time',
-            dateSelect: 'select date',
-            weekSelect: 'Choose a week',
-            monthSelect: 'Choose a month',
-            yearSelect: 'Choose a year',
-            decadeSelect: 'Choose a decade',
-            yearFormat: 'YYYY',
-            dateFormat: 'M/D/YYYY',
-            dayFormat: 'D',
-            dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-            monthBeforeYear: true,
-            previousMonth: 'Previous month (PageUp)',
-            nextMonth: 'Next month (PageDown)',
-            previousYear: 'Last year (Control + left)',
-            nextYear: 'Next year (Control + right)',
-            previousDecade: 'Last decade',
-            nextDecade: 'Next decade',
-            previousCentury: 'Last century',
-            nextCentury: 'Next century'
-        },
-        timePickerLocale: {
-            placeholder: 'Select time',
-            rangePlaceholder: ['Start time', 'End time']
-        }
-    },
-    global: {
-        placeholder: 'Please select'
-    },
-    Table: {
-        filterTitle: 'Filter menu',
-        filterConfirm: 'OK',
-        filterReset: 'Reset',
-        selectAll: 'Select current page',
-        selectInvert: 'Invert current page',
-        selectionAll: 'Select all data',
-        sortTitle: 'Sort',
-        expand: 'Expand row',
-        collapse: 'Collapse row',
-        triggerDesc: 'Click sort by descend',
-        triggerAsc: 'Click sort by ascend',
-        cancelSort: 'Click to cancel sort'
-    },
-    Modal: {
-        okText: 'OK',
-        cancelText: 'Cancel',
-        justOkText: 'OK'
-    },
-    Popconfirm: {
-        okText: 'OK',
-        cancelText: 'Cancel'
-    },
-    Transfer: {
-        titles: ['', ''],
-        searchPlaceholder: 'Search here',
-        itemUnit: 'item',
-        itemsUnit: 'items'
-    },
-    Upload: {
-        uploading: 'Uploading...',
-        removeFile: 'Remove file',
-        uploadError: 'Upload error',
-        previewFile: 'Preview file',
-        downloadFile: 'Download file'
-    },
-    Empty: {
-        description: 'No Data'
-    },
-    Icon: {
-        icon: 'icon'
-    },
-    Text: {
-        edit: 'Edit',
-        copy: 'Copy',
-        copied: 'Copied',
-        expand: 'Expand'
-    },
-    PageHeader: {
-        back: 'Back'
-    },
-    Form: {
-        defaultValidateMessages: {
-            default: 'Field validation error ${label}',
-            required: 'Please enter ${label}',
-            enum: '${label} must be one of [${enum}]',
-            whitespace: '${label} cannot be a blank character',
-            date: {
-                format: '${label} date format is invalid',
-                parse: '${label} cannot be converted to a date',
-                invalid: '${label} is an invalid date'
-            },
-            types: {
-                string: '${label} is not a valid ${type}',
-                method: '${label} is not a valid ${type}',
-                array: '${label} is not a valid ${type}',
-                object: '${label} is not a valid ${type}',
-                number: '${label} is not a valid ${type}',
-                date: '${label} is not a valid ${type}',
-                boolean: '${label} is not a valid ${type}',
-                integer: '${label} is not a valid ${type}',
-                float: '${label} is not a valid ${type}',
-                regexp: '${label} is not a valid ${type}',
-                email: '${label} is not a valid ${type}',
-                url: '${label} is not a valid ${type}',
-                hex: '${label} is not a valid ${type}'
-            },
-            string: {
-                len: '${label} must be ${len} characters',
-                min: '${label} at least ${min} characters',
-                max: '${label} up to ${max} characters',
-                range: '${label} must be between ${min}-${max} characters'
-            },
-            number: {
-                len: '${label} must be equal to ${len}',
-                min: '${label} minimum value is ${min}',
-                max: '${label} maximum value is ${max}',
-                range: '${label} must be between ${min}-${max}'
-            },
-            array: {
-                len: 'Must be ${len} ${label}',
-                min: 'At least ${min} ${label}',
-                max: 'At most ${max} ${label}',
-                range: 'The amount of ${label} must be between ${min}-${max}'
-            },
-            pattern: {
-                mismatch: '${label} does not match the pattern ${pattern}'
-            }
-        }
-    }
-};
-
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/es_ES.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -2530,11 +2119,6 @@ var es_ES = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/et_EE.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -2658,11 +2242,6 @@ var et_EE = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/fa_IR.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -2804,63 +2383,9 @@ var fa_IR = {
     },
     PageHeader: {
         back: 'برگشت'
-    },
-    Form: {
-        defaultValidateMessages: {
-            default: 'خطا در ${label}',
-            required: 'فیلد ${label} اجباریست',
-            enum: '${label} باید یکی از [${enum}] باشد',
-            whitespace: '${label} نمیتواند خالی باشد',
-            date: {
-                format: 'ساختار تاریخ در ${label} نامعتبر است',
-                parse: '${label} قابل تبدیل به تاریخ نیست',
-                invalid: '${label} تاریخی نا معتبر است'
-            },
-            types: {
-                string: '${label} از نوع ${type} معتبر نیست',
-                method: '${label} از نوع ${type} معتبر نیست',
-                array: '${label} از نوع ${type} معتبر نیست',
-                object: '${label} از نوع ${type} معتبر نیست',
-                number: '${label} از نوع ${type} معتبر نیست',
-                date: '${label} از نوع ${type} معتبر نیست',
-                boolean: '${label} از نوع ${type} معتبر نیست',
-                integer: '${label} از نوع ${type} معتبر نیست',
-                float: '${label} از نوع ${type} معتبر نیست',
-                regexp: '${label} از نوع ${type} معتبر نیست',
-                email: '${label} از نوع ${type} معتبر نیست',
-                url: '${label} از نوع ${type} معتبر نیست',
-                hex: '${label} از نوع ${type} معتبر نیست'
-            },
-            string: {
-                len: '${label} باید ${len} کاراکتر باشد',
-                min: '${label} باید حداقل ${min} کاراکتر باشد',
-                max: '${label} باید حداکثر ${max} کاراکتر باشد',
-                range: '${label} باید بین ${min}-${max} کاراکتر باشد'
-            },
-            number: {
-                len: '${label} باید برابر ${len}',
-                min: '${label} حداقل میتواند ${min} باشد',
-                max: '${label} حداکثر میتواند ${max} باشد',
-                range: '${label} باید بین ${min}-${max} باشد'
-            },
-            array: {
-                len: 'تعداد ${label} باید ${len} باشد.',
-                min: 'تعداد ${lable} حداقل باید ${min} باشد',
-                max: 'تعداد ${lable} حداکثر باید ${max} باشد',
-                range: 'مقدار ${label} باید بین ${min}-${max} باشد'
-            },
-            pattern: {
-                mismatch: 'الگوی ${label} با ${pattern} برابری نمی‌کند'
-            }
-        }
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/fi_FI.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -2983,14 +2508,15 @@ var fi_FI = {
     },
     Empty: {
         description: 'Ei kohteita'
+    },
+    Text: {
+        edit: 'Muokkaa',
+        copy: 'Kopioi',
+        copied: 'Kopioitu',
+        expand: 'Näytä lisää'
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/fr_BE.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -3120,11 +2646,6 @@ var fr_BE = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/fr_FR.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -3235,7 +2756,16 @@ var fr_FR = {
     Table: {
         filterTitle: 'Filtrer',
         filterConfirm: 'OK',
-        filterReset: 'Réinitialiser'
+        filterReset: 'Réinitialiser',
+        selectAll: 'Sélectionner la page actuelle',
+        selectInvert: 'Inverser la sélection de la page actuelle',
+        selectionAll: 'Sélectionner toutes les données',
+        sortTitle: 'Trier',
+        expand: 'Développer la ligne',
+        collapse: 'Réduire la ligne',
+        triggerDesc: 'Trier par ordre décroissant',
+        triggerAsc: 'Trier par ordre croissant',
+        cancelSort: 'Annuler le tri'
     },
     Modal: {
         okText: 'OK',
@@ -3247,7 +2777,7 @@ var fr_FR = {
         cancelText: 'Annuler'
     },
     Transfer: {
-        searchPlaceholder: 'Recherche',
+        searchPlaceholder: 'Rechercher',
         itemUnit: 'élément',
         itemsUnit: 'éléments'
     },
@@ -3262,18 +2792,328 @@ var fr_FR = {
         downloadFile: 'Télécharger un fichier'
     },
     Text: {
-        edit: 'éditer',
-        copy: 'copier',
-        copied: 'copie effectuée',
-        expand: 'développer'
+        edit: 'Éditer',
+        copy: 'Copier',
+        copied: 'Copie effectuée',
+        expand: 'Développer'
+    },
+    PageHeader: {
+        back: 'Retour'
     }
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/he_IL.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+var ga_IE = {
+    locale: 'ga',
+    Pagination: {
+        items_per_page: '/ leathanach',
+        jump_to: 'Téigh',
+        jump_to_confirm: 'dheimhnigh',
+        page: '',
+        prev_page: 'Leathanach Roimhe Seo',
+        next_page: 'An chéad leathanach eile',
+        prev_5: '5 leathanach roimhe seo',
+        next_5: 'Ar Aghaidh 5 Leathanaigh',
+        prev_3: '3 leathanach roimhe seo',
+        next_3: 'Ar Aghaidh 3 Leathanaigh'
+    },
+    DatePicker: {
+        lang: {
+            placeholder: 'Roghnaigh dáta',
+            yearPlaceholder: 'Roghnaigh bliain',
+            quarterPlaceholder: 'Roghnaigh ráithe',
+            monthPlaceholder: 'Roghnaigh mí',
+            weekPlaceholder: 'Roghnaigh seachtain',
+            rangePlaceholder: ['Dáta tosaigh', 'Dáta deiridh'],
+            rangeYearPlaceholder: ['Tús na bliana', 'Deireadh na bliana'],
+            rangeMonthPlaceholder: ['Tosaigh mhí', 'Deireadh mhí'],
+            rangeWeekPlaceholder: ['Tosaigh an tseachtain', 'Deireadh na seachtaine'],
+            locale: 'ga_IE',
+            today: 'inniu',
+            now: 'anois',
+            backToToday: 'Ar ais inniu',
+            ok: 'ceart go leor',
+            clear: 'soiléir',
+            month: 'mhí',
+            year: 'bhliain',
+            timeSelect: 'roghnaigh am',
+            dateSelect: 'roghnaigh dáta',
+            weekSelect: 'Roghnaigh seachtain',
+            monthSelect: 'Roghnaigh mí',
+            yearSelect: 'Roghnaigh bliain',
+            decadeSelect: 'Roghnaigh deich mbliana',
+            yearFormat: 'YYYY',
+            dateFormat: 'D/M/YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'An mhí roimhe seo (PageUp)',
+            nextMonth: 'An mhí seo chugainn (PageDown)',
+            previousYear: 'Anuraidh (Control + left)',
+            nextYear: 'An bhliain seo chugainn (Control + right)',
+            previousDecade: 'Le deich mbliana anuas',
+            nextDecade: 'Deich mbliana amach romhainn',
+            previousCentury: 'An chéid seo caite',
+            nextCentury: 'An chéad aois eile'
+        },
+        timePickerLocale: {
+            placeholder: 'Roghnaigh am',
+            rangePlaceholder: ['Am tosaigh', 'Am deiridh']
+        }
+    },
+    TimePicker: {
+        placeholder: 'Roghnaigh am',
+        rangePlaceholder: ['Am tosaigh', 'Am deiridh']
+    },
+    Calendar: {
+        lang: {
+            placeholder: 'Roghnaigh dáta',
+            yearPlaceholder: 'Roghnaigh bliain',
+            quarterPlaceholder: 'Roghnaigh ráithe',
+            monthPlaceholder: 'Roghnaigh mí',
+            weekPlaceholder: 'Roghnaigh seachtain',
+            rangePlaceholder: ['Dáta tosaigh', 'Dáta deiridh'],
+            rangeYearPlaceholder: ['Tús na bliana', 'Deireadh na bliana'],
+            rangeMonthPlaceholder: ['Tosaigh mhí', 'Deireadh mhí'],
+            rangeWeekPlaceholder: ['Tosaigh an tseachtain', 'Deireadh na seachtaine'],
+            locale: 'ga_IE',
+            today: 'inniu',
+            now: 'anois',
+            backToToday: 'Ar ais inniu',
+            ok: 'ceart go leor',
+            clear: 'soiléir',
+            month: 'mhí',
+            year: 'bhliain',
+            timeSelect: 'roghnaigh am',
+            dateSelect: 'roghnaigh dáta',
+            weekSelect: 'Roghnaigh seachtain',
+            monthSelect: 'Roghnaigh mí',
+            yearSelect: 'Roghnaigh bliain',
+            decadeSelect: 'Roghnaigh deich mbliana',
+            yearFormat: 'YYYY',
+            dateFormat: 'D/M/YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'An mhí roimhe seo (PageUp)',
+            nextMonth: 'An mhí seo chugainn (PageDown)',
+            previousYear: 'Anuraidh (Control + left)',
+            nextYear: 'An bhliain seo chugainn (Control + right)',
+            previousDecade: 'Le deich mbliana anuas',
+            nextDecade: 'Deich mbliana amach romhainn',
+            previousCentury: 'An chéid seo caite',
+            nextCentury: 'An chéad aois eile'
+        },
+        timePickerLocale: {
+            placeholder: 'Roghnaigh am',
+            rangePlaceholder: ['Am tosaigh', 'Am deiridh']
+        }
+    },
+    global: {
+        placeholder: 'Please select'
+    },
+    Table: {
+        filterTitle: 'Filter menu',
+        filterConfirm: 'OK',
+        filterReset: 'Reset',
+        selectAll: 'Select current page',
+        selectInvert: 'Invert current page',
+        selectionAll: 'Select all data',
+        sortTitle: 'Sort',
+        expand: 'Expand row',
+        collapse: 'Collapse row',
+        triggerDesc: 'Click sort by descend',
+        triggerAsc: 'Click sort by ascend',
+        cancelSort: 'Click to cancel sort'
+    },
+    Modal: {
+        okText: 'OK',
+        cancelText: 'Cancel',
+        justOkText: 'OK'
+    },
+    Popconfirm: {
+        okText: 'OK',
+        cancelText: 'Cancel'
+    },
+    Transfer: {
+        titles: ['', ''],
+        searchPlaceholder: 'Search here',
+        itemUnit: 'item',
+        itemsUnit: 'items',
+        remove: 'Remove',
+        selectCurrent: 'Select current page',
+        removeCurrent: 'Remove current page',
+        selectAll: 'Select all data',
+        removeAll: 'Remove all data',
+        selectInvert: 'Invert current page'
+    },
+    Upload: {
+        uploading: 'Uploading...',
+        removeFile: 'Remove file',
+        uploadError: 'Upload error',
+        previewFile: 'Preview file',
+        downloadFile: 'Download file'
+    },
+    Empty: {
+        description: 'No Data'
+    },
+    Icon: {
+        icon: 'icon'
+    },
+    Text: {
+        edit: 'Edit',
+        copy: 'Copy',
+        copied: 'Copied',
+        expand: 'Expand'
+    },
+    PageHeader: {
+        back: 'Back'
+    }
+};
+
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+var gl_ES = {
+    locale: 'gl',
+    Pagination: {
+        items_per_page: '/ páxina',
+        jump_to: 'Ir a',
+        jump_to_confirm: 'confirmar',
+        page: '',
+        prev_page: 'Páxina anterior',
+        next_page: 'Páxina seguinte',
+        prev_5: '5 páxinas previas',
+        next_5: '5 páxinas seguintes',
+        prev_3: '3 páxinas previas',
+        next_3: '3 páxinas seguintes'
+    },
+    DatePicker: {
+        lang: {
+            placeholder: 'Escolla data',
+            rangePlaceholder: ['Data inicial', 'Data final'],
+            locale: 'gl_ES',
+            today: 'Hoxe',
+            now: 'Agora',
+            backToToday: 'Voltar a hoxe',
+            ok: 'Aceptar',
+            clear: 'Limpar',
+            month: 'Mes',
+            year: 'Ano',
+            timeSelect: 'Seleccionar hora',
+            dateSelect: 'Seleccionar data',
+            monthSelect: 'Elexir un mes',
+            yearSelect: 'Elexir un año',
+            decadeSelect: 'Elexir unha década',
+            yearFormat: 'YYYY',
+            dateFormat: 'D/M/YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Mes anterior (PageUp)',
+            nextMonth: 'Mes seguinte (PageDown)',
+            previousYear: 'Ano anterior (Control + left)',
+            nextYear: 'Ano seguinte (Control + right)',
+            previousDecade: 'Década anterior',
+            nextDecade: 'Década seguinte',
+            previousCentury: 'Século anterior',
+            nextCentury: 'Século seguinte'
+        },
+        timePickerLocale: {
+            placeholder: 'Escolla hora'
+        }
+    },
+    TimePicker: {
+        placeholder: 'Escolla hora'
+    },
+    Calendar: {
+        lang: {
+            placeholder: 'Escolla data',
+            rangePlaceholder: ['Data inicial', 'Data final'],
+            locale: 'gl_ES',
+            today: 'Hoxe',
+            now: 'Agora',
+            backToToday: 'Voltar a hoxe',
+            ok: 'Aceptar',
+            clear: 'Limpar',
+            month: 'Mes',
+            year: 'Ano',
+            timeSelect: 'Seleccionar hora',
+            dateSelect: 'Seleccionar data',
+            monthSelect: 'Elexir un mes',
+            yearSelect: 'Elexir un año',
+            decadeSelect: 'Elexir unha década',
+            yearFormat: 'YYYY',
+            dateFormat: 'D/M/YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Mes anterior (PageUp)',
+            nextMonth: 'Mes seguinte (PageDown)',
+            previousYear: 'Ano anterior (Control + left)',
+            nextYear: 'Ano seguinte (Control + right)',
+            previousDecade: 'Década anterior',
+            nextDecade: 'Década seguinte',
+            previousCentury: 'Século anterior',
+            nextCentury: 'Século seguinte'
+        },
+        timePickerLocale: {
+            placeholder: 'Escolla hora'
+        }
+    },
+    global: {
+        placeholder: 'Escolla'
+    },
+    Table: {
+        filterTitle: 'Filtrar menú',
+        filterConfirm: 'Aceptar',
+        filterReset: 'Reiniciar',
+        selectAll: 'Seleccionar todo',
+        selectInvert: 'Invertir selección',
+        sortTitle: 'Ordenar'
+    },
+    Modal: {
+        okText: 'Aceptar',
+        cancelText: 'Cancelar',
+        justOkText: 'Aceptar'
+    },
+    Popconfirm: {
+        okText: 'Aceptar',
+        cancelText: 'Cancelar'
+    },
+    Transfer: {
+        searchPlaceholder: 'Buscar aquí',
+        itemUnit: 'elemento',
+        itemsUnit: 'elementos'
+    },
+    Upload: {
+        uploading: 'Subindo...',
+        removeFile: 'Eliminar arquivo',
+        uploadError: 'Error ao subir o arquivo',
+        previewFile: 'Vista previa',
+        downloadFile: 'Descargar arquivo'
+    },
+    Empty: {
+        description: 'Non hai datos'
+    },
+    Icon: {
+        icon: 'icona'
+    },
+    Text: {
+        edit: 'editar',
+        copy: 'copiar',
+        copied: 'copiado',
+        expand: 'expandir'
+    },
+    PageHeader: {
+        back: 'voltar'
+    }
+};
+
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -3423,11 +3263,6 @@ var he_IL = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/hi_IN.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -3560,11 +3395,6 @@ var hi_IN = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/hr_HR.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -3706,11 +3536,6 @@ var hr_HR = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/hu_HU.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -3836,10 +3661,150 @@ var hu_HU = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/id_ID.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+var hy_AM = {
+    locale: 'hy-am',
+    Pagination: {
+        items_per_page: '/ էջ',
+        jump_to: 'Գնալ',
+        jump_to_confirm: 'հաստատել',
+        page: '',
+        prev_page: 'Նախորդ Էջ',
+        next_page: 'Հաջորդ Էջ',
+        prev_5: 'Նախորդ 5 Էջերը',
+        next_5: 'Հաջորդ 5 Էջերը',
+        prev_3: 'Նախորդ 3 Էջերը',
+        next_3: 'Հաջորդ 3 Էջերը'
+    },
+    DatePicker: {
+        lang: {
+            locale: 'hy-am',
+            placeholder: 'Ընտրեք ամսաթիվը',
+            rangePlaceholder: ['Մեկնարկի ամսաթիվ', 'Ավարտի ամսաթիվը'],
+            today: 'Այսօր',
+            now: 'Հիմա',
+            backToToday: 'Վերադառնալ այսօր',
+            ok: 'Օկ',
+            clear: 'Մաքրել',
+            month: 'Ամիս',
+            year: 'Տարի',
+            timeSelect: 'ընտրեք ժամը',
+            dateSelect: 'ընտրեք ամսաթիվը',
+            weekSelect: 'Ընտրեք շաբաթը',
+            monthSelect: 'Ընտրեք ամիսը',
+            yearSelect: 'Ընտրեք տարին',
+            decadeSelect: 'Ընտրեք տասնամյակը',
+            yearFormat: 'YYYY',
+            dateFormat: 'DD/MM//YYYY',
+            dayFormat: 'DD',
+            dateTimeFormat: 'DD/MM//YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Անցած ամիս (PageUp)',
+            nextMonth: 'Մյուս ամիս (PageDown)',
+            previousYear: 'Անցած տարի (Control + left)',
+            nextYear: 'Մյուս տարի (Control + right)',
+            previousDecade: 'Անցած տասնամյակ',
+            nextDecade: 'Մյուս տասնամյակ',
+            previousCentury: 'Անցած դար',
+            nextCentury: 'Մյուս դար'
+        },
+        timePickerLocale: {
+            placeholder: 'Ընտրեք ժամը'
+        }
+    },
+    TimePicker: {
+        placeholder: 'Ընտրեք ժամը'
+    },
+    Calendar: {
+        lang: {
+            locale: 'hy-am',
+            placeholder: 'Ընտրեք ամսաթիվը',
+            rangePlaceholder: ['Մեկնարկի ամսաթիվ', 'Ավարտի ամսաթիվը'],
+            today: 'Այսօր',
+            now: 'Հիմա',
+            backToToday: 'Վերադառնալ այսօր',
+            ok: 'Օկ',
+            clear: 'Մաքրել',
+            month: 'Ամիս',
+            year: 'Տարի',
+            timeSelect: 'ընտրեք ժամը',
+            dateSelect: 'ընտրեք ամսաթիվը',
+            weekSelect: 'Ընտրեք շաբաթը',
+            monthSelect: 'Ընտրեք ամիսը',
+            yearSelect: 'Ընտրեք տարին',
+            decadeSelect: 'Ընտրեք տասնամյակը',
+            yearFormat: 'YYYY',
+            dateFormat: 'DD/MM//YYYY',
+            dayFormat: 'DD',
+            dateTimeFormat: 'DD/MM//YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Անցած ամիս (PageUp)',
+            nextMonth: 'Մյուս ամիս (PageDown)',
+            previousYear: 'Անցած տարի (Control + left)',
+            nextYear: 'Մյուս տարի (Control + right)',
+            previousDecade: 'Անցած տասնամյակ',
+            nextDecade: 'Մյուս տասնամյակ',
+            previousCentury: 'Անցած դար',
+            nextCentury: 'Մյուս դար'
+        },
+        timePickerLocale: {
+            placeholder: 'Ընտրեք ժամը'
+        }
+    },
+    global: {
+        placeholder: 'Ընտրեք'
+    },
+    Table: {
+        filterTitle: 'ֆիլտրի ընտրացանկ',
+        filterConfirm: 'ֆիլտրել',
+        filterReset: 'Զրոյացնել',
+        selectAll: 'Ընտրեք ընթացիկ էջը',
+        selectInvert: 'Փոխարկել ընթացիկ էջը',
+        sortTitle: 'Տեսակավորել',
+        expand: 'Ընդլայնեք տողը',
+        collapse: 'Կրճատել տողը'
+    },
+    Modal: {
+        okText: 'Օկ',
+        cancelText: 'Չեղարկել',
+        justOkText: 'Օկ'
+    },
+    Popconfirm: {
+        okText: 'Հաստատել',
+        cancelText: 'Մերժել'
+    },
+    Transfer: {
+        titles: ['', ''],
+        searchPlaceholder: 'Որոնեք այստեղ',
+        itemUnit: 'պարագան',
+        itemsUnit: 'պարագաները'
+    },
+    Upload: {
+        uploading: 'Ներբեռնում...',
+        removeFile: 'Հեռացնել ֆայլը',
+        uploadError: 'Ներբեռնման սխալ',
+        previewFile: 'Դիտել ֆայլը',
+        downloadFile: 'Ներբեռնել ֆայլը'
+    },
+    Empty: {
+        description: 'Տվյալներ չկան'
+    },
+    Icon: {
+        icon: 'պատկեր'
+    },
+    Text: {
+        edit: 'Խմբագրել',
+        copy: 'Պատճենել',
+        copied: 'Պատճենվել է',
+        expand: 'Տեսնել ավելին'
+    },
+    PageHeader: {
+        back: 'Հետ'
+    }
+};
+
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -3969,11 +3934,6 @@ var id_ID = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/is_IS.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -4098,11 +4058,6 @@ var is_IS = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/it_IT.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -4202,7 +4157,10 @@ var it_IT = {
         filterReset: 'Reset',
         selectAll: 'Seleziona pagina corrente',
         selectInvert: 'Inverti selezione nella pagina corrente',
-        sortTitle: 'Ordina'
+        sortTitle: 'Ordina',
+        triggerDesc: 'Clicca per ordinare in modo discendente',
+        triggerAsc: ' Clicca per ordinare in modo ascendente',
+        cancelSort: 'Clicca per eliminare i filtri'
     },
     Modal: {
         okText: 'OK',
@@ -4239,11 +4197,6 @@ var it_IT = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/ja_JP.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -4336,11 +4289,19 @@ var ja_JP = {
         }
     },
     Table: {
-        filterTitle: 'メニューをフィルター',
+        filterTitle: 'フィルター',
         filterConfirm: 'OK',
         filterReset: 'リセット',
-        selectAll: 'すべてを選択',
-        selectInvert: '選択を反転'
+        filterEmptyText: 'フィルターなし',
+        selectAll: 'ページ単位で選択',
+        selectInvert: 'ページ単位で反転',
+        selectionAll: 'すべてを選択',
+        sortTitle: 'ソート',
+        expand: '展開する',
+        collapse: '折り畳む',
+        triggerDesc: 'クリックで降順にソート',
+        triggerAsc: 'クリックで昇順にソート',
+        cancelSort: 'ソートをキャンセル'
     },
     Modal: {
         okText: 'OK',
@@ -4368,11 +4329,6 @@ var ja_JP = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/ka_GE.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -4512,10 +4468,129 @@ var ka_GE = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/kn_IN.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+var kmr_IQ = {
+    locale: 'ku',
+    Pagination: {
+        items_per_page: '/ rûpel',
+        jump_to: 'Biçe',
+        jump_to_confirm: 'piştrast bike',
+        page: '',
+        prev_page: 'Rûpelê Pêş',
+        next_page: 'Rûpelê Paş',
+        prev_5: '5 Rûpelên Pêş',
+        next_5: '5 Rûpelên Paş',
+        prev_3: '3 Rûpelên Pêş',
+        next_3: '3 Rûpelên Paş'
+    },
+    DatePicker: {
+        lang: {
+            placeholder: 'Dîrok hilbijêre',
+            rangePlaceholder: ['Dîroka destpêkê', 'Dîroka dawîn'],
+            locale: 'ku',
+            today: 'Îro',
+            now: 'Niha',
+            backToToday: 'Vegere îro',
+            ok: 'Temam',
+            clear: 'Paqij bike',
+            month: 'Meh',
+            year: 'Sal',
+            timeSelect: 'Demê hilbijêre',
+            dateSelect: 'Dîrok hilbijêre',
+            monthSelect: 'Meh hilbijêre',
+            yearSelect: 'Sal hilbijêre',
+            decadeSelect: 'Dehsal hilbijêre',
+            yearFormat: 'YYYY',
+            dateFormat: 'D/M/YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Meha peş (PageUp))',
+            nextMonth: 'Meha paş (PageDown)',
+            previousYear: 'Sala peş (Control + şep)',
+            nextYear: 'Sala paş (Control + rast)',
+            previousDecade: 'Dehsalen peş',
+            nextDecade: 'Dehsalen paş',
+            previousCentury: 'Sedsalen peş',
+            nextCentury: 'Sedsalen paş'
+        },
+        timePickerLocale: {
+            placeholder: 'Demê hilbijêre'
+        }
+    },
+    TimePicker: {
+        placeholder: 'Demê hilbijêre'
+    },
+    Calendar: {
+        lang: {
+            placeholder: 'Dîrok hilbijêre',
+            rangePlaceholder: ['Dîroka destpêkê', 'Dîroka dawîn'],
+            locale: 'ku',
+            today: 'Îro',
+            now: 'Niha',
+            backToToday: 'Vegere îro',
+            ok: 'Temam',
+            clear: 'Paqij bike',
+            month: 'Meh',
+            year: 'Sal',
+            timeSelect: 'Demê hilbijêre',
+            dateSelect: 'Dîrok hilbijêre',
+            monthSelect: 'Meh hilbijêre',
+            yearSelect: 'Sal hilbijêre',
+            decadeSelect: 'Dehsal hilbijêre',
+            yearFormat: 'YYYY',
+            dateFormat: 'D/M/YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Meha peş (PageUp))',
+            nextMonth: 'Meha paş (PageDown)',
+            previousYear: 'Sala peş (Control + şep)',
+            nextYear: 'Sala paş (Control + rast)',
+            previousDecade: 'Dehsalen peş',
+            nextDecade: 'Dehsalen paş',
+            previousCentury: 'Sedsalen peş',
+            nextCentury: 'Sedsalen paş'
+        },
+        timePickerLocale: {
+            placeholder: 'Demê hilbijêre'
+        }
+    },
+    Table: {
+        filterTitle: 'Menuê peldanka',
+        filterConfirm: 'Temam',
+        filterReset: 'Jê bibe',
+        selectAll: 'Hemî hilbijêre',
+        selectInvert: 'Hilbijartinan veguhere'
+    },
+    Modal: {
+        okText: 'Temam',
+        cancelText: 'Betal ke',
+        justOkText: 'Temam'
+    },
+    Popconfirm: {
+        okText: 'Temam',
+        cancelText: 'Betal ke'
+    },
+    Transfer: {
+        searchPlaceholder: 'Lêgerîn',
+        itemUnit: 'tişt',
+        itemsUnit: 'tişt'
+    },
+    Upload: {
+        uploading: 'Bardike...',
+        removeFile: 'Pelê rabike',
+        uploadError: 'Xeta barkirine',
+        previewFile: 'Pelê pêşbibîne',
+        downloadFile: 'Pelê dakêşin'
+    },
+    Empty: {
+        description: 'Agahî tune'
+    }
+};
+
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -4650,11 +4725,6 @@ var kn_IN = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/ko_KR.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -4779,11 +4849,6 @@ var ko_KR = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/ku_IQ.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -4805,7 +4870,7 @@ var ku_IQ = {
         lang: {
             placeholder: 'Dîrok hilbijêre',
             rangePlaceholder: ['Dîroka destpêkê', 'Dîroka dawîn'],
-            locale: 'ku_IQ',
+            locale: 'ku',
             today: 'Îro',
             now: 'Niha',
             backToToday: 'Vegere îro',
@@ -4843,7 +4908,7 @@ var ku_IQ = {
         lang: {
             placeholder: 'Dîrok hilbijêre',
             rangePlaceholder: ['Dîroka destpêkê', 'Dîroka dawîn'],
-            locale: 'ku_IQ',
+            locale: 'ku',
             today: 'Îro',
             now: 'Niha',
             backToToday: 'Vegere îro',
@@ -4908,10 +4973,174 @@ var ku_IQ = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/lv_LV.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+var lt_LT = {
+    locale: 'lt',
+    Pagination: {
+        items_per_page: '/ psl.',
+        jump_to: 'Pereiti',
+        jump_to_confirm: 'patvirtinti',
+        page: '',
+        prev_page: 'Atgal',
+        next_page: 'Pirmyn',
+        prev_5: 'Grįžti 5 pls.',
+        next_5: 'Peršokti 5 pls.',
+        prev_3: 'Grįžti 3 pls.',
+        next_3: 'Peršokti 3 pls.'
+    },
+    DatePicker: {
+        lang: {
+            placeholder: 'Pasirinkite datą',
+            yearPlaceholder: 'Pasirinkite metus',
+            quarterPlaceholder: 'Pasirinkite ketvirtį',
+            monthPlaceholder: 'Pasirinkite mėnesį',
+            weekPlaceholder: 'Pasirinkite savaitę',
+            rangePlaceholder: ['Pradžios data', 'Pabaigos data'],
+            rangeYearPlaceholder: ['Pradžios metai', 'Pabaigos metai'],
+            rangeMonthPlaceholder: ['Pradžios mėnesis', 'Pabaigos mėnesis'],
+            rangeWeekPlaceholder: ['Pradžios savaitė', 'Pabaigos savaitė'],
+            locale: 'lt_LT',
+            today: 'Šiandien',
+            now: 'Dabar',
+            backToToday: 'Rodyti šiandien',
+            ok: 'Gerai',
+            clear: 'Išvalyti',
+            month: 'Mėnesis',
+            year: 'Metai',
+            timeSelect: 'Pasirinkti laiką',
+            dateSelect: 'Pasirinkti datą',
+            monthSelect: 'Pasirinkti mėnesį',
+            yearSelect: 'Pasirinkti metus',
+            decadeSelect: 'Pasirinkti dešimtmetį',
+            yearFormat: 'YYYY',
+            dateFormat: 'YYYY-MM-DD',
+            dayFormat: 'DD',
+            dateTimeFormat: 'YYYY-MM-DD HH:MM:SS',
+            monthBeforeYear: true,
+            previousMonth: 'Buvęs mėnesis (PageUp)',
+            nextMonth: 'Sekantis mėnesis (PageDown)',
+            previousYear: 'Buvę metai (Control + left)',
+            nextYear: 'Sekantis metai (Control + right)',
+            previousDecade: 'Buvęs dešimtmetis',
+            nextDecade: 'Sekantis dešimtmetis',
+            previousCentury: 'Buvęs amžius',
+            nextCentury: 'Sekantis amžius'
+        },
+        timePickerLocale: {
+            placeholder: 'Pasirinkite laiką',
+            rangePlaceholder: ['Pradžios laikas', 'Pabaigos laikas']
+        }
+    },
+    TimePicker: {
+        placeholder: 'Pasirinkite laiką',
+        rangePlaceholder: ['Pradžios laikas', 'Pabaigos laikas']
+    },
+    Calendar: {
+        lang: {
+            placeholder: 'Pasirinkite datą',
+            yearPlaceholder: 'Pasirinkite metus',
+            quarterPlaceholder: 'Pasirinkite ketvirtį',
+            monthPlaceholder: 'Pasirinkite mėnesį',
+            weekPlaceholder: 'Pasirinkite savaitę',
+            rangePlaceholder: ['Pradžios data', 'Pabaigos data'],
+            rangeYearPlaceholder: ['Pradžios metai', 'Pabaigos metai'],
+            rangeMonthPlaceholder: ['Pradžios mėnesis', 'Pabaigos mėnesis'],
+            rangeWeekPlaceholder: ['Pradžios savaitė', 'Pabaigos savaitė'],
+            locale: 'lt_LT',
+            today: 'Šiandien',
+            now: 'Dabar',
+            backToToday: 'Rodyti šiandien',
+            ok: 'Gerai',
+            clear: 'Išvalyti',
+            month: 'Mėnesis',
+            year: 'Metai',
+            timeSelect: 'Pasirinkti laiką',
+            dateSelect: 'Pasirinkti datą',
+            monthSelect: 'Pasirinkti mėnesį',
+            yearSelect: 'Pasirinkti metus',
+            decadeSelect: 'Pasirinkti dešimtmetį',
+            yearFormat: 'YYYY',
+            dateFormat: 'YYYY-MM-DD',
+            dayFormat: 'DD',
+            dateTimeFormat: 'YYYY-MM-DD HH:MM:SS',
+            monthBeforeYear: true,
+            previousMonth: 'Buvęs mėnesis (PageUp)',
+            nextMonth: 'Sekantis mėnesis (PageDown)',
+            previousYear: 'Buvę metai (Control + left)',
+            nextYear: 'Sekantis metai (Control + right)',
+            previousDecade: 'Buvęs dešimtmetis',
+            nextDecade: 'Sekantis dešimtmetis',
+            previousCentury: 'Buvęs amžius',
+            nextCentury: 'Sekantis amžius'
+        },
+        timePickerLocale: {
+            placeholder: 'Pasirinkite laiką',
+            rangePlaceholder: ['Pradžios laikas', 'Pabaigos laikas']
+        }
+    },
+    Table: {
+        filterTitle: 'Filtras',
+        filterConfirm: 'Gerai',
+        filterReset: 'Atstatyti',
+        filterEmptyText: 'Be filtrų',
+        emptyText: 'Nėra duomenų',
+        selectAll: 'Pasirinkti viską',
+        selectInvert: 'Apversti pasirinkimą',
+        selectionAll: 'Rinktis visus',
+        sortTitle: 'Rikiavimas',
+        expand: 'Išskleisti',
+        collapse: 'Suskleisti',
+        triggerDesc: 'Spustelėkite norėdami rūšiuoti mažėjančia tvarka',
+        triggerAsc: 'Spustelėkite norėdami rūšiuoti didėjančia tvarka',
+        cancelSort: 'Spustelėkite, kad atšauktumėte rūšiavimą'
+    },
+    Modal: {
+        okText: 'Taip',
+        cancelText: 'Atšaukti',
+        justOkText: 'Gerai'
+    },
+    Popconfirm: {
+        okText: 'Taip',
+        cancelText: 'Atšaukti'
+    },
+    Transfer: {
+        titles: ['', ''],
+        searchPlaceholder: 'Paieška',
+        itemUnit: 'vnt.',
+        itemsUnit: 'vnt.',
+        remove: 'Pašalinti',
+        selectAll: 'Pasirinkti visus',
+        selectCurrent: 'Pasirinkite dabartinį puslapį',
+        selectInvert: 'Atkeist pasirinkimą',
+        removeAll: 'Ištrinti visus duomenis',
+        removeCurrent: 'Ištrinti dabartinį puslapį'
+    },
+    Upload: {
+        uploading: 'Gaunami duomenys...',
+        removeFile: 'Ištrinti failą',
+        uploadError: 'Įkeliant įvyko klaida',
+        previewFile: 'Failo peržiūra',
+        downloadFile: 'Įkelti failą'
+    },
+    Empty: {
+        description: 'Nėra duomenų'
+    },
+    Icon: {
+        icon: 'piktograma'
+    },
+    Text: {
+        edit: 'Redaguoti',
+        copy: 'Kopijuoti',
+        copied: 'Nukopijuota',
+        expand: 'Plačiau'
+    },
+    PageHeader: {
+        back: 'Atgal'
+    }
+};
+
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -5037,10 +5266,144 @@ var lv_LV = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/mn_MN.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+var mk_MK = {
+    locale: 'mk',
+    Pagination: {
+        items_per_page: '/ стр',
+        jump_to: 'Оди на',
+        jump_to_confirm: 'потврди',
+        page: '',
+        prev_page: 'Претходна страница',
+        next_page: 'Наредна страница',
+        prev_5: 'Претходни 5 страници',
+        next_5: 'Наредни 5 страници',
+        prev_3: 'Претходни 3 страници',
+        next_3: 'Наредни 3 страници'
+    },
+    DatePicker: {
+        lang: {
+            placeholder: 'Избери датум',
+            rangePlaceholder: ['Од датум', 'До датум'],
+            locale: 'mk_MK',
+            today: 'Денес',
+            now: 'Сега',
+            backToToday: 'Назад до денес',
+            ok: 'ОК',
+            clear: 'Избриши',
+            month: 'Месец',
+            year: 'Година',
+            timeSelect: 'Избери време',
+            dateSelect: 'Избери датум',
+            monthSelect: 'Избери месец',
+            yearSelect: 'Избери година',
+            decadeSelect: 'Избери деценија',
+            yearFormat: 'YYYY',
+            dateFormat: 'D.M.YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D.M.YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Претходен месец (PageUp)',
+            nextMonth: 'Нареден месец (PageDown)',
+            previousYear: 'Претходна година (Control + left)',
+            nextYear: 'Наредна година (Control + right)',
+            previousDecade: 'Претходна деценија',
+            nextDecade: 'Наредна деценија',
+            previousCentury: 'Претходен век',
+            nextCentury: 'Нареден век'
+        },
+        timePickerLocale: {
+            placeholder: 'Избери време'
+        }
+    },
+    TimePicker: {
+        placeholder: 'Избери време'
+    },
+    Calendar: {
+        lang: {
+            placeholder: 'Избери датум',
+            rangePlaceholder: ['Од датум', 'До датум'],
+            locale: 'mk_MK',
+            today: 'Денес',
+            now: 'Сега',
+            backToToday: 'Назад до денес',
+            ok: 'ОК',
+            clear: 'Избриши',
+            month: 'Месец',
+            year: 'Година',
+            timeSelect: 'Избери време',
+            dateSelect: 'Избери датум',
+            monthSelect: 'Избери месец',
+            yearSelect: 'Избери година',
+            decadeSelect: 'Избери деценија',
+            yearFormat: 'YYYY',
+            dateFormat: 'D.M.YYYY',
+            dayFormat: 'D',
+            dateTimeFormat: 'D.M.YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Претходен месец (PageUp)',
+            nextMonth: 'Нареден месец (PageDown)',
+            previousYear: 'Претходна година (Control + left)',
+            nextYear: 'Наредна година (Control + right)',
+            previousDecade: 'Претходна деценија',
+            nextDecade: 'Наредна деценија',
+            previousCentury: 'Претходен век',
+            nextCentury: 'Нареден век'
+        },
+        timePickerLocale: {
+            placeholder: 'Избери време'
+        }
+    },
+    global: {
+        placeholder: 'Ве молиме означете'
+    },
+    Table: {
+        filterTitle: 'Мени за филтрирање',
+        filterConfirm: 'ОК',
+        filterReset: 'Избриши',
+        selectAll: 'Одбери страница',
+        selectInvert: 'Инвертирај страница'
+    },
+    Modal: {
+        okText: 'ОК',
+        cancelText: 'Откажи',
+        justOkText: 'ОК'
+    },
+    Popconfirm: {
+        okText: 'ОК',
+        cancelText: 'Откажи'
+    },
+    Transfer: {
+        searchPlaceholder: 'Пребарај тука',
+        itemUnit: 'предмет',
+        itemsUnit: 'предмети'
+    },
+    Upload: {
+        uploading: 'Се прикачува...',
+        removeFile: 'Избриши фајл',
+        uploadError: 'Грешка при прикачување',
+        previewFile: 'Прикажи фајл',
+        downloadFile: 'Преземи фајл'
+    },
+    Empty: {
+        description: 'Нема податоци'
+    },
+    Icon: {
+        icon: 'Икона'
+    },
+    Text: {
+        edit: 'Уреди',
+        copy: 'Копирај',
+        copied: 'Копирано',
+        expand: 'Зголеми'
+    },
+    PageHeader: {
+        back: 'Назад'
+    }
+};
+
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -5167,11 +5530,6 @@ var mn_MN = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/ms_MY.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -5317,89 +5675,11 @@ var ms_MY = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/nb_NO.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 var nb_NO = {
     locale: 'nb',
-    DatePicker: {
-        lang: {
-            placeholder: 'Velg dato',
-            rangePlaceholder: ['Startdato', 'Sluttdato'],
-            locale: 'nb_NO',
-            today: 'I dag',
-            now: 'Nå',
-            backToToday: 'Gå til i dag',
-            ok: 'Ok',
-            clear: 'Annuller',
-            month: 'Måned',
-            year: 'År',
-            timeSelect: 'Velg tidspunkt',
-            dateSelect: 'Velg dato',
-            monthSelect: 'Velg måned',
-            yearSelect: 'Velg år',
-            decadeSelect: 'Velg årti',
-            yearFormat: 'YYYY',
-            dateFormat: 'DD.MM.YYYY',
-            dayFormat: 'DD',
-            dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
-            monthBeforeYear: true,
-            previousMonth: 'Forrige måned(PageUp)',
-            nextMonth: 'Neste måned (PageDown)',
-            previousYear: 'Forrige år (Control + left)',
-            nextYear: 'Neste år (Control + right)',
-            previousDecade: 'Forrige tiår',
-            nextDecade: 'Neste tiår',
-            previousCentury: 'Forrige århundre',
-            nextCentury: 'Neste århundre'
-        },
-        timePickerLocale: {
-            placeholder: 'Velg tid'
-        }
-    },
-    TimePicker: {
-        placeholder: 'Velg tid'
-    },
-    Calendar: {
-        lang: {
-            placeholder: 'Velg dato',
-            rangePlaceholder: ['Startdato', 'Sluttdato'],
-            locale: 'nb_NO',
-            today: 'I dag',
-            now: 'Nå',
-            backToToday: 'Gå til i dag',
-            ok: 'Ok',
-            clear: 'Annuller',
-            month: 'Måned',
-            year: 'År',
-            timeSelect: 'Velg tidspunkt',
-            dateSelect: 'Velg dato',
-            monthSelect: 'Velg måned',
-            yearSelect: 'Velg år',
-            decadeSelect: 'Velg årti',
-            yearFormat: 'YYYY',
-            dateFormat: 'DD.MM.YYYY',
-            dayFormat: 'DD',
-            dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
-            monthBeforeYear: true,
-            previousMonth: 'Forrige måned(PageUp)',
-            nextMonth: 'Neste måned (PageDown)',
-            previousYear: 'Forrige år (Control + left)',
-            nextYear: 'Neste år (Control + right)',
-            previousDecade: 'Forrige tiår',
-            nextDecade: 'Neste tiår',
-            previousCentury: 'Forrige århundre',
-            nextCentury: 'Neste århundre'
-        },
-        timePickerLocale: {
-            placeholder: 'Velg tid'
-        }
-    },
     Pagination: {
         items_per_page: '/ side',
         jump_to: 'Gå til side',
@@ -5411,12 +5691,115 @@ var nb_NO = {
         prev_3: '3 forrige',
         next_3: '3 neste'
     },
+    DatePicker: {
+        lang: {
+            placeholder: 'Velg dato',
+            yearPlaceholder: 'Velg år',
+            quarterPlaceholder: 'Velg kvartal',
+            monthPlaceholder: 'Velg måned',
+            weekPlaceholder: 'Velg uke',
+            rangePlaceholder: ['Startdato', 'Sluttdato'],
+            rangeYearPlaceholder: ['Startår', 'Sluttår'],
+            rangeMonthPlaceholder: ['Startmåned', 'Sluttmåned'],
+            rangeWeekPlaceholder: ['Start uke', 'Sluttuke'],
+            locale: 'nb_NO',
+            today: 'I dag',
+            now: 'Nå',
+            backToToday: 'Gå til i dag',
+            ok: 'Ok',
+            clear: 'Annuller',
+            month: 'Måned',
+            year: 'År',
+            timeSelect: 'Velg tidspunkt',
+            dateSelect: 'Velg dato',
+            weekSelect: 'Velg uke',
+            monthSelect: 'Velg måned',
+            yearSelect: 'Velg år',
+            decadeSelect: 'Velg tiår',
+            yearFormat: 'YYYY',
+            dateFormat: 'DD.MM.YYYY',
+            dayFormat: 'DD',
+            dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Forrige måned (PageUp)',
+            nextMonth: 'Neste måned (PageDown)',
+            previousYear: 'Forrige år (Control + venstre)',
+            nextYear: 'Neste år (Control + høyre)',
+            previousDecade: 'Forrige tiår',
+            nextDecade: 'Neste tiår',
+            previousCentury: 'Forrige århundre',
+            nextCentury: 'Neste århundre'
+        },
+        timePickerLocale: {
+            placeholder: 'Velg tid',
+            rangePlaceholder: ['Starttid', 'Sluttid']
+        }
+    },
+    TimePicker: {
+        placeholder: 'Velg tid',
+        rangePlaceholder: ['Starttid', 'Sluttid']
+    },
+    Calendar: {
+        lang: {
+            placeholder: 'Velg dato',
+            yearPlaceholder: 'Velg år',
+            quarterPlaceholder: 'Velg kvartal',
+            monthPlaceholder: 'Velg måned',
+            weekPlaceholder: 'Velg uke',
+            rangePlaceholder: ['Startdato', 'Sluttdato'],
+            rangeYearPlaceholder: ['Startår', 'Sluttår'],
+            rangeMonthPlaceholder: ['Startmåned', 'Sluttmåned'],
+            rangeWeekPlaceholder: ['Start uke', 'Sluttuke'],
+            locale: 'nb_NO',
+            today: 'I dag',
+            now: 'Nå',
+            backToToday: 'Gå til i dag',
+            ok: 'Ok',
+            clear: 'Annuller',
+            month: 'Måned',
+            year: 'År',
+            timeSelect: 'Velg tidspunkt',
+            dateSelect: 'Velg dato',
+            weekSelect: 'Velg uke',
+            monthSelect: 'Velg måned',
+            yearSelect: 'Velg år',
+            decadeSelect: 'Velg tiår',
+            yearFormat: 'YYYY',
+            dateFormat: 'DD.MM.YYYY',
+            dayFormat: 'DD',
+            dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
+            monthBeforeYear: true,
+            previousMonth: 'Forrige måned (PageUp)',
+            nextMonth: 'Neste måned (PageDown)',
+            previousYear: 'Forrige år (Control + venstre)',
+            nextYear: 'Neste år (Control + høyre)',
+            previousDecade: 'Forrige tiår',
+            nextDecade: 'Neste tiår',
+            previousCentury: 'Forrige århundre',
+            nextCentury: 'Neste århundre'
+        },
+        timePickerLocale: {
+            placeholder: 'Velg tid',
+            rangePlaceholder: ['Starttid', 'Sluttid']
+        }
+    },
+    global: {
+        placeholder: 'Vennligst velg'
+    },
     Table: {
         filterTitle: 'Filtermeny',
         filterConfirm: 'OK',
         filterReset: 'Nullstill',
+        filterEmptyText: 'Ingen filtre',
         selectAll: 'Velg alle',
-        selectInvert: 'Inverter valg'
+        selectInvert: 'Inverter gjeldende side',
+        selectionAll: 'Velg all data',
+        sortTitle: 'Sorter',
+        expand: 'Utvid rad',
+        collapse: 'Skjul rad',
+        triggerDesc: 'Sorter data i synkende rekkefølge',
+        triggerAsc: 'Sorterer data i stigende rekkefølge',
+        cancelSort: 'Klikk for å avbryte sorteringen'
     },
     Modal: {
         okText: 'OK',
@@ -5428,9 +5811,16 @@ var nb_NO = {
         cancelText: 'Avbryt'
     },
     Transfer: {
+        titles: ['', ''],
         searchPlaceholder: 'Søk her',
         itemUnit: 'element',
-        itemsUnit: 'elementer'
+        itemsUnit: 'elementer',
+        remove: 'Fjern',
+        selectCurrent: 'Velg gjeldende side',
+        removeCurrent: 'Fjern gjeldende side',
+        selectAll: 'Velg all data',
+        removeAll: 'Fjern all data',
+        selectInvert: 'Inverter gjeldende side'
     },
     Upload: {
         uploading: 'Laster opp...',
@@ -5441,14 +5831,21 @@ var nb_NO = {
     },
     Empty: {
         description: 'Ingen data'
+    },
+    Icon: {
+        icon: 'ikon'
+    },
+    Text: {
+        edit: 'Rediger',
+        copy: 'Kopier',
+        copied: 'Kopiert',
+        expand: 'Utvid'
+    },
+    PageHeader: {
+        back: 'Tilbake'
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/ne_NP.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -5594,11 +5991,6 @@ var ne_NP = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/nl_BE.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -5722,11 +6114,6 @@ var nl_BE = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/nl_NL.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -5871,20 +6258,15 @@ var nl_NL = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/pl_PL.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 var pl_PL = {
     locale: 'pl',
     Pagination: {
-        items_per_page: '/ stronę',
+        items_per_page: 'na stronę',
         jump_to: 'Idź do',
-        jump_to_confirm: 'potwierdzać',
+        jump_to_confirm: 'potwierdź',
         page: '',
         prev_page: 'Poprzednia strona',
         next_page: 'Następna strona',
@@ -5971,7 +6353,10 @@ var pl_PL = {
         filterConfirm: 'OK',
         filterReset: 'Wyczyść',
         selectAll: 'Zaznacz bieżącą stronę',
-        selectInvert: 'Odwróć zaznaczenie'
+        selectInvert: 'Odwróć zaznaczenie',
+        triggerDesc: 'Sortuj rosnąco',
+        triggerAsc: 'Sortuj malejąco',
+        cancelSort: 'Usuń sortowanie'
     },
     Modal: {
         okText: 'OK',
@@ -5999,11 +6384,6 @@ var pl_PL = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/pt_BR.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -6095,12 +6475,22 @@ var pt_BR = {
             placeholder: 'Hora'
         }
     },
+    global: {
+        placeholder: 'Por favor escolha'
+    },
     Table: {
-        filterTitle: 'Filtro',
+        filterTitle: 'Menu de Filtro',
         filterConfirm: 'OK',
         filterReset: 'Resetar',
         selectAll: 'Selecionar página atual',
-        selectInvert: 'Inverter seleção'
+        selectInvert: 'Inverter seleção',
+        selectionAll: 'Selecionar todo o conteúdo',
+        sortTitle: 'Ordenar título',
+        expand: 'Expandir linha',
+        collapse: 'Colapsar linha',
+        triggerDesc: 'Clique organiza por descendente',
+        triggerAsc: 'Clique organiza por ascendente',
+        cancelSort: 'Clique para cancelar organização'
     },
     Modal: {
         okText: 'OK',
@@ -6126,19 +6516,20 @@ var pt_BR = {
     Empty: {
         description: 'Não há dados'
     },
+    Icon: {
+        icon: 'ícone'
+    },
     Text: {
         edit: 'editar',
         copy: 'copiar',
         copied: 'copiado',
         expand: 'expandir'
+    },
+    PageHeader: {
+        back: 'Retornar'
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/pt_PT.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -6266,11 +6657,6 @@ var pt_PT = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/ro_RO.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -6417,11 +6803,6 @@ var ro_RO = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/ru_RU.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -6442,7 +6823,14 @@ var ru_RU = {
     DatePicker: {
         lang: {
             placeholder: 'Выберите дату',
+            yearPlaceholder: 'Выберите год',
+            quarterPlaceholder: 'Выберите квартал',
+            monthPlaceholder: 'Выберите месяц',
+            weekPlaceholder: 'Выберите неделю',
             rangePlaceholder: ['Начальная дата', 'Конечная дата'],
+            rangeYearPlaceholder: ['Начальный год', 'Год окончания'],
+            rangeMonthPlaceholder: ['Начальный месяц', 'Конечный месяц'],
+            rangeWeekPlaceholder: ['Начальная неделя', 'Конечная неделя'],
             locale: 'ru_RU',
             today: 'Сегодня',
             now: 'Сейчас',
@@ -6471,16 +6859,25 @@ var ru_RU = {
             nextCentury: 'Следующий век'
         },
         timePickerLocale: {
-            placeholder: 'Выберите время'
+            placeholder: 'Выберите время',
+            rangePlaceholder: ['Время начала', 'Время окончания']
         }
     },
     TimePicker: {
-        placeholder: 'Выберите время'
+        placeholder: 'Выберите время',
+        rangePlaceholder: ['Время начала', 'Время окончания']
     },
     Calendar: {
         lang: {
             placeholder: 'Выберите дату',
+            yearPlaceholder: 'Выберите год',
+            quarterPlaceholder: 'Выберите квартал',
+            monthPlaceholder: 'Выберите месяц',
+            weekPlaceholder: 'Выберите неделю',
             rangePlaceholder: ['Начальная дата', 'Конечная дата'],
+            rangeYearPlaceholder: ['Начальный год', 'Год окончания'],
+            rangeMonthPlaceholder: ['Начальный месяц', 'Конечный месяц'],
+            rangeWeekPlaceholder: ['Начальная неделя', 'Конечная неделя'],
             locale: 'ru_RU',
             today: 'Сегодня',
             now: 'Сейчас',
@@ -6509,7 +6906,8 @@ var ru_RU = {
             nextCentury: 'Следующий век'
         },
         timePickerLocale: {
-            placeholder: 'Выберите время'
+            placeholder: 'Выберите время',
+            rangePlaceholder: ['Время начала', 'Время окончания']
         }
     },
     global: {
@@ -6519,8 +6917,11 @@ var ru_RU = {
         filterTitle: 'Фильтр',
         filterConfirm: 'OK',
         filterReset: 'Сбросить',
+        filterEmptyText: 'Без фильтров',
+        emptyText: 'Нет данных',
         selectAll: 'Выбрать всё',
         selectInvert: 'Инвертировать выбор',
+        selectionAll: 'Выбрать все данные',
         sortTitle: 'Сортировка',
         expand: 'Развернуть строку',
         collapse: 'Свернуть строку',
@@ -6538,9 +6939,16 @@ var ru_RU = {
         cancelText: 'Отмена'
     },
     Transfer: {
+        titles: ['', ''],
         searchPlaceholder: 'Поиск',
         itemUnit: 'элем.',
-        itemsUnit: 'элем.'
+        itemsUnit: 'элем.',
+        remove: 'Удалить',
+        selectAll: 'Выбрать все данные',
+        selectCurrent: 'Выбрать текущую страницу',
+        selectInvert: 'Показать в обратном порядке',
+        removeAll: 'Удалить все данные',
+        removeCurrent: 'Удалить текущую страницу'
     },
     Upload: {
         uploading: 'Загрузка...',
@@ -6556,21 +6964,16 @@ var ru_RU = {
         icon: 'иконка'
     },
     Text: {
-        edit: 'редактировать',
-        copy: 'копировать',
-        copied: 'скопировано',
-        expand: 'раскрыть'
+        edit: 'Редактировать',
+        copy: 'Копировать',
+        copied: 'Скопировано',
+        expand: 'Раскрыть'
     },
     PageHeader: {
-        back: 'назад'
+        back: 'Назад'
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/sk_SK.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -6715,11 +7118,6 @@ var sk_SK = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/sl_SI.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -6846,11 +7244,6 @@ var sl_SI = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/sr_RS.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -6973,11 +7366,6 @@ var sr_RS = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/sv_SE.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -7106,11 +7494,6 @@ var sv_SE = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/ta_IN.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -7257,11 +7640,6 @@ var ta_IN = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/th_TH.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -7282,7 +7660,14 @@ var th_TH = {
     DatePicker: {
         lang: {
             placeholder: 'เลือกวันที่',
+            yearPlaceholder: 'เลือกปี',
+            quarterPlaceholder: 'เลือกไตรมาส',
+            monthPlaceholder: 'เลือกเดือน',
+            weekPlaceholder: 'เลือกสัปดาห์',
             rangePlaceholder: ['วันเริ่มต้น', 'วันสิ้นสุด'],
+            rangeYearPlaceholder: ['ปีเริ่มต้น', 'ปีสิ้นสุด'],
+            rangeMonthPlaceholder: ['เดือนเริ่มต้น', 'เดือนสิ้นสุด'],
+            rangeWeekPlaceholder: ['สัปดาห์เริ่มต้น', 'สัปดาห์สิ้นสุด'],
             locale: 'th_TH',
             today: 'วันนี้',
             now: 'ตอนนี้',
@@ -7320,7 +7705,14 @@ var th_TH = {
     Calendar: {
         lang: {
             placeholder: 'เลือกวันที่',
+            yearPlaceholder: 'เลือกปี',
+            quarterPlaceholder: 'เลือกไตรมาส',
+            monthPlaceholder: 'เลือกเดือน',
+            weekPlaceholder: 'เลือกสัปดาห์',
             rangePlaceholder: ['วันเริ่มต้น', 'วันสิ้นสุด'],
+            rangeYearPlaceholder: ['ปีเริ่มต้น', 'ปีสิ้นสุด'],
+            rangeMonthPlaceholder: ['เดือนเริ่มต้น', 'เดือนสิ้นสุด'],
+            rangeWeekPlaceholder: ['สัปดาห์เริ่มต้น', 'สัปดาห์สิ้นสุด'],
             locale: 'th_TH',
             today: 'วันนี้',
             now: 'ตอนนี้',
@@ -7359,11 +7751,17 @@ var th_TH = {
         filterTitle: 'ตัวกรอง',
         filterConfirm: 'ยืนยัน',
         filterReset: 'รีเซ็ต',
+        filterEmptyText: 'ไม่มีตัวกรอง',
+        emptyText: 'ไม่มีข้อมูล',
         selectAll: 'เลือกทั้งหมดในหน้านี้',
-        selectInvert: 'เลือกสถานะตรงกันข้าม',
+        selectInvert: 'กลับสถานะการเลือกในหน้านี้',
+        selectionAll: 'เลือกข้อมูลทั้งหมด',
         sortTitle: 'เรียง',
         expand: 'แสดงแถวข้อมูล',
-        collapse: 'ย่อแถวข้อมูล'
+        collapse: 'ย่อแถวข้อมูล',
+        triggerDesc: 'คลิกเรียงจากมากไปน้อย',
+        triggerAsc: 'คลิกเรียงจากน้อยไปมาก',
+        cancelSort: 'คลิกเพื่อยกเลิกการเรียง'
     },
     Modal: {
         okText: 'ตกลง',
@@ -7378,7 +7776,13 @@ var th_TH = {
         titles: ['', ''],
         searchPlaceholder: 'ค้นหา',
         itemUnit: 'ชิ้น',
-        itemsUnit: 'ชิ้น'
+        itemsUnit: 'ชิ้น',
+        remove: 'นำออก',
+        selectCurrent: 'เลือกทั้งหมดในหน้านี้',
+        removeCurrent: 'นำออกทั้งหมดในหน้านี้',
+        selectAll: 'เลือกข้อมูลทั้งหมด',
+        removeAll: 'นำข้อมูลออกทั้งหมด',
+        selectInvert: 'กลับสถานะการเลือกในหน้านี้'
     },
     Upload: {
         uploading: 'กำลังอัปโหลด...',
@@ -7405,11 +7809,6 @@ var th_TH = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/tr_TR.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -7429,8 +7828,15 @@ var tr_TR = {
     },
     DatePicker: {
         lang: {
-            placeholder: 'Tarih Seç',
-            rangePlaceholder: ['Başlangıç Tarihi', 'Bitiş Tarihi'],
+            placeholder: 'Tarih seç',
+            yearPlaceholder: 'Yıl seç',
+            quarterPlaceholder: 'Çeyrek seç',
+            monthPlaceholder: 'Ay seç',
+            weekPlaceholder: 'Hafta seç',
+            rangePlaceholder: ['Başlangıç tarihi', 'Bitiş tarihi'],
+            rangeYearPlaceholder: ['Başlangıç yılı', 'Bitiş yılı'],
+            rangeMonthPlaceholder: ['Başlangıç ayı', 'Bitiş ayı'],
+            rangeWeekPlaceholder: ['Başlangıç haftası', 'Bitiş haftası'],
             locale: 'tr_TR',
             today: 'Bugün',
             now: 'Şimdi',
@@ -7459,16 +7865,25 @@ var tr_TR = {
             nextCentury: 'Sonraki Yüzyıl'
         },
         timePickerLocale: {
-            placeholder: 'Zaman Seç'
+            placeholder: 'Zaman seç',
+            rangePlaceholder: ['Başlangıç zamanı', 'Bitiş zamanı']
         }
     },
     TimePicker: {
-        placeholder: 'Zaman Seç'
+        placeholder: 'Zaman seç',
+        rangePlaceholder: ['Başlangıç zamanı', 'Bitiş zamanı']
     },
     Calendar: {
         lang: {
-            placeholder: 'Tarih Seç',
-            rangePlaceholder: ['Başlangıç Tarihi', 'Bitiş Tarihi'],
+            placeholder: 'Tarih seç',
+            yearPlaceholder: 'Yıl seç',
+            quarterPlaceholder: 'Çeyrek seç',
+            monthPlaceholder: 'Ay seç',
+            weekPlaceholder: 'Hafta seç',
+            rangePlaceholder: ['Başlangıç tarihi', 'Bitiş tarihi'],
+            rangeYearPlaceholder: ['Başlangıç yılı', 'Bitiş yılı'],
+            rangeMonthPlaceholder: ['Başlangıç ayı', 'Bitiş ayı'],
+            rangeWeekPlaceholder: ['Başlangıç haftası', 'Bitiş haftası'],
             locale: 'tr_TR',
             today: 'Bugün',
             now: 'Şimdi',
@@ -7497,19 +7912,27 @@ var tr_TR = {
             nextCentury: 'Sonraki Yüzyıl'
         },
         timePickerLocale: {
-            placeholder: 'Zaman Seç'
+            placeholder: 'Zaman seç',
+            rangePlaceholder: ['Başlangıç zamanı', 'Bitiş zamanı']
         }
     },
     global: {
         placeholder: 'Lütfen seçiniz'
     },
     Table: {
-        filterTitle: 'Menü Filtrele',
+        filterTitle: 'Filtre menüsü',
         filterConfirm: 'Tamam',
         filterReset: 'Sıfırla',
-        selectAll: 'Hepsini Seç',
-        selectInvert: 'Tersini Seç',
-        sortTitle: 'Sırala'
+        filterEmptyText: 'Filtre yok',
+        selectAll: 'Tüm sayfayı seç',
+        selectInvert: 'Tersini seç',
+        selectionAll: 'Tümünü seç',
+        sortTitle: 'Sırala',
+        expand: 'Satırı genişlet',
+        collapse: 'Satırı daralt',
+        triggerDesc: 'Azalan düzende sırala',
+        triggerAsc: 'Artan düzende sırala',
+        cancelSort: 'Sıralamayı kaldır'
     },
     Modal: {
         okText: 'Tamam',
@@ -7524,34 +7947,38 @@ var tr_TR = {
         titles: ['', ''],
         searchPlaceholder: 'Arama',
         itemUnit: 'Öğe',
-        itemsUnit: 'Öğeler'
+        itemsUnit: 'Öğeler',
+        remove: 'Kaldır',
+        selectCurrent: 'Tüm sayfayı seç',
+        removeCurrent: 'Sayfayı kaldır',
+        selectAll: 'Tümünü seç',
+        removeAll: 'Tümünü kaldır',
+        selectInvert: 'Tersini seç'
     },
     Upload: {
         uploading: 'Yükleniyor...',
         removeFile: 'Dosyayı kaldır',
-        uploadError: 'Yükleme Hatası',
-        previewFile: 'Dosyayı Önizle',
+        uploadError: 'Yükleme hatası',
+        previewFile: 'Dosyayı önizle',
         downloadFile: 'Dosyayı indir'
     },
     Empty: {
         description: 'Veri Yok'
     },
     Icon: {
-        icon: 'icon'
+        icon: 'ikon'
     },
     Text: {
-        edit: 'düzenle',
-        copy: 'kopyala',
-        copied: 'kopyalandı',
-        expand: 'genişlet'
+        edit: 'Düzenle',
+        copy: 'Kopyala',
+        copied: 'Kopyalandı',
+        expand: 'Genişlet'
+    },
+    PageHeader: {
+        back: 'Geri'
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/uk_UA.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -7661,8 +8088,8 @@ var uk_UA = {
     },
     Transfer: {
         searchPlaceholder: 'Введіть текст для пошуку',
-        itemUnit: 'item',
-        itemsUnit: 'items'
+        itemUnit: 'елем.',
+        itemsUnit: 'елем.'
     },
     Upload: {
         uploading: 'Завантаження ...',
@@ -7676,11 +8103,6 @@ var uk_UA = {
     }
 };
 
-/**
- * @fileoverview added by tsickle
- * Generated from: languages/vi_VN.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -7808,10 +8230,152 @@ var vi_VN = {
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: languages/zh_TW.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+var zh_HK = {
+    locale: 'zh-hk',
+    Pagination: {
+        items_per_page: '條/頁',
+        jump_to: '跳至',
+        jump_to_confirm: '確定',
+        page: '頁',
+        prev_page: '上一頁',
+        next_page: '下一頁',
+        prev_5: '向前 5 頁',
+        next_5: '向後 5 頁',
+        prev_3: '向前 3 頁',
+        next_3: '向後 3 頁'
+    },
+    DatePicker: {
+        lang: {
+            placeholder: '請選擇日期',
+            rangePlaceholder: ['開始日期', '結束日期'],
+            locale: 'zh_TW',
+            today: '今天',
+            now: '此刻',
+            backToToday: '返回今天',
+            ok: '確定',
+            timeSelect: '選擇時間',
+            dateSelect: '選擇日期',
+            weekSelect: '選擇周',
+            clear: '清除',
+            month: '月',
+            year: '年',
+            previousMonth: '上個月 (翻頁上鍵)',
+            nextMonth: '下個月 (翻頁下鍵)',
+            monthSelect: '選擇月份',
+            yearSelect: '選擇年份',
+            decadeSelect: '選擇年代',
+            yearFormat: 'YYYY年',
+            dayFormat: 'D日',
+            dateFormat: 'YYYY年M月D日',
+            dateTimeFormat: 'YYYY年M月D日 HH時mm分ss秒',
+            previousYear: '上一年 (Control鍵加左方向鍵)',
+            nextYear: '下一年 (Control鍵加右方向鍵)',
+            previousDecade: '上一年代',
+            nextDecade: '下一年代',
+            previousCentury: '上一世紀',
+            nextCentury: '下一世紀'
+        },
+        timePickerLocale: {
+            placeholder: '請選擇時間'
+        }
+    },
+    TimePicker: {
+        placeholder: '請選擇時間'
+    },
+    Calendar: {
+        lang: {
+            placeholder: '請選擇日期',
+            rangePlaceholder: ['開始日期', '結束日期'],
+            locale: 'zh_TW',
+            today: '今天',
+            now: '此刻',
+            backToToday: '返回今天',
+            ok: '確定',
+            timeSelect: '選擇時間',
+            dateSelect: '選擇日期',
+            weekSelect: '選擇周',
+            clear: '清除',
+            month: '月',
+            year: '年',
+            previousMonth: '上個月 (翻頁上鍵)',
+            nextMonth: '下個月 (翻頁下鍵)',
+            monthSelect: '選擇月份',
+            yearSelect: '選擇年份',
+            decadeSelect: '選擇年代',
+            yearFormat: 'YYYY年',
+            dayFormat: 'D日',
+            dateFormat: 'YYYY年M月D日',
+            dateTimeFormat: 'YYYY年M月D日 HH時mm分ss秒',
+            previousYear: '上一年 (Control鍵加左方向鍵)',
+            nextYear: '下一年 (Control鍵加右方向鍵)',
+            previousDecade: '上一年代',
+            nextDecade: '下一年代',
+            previousCentury: '上一世紀',
+            nextCentury: '下一世紀'
+        },
+        timePickerLocale: {
+            placeholder: '請選擇時間'
+        }
+    },
+    global: {
+        placeholder: '請選擇'
+    },
+    Table: {
+        filterTitle: '篩選器',
+        filterConfirm: '確定',
+        filterReset: '重置',
+        filterEmptyText: '無篩選項',
+        selectAll: '全部選取',
+        selectInvert: '反向選取',
+        selectionAll: '全選所有',
+        sortTitle: '排序',
+        expand: '展開行',
+        collapse: '關閉行',
+        triggerDesc: '點擊降序',
+        triggerAsc: '點擊升序',
+        cancelSort: '取消排序'
+    },
+    Modal: {
+        okText: '確定',
+        cancelText: '取消',
+        justOkText: '知道了'
+    },
+    Popconfirm: {
+        okText: '確定',
+        cancelText: '取消'
+    },
+    Transfer: {
+        searchPlaceholder: '搜尋資料',
+        itemUnit: '項目',
+        itemsUnit: '項目'
+    },
+    Upload: {
+        uploading: '正在上傳...',
+        removeFile: '刪除檔案',
+        uploadError: '上傳失敗',
+        previewFile: '檔案預覽',
+        downloadFile: '下载文件'
+    },
+    Empty: {
+        description: '無此資料'
+    },
+    Icon: {
+        icon: '圖標'
+    },
+    Text: {
+        edit: '編輯',
+        copy: '複製',
+        copied: '複製成功',
+        expand: '展開'
+    },
+    PageHeader: {
+        back: '返回'
+    }
+};
+
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
@@ -7903,21 +8467,32 @@ var zh_TW = {
             placeholder: '請選擇時間'
         }
     },
+    global: {
+        placeholder: '請選擇'
+    },
     Table: {
         filterTitle: '篩選器',
-        filterConfirm: '確 定',
-        filterReset: '重 置',
+        filterConfirm: '確定',
+        filterReset: '重置',
+        filterEmptyText: '無篩選項',
         selectAll: '全部選取',
-        selectInvert: '反向選取'
+        selectInvert: '反向選取',
+        selectionAll: '全選所有',
+        sortTitle: '排序',
+        expand: '展開行',
+        collapse: '關閉行',
+        triggerDesc: '點擊降序',
+        triggerAsc: '點擊升序',
+        cancelSort: '取消排序'
     },
     Modal: {
-        okText: '確 定',
-        cancelText: '取 消',
-        justOkText: 'OK'
+        okText: '確定',
+        cancelText: '取消',
+        justOkText: '知道了'
     },
     Popconfirm: {
-        okText: '確 定',
-        cancelText: '取 消'
+        okText: '確定',
+        cancelText: '取消'
     },
     Transfer: {
         searchPlaceholder: '搜尋資料',
@@ -7934,22 +8509,28 @@ var zh_TW = {
     Empty: {
         description: '無此資料'
     },
+    Icon: {
+        icon: '圖標'
+    },
+    Text: {
+        edit: '編輯',
+        copy: '複製',
+        copied: '複製成功',
+        expand: '展開'
+    },
     PageHeader: {
         back: '返回'
     }
 };
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-i18n.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
-export { DATE_HELPER_SERVICE_FACTORY, DateHelperByDateFns, DateHelperByDatePipe, DateHelperService, NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_FNS_COMPATIBLE, NZ_DATE_LOCALE, NZ_I18N, NzI18nModule, NzI18nPipe, NzI18nService, ar_EG, bg_BG, ca_ES, convertTokens, cs_CZ, da_DK, de_DE, el_GR, en_GB, en_US, es_ES, et_EE, fa_IR, fi_FI, fr_BE, fr_FR, he_IL, hi_IN, hr_HR, hu_HU, id_ID, is_IS, it_IT, ja_JP, ka_GE, kn_IN, ko_KR, ku_IQ, lv_LV, mergeDateConfig, mn_MN, ms_MY, nb_NO, ne_NP, nl_BE, nl_NL, pl_PL, pt_BR, pt_PT, ro_RO, ru_RU, sk_SK, sl_SI, sr_RS, sv_SE, ta_IN, th_TH, tr_TR, uk_UA, vi_VN, zh_CN, zh_TW };
+export { DATE_HELPER_SERVICE_FACTORY, DateHelperByDateFns, DateHelperByDatePipe, DateHelperService, NZ_DATE_CONFIG, NZ_DATE_CONFIG_DEFAULT, NZ_DATE_LOCALE, NZ_I18N, NzI18nModule, NzI18nPipe, NzI18nService, ar_EG, az_AZ, bg_BG, by_BY, ca_ES, cs_CZ, da_DK, de_DE, el_GR, en_GB, en_US, es_ES, et_EE, fa_IR, fi_FI, fr_BE, fr_FR, ga_IE, gl_ES, he_IL, hi_IN, hr_HR, hu_HU, hy_AM, id_ID, is_IS, it_IT, ja_JP, ka_GE, kmr_IQ, kn_IN, ko_KR, ku_IQ, lt_LT, lv_LV, mergeDateConfig, mk_MK, mn_MN, ms_MY, nb_NO, ne_NP, nl_BE, nl_NL, pl_PL, pt_BR, pt_PT, ro_RO, ru_RU, sk_SK, sl_SI, sr_RS, sv_SE, ta_IN, th_TH, tr_TR, uk_UA, vi_VN, zh_CN, zh_HK, zh_TW };
 //# sourceMappingURL=ng-zorro-antd-i18n.js.map

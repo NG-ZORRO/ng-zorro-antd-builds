@@ -1,13 +1,12 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common')) :
     typeof define === 'function' && define.amd ? define('ng-zorro-antd/core/element-patch', ['exports', '@angular/core', '@angular/common'], factory) :
-    (global = global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].core = global['ng-zorro-antd'].core || {}, global['ng-zorro-antd'].core['element-patch'] = {}), global.ng.core, global.ng.common));
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].core = global['ng-zorro-antd'].core || {}, global['ng-zorro-antd'].core['element-patch'] = {}), global.ng.core, global.ng.common));
 }(this, (function (exports, core, common) { 'use strict';
 
     /**
-     * @fileoverview added by tsickle
-     * Generated from: element-patch.directive.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     /**
      * A patch directive to select the element of a component.
@@ -16,40 +15,50 @@
         function NzElementPatchDirective(elementRef) {
             this.elementRef = elementRef;
         }
-        NzElementPatchDirective.decorators = [
-            { type: core.Directive, args: [{
-                        selector: '[nz-element]',
-                        exportAs: 'nzElement'
-                    },] }
-        ];
-        /** @nocollapse */
-        NzElementPatchDirective.ctorParameters = function () { return [
-            { type: core.ElementRef }
-        ]; };
+        Object.defineProperty(NzElementPatchDirective.prototype, "nativeElement", {
+            get: function () {
+                return this.elementRef.nativeElement;
+            },
+            enumerable: false,
+            configurable: true
+        });
         return NzElementPatchDirective;
     }());
-    if (false) {
-        /** @type {?} */
-        NzElementPatchDirective.prototype.elementRef;
-    }
+    NzElementPatchDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: '[nzElement], [nz-element]',
+                    exportAs: 'nzElement'
+                },] }
+    ];
+    NzElementPatchDirective.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
 
     /**
-     * @fileoverview added by tsickle
-     * Generated from: element-patch.module.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzElementPatchModule = /** @class */ (function () {
         function NzElementPatchModule() {
         }
-        NzElementPatchModule.decorators = [
-            { type: core.NgModule, args: [{
-                        imports: [common.CommonModule],
-                        declarations: [NzElementPatchDirective],
-                        exports: [NzElementPatchDirective]
-                    },] }
-        ];
         return NzElementPatchModule;
     }());
+    NzElementPatchModule.decorators = [
+        { type: core.NgModule, args: [{
+                    imports: [common.CommonModule],
+                    declarations: [NzElementPatchDirective],
+                    exports: [NzElementPatchDirective]
+                },] }
+    ];
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
+
+    /**
+     * Generated bundle index. Do not edit.
+     */
 
     exports.NzElementPatchDirective = NzElementPatchDirective;
     exports.NzElementPatchModule = NzElementPatchModule;

@@ -10,6 +10,7 @@ export declare class NzCellFixedDirective implements OnChanges {
     nzRight: string | boolean;
     nzLeft: string | boolean;
     colspan: number | null;
+    colSpan: number | null;
     changes$: Subject<void>;
     isAutoLeft: boolean;
     isAutoRight: boolean;

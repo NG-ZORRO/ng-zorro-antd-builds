@@ -2,26 +2,21 @@ import { __decorate, __metadata } from 'tslib';
 import { Component, ViewEncapsulation, ChangeDetectorRef, Input, NgModule } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { InputNumber, InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject, BehaviorSubject } from 'rxjs';
-import { flatMap, debounceTime, takeUntil } from 'rxjs/operators';
+import { Subject, BehaviorSubject, ReplaySubject, timer } from 'rxjs';
+import { startWith, distinctUntilChanged, switchMap, debounce, takeUntil } from 'rxjs/operators';
 import { ObserversModule } from '@angular/cdk/observers';
 import { CommonModule } from '@angular/common';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: spin.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'spin';
+const NZ_CONFIG_MODULE_NAME = 'spin';
 class NzSpinComponent {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} cdr
-     */
     constructor(nzConfigService, cdr) {
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzIndicator = null;
         this.nzSize = 'default';
         this.nzTip = null;
@@ -30,49 +25,25 @@ class NzSpinComponent {
         this.nzSpinning = true;
         this.destroy$ = new Subject();
         this.spinning$ = new BehaviorSubject(this.nzSpinning);
-        this.delay$ = new BehaviorSubject(this.nzDelay);
-        this.isLoading = true;
+        this.delay$ = new ReplaySubject(1);
+        this.isLoading = false;
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
-        /** @type {?} */
-        const loading$ = this.spinning$.pipe(flatMap((/**
-         * @return {?}
-         */
-        () => this.delay$)), flatMap((/**
-         * @param {?} delay
-         * @return {?}
-         */
-        delay => {
+        const loading$ = this.delay$.pipe(startWith(this.nzDelay), distinctUntilChanged(), switchMap(delay => {
             if (delay === 0) {
                 return this.spinning$;
             }
-            else {
-                return this.spinning$.pipe(debounceTime(delay));
-            }
-        })), takeUntil(this.destroy$));
-        loading$.subscribe((/**
-         * @param {?} loading
-         * @return {?}
-         */
-        loading => {
+            return this.spinning$.pipe(debounce(spinning => timer(spinning ? delay : 0)));
+        }), takeUntil(this.destroy$));
+        loading$.subscribe(loading => {
             this.isLoading = loading;
             this.cdr.markForCheck();
-        }));
+        });
         this.nzConfigService
-            .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+            .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => this.cdr.markForCheck()));
+            .subscribe(() => this.cdr.markForCheck());
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzSpinning, nzDelay } = changes;
         if (nzSpinning) {
@@ -82,9 +53,6 @@ class NzSpinComponent {
             this.delay$.next(this.nzDelay);
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -124,9 +92,8 @@ NzSpinComponent.decorators = [
                 host: {
                     '[class.ant-spin-nested-loading]': '!nzSimple'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzSpinComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ChangeDetectorRef }
@@ -140,7 +107,7 @@ NzSpinComponent.propDecorators = {
     nzSpinning: [{ type: Input }]
 };
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", Object)
 ], NzSpinComponent.prototype, "nzIndicator", void 0);
 __decorate([
@@ -155,55 +122,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzSpinComponent.prototype, "nzSpinning", void 0);
-if (false) {
-    /** @type {?} */
-    NzSpinComponent.ngAcceptInputType_nzDelay;
-    /** @type {?} */
-    NzSpinComponent.ngAcceptInputType_nzSimple;
-    /** @type {?} */
-    NzSpinComponent.ngAcceptInputType_nzSpinning;
-    /** @type {?} */
-    NzSpinComponent.prototype.nzIndicator;
-    /** @type {?} */
-    NzSpinComponent.prototype.nzSize;
-    /** @type {?} */
-    NzSpinComponent.prototype.nzTip;
-    /** @type {?} */
-    NzSpinComponent.prototype.nzDelay;
-    /** @type {?} */
-    NzSpinComponent.prototype.nzSimple;
-    /** @type {?} */
-    NzSpinComponent.prototype.nzSpinning;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzSpinComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzSpinComponent.prototype.spinning$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzSpinComponent.prototype.delay$;
-    /** @type {?} */
-    NzSpinComponent.prototype.isLoading;
-    /** @type {?} */
-    NzSpinComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzSpinComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: spin.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzSpinModule {
 }
@@ -216,15 +138,12 @@ NzSpinModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-spin.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzSpinComponent, NzSpinModule };

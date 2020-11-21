@@ -4,9 +4,8 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: comment-cells.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCommentAvatarDirective {
 }
@@ -26,28 +25,15 @@ NzCommentContentDirective.decorators = [
             },] }
 ];
 class NzCommentActionHostDirective extends CdkPortalOutlet {
-    /**
-     * @param {?} componentFactoryResolver
-     * @param {?} viewContainerRef
-     */
     constructor(componentFactoryResolver, viewContainerRef) {
         super(componentFactoryResolver, viewContainerRef);
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         super.ngOnInit();
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         super.ngOnDestroy();
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
         this.attach(this.nzCommentActionHost);
     }
@@ -58,7 +44,6 @@ NzCommentActionHostDirective.decorators = [
                 exportAs: 'nzCommentActionHost'
             },] }
 ];
-/** @nocollapse */
 NzCommentActionHostDirective.ctorParameters = () => [
     { type: ComponentFactoryResolver },
     { type: ViewContainerRef }
@@ -66,27 +51,14 @@ NzCommentActionHostDirective.ctorParameters = () => [
 NzCommentActionHostDirective.propDecorators = {
     nzCommentActionHost: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzCommentActionHostDirective.prototype.nzCommentActionHost;
-}
 class NzCommentActionComponent {
-    /**
-     * @param {?} viewContainerRef
-     */
     constructor(viewContainerRef) {
         this.viewContainerRef = viewContainerRef;
         this.contentPortal = null;
     }
-    /**
-     * @return {?}
-     */
     get content() {
         return this.contentPortal;
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.contentPortal = new TemplatePortal(this.implicitContent, this.viewContainerRef);
     }
@@ -98,34 +70,18 @@ NzCommentActionComponent.decorators = [
                 encapsulation: ViewEncapsulation.None,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 template: '<ng-template><ng-content></ng-content></ng-template>'
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCommentActionComponent.ctorParameters = () => [
     { type: ViewContainerRef }
 ];
 NzCommentActionComponent.propDecorators = {
     implicitContent: [{ type: ViewChild, args: [TemplateRef, { static: true },] }]
 };
-if (false) {
-    /** @type {?} */
-    NzCommentActionComponent.prototype.implicitContent;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCommentActionComponent.prototype.contentPortal;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCommentActionComponent.prototype.viewContainerRef;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: comment.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCommentComponent {
     constructor() { }
@@ -165,30 +121,19 @@ NzCommentComponent.decorators = [
                 host: {
                     class: 'ant-comment'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCommentComponent.ctorParameters = () => [];
 NzCommentComponent.propDecorators = {
     nzAuthor: [{ type: Input }],
     nzDatetime: [{ type: Input }],
     actions: [{ type: ContentChildren, args: [NzCommentActionComponent,] }]
 };
-if (false) {
-    /** @type {?} */
-    NzCommentComponent.prototype.nzAuthor;
-    /** @type {?} */
-    NzCommentComponent.prototype.nzDatetime;
-    /** @type {?} */
-    NzCommentComponent.prototype.actions;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: comment.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const NZ_COMMENT_CELLS = [NzCommentAvatarDirective, NzCommentContentDirective, NzCommentActionComponent, NzCommentActionHostDirective];
 class NzCommentModule {
 }
@@ -201,15 +146,12 @@ NzCommentModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-comment.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzCommentActionComponent, NzCommentActionHostDirective, NzCommentAvatarDirective, NzCommentComponent, NzCommentContentDirective, NzCommentModule };

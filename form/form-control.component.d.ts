@@ -7,7 +7,7 @@ import { AbstractControl, FormControlDirective, FormControlName, NgModel } from 
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzFormDirective } from './form.directive';
-import { NzFormItemComponent } from './form-item.component';
+import { NzFormControlStatusType, NzFormItemComponent } from './form-item.component';
 declare const iconTypeMap: {
     readonly error: "close-circle-fill";
     readonly validating: "loading";
@@ -25,11 +25,11 @@ export declare class NzFormControlComponent implements OnChanges, OnDestroy, OnI
     private _hasFeedback;
     private validateChanges;
     private validateString;
-    private status;
     private destroyed$;
     private localeId;
     private autoErrorTip?;
     private get disableAutoTips();
+    status: NzFormControlStatusType;
     validateControl: AbstractControl | NgModel | null;
     iconType: typeof iconTypeMap[keyof typeof iconTypeMap] | null;
     innerTip: string | TemplateRef<{

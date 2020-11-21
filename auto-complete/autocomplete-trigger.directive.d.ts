@@ -31,7 +31,7 @@ export declare class NzAutocompleteTriggerDirective implements ControlValueAcces
     private previousValue;
     private selectionChangeSubscription;
     private optionsChangeSubscription;
-    private overlayBackdropClickSubscription;
+    private overlayOutsideClickSubscription;
     constructor(elementRef: ElementRef, overlay: Overlay, viewContainerRef: ViewContainerRef, nzInputGroupWhitSuffixOrPrefixDirective: NzInputGroupWhitSuffixOrPrefixDirective, document: NzSafeAny);
     ngOnDestroy(): void;
     writeValue(value: NzSafeAny): void;
@@ -52,10 +52,7 @@ export declare class NzAutocompleteTriggerDirective implements ControlValueAcces
      * Subscription option changes event and set the value
      */
     private subscribeSelectionChange;
-    /**
-     * Subscription external click and close panel
-     */
-    private subscribeOverlayBackdropClick;
+    private subscribeOverlayOutsideClick;
     private attachOverlay;
     private updateStatus;
     private destroyPanel;

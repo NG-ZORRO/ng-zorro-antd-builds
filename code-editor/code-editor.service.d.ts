@@ -5,7 +5,7 @@
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { JoinedEditorOptions, NzCodeEditorConfig } from './typings';
+import { JoinedEditorOptions } from './typings';
 export declare class NzCodeEditorService {
     private readonly nzConfigService;
     private document;
@@ -15,8 +15,7 @@ export declare class NzCodeEditorService {
     private option;
     private config;
     option$: BehaviorSubject<JoinedEditorOptions>;
-    constructor(nzConfigService: NzConfigService, _document: NzSafeAny, config?: NzCodeEditorConfig);
-    updateDefaultOption(option: JoinedEditorOptions): void;
+    constructor(nzConfigService: NzConfigService, _document: NzSafeAny);
     private _updateDefaultOption;
     requestToInit(): Observable<JoinedEditorOptions>;
     private loadMonacoScript;

@@ -6,5 +6,6 @@ import { TemplateRef } from '@angular/core';
 export declare class NzTabBodyComponent {
     content: TemplateRef<void> | null;
     active: boolean;
+    tabPaneAnimated: boolean;
     forceRender: boolean;
 }

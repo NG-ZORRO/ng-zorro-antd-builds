@@ -12,70 +12,42 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: input.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzInputDirective {
-    /**
-     * @param {?} ngControl
-     * @param {?} renderer
-     * @param {?} elementRef
-     */
     constructor(ngControl, renderer, elementRef) {
         this.ngControl = ngControl;
+        this.nzBorderless = false;
         this.nzSize = 'default';
         this._disabled = false;
         this.disabled$ = new Subject();
         this.destroy$ = new Subject();
         renderer.addClass(elementRef.nativeElement, 'ant-input');
     }
-    /**
-     * @return {?}
-     */
     get disabled() {
         if (this.ngControl && this.ngControl.disabled !== null) {
             return this.ngControl.disabled;
         }
         return this._disabled;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set disabled(value) {
         this._disabled = value != null && `${value}` !== 'false';
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         var _a;
         if (this.ngControl) {
-            (_a = this.ngControl.statusChanges) === null || _a === void 0 ? void 0 : _a.pipe(filter((/**
-             * @return {?}
-             */
-            () => this.ngControl.disabled !== null)), takeUntil(this.destroy$)).subscribe((/**
-             * @return {?}
-             */
-            () => {
-                this.disabled$.next((/** @type {?} */ (this.ngControl.disabled)));
-            }));
+            (_a = this.ngControl.statusChanges) === null || _a === void 0 ? void 0 : _a.pipe(filter(() => this.ngControl.disabled !== null), takeUntil(this.destroy$)).subscribe(() => {
+                this.disabled$.next(this.ngControl.disabled);
+            });
         }
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { disabled } = changes;
         if (disabled) {
             this.disabled$.next(this.disabled);
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -87,49 +59,33 @@ NzInputDirective.decorators = [
                 exportAs: 'nzInput',
                 host: {
                     '[class.ant-input-disabled]': 'disabled',
+                    '[class.ant-input-borderless]': 'nzBorderless',
                     '[class.ant-input-lg]': `nzSize === 'large'`,
                     '[class.ant-input-sm]': `nzSize === 'small'`,
                     '[attr.disabled]': 'disabled || null'
                 }
             },] }
 ];
-/** @nocollapse */
 NzInputDirective.ctorParameters = () => [
     { type: NgControl, decorators: [{ type: Optional }, { type: Self }] },
     { type: Renderer2 },
     { type: ElementRef }
 ];
 NzInputDirective.propDecorators = {
+    nzBorderless: [{ type: Input }],
     nzSize: [{ type: Input }],
     disabled: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzInputDirective.ngAcceptInputType_disabled;
-    /** @type {?} */
-    NzInputDirective.prototype.nzSize;
-    /** @type {?} */
-    NzInputDirective.prototype._disabled;
-    /** @type {?} */
-    NzInputDirective.prototype.disabled$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzInputDirective.prototype.destroy$;
-    /** @type {?} */
-    NzInputDirective.prototype.ngControl;
-}
+__decorate([
+    InputBoolean(),
+    __metadata("design:type", Object)
+], NzInputDirective.prototype, "nzBorderless", void 0);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: input-group.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzInputGroupWhitSuffixOrPrefixDirective {
-    /**
-     * @param {?} elementRef
-     */
     constructor(elementRef) {
         this.elementRef = elementRef;
     }
@@ -139,20 +95,10 @@ NzInputGroupWhitSuffixOrPrefixDirective.decorators = [
                 selector: `nz-input-group[nzSuffix], nz-input-group[nzPrefix]`
             },] }
 ];
-/** @nocollapse */
 NzInputGroupWhitSuffixOrPrefixDirective.ctorParameters = () => [
     { type: ElementRef }
 ];
-if (false) {
-    /** @type {?} */
-    NzInputGroupWhitSuffixOrPrefixDirective.prototype.elementRef;
-}
 class NzInputGroupComponent {
-    /**
-     * @param {?} focusMonitor
-     * @param {?} elementRef
-     * @param {?} cdr
-     */
     constructor(focusMonitor, elementRef, cdr) {
         this.focusMonitor = focusMonitor;
         this.elementRef = elementRef;
@@ -172,77 +118,32 @@ class NzInputGroupComponent {
         this.disabled = false;
         this.destroy$ = new Subject();
     }
-    /**
-     * @return {?}
-     */
     updateChildrenInputSize() {
         if (this.listOfNzInputDirective) {
-            this.listOfNzInputDirective.forEach((/**
-             * @param {?} item
-             * @return {?}
-             */
-            item => (item.nzSize = this.nzSize)));
+            this.listOfNzInputDirective.forEach(item => (item.nzSize = this.nzSize));
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.focusMonitor
             .monitor(this.elementRef, true)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @param {?} focusOrigin
-         * @return {?}
-         */
-        focusOrigin => {
+            .subscribe(focusOrigin => {
             this.focused = !!focusOrigin;
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngAfterContentInit() {
         this.updateChildrenInputSize();
-        /** @type {?} */
         const listOfInputChange$ = this.listOfNzInputDirective.changes.pipe(startWith(this.listOfNzInputDirective));
         listOfInputChange$
-            .pipe(switchMap((/**
-         * @param {?} list
-         * @return {?}
-         */
-        list => {
-            return merge(...[listOfInputChange$, ...list.map((/**
-                 * @param {?} input
-                 * @return {?}
-                 */
-                (input) => input.disabled$))]);
-        })), flatMap((/**
-         * @return {?}
-         */
-        () => listOfInputChange$)), map((/**
-         * @param {?} list
-         * @return {?}
-         */
-        list => list.some((/**
-         * @param {?} input
-         * @return {?}
-         */
-        (input) => input.disabled)))), takeUntil(this.destroy$))
-            .subscribe((/**
-         * @param {?} disabled
-         * @return {?}
-         */
-        disabled => {
+            .pipe(switchMap(list => {
+            return merge(...[listOfInputChange$, ...list.map((input) => input.disabled$)]);
+        }), flatMap(() => listOfInputChange$), map(list => list.some((input) => input.disabled)), takeUntil(this.destroy$))
+            .subscribe(disabled => {
             this.disabled = disabled;
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzSize, nzSuffix, nzPrefix, nzPrefixIcon, nzSuffixIcon, nzAddOnAfter, nzAddOnBefore, nzAddOnAfterIcon, nzAddOnBeforeIcon } = changes;
         if (nzSize) {
@@ -257,9 +158,6 @@ class NzInputGroupComponent {
             this.isAddOn = !!(this.nzAddOnAfter || this.nzAddOnBefore || this.nzAddOnAfterIcon || this.nzAddOnBeforeIcon);
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -330,9 +228,8 @@ NzInputGroupComponent.decorators = [
                     '[class.ant-input-group-lg]': `!isAffix && !isAddOn && isLarge`,
                     '[class.ant-input-group-sm]': `!isAffix && !isAddOn && isSmall`
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzInputGroupComponent.ctorParameters = () => [
     { type: FocusMonitor },
     { type: ElementRef },
@@ -360,91 +257,12 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzInputGroupComponent.prototype, "nzCompact", void 0);
-if (false) {
-    /** @type {?} */
-    NzInputGroupComponent.ngAcceptInputType_nzSearch;
-    /** @type {?} */
-    NzInputGroupComponent.ngAcceptInputType_nzCompact;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.listOfNzInputDirective;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.nzAddOnBeforeIcon;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.nzAddOnAfterIcon;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.nzPrefixIcon;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.nzSuffixIcon;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.nzAddOnBefore;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.nzAddOnAfter;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.nzPrefix;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.nzSuffix;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.nzSize;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.nzSearch;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.nzCompact;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.isLarge;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.isSmall;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.isAffix;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.isAddOn;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.focused;
-    /** @type {?} */
-    NzInputGroupComponent.prototype.disabled;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzInputGroupComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzInputGroupComponent.prototype.focusMonitor;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzInputGroupComponent.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzInputGroupComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: autosize.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @record
- */
-function AutoSizeType() { }
-if (false) {
-    /** @type {?|undefined} */
-    AutoSizeType.prototype.minRows;
-    /** @type {?|undefined} */
-    AutoSizeType.prototype.maxRows;
-}
 class NzAutosizeDirective {
-    /**
-     * @param {?} elementRef
-     * @param {?} ngZone
-     * @param {?} platform
-     * @param {?} resizeService
-     */
     constructor(elementRef, ngZone, platform, resizeService) {
         this.elementRef = elementRef;
         this.ngZone = ngZone;
@@ -457,19 +275,10 @@ class NzAutosizeDirective {
         this.destroy$ = new Subject();
         this.inputGap = 10;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzAutosize(value) {
-        /** @type {?} */
-        const isAutoSizeType = (/**
-         * @param {?} data
-         * @return {?}
-         */
-        (data) => {
+        const isAutoSizeType = (data) => {
             return typeof data !== 'string' && typeof data !== 'boolean' && (!!data.maxRows || !!data.minRows);
-        });
+        };
         if (typeof value === 'string') {
             this.autosize = true;
         }
@@ -481,10 +290,6 @@ class NzAutosizeDirective {
             this.minHeight = this.setMinHeight();
         }
     }
-    /**
-     * @param {?=} force
-     * @return {?}
-     */
     resizeToFitContent(force = false) {
         this.cacheTextareaLineHeight();
         // If we haven't determined the line-height yet, we know we're still hidden and there's no point
@@ -492,15 +297,12 @@ class NzAutosizeDirective {
         if (!this.cachedLineHeight) {
             return;
         }
-        /** @type {?} */
-        const textarea = (/** @type {?} */ (this.el));
-        /** @type {?} */
+        const textarea = this.el;
         const value = textarea.value;
         // Only resize if the value or minRows have changed since these calculations can be expensive.
         if (!force && this.minRows === this.previousMinRows && value === this.previousValue) {
             return;
         }
-        /** @type {?} */
         const placeholderText = textarea.placeholder;
         // Reset the textarea height to auto in order to shrink back to its default size.
         // Also temporarily force overflow:hidden, so scroll bars do not interfere with calculations.
@@ -509,13 +311,12 @@ class NzAutosizeDirective {
         // need to be removed temporarily.
         textarea.classList.add('nz-textarea-autosize-measuring');
         textarea.placeholder = '';
-        /** @type {?} */
         let height = Math.round((textarea.scrollHeight - this.inputGap) / this.cachedLineHeight) * this.cachedLineHeight + this.inputGap;
         if (this.maxHeight !== null && height > this.maxHeight) {
-            height = (/** @type {?} */ (this.maxHeight));
+            height = this.maxHeight;
         }
         if (this.minHeight !== null && height < this.minHeight) {
-            height = (/** @type {?} */ (this.minHeight));
+            height = this.minHeight;
         }
         // Use the scrollHeight to know how large the textarea *would* be if fit its entire value.
         textarea.style.height = `${height}px`;
@@ -524,13 +325,7 @@ class NzAutosizeDirective {
         // On Firefox resizing the textarea will prevent it from scrolling to the caret position.
         // We need to re-set the selection in order for it to scroll to the proper position.
         if (typeof requestAnimationFrame !== 'undefined') {
-            this.ngZone.runOutsideAngular((/**
-             * @return {?}
-             */
-            () => requestAnimationFrame((/**
-             * @return {?}
-             */
-            () => {
+            this.ngZone.runOutsideAngular(() => requestAnimationFrame(() => {
                 const { selectionStart, selectionEnd } = textarea;
                 // IE will throw an "Unspecified error" if we try to set the selection range after the
                 // element has been removed from the DOM. Assert that the directive hasn't been destroyed
@@ -541,22 +336,17 @@ class NzAutosizeDirective {
                 if (!this.destroy$.isStopped && document.activeElement === textarea) {
                     textarea.setSelectionRange(selectionStart, selectionEnd);
                 }
-            }))));
+            }));
         }
         this.previousValue = value;
         this.previousMinRows = this.minRows;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     cacheTextareaLineHeight() {
         if (this.cachedLineHeight >= 0 || !this.el.parentNode) {
             return;
         }
         // Use a clone element because we have to override some styles.
-        /** @type {?} */
-        const textareaClone = (/** @type {?} */ (this.el.cloneNode(false)));
+        const textareaClone = this.el.cloneNode(false);
         textareaClone.rows = 1;
         // Use `position: absolute` so that this doesn't cause a browser layout and use
         // `visibility: hidden` so that nothing is rendered. Clear any other styles that
@@ -574,66 +364,43 @@ class NzAutosizeDirective {
         // to hidden. This ensures that there is no invalid calculation of the line height.
         // See Firefox bug report: https://bugzilla.mozilla.org/show_bug.cgi?id=33654
         textareaClone.style.overflow = 'hidden';
-        (/** @type {?} */ (this.el.parentNode)).appendChild(textareaClone);
+        this.el.parentNode.appendChild(textareaClone);
         this.cachedLineHeight = textareaClone.clientHeight - this.inputGap;
-        (/** @type {?} */ (this.el.parentNode)).removeChild(textareaClone);
+        this.el.parentNode.removeChild(textareaClone);
         // Min and max heights have to be re-calculated if the cached line height changes
         this.maxHeight = this.setMaxHeight();
         this.minHeight = this.setMinHeight();
     }
-    /**
-     * @return {?}
-     */
     setMinHeight() {
-        /** @type {?} */
         const minHeight = this.minRows && this.cachedLineHeight ? this.minRows * this.cachedLineHeight + this.inputGap : null;
         if (minHeight !== null) {
             this.el.style.minHeight = `${minHeight}px`;
         }
         return minHeight;
     }
-    /**
-     * @return {?}
-     */
     setMaxHeight() {
-        /** @type {?} */
         const maxHeight = this.maxRows && this.cachedLineHeight ? this.maxRows * this.cachedLineHeight + this.inputGap : null;
         if (maxHeight !== null) {
             this.el.style.maxHeight = `${maxHeight}px`;
         }
         return maxHeight;
     }
-    /**
-     * @return {?}
-     */
     noopInputHandler() {
         // no-op handler that ensures we're running change detection on input events.
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
         if (this.autosize && this.platform.isBrowser) {
             this.resizeToFitContent();
             this.resizeService
                 .subscribe()
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((/**
-             * @return {?}
-             */
-            () => this.resizeToFitContent(true)));
+                .subscribe(() => this.resizeToFitContent(true));
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
     }
-    /**
-     * @return {?}
-     */
     ngDoCheck() {
         if (this.autosize && this.platform.isBrowser) {
             this.resizeToFitContent();
@@ -652,7 +419,6 @@ NzAutosizeDirective.decorators = [
                 }
             },] }
 ];
-/** @nocollapse */
 NzAutosizeDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: NgZone },
@@ -662,88 +428,10 @@ NzAutosizeDirective.ctorParameters = () => [
 NzAutosizeDirective.propDecorators = {
     nzAutosize: [{ type: Input }]
 };
-if (false) {
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.autosize;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.el;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.cachedLineHeight;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.previousValue;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.previousMinRows;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.minRows;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.maxRows;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.maxHeight;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.minHeight;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.inputGap;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.ngZone;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.platform;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutosizeDirective.prototype.resizeService;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: input-group-slot.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzInputGroupSlotComponent {
     constructor() {
@@ -767,26 +455,17 @@ NzInputGroupSlotComponent.decorators = [
                     '[class.ant-input-prefix]': `type === 'prefix'`,
                     '[class.ant-input-suffix]': `type === 'suffix'`
                 }
-            }] }
+            },] }
 ];
 NzInputGroupSlotComponent.propDecorators = {
     icon: [{ type: Input }],
     type: [{ type: Input }],
     template: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzInputGroupSlotComponent.prototype.icon;
-    /** @type {?} */
-    NzInputGroupSlotComponent.prototype.type;
-    /** @type {?} */
-    NzInputGroupSlotComponent.prototype.template;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: input.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzInputModule {
 }
@@ -805,15 +484,12 @@ NzInputModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-input.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzAutosizeDirective, NzInputDirective, NzInputGroupComponent, NzInputGroupSlotComponent, NzInputGroupWhitSuffixOrPrefixDirective, NzInputModule };

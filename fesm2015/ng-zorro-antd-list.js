@@ -11,43 +11,13 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: interface.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @record
- */
-function NzListGrid() { }
-if (false) {
-    /** @type {?|undefined} */
-    NzListGrid.prototype.gutter;
-    /** @type {?|undefined} */
-    NzListGrid.prototype.span;
-    /** @type {?|undefined} */
-    NzListGrid.prototype.column;
-    /** @type {?|undefined} */
-    NzListGrid.prototype.xs;
-    /** @type {?|undefined} */
-    NzListGrid.prototype.sm;
-    /** @type {?|undefined} */
-    NzListGrid.prototype.md;
-    /** @type {?|undefined} */
-    NzListGrid.prototype.lg;
-    /** @type {?|undefined} */
-    NzListGrid.prototype.xl;
-    /** @type {?|undefined} */
-    NzListGrid.prototype.xxl;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: list-item-meta-cell.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzListItemMetaTitleComponent {
 }
@@ -61,7 +31,7 @@ NzListItemMetaTitleComponent.decorators = [
     </h4>
   `,
                 changeDetection: ChangeDetectionStrategy.OnPush
-            }] }
+            },] }
 ];
 class NzListItemMetaDescriptionComponent {
 }
@@ -75,7 +45,7 @@ NzListItemMetaDescriptionComponent.decorators = [
     </div>
   `,
                 changeDetection: ChangeDetectionStrategy.OnPush
-            }] }
+            },] }
 ];
 class NzListItemMetaAvatarComponent {
 }
@@ -90,36 +60,23 @@ NzListItemMetaAvatarComponent.decorators = [
     </div>
   `,
                 changeDetection: ChangeDetectionStrategy.OnPush
-            }] }
+            },] }
 ];
 NzListItemMetaAvatarComponent.propDecorators = {
     nzSrc: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzListItemMetaAvatarComponent.prototype.nzSrc;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: list-item-meta.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzListItemMetaComponent {
-    /**
-     * @param {?} elementRef
-     * @param {?} renderer
-     */
     constructor(elementRef, renderer) {
         this.elementRef = elementRef;
         this.renderer = renderer;
         this.avatarStr = '';
         this.renderer.addClass(elementRef.nativeElement, 'ant-list-item-meta');
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzAvatar(value) {
         if (value instanceof TemplateRef) {
             this.avatarStr = '';
@@ -161,9 +118,8 @@ NzListItemMetaComponent.decorators = [
                 preserveWhitespaces: false,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 encapsulation: ViewEncapsulation.None
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzListItemMetaComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: Renderer2 }
@@ -175,32 +131,10 @@ NzListItemMetaComponent.propDecorators = {
     descriptionComponent: [{ type: ContentChild, args: [NzListItemMetaDescriptionComponent,] }],
     titleComponent: [{ type: ContentChild, args: [NzListItemMetaTitleComponent,] }]
 };
-if (false) {
-    /** @type {?} */
-    NzListItemMetaComponent.prototype.avatarStr;
-    /** @type {?} */
-    NzListItemMetaComponent.prototype.avatarTpl;
-    /** @type {?} */
-    NzListItemMetaComponent.prototype.nzTitle;
-    /** @type {?} */
-    NzListItemMetaComponent.prototype.nzDescription;
-    /** @type {?} */
-    NzListItemMetaComponent.prototype.descriptionComponent;
-    /** @type {?} */
-    NzListItemMetaComponent.prototype.titleComponent;
-    /** @type {?} */
-    NzListItemMetaComponent.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzListItemMetaComponent.prototype.renderer;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: list-item-cell.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzListItemExtraComponent {
     constructor() { }
@@ -214,9 +148,8 @@ NzListItemExtraComponent.decorators = [
                 host: {
                     class: 'ant-list-item-extra'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzListItemExtraComponent.ctorParameters = () => [];
 class NzListItemActionComponent {
     constructor() { }
@@ -227,22 +160,13 @@ NzListItemActionComponent.decorators = [
                 exportAs: 'nzListItemAction',
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 template: ` <ng-template><ng-content></ng-content></ng-template> `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzListItemActionComponent.ctorParameters = () => [];
 NzListItemActionComponent.propDecorators = {
     templateRef: [{ type: ViewChild, args: [TemplateRef,] }]
 };
-if (false) {
-    /** @type {?} */
-    NzListItemActionComponent.prototype.templateRef;
-}
 class NzListItemActionsComponent {
-    /**
-     * @param {?} ngZone
-     * @param {?} cdr
-     */
     constructor(ngZone, cdr) {
         this.ngZone = ngZone;
         this.cdr = cdr;
@@ -250,46 +174,27 @@ class NzListItemActionsComponent {
         this.actions = [];
         this.destroy$ = new Subject();
         this.inputActionChanges$ = new Subject();
-        this.contentChildrenChanges$ = defer((/**
-         * @return {?}
-         */
-        () => {
+        this.contentChildrenChanges$ = defer(() => {
             if (this.nzListItemActions) {
                 return of(null);
             }
-            return this.ngZone.onStable.asObservable().pipe(take(1), switchMap((/**
-             * @return {?}
-             */
-            () => this.contentChildrenChanges$)));
-        }));
+            return this.ngZone.onStable.asObservable().pipe(take(1), switchMap(() => this.contentChildrenChanges$));
+        });
         merge(this.contentChildrenChanges$, this.inputActionChanges$)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => {
+            .subscribe(() => {
             if (this.nzActions.length) {
                 this.actions = this.nzActions;
             }
             else {
-                this.actions = this.nzListItemActions.map((/**
-                 * @param {?} action
-                 * @return {?}
-                 */
-                action => (/** @type {?} */ (action.templateRef))));
+                this.actions = this.nzListItemActions.map(action => action.templateRef);
             }
             this.cdr.detectChanges();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnChanges() {
         this.inputActionChanges$.next(null);
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -309,9 +214,8 @@ NzListItemActionsComponent.decorators = [
                 host: {
                     class: 'ant-list-item-action'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzListItemActionsComponent.ctorParameters = () => [
     { type: NgZone },
     { type: ChangeDetectorRef }
@@ -320,44 +224,10 @@ NzListItemActionsComponent.propDecorators = {
     nzActions: [{ type: Input }],
     nzListItemActions: [{ type: ContentChildren, args: [NzListItemActionComponent,] }]
 };
-if (false) {
-    /** @type {?} */
-    NzListItemActionsComponent.prototype.nzActions;
-    /** @type {?} */
-    NzListItemActionsComponent.prototype.nzListItemActions;
-    /** @type {?} */
-    NzListItemActionsComponent.prototype.actions;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzListItemActionsComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzListItemActionsComponent.prototype.inputActionChanges$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzListItemActionsComponent.prototype.contentChildrenChanges$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzListItemActionsComponent.prototype.ngZone;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzListItemActionsComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: list-cell.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzListEmptyComponent {
 }
@@ -370,15 +240,11 @@ NzListEmptyComponent.decorators = [
                 host: {
                     class: 'ant-list-empty-text'
                 }
-            }] }
+            },] }
 ];
 NzListEmptyComponent.propDecorators = {
     nzNoResult: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzListEmptyComponent.prototype.nzNoResult;
-}
 class NzListHeaderComponent {
 }
 NzListHeaderComponent.decorators = [
@@ -390,7 +256,7 @@ NzListHeaderComponent.decorators = [
                 host: {
                     class: 'ant-list-header'
                 }
-            }] }
+            },] }
 ];
 class NzListFooterComponent {
 }
@@ -403,7 +269,7 @@ NzListFooterComponent.decorators = [
                 host: {
                     class: 'ant-list-footer'
                 }
-            }] }
+            },] }
 ];
 class NzListPaginationComponent {
 }
@@ -416,7 +282,7 @@ NzListPaginationComponent.decorators = [
                 host: {
                     class: 'ant-list-pagination'
                 }
-            }] }
+            },] }
 ];
 class NzListLoadMoreDirective {
 }
@@ -438,9 +304,8 @@ NzListGridDirective.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: list.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzListComponent {
     constructor() {
@@ -455,15 +320,9 @@ class NzListComponent {
         this.hasSomethingAfterLastItem = false;
         this.itemLayoutNotifySource = new BehaviorSubject(this.nzItemLayout);
     }
-    /**
-     * @return {?}
-     */
     get itemLayoutNotify$() {
         return this.itemLayoutNotifySource.asObservable();
     }
-    /**
-     * @return {?}
-     */
     getSomethingAfterLastItem() {
         return !!(this.nzLoadMore ||
             this.nzPagination ||
@@ -472,24 +331,14 @@ class NzListComponent {
             this.nzListPaginationComponent ||
             this.nzListLoadMoreDirective);
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         if (changes.nzItemLayout) {
             this.itemLayoutNotifySource.next(this.nzItemLayout);
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.itemLayoutNotifySource.unsubscribe();
     }
-    /**
-     * @return {?}
-     */
     ngAfterContentInit() {
         this.hasSomethingAfterLastItem = this.getSomethingAfterLastItem();
     }
@@ -562,9 +411,8 @@ NzListComponent.decorators = [
                     '[class.ant-list-loading]': 'nzLoading',
                     '[class.ant-list-something-after-last-item]': 'hasSomethingAfterLastItem'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzListComponent.ctorParameters = () => [];
 NzListComponent.propDecorators = {
     nzDataSource: [{ type: Input }],
@@ -596,68 +444,12 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzListComponent.prototype, "nzSplit", void 0);
-if (false) {
-    /** @type {?} */
-    NzListComponent.ngAcceptInputType_nzBordered;
-    /** @type {?} */
-    NzListComponent.ngAcceptInputType_nzLoading;
-    /** @type {?} */
-    NzListComponent.ngAcceptInputType_nzSplit;
-    /** @type {?} */
-    NzListComponent.ngAcceptInputType_nzGrid;
-    /** @type {?} */
-    NzListComponent.prototype.nzDataSource;
-    /** @type {?} */
-    NzListComponent.prototype.nzBordered;
-    /** @type {?} */
-    NzListComponent.prototype.nzGrid;
-    /** @type {?} */
-    NzListComponent.prototype.nzHeader;
-    /** @type {?} */
-    NzListComponent.prototype.nzFooter;
-    /** @type {?} */
-    NzListComponent.prototype.nzItemLayout;
-    /** @type {?} */
-    NzListComponent.prototype.nzRenderItem;
-    /** @type {?} */
-    NzListComponent.prototype.nzLoading;
-    /** @type {?} */
-    NzListComponent.prototype.nzLoadMore;
-    /** @type {?} */
-    NzListComponent.prototype.nzPagination;
-    /** @type {?} */
-    NzListComponent.prototype.nzSize;
-    /** @type {?} */
-    NzListComponent.prototype.nzSplit;
-    /** @type {?} */
-    NzListComponent.prototype.nzNoResult;
-    /** @type {?} */
-    NzListComponent.prototype.nzListFooterComponent;
-    /** @type {?} */
-    NzListComponent.prototype.nzListPaginationComponent;
-    /** @type {?} */
-    NzListComponent.prototype.nzListLoadMoreDirective;
-    /** @type {?} */
-    NzListComponent.prototype.hasSomethingAfterLastItem;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzListComponent.prototype.itemLayoutNotifySource;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: list-item.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzListItemComponent {
-    /**
-     * @param {?} elementRef
-     * @param {?} renderer
-     * @param {?} parentComp
-     * @param {?} cdr
-     */
     constructor(elementRef, renderer, parentComp, cdr) {
         this.parentComp = parentComp;
         this.cdr = cdr;
@@ -666,28 +458,15 @@ class NzListItemComponent {
         this.nzNoFlex = false;
         renderer.addClass(elementRef.nativeElement, 'ant-list-item');
     }
-    /**
-     * @return {?}
-     */
     get isVerticalAndExtra() {
         return this.itemLayout === 'vertical' && (!!this.listItemExtraDirective || !!this.nzExtra);
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
-        this.itemLayout$ = this.parentComp.itemLayoutNotify$.subscribe((/**
-         * @param {?} val
-         * @return {?}
-         */
-        val => {
+        this.itemLayout$ = this.parentComp.itemLayoutNotify$.subscribe(val => {
             this.itemLayout = val;
             this.cdr.detectChanges();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         if (this.itemLayout$) {
             this.itemLayout$.unsubscribe();
@@ -734,9 +513,8 @@ NzListItemComponent.decorators = [
                 preserveWhitespaces: false,
                 encapsulation: ViewEncapsulation.None,
                 changeDetection: ChangeDetectionStrategy.OnPush
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzListItemComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: Renderer2 },
@@ -754,47 +532,11 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzListItemComponent.prototype, "nzNoFlex", void 0);
-if (false) {
-    /** @type {?} */
-    NzListItemComponent.ngAcceptInputType_nzNoFlex;
-    /** @type {?} */
-    NzListItemComponent.prototype.nzActions;
-    /** @type {?} */
-    NzListItemComponent.prototype.nzContent;
-    /** @type {?} */
-    NzListItemComponent.prototype.nzExtra;
-    /** @type {?} */
-    NzListItemComponent.prototype.nzNoFlex;
-    /** @type {?} */
-    NzListItemComponent.prototype.listItemExtraDirective;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzListItemComponent.prototype.itemLayout;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzListItemComponent.prototype.itemLayout$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzListItemComponent.prototype.parentComp;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzListItemComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: list.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const DIRECTIVES = [
     NzListComponent,
     NzListHeaderComponent,
@@ -823,15 +565,12 @@ NzListModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-list.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzListComponent, NzListEmptyComponent, NzListFooterComponent, NzListGridDirective, NzListHeaderComponent, NzListItemActionComponent, NzListItemActionsComponent, NzListItemComponent, NzListItemExtraComponent, NzListItemMetaAvatarComponent, NzListItemMetaComponent, NzListItemMetaDescriptionComponent, NzListItemMetaTitleComponent, NzListLoadMoreDirective, NzListModule, NzListPaginationComponent };

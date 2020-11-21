@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { TemplateRef } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export interface PanelSelector {
     className: string;
     title?: string;
@@ -10,6 +11,7 @@ export interface PanelSelector {
     onClick(): void;
 }
 export interface DateCell {
+    trackByIndex: NzSafeAny;
     value: Date;
     content: TemplateRef<Date> | string;
     onClick(): void;
@@ -22,26 +24,25 @@ export interface DateCell {
     fullCellRender?: TemplateRef<Date> | string;
     isToday?: boolean;
     classMap?: object;
-}
-export interface DateBodyRow {
-    dateCells: DateCell[];
-    isCurrent?: boolean;
-    isActive?: boolean;
-    weekNum?: number;
-    year?: number;
-    classMap?: object;
-}
-export interface DayCell extends DateCell {
-    isSelectedStartDate?: boolean;
-    isSelectedEndDate?: boolean;
-    isHoverStartDate?: boolean;
-    isHoverEndDate?: boolean;
-    isInHoverRange?: boolean;
-    isInSelectedRange?: boolean;
-    isLastDayOfMonth?: boolean;
-    isFirstDayOfMonth?: boolean;
     isStartSingle?: boolean;
     isEndSingle?: boolean;
+    isSelectedStart?: boolean;
+    isSelectedEnd?: boolean;
+    isHoverStart?: boolean;
+    isHoverEnd?: boolean;
+    isInHoverRange?: boolean;
+    isInSelectedRange?: boolean;
+    isRangeStartNearHover?: boolean;
+    isRangeEndNearHover?: boolean;
+    isFirstCellInPanel?: boolean;
+    isLastCellInPanel?: boolean;
+}
+export interface DateBodyRow {
+    trackByIndex: NzSafeAny;
+    dateCells: DateCell[];
+    isActive?: boolean;
+    weekNum?: number;
+    classMap?: object;
 }
 export interface DecadeCell extends DateCell {
     isBiggerThanEnd?: boolean;

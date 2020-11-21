@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.addDeclaration = exports.addModule = void 0;
 const schematics_1 = require("@angular-devkit/schematics");
 const schematics_2 = require("@angular/cdk/schematics");
-const ast_utils_1 = require("@schematics/angular/utility/ast-utils");
 const change_1 = require("@schematics/angular/utility/change");
 const config_1 = require("@schematics/angular/utility/config");
 const find_module_1 = require("@schematics/angular/utility/find-module");
@@ -32,7 +32,7 @@ function addDeclaration(componentName, componentPath) {
         const appModulePath = ng_ast_utils_1.getAppModulePath(host, schematics_2.getProjectMainFile(project));
         const source = readIntoSourceFile(host, appModulePath);
         const relativePath = find_module_1.buildRelativePath(appModulePath, componentPath);
-        const declarationChanges = ast_utils_1.addDeclarationToModule(source, appModulePath, componentName, relativePath);
+        const declarationChanges = schematics_2.addDeclarationToModule(source, appModulePath, componentName, relativePath);
         const declarationRecorder = host.beginUpdate(appModulePath);
         for (const change of declarationChanges) {
             if (change instanceof change_1.InsertChange) {

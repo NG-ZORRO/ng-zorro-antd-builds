@@ -5,15 +5,15 @@ import { CommonModule } from '@angular/common';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: divider.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDividerComponent {
     constructor() {
         this.nzType = 'horizontal';
         this.nzOrientation = 'center';
         this.nzDashed = false;
+        this.nzPlain = false;
     }
 }
 NzDividerComponent.decorators = [
@@ -32,40 +32,34 @@ NzDividerComponent.decorators = [
                     '[class.ant-divider]': 'true',
                     '[class.ant-divider-horizontal]': `nzType === 'horizontal'`,
                     '[class.ant-divider-vertical]': `nzType === 'vertical'`,
+                    '[class.ant-divider-with-text]': `nzText`,
+                    '[class.ant-divider-plain]': `nzPlain`,
                     '[class.ant-divider-with-text-left]': `nzText && nzOrientation === 'left'`,
                     '[class.ant-divider-with-text-right]': `nzText && nzOrientation === 'right'`,
                     '[class.ant-divider-with-text-center]': `nzText && nzOrientation === 'center'`,
                     '[class.ant-divider-dashed]': `nzDashed`
                 }
-            }] }
+            },] }
 ];
 NzDividerComponent.propDecorators = {
     nzText: [{ type: Input }],
     nzType: [{ type: Input }],
     nzOrientation: [{ type: Input }],
-    nzDashed: [{ type: Input }]
+    nzDashed: [{ type: Input }],
+    nzPlain: [{ type: Input }]
 };
 __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzDividerComponent.prototype, "nzDashed", void 0);
-if (false) {
-    /** @type {?} */
-    NzDividerComponent.ngAcceptInputType_nzDashed;
-    /** @type {?} */
-    NzDividerComponent.prototype.nzText;
-    /** @type {?} */
-    NzDividerComponent.prototype.nzType;
-    /** @type {?} */
-    NzDividerComponent.prototype.nzOrientation;
-    /** @type {?} */
-    NzDividerComponent.prototype.nzDashed;
-}
+__decorate([
+    InputBoolean(),
+    __metadata("design:type", Object)
+], NzDividerComponent.prototype, "nzPlain", void 0);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: divider.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDividerModule {
 }
@@ -78,15 +72,12 @@ NzDividerModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-divider.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzDividerComponent, NzDividerModule };

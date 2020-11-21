@@ -2,11 +2,51 @@
 /* stylelint-disable no-duplicate-selectors */
 /* stylelint-disable */
 /* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+.ant-modal,
+.ant-image-preview {
+  pointer-events: none;
+}
+.ant-modal.zoom-enter,
+.ant-modal.zoom-appear,
+.ant-image-preview.zoom-enter,
+.ant-image-preview.zoom-appear {
+  transform: none;
+  opacity: 0;
+  animation-duration: 0.3s;
+  user-select: none;
+}
+.ant-modal-mask,
+.ant-image-preview-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  filter: alpha(opacity=50);
+}
+.ant-modal-mask-hidden,
+.ant-image-preview-mask-hidden {
+  display: none;
+}
+.ant-modal-wrap,
+.ant-image-preview-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  outline: 0;
+  -webkit-overflow-scrolling: touch;
+}
 .ant-tag {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: rgba(0, 0, 0, 0.65);
+  color: rgba(0, 0, 0, 0.85);
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5715;
@@ -24,7 +64,7 @@
   border-radius: 2px;
   cursor: default;
   opacity: 1;
-  transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  transition: all 0.3s;
 }
 .ant-tag:hover {
   opacity: 0.85;
@@ -32,23 +72,21 @@
 .ant-tag,
 .ant-tag a,
 .ant-tag a:hover {
-  color: rgba(0, 0, 0, 0.65);
+  color: rgba(0, 0, 0, 0.85);
 }
 .ant-tag > a:first-child:last-child {
   display: inline-block;
   margin: 0 -8px;
   padding: 0 8px;
 }
-.ant-tag .anticon-close {
-  display: inline-block;
-  font-size: 10px;
+.ant-tag-close-icon {
   margin-left: 3px;
   color: rgba(0, 0, 0, 0.45);
-  font-weight: bold;
+  font-size: 10px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  transition: all 0.3s;
 }
-.ant-tag .anticon-close:hover {
+.ant-tag-close-icon:hover {
   color: rgba(0, 0, 0, 0.85);
 }
 .ant-tag-has-color {
@@ -64,6 +102,7 @@
 .ant-tag-checkable {
   background-color: transparent;
   border-color: transparent;
+  cursor: pointer;
 }
 .ant-tag-checkable:not(.ant-tag-checkable-checked):hover {
   color: #1890ff;
@@ -235,13 +274,18 @@
 .ant-tag > span + .anticon {
   margin-left: 7px;
 }
-.ant-tag-rtl {
+.ant-tag.ant-tag-rtl {
   margin-right: 0;
   margin-left: 8px;
   direction: rtl;
   text-align: right;
 }
-.ant-tag-rtl.ant-tag .anticon-close {
+.ant-tag-rtl .ant-tag-close-icon {
   margin-right: 3px;
+  margin-left: 0;
+}
+.ant-tag-rtl.ant-tag > .anticon + span,
+.ant-tag-rtl.ant-tag > span + .anticon {
+  margin-right: 7px;
   margin-left: 0;
 }

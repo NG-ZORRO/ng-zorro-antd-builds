@@ -41,6 +41,10 @@ export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements O
     nzContent?: string | TemplateRef<{}> | Type<T>;
     nzComponentParams?: T;
     nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;
+    /**
+     * @deprecated Not supported.
+     * @breaking-change 11.0.0
+     */
     nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
     nzZIndex: number;
     nzWidth: number | string;

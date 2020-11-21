@@ -4,7 +4,7 @@
  */
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, ElementRef, EventEmitter, NgZone, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { SimpleRect } from './utils';
@@ -14,6 +14,7 @@ export declare class NzAffixComponent implements AfterViewInit, OnChanges, OnDes
     private ngZone;
     private platform;
     private renderer;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzOffsetTop: NumberInput;
     static ngAcceptInputType_nzOffsetBottom: NumberInput;
     private fixedEl;

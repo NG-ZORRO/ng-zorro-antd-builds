@@ -11,31 +11,19 @@ import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: switch.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'switch';
+const NZ_CONFIG_MODULE_NAME = 'switch';
 class NzSwitchComponent {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} cdr
-     * @param {?} focusMonitor
-     */
     constructor(nzConfigService, cdr, focusMonitor) {
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
         this.focusMonitor = focusMonitor;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.isChecked = false;
-        this.onChange = (/**
-         * @return {?}
-         */
-        () => { });
-        this.onTouched = (/**
-         * @return {?}
-         */
-        () => { });
+        this.onChange = () => { };
+        this.onTouched = () => { };
         this.nzLoading = false;
         this.nzDisabled = false;
         this.nzControl = false;
@@ -43,30 +31,18 @@ class NzSwitchComponent {
         this.nzUnCheckedChildren = null;
         this.nzSize = 'default';
     }
-    /**
-     * @param {?} e
-     * @return {?}
-     */
     onHostClick(e) {
         e.preventDefault();
         if (!this.nzDisabled && !this.nzLoading && !this.nzControl) {
             this.updateValue(!this.isChecked);
         }
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     updateValue(value) {
         if (this.isChecked !== value) {
             this.isChecked = value;
             this.onChange(this.isChecked);
         }
     }
-    /**
-     * @param {?} e
-     * @return {?}
-     */
     onKeyDown(e) {
         if (!this.nzControl && !this.nzDisabled && !this.nzLoading) {
             if (e.keyCode === LEFT_ARROW) {
@@ -83,70 +59,35 @@ class NzSwitchComponent {
             }
         }
     }
-    /**
-     * @return {?}
-     */
     focus() {
         var _a;
         this.focusMonitor.focusVia((_a = this.switchElement) === null || _a === void 0 ? void 0 : _a.nativeElement, 'keyboard');
     }
-    /**
-     * @return {?}
-     */
     blur() {
         var _a;
         (_a = this.switchElement) === null || _a === void 0 ? void 0 : _a.nativeElement.blur();
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
-        this.focusMonitor.monitor((/** @type {?} */ (this.switchElement)).nativeElement, true).subscribe((/**
-         * @param {?} focusOrigin
-         * @return {?}
-         */
-        focusOrigin => {
+        this.focusMonitor.monitor(this.switchElement.nativeElement, true).subscribe(focusOrigin => {
             if (!focusOrigin) {
                 /** https://github.com/angular/angular/issues/17793 **/
-                Promise.resolve().then((/**
-                 * @return {?}
-                 */
-                () => this.onTouched()));
+                Promise.resolve().then(() => this.onTouched());
             }
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
-        this.focusMonitor.stopMonitoring((/** @type {?} */ (this.switchElement)).nativeElement);
+        this.focusMonitor.stopMonitoring(this.switchElement.nativeElement);
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     writeValue(value) {
         this.isChecked = value;
         this.cdr.markForCheck();
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnChange(fn) {
         this.onChange = fn;
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnTouched(fn) {
         this.onTouched = fn;
     }
-    /**
-     * @param {?} disabled
-     * @return {?}
-     */
     setDisabledState(disabled) {
         this.nzDisabled = disabled;
         this.cdr.markForCheck();
@@ -162,10 +103,7 @@ NzSwitchComponent.decorators = [
                 providers: [
                     {
                         provide: NG_VALUE_ACCESSOR,
-                        useExisting: forwardRef((/**
-                         * @return {?}
-                         */
-                        () => NzSwitchComponent)),
+                        useExisting: forwardRef(() => NzSwitchComponent),
                         multi: true
                     }
                 ],
@@ -183,7 +121,9 @@ NzSwitchComponent.decorators = [
       [nzWaveExtraNode]="true"
       (keydown)="onKeyDown($event)"
     >
-      <i *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></i>
+      <span class="ant-switch-handle">
+        <i *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></i>
+      </span>
       <span class="ant-switch-inner">
         <ng-container *ngIf="isChecked; else uncheckTemplate">
           <ng-container *nzStringTemplateOutlet="nzCheckedChildren">{{ nzCheckedChildren }}</ng-container>
@@ -198,9 +138,8 @@ NzSwitchComponent.decorators = [
                 host: {
                     '(click)': 'onHostClick($event)'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzSwitchComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ChangeDetectorRef },
@@ -228,57 +167,13 @@ __decorate([
     __metadata("design:type", Object)
 ], NzSwitchComponent.prototype, "nzControl", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", String)
 ], NzSwitchComponent.prototype, "nzSize", void 0);
-if (false) {
-    /** @type {?} */
-    NzSwitchComponent.ngAcceptInputType_nzLoading;
-    /** @type {?} */
-    NzSwitchComponent.ngAcceptInputType_nzDisabled;
-    /** @type {?} */
-    NzSwitchComponent.ngAcceptInputType_nzControl;
-    /** @type {?} */
-    NzSwitchComponent.prototype.isChecked;
-    /** @type {?} */
-    NzSwitchComponent.prototype.onChange;
-    /** @type {?} */
-    NzSwitchComponent.prototype.onTouched;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzSwitchComponent.prototype.switchElement;
-    /** @type {?} */
-    NzSwitchComponent.prototype.nzLoading;
-    /** @type {?} */
-    NzSwitchComponent.prototype.nzDisabled;
-    /** @type {?} */
-    NzSwitchComponent.prototype.nzControl;
-    /** @type {?} */
-    NzSwitchComponent.prototype.nzCheckedChildren;
-    /** @type {?} */
-    NzSwitchComponent.prototype.nzUnCheckedChildren;
-    /** @type {?} */
-    NzSwitchComponent.prototype.nzSize;
-    /** @type {?} */
-    NzSwitchComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzSwitchComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzSwitchComponent.prototype.focusMonitor;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: switch.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzSwitchModule {
 }
@@ -291,15 +186,12 @@ NzSwitchModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-switch.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzSwitchComponent, NzSwitchModule };

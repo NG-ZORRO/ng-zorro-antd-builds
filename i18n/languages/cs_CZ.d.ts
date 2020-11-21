@@ -89,10 +89,23 @@ declare const _default: {
             placeholder: string;
         };
     };
+    global: {
+        placeholder: string;
+    };
     Table: {
         filterTitle: string;
         filterConfirm: string;
         filterReset: string;
+        filterEmptyText: string;
+        selectAll: string;
+        selectInvert: string;
+        selectionAll: string;
+        sortTitle: string;
+        expand: string;
+        collapse: string;
+        triggerDesc: string;
+        triggerAsc: string;
+        cancelSort: string;
     };
     Modal: {
         okText: string;

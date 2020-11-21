@@ -8,23 +8,14 @@ import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { InputNumber } from 'ng-zorro-antd/core/util';
 import { Subject, fromEvent } from 'rxjs';
 import { throttleTime, takeUntil } from 'rxjs/operators';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: back-top.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'backTop';
+const NZ_CONFIG_MODULE_NAME = 'backTop';
 class NzBackTopComponent {
-    /**
-     * @param {?} doc
-     * @param {?} nzConfigService
-     * @param {?} scrollSrv
-     * @param {?} platform
-     * @param {?} cd
-     * @param {?} zone
-     */
     constructor(doc, nzConfigService, scrollSrv, platform, cd, zone) {
         this.doc = doc;
         this.nzConfigService = nzConfigService;
@@ -32,36 +23,24 @@ class NzBackTopComponent {
         this.platform = platform;
         this.cd = cd;
         this.zone = zone;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.scrollListenerDestroy$ = new Subject();
         this.target = null;
         this.visible = false;
         this.nzVisibilityHeight = 400;
+        this.nzDuration = 450;
         this.nzClick = new EventEmitter();
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.registerScrollEvent();
     }
-    /**
-     * @return {?}
-     */
     clickBackTop() {
-        this.scrollSrv.scrollTo(this.getTarget(), 0);
+        this.scrollSrv.scrollTo(this.getTarget(), 0, { duration: this.nzDuration });
         this.nzClick.emit(true);
     }
-    /**
-     * @private
-     * @return {?}
-     */
     getTarget() {
         return this.target || window;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     handleScroll() {
         if (this.visible === this.scrollSrv.getScroll(this.getTarget()) > this.nzVisibilityHeight) {
             return;
@@ -69,39 +48,22 @@ class NzBackTopComponent {
         this.visible = !this.visible;
         this.cd.detectChanges();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     registerScrollEvent() {
         if (!this.platform.isBrowser) {
             return;
         }
         this.scrollListenerDestroy$.next();
         this.handleScroll();
-        this.zone.runOutsideAngular((/**
-         * @return {?}
-         */
-        () => {
+        this.zone.runOutsideAngular(() => {
             fromEvent(this.getTarget(), 'scroll')
                 .pipe(throttleTime(50), takeUntil(this.scrollListenerDestroy$))
-                .subscribe((/**
-             * @return {?}
-             */
-            () => this.handleScroll()));
-        }));
+                .subscribe(() => this.handleScroll());
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.scrollListenerDestroy$.next();
         this.scrollListenerDestroy$.complete();
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzTarget } = changes;
         if (nzTarget) {
@@ -119,7 +81,9 @@ NzBackTopComponent.decorators = [
     <div class="ant-back-top" (click)="clickBackTop()" @fadeMotion *ngIf="visible">
       <ng-template #defaultContent>
         <div class="ant-back-top-content">
-          <div class="ant-back-top-icon"></div>
+          <div class="ant-back-top-icon">
+            <i nz-icon nzType="vertical-align-top"></i>
+          </div>
         </div>
       </ng-template>
       <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
@@ -128,9 +92,8 @@ NzBackTopComponent.decorators = [
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 encapsulation: ViewEncapsulation.None,
                 preserveWhitespaces: false
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzBackTopComponent.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] },
     { type: NzConfigService },
@@ -143,68 +106,22 @@ NzBackTopComponent.propDecorators = {
     nzTemplate: [{ type: Input }],
     nzVisibilityHeight: [{ type: Input }],
     nzTarget: [{ type: Input }],
+    nzDuration: [{ type: Input }],
     nzClick: [{ type: Output }]
 };
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputNumber(),
+    WithConfig(),
+    InputNumber(),
     __metadata("design:type", Number)
 ], NzBackTopComponent.prototype, "nzVisibilityHeight", void 0);
-if (false) {
-    /** @type {?} */
-    NzBackTopComponent.ngAcceptInputType_nzVisibilityHeight;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBackTopComponent.prototype.scrollListenerDestroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBackTopComponent.prototype.target;
-    /** @type {?} */
-    NzBackTopComponent.prototype.visible;
-    /** @type {?} */
-    NzBackTopComponent.prototype.nzTemplate;
-    /** @type {?} */
-    NzBackTopComponent.prototype.nzVisibilityHeight;
-    /** @type {?} */
-    NzBackTopComponent.prototype.nzTarget;
-    /** @type {?} */
-    NzBackTopComponent.prototype.nzClick;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBackTopComponent.prototype.doc;
-    /** @type {?} */
-    NzBackTopComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBackTopComponent.prototype.scrollSrv;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBackTopComponent.prototype.platform;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBackTopComponent.prototype.cd;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBackTopComponent.prototype.zone;
-}
+__decorate([
+    InputNumber(),
+    __metadata("design:type", Number)
+], NzBackTopComponent.prototype, "nzDuration", void 0);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: back-top.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzBackTopModule {
 }
@@ -212,20 +129,17 @@ NzBackTopModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NzBackTopComponent],
                 exports: [NzBackTopComponent],
-                imports: [CommonModule, PlatformModule]
+                imports: [CommonModule, PlatformModule, NzIconModule]
             },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-back-top.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzBackTopComponent, NzBackTopModule };

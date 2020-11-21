@@ -18,6 +18,7 @@ export declare class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy
     private router?;
     static ngAcceptInputType_nzDisabled: BooleanInput;
     static ngAcceptInputType_nzSelected: BooleanInput;
+    static ngAcceptInputType_nzDanger: BooleanInput;
     static ngAcceptInputType_nzMatchRouterExact: BooleanInput;
     static ngAcceptInputType_nzMatchRouter: BooleanInput;
     private destroy$;
@@ -27,6 +28,7 @@ export declare class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy
     nzPaddingLeft?: number;
     nzDisabled: boolean;
     nzSelected: boolean;
+    nzDanger: boolean;
     nzMatchRouterExact: boolean;
     nzMatchRouter: boolean;
     listOfRouterLink: QueryList<RouterLink>;

@@ -78,3 +78,6 @@
 .nz-resizable:not(.nz-resizable-resizing) .nz-resizable-handle-topRight {
   cursor: nesw-resize;
 }
+.nz-resizable-disabled .nz-resizable-handle {
+  pointer-events: none;
+}

@@ -8,6 +8,7 @@ export declare class NzSkeletonComponent implements OnInit, OnChanges {
     private cdr;
     nzActive: boolean;
     nzLoading: boolean;
+    nzRound: boolean;
     nzTitle: NzSkeletonTitle | boolean;
     nzAvatar: NzSkeletonAvatar | boolean;
     nzParagraph: NzSkeletonParagraph | boolean;

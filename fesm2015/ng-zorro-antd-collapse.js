@@ -10,79 +10,49 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: collapse.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'collapse';
+const NZ_CONFIG_MODULE_NAME = 'collapse';
 class NzCollapseComponent {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} cdr
-     */
     constructor(nzConfigService, cdr) {
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzAccordion = false;
         this.nzBordered = true;
+        this.nzGhost = false;
         this.nzExpandIconPosition = 'left';
         this.listOfNzCollapsePanelComponent = [];
         this.destroy$ = new Subject();
         this.nzConfigService
-            .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+            .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => {
+            .subscribe(() => {
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     addPanel(value) {
         this.listOfNzCollapsePanelComponent.push(value);
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     removePanel(value) {
         this.listOfNzCollapsePanelComponent.splice(this.listOfNzCollapsePanelComponent.indexOf(value), 1);
     }
-    /**
-     * @param {?} collapse
-     * @return {?}
-     */
     click(collapse) {
         if (this.nzAccordion && !collapse.nzActive) {
             this.listOfNzCollapsePanelComponent
-                .filter((/**
-             * @param {?} item
-             * @return {?}
-             */
-            item => item !== collapse))
-                .forEach((/**
-             * @param {?} item
-             * @return {?}
-             */
-            item => {
+                .filter(item => item !== collapse)
+                .forEach(item => {
                 if (item.nzActive) {
                     item.nzActive = false;
                     item.nzActiveChange.emit(item.nzActive);
                     item.markForCheck();
                 }
-            }));
+            });
         }
         collapse.nzActive = !collapse.nzActive;
         collapse.nzActiveChange.emit(collapse.nzActive);
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -94,16 +64,18 @@ NzCollapseComponent.decorators = [
                 exportAs: 'nzCollapse',
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 encapsulation: ViewEncapsulation.None,
-                template: ` <ng-content></ng-content> `,
+                template: `
+    <ng-content></ng-content>
+  `,
                 host: {
                     '[class.ant-collapse]': 'true',
                     '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
                     '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,
+                    '[class.ant-collapse-ghost]': `nzGhost`,
                     '[class.ant-collapse-borderless]': '!nzBordered'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCollapseComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ChangeDetectorRef }
@@ -111,101 +83,59 @@ NzCollapseComponent.ctorParameters = () => [
 NzCollapseComponent.propDecorators = {
     nzAccordion: [{ type: Input }],
     nzBordered: [{ type: Input }],
+    nzGhost: [{ type: Input }],
     nzExpandIconPosition: [{ type: Input }]
 };
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzCollapseComponent.prototype, "nzAccordion", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzCollapseComponent.prototype, "nzBordered", void 0);
-if (false) {
-    /** @type {?} */
-    NzCollapseComponent.ngAcceptInputType_nzAccordion;
-    /** @type {?} */
-    NzCollapseComponent.ngAcceptInputType_nzBordered;
-    /** @type {?} */
-    NzCollapseComponent.prototype.nzAccordion;
-    /** @type {?} */
-    NzCollapseComponent.prototype.nzBordered;
-    /** @type {?} */
-    NzCollapseComponent.prototype.nzExpandIconPosition;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCollapseComponent.prototype.listOfNzCollapsePanelComponent;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCollapseComponent.prototype.destroy$;
-    /** @type {?} */
-    NzCollapseComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCollapseComponent.prototype.cdr;
-}
+__decorate([
+    WithConfig(),
+    InputBoolean(),
+    __metadata("design:type", Boolean)
+], NzCollapseComponent.prototype, "nzGhost", void 0);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: collapse-panel.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME$1 = 'collapsePanel';
+const NZ_CONFIG_MODULE_NAME$1 = 'collapsePanel';
 class NzCollapsePanelComponent {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} cdr
-     * @param {?} nzCollapseComponent
-     */
     constructor(nzConfigService, cdr, nzCollapseComponent) {
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
         this.nzCollapseComponent = nzCollapseComponent;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME$1;
         this.nzActive = false;
         this.nzDisabled = false;
         this.nzShowArrow = true;
         this.nzActiveChange = new EventEmitter();
         this.destroy$ = new Subject();
         this.nzConfigService
-            .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME$1)
+            .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME$1)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => {
+            .subscribe(() => {
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     clickHeader() {
         if (!this.nzDisabled) {
             this.nzCollapseComponent.click(this);
         }
     }
-    /**
-     * @return {?}
-     */
     markForCheck() {
         this.cdr.markForCheck();
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.nzCollapseComponent.addPanel(this);
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -243,9 +173,8 @@ NzCollapsePanelComponent.decorators = [
                     '[class.ant-collapse-item-active]': 'nzActive',
                     '[class.ant-collapse-item-disabled]': 'nzDisabled'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCollapsePanelComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ChangeDetectorRef },
@@ -269,53 +198,14 @@ __decorate([
     __metadata("design:type", Object)
 ], NzCollapsePanelComponent.prototype, "nzDisabled", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME$1), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzCollapsePanelComponent.prototype, "nzShowArrow", void 0);
-if (false) {
-    /** @type {?} */
-    NzCollapsePanelComponent.ngAcceptInputType_nzActive;
-    /** @type {?} */
-    NzCollapsePanelComponent.ngAcceptInputType_nzDisabled;
-    /** @type {?} */
-    NzCollapsePanelComponent.ngAcceptInputType_nzShowArrow;
-    /** @type {?} */
-    NzCollapsePanelComponent.prototype.nzActive;
-    /** @type {?} */
-    NzCollapsePanelComponent.prototype.nzDisabled;
-    /** @type {?} */
-    NzCollapsePanelComponent.prototype.nzShowArrow;
-    /** @type {?} */
-    NzCollapsePanelComponent.prototype.nzExtra;
-    /** @type {?} */
-    NzCollapsePanelComponent.prototype.nzHeader;
-    /** @type {?} */
-    NzCollapsePanelComponent.prototype.nzExpandedIcon;
-    /** @type {?} */
-    NzCollapsePanelComponent.prototype.nzActiveChange;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCollapsePanelComponent.prototype.destroy$;
-    /** @type {?} */
-    NzCollapsePanelComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCollapsePanelComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCollapsePanelComponent.prototype.nzCollapseComponent;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: collapse.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCollapseModule {
 }
@@ -328,15 +218,12 @@ NzCollapseModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-collapse.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzCollapseComponent, NzCollapseModule, NzCollapsePanelComponent };

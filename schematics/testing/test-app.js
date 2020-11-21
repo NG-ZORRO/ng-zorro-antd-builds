@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createTestApp = void 0;
 /** Create a base app used for testing. */
 // tslint:disable-next-line:no-any
 function createTestApp(runner, appOptions = {}, tree) {

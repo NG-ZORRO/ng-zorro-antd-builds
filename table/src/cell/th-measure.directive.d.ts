@@ -10,7 +10,9 @@ export declare class NzThMeasureDirective implements OnChanges {
     changes$: Subject<unknown>;
     nzWidth: string | null;
     colspan: string | number | null;
+    colSpan: string | number | null;
     rowspan: string | number | null;
+    rowSpan: string | number | null;
     constructor(renderer: Renderer2, elementRef: ElementRef);
     ngOnChanges(changes: SimpleChanges): void;
 }

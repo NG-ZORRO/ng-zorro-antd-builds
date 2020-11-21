@@ -7,7 +7,7 @@ export declare class NzTransferSearchComponent implements OnChanges {
     private cdr;
     placeholder?: string;
     value?: string;
-    disabled?: boolean;
+    disabled: boolean;
     readonly valueChanged: EventEmitter<string>;
     readonly valueClear: EventEmitter<void>;
     constructor(cdr: ChangeDetectorRef);

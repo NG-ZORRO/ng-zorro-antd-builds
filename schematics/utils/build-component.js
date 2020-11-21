@@ -7,20 +7,32 @@
  * found in the LICENSE file at https://angular.io/license
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.buildComponent = void 0;
 const core_1 = require("@angular-devkit/core");
 const schematics_1 = require("@angular-devkit/schematics");
 const schematics_2 = require("@angular/cdk/schematics");
 const schema_1 = require("@schematics/angular/component/schema");
-const ts = require("typescript");
 const ast_utils_1 = require("@schematics/angular/utility/ast-utils");
 const change_1 = require("@schematics/angular/utility/change");
 const config_1 = require("@schematics/angular/utility/config");
 const find_module_1 = require("@schematics/angular/utility/find-module");
 const parse_name_1 = require("@schematics/angular/utility/parse-name");
-const project_1 = require("@schematics/angular/utility/project");
 const validation_1 = require("@schematics/angular/utility/validation");
+const workspace_models_1 = require("@schematics/angular/utility/workspace-models");
 const fs_1 = require("fs");
 const path_1 = require("path");
+const ts = require("typescript");
+/**
+ * Build a default project path for generating.
+ * @param project The project to build the path for.
+ */
+function buildDefaultPath(project) {
+    const root = project.sourceRoot
+        ? `/${project.sourceRoot}/`
+        : `/${project.root}/src/`;
+    const projectDirName = project.projectType === workspace_models_1.ProjectType.Application ? 'app' : 'lib';
+    return `${root}${projectDirName}`;
+}
 /**
  * List of style extensions which are CSS compatible. All supported CLI style extensions can be
  * found here: angular/angular-cli/master/packages/schematics/angular/ng-new/schema.json#L118-L122
@@ -62,11 +74,7 @@ function addDeclarationToNgModule(options) {
                 classifiedName = `${modulePrefix}${classifiedName}`;
             }
         }
-        const declarationChanges = ast_utils_1.addDeclarationToModule(
-        // TODO: TypeScript version mismatch due to @schematics/angular using a different version
-        // than Material. Cast to any to avoid the type assignment failure.
-        // tslint:disable-next-line no-any
-        source, modulePath, classifiedName, relativePath);
+        const declarationChanges = ast_utils_1.addDeclarationToModule(source, modulePath, classifiedName, relativePath);
         const declarationRecorder = host.beginUpdate(modulePath);
         for (const change of declarationChanges) {
             if (change instanceof change_1.InsertChange) {
@@ -78,11 +86,7 @@ function addDeclarationToNgModule(options) {
             // Need to refresh the AST because we overwrote the file in the host.
             source = readIntoSourceFile(host, modulePath);
             const exportRecorder = host.beginUpdate(modulePath);
-            const exportChanges = ast_utils_1.addExportToModule(
-            // TODO: TypeScript version mismatch due to @schematics/angular using a different version
-            // than Material. Cast to any to avoid the type assignment failure.
-            // tslint:disable-next-line no-any
-            source, modulePath, classifiedName, relativePath);
+            const exportChanges = ast_utils_1.addExportToModule(source, modulePath, core_1.strings.classify(`${options.name}Component`), relativePath);
             for (const change of exportChanges) {
                 if (change instanceof change_1.InsertChange) {
                     exportRecorder.insertLeft(change.pos, change.toAdd);
@@ -94,11 +98,7 @@ function addDeclarationToNgModule(options) {
             // Need to refresh the AST because we overwrote the file in the host.
             source = readIntoSourceFile(host, modulePath);
             const entryComponentRecorder = host.beginUpdate(modulePath);
-            const entryComponentChanges = ast_utils_1.addEntryComponentToModule(
-            // TODO: TypeScript version mismatch due to @schematics/angular using a different version
-            // than Material. Cast to any to avoid the type assignment failure.
-            // tslint:disable-next-line no-any
-            source, modulePath, classifiedName, relativePath);
+            const entryComponentChanges = ast_utils_1.addEntryComponentToModule(source, modulePath, core_1.strings.classify(`${options.name}Component`), relativePath);
             for (const change of entryComponentChanges) {
                 if (change instanceof change_1.InsertChange) {
                     entryComponentRecorder.insertLeft(change.pos, change.toAdd);
@@ -166,7 +166,7 @@ function buildComponent(options, additionalFiles = {}) {
             // TODO(jelbourn): figure out if the need for this `as any` is a bug due to two different
             // incompatible `WorkspaceProject` classes in @angular-devkit
             // tslint:disable-next-line no-any
-            options.path = project_1.buildDefaultPath(project);
+            options.path = buildDefaultPath(project);
         }
         options.module = find_module_1.findModuleFromOptions(host, options);
         const parsedPath = parse_name_1.parseName(options.path, options.name);

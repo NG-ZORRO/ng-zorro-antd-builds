@@ -46,7 +46,7 @@ export declare class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
     /**
      * Reset the container element.
      * @deprecated Not supported.
-     * @breaking-change 10.0.0
+     * @breaking-change 11.0.0
      */
     nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
     nzAfterOpen?: EventEmitter<void>;

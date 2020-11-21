@@ -18,10 +18,10 @@ export declare class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     static ngAcceptInputType_nzOpenFileDialogOnClick: BooleanInput;
     static ngAcceptInputType_nzDisabled: BooleanInput;
     static ngAcceptInputType_nzMultiple: BooleanInput;
-    static ngAcceptInputType_nzShowUploadList: BooleanInput | NzShowUploadList | undefined | null;
+    static ngAcceptInputType_nzShowUploadList: BooleanInput | NzShowUploadList;
     static ngAcceptInputType_nzShowButton: BooleanInput;
     static ngAcceptInputType_nzWithCredentials: BooleanInput;
-    private i18n$;
+    private destroy$;
     uploadComp: NzUploadBtnComponent;
     listComp: NzUploadListComponent;
     locale: NzUploadI18nInterface;
@@ -51,6 +51,7 @@ export declare class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     nzRemove?: (file: NzUploadFile) => boolean | Observable<boolean>;
     nzPreview?: (file: NzUploadFile) => void;
     nzPreviewFile?: (file: NzUploadFile) => Observable<string>;
+    nzPreviewIsImage?: (file: NzUploadFile) => boolean;
     nzTransformFile?: (file: NzUploadFile) => NzUploadTransformFileType;
     nzDownload?: (file: NzUploadFile) => void;
     nzIconRender: TemplateRef<NzSafeAny> | null;

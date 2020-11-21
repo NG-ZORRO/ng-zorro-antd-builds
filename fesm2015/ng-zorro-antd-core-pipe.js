@@ -4,62 +4,22 @@ import { timeUnits } from 'ng-zorro-antd/core/time';
 import { padStart } from 'ng-zorro-antd/core/util';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-css-unit.pipe.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class NzToCssUnitPipe {
-    /**
-     * @param {?} value
-     * @param {?=} defaultUnit
-     * @return {?}
-     */
-    transform(value, defaultUnit = 'px') {
-        /** @type {?} */
-        const formatted = +value;
-        return isNaN(formatted) ? `${value}` : `${formatted}${defaultUnit}`;
-    }
-}
-NzToCssUnitPipe.decorators = [
-    { type: Pipe, args: [{
-                name: 'nzToCssUnit'
-            },] }
-];
-
-/**
- * @fileoverview added by tsickle
- * Generated from: time-range.pipe.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzTimeRangePipe {
-    /**
-     * @param {?} value
-     * @param {?=} format
-     * @return {?}
-     */
     transform(value, format = 'HH:mm:ss') {
-        /** @type {?} */
         let duration = Number(value || 0);
-        return timeUnits.reduce((/**
-         * @param {?} current
-         * @param {?} __1
-         * @return {?}
-         */
-        (current, [name, unit]) => {
+        return timeUnits.reduce((current, [name, unit]) => {
             if (current.indexOf(name) !== -1) {
-                /** @type {?} */
                 const v = Math.floor(duration / unit);
                 duration -= v * unit;
-                return current.replace(new RegExp(`${name}+`, 'g'), (/**
-                 * @param {?} match
-                 * @return {?}
-                 */
-                (match) => {
+                return current.replace(new RegExp(`${name}+`, 'g'), (match) => {
                     return padStart(v.toString(), match.length, '0');
-                }));
+                });
             }
             return current;
-        }), format);
+        }, format);
     }
 }
 NzTimeRangePipe.decorators = [
@@ -70,31 +30,27 @@ NzTimeRangePipe.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-pipe.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPipesModule {
 }
 NzPipesModule.decorators = [
     { type: NgModule, args: [{
                 imports: [CommonModule],
-                exports: [NzTimeRangePipe, NzToCssUnitPipe],
-                declarations: [NzTimeRangePipe, NzToCssUnitPipe]
+                exports: [NzTimeRangePipe],
+                declarations: [NzTimeRangePipe]
             },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-core-pipe.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
-export { NzPipesModule, NzTimeRangePipe, NzToCssUnitPipe };
+export { NzPipesModule, NzTimeRangePipe };
 //# sourceMappingURL=ng-zorro-antd-core-pipe.js.map

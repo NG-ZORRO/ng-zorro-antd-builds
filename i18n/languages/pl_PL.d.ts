@@ -95,6 +95,9 @@ declare const _default: {
         filterReset: string;
         selectAll: string;
         selectInvert: string;
+        triggerDesc: string;
+        triggerAsc: string;
+        cancelSort: string;
     };
     Modal: {
         okText: string;

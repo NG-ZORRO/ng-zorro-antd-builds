@@ -2,40 +2,33 @@ import { Directive, ElementRef, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: element-patch.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 /**
  * A patch directive to select the element of a component.
  */
 class NzElementPatchDirective {
-    /**
-     * @param {?} elementRef
-     */
     constructor(elementRef) {
         this.elementRef = elementRef;
+    }
+    get nativeElement() {
+        return this.elementRef.nativeElement;
     }
 }
 NzElementPatchDirective.decorators = [
     { type: Directive, args: [{
-                selector: '[nz-element]',
+                selector: '[nzElement], [nz-element]',
                 exportAs: 'nzElement'
             },] }
 ];
-/** @nocollapse */
 NzElementPatchDirective.ctorParameters = () => [
     { type: ElementRef }
 ];
-if (false) {
-    /** @type {?} */
-    NzElementPatchDirective.prototype.elementRef;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: element-patch.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzElementPatchModule {
 }
@@ -48,15 +41,12 @@ NzElementPatchModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-core-element-patch.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzElementPatchDirective, NzElementPatchModule };

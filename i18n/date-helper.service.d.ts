@@ -6,7 +6,7 @@ import { Injector } from '@angular/core';
 import { WeekDayIndex } from 'ng-zorro-antd/core/time';
 import { NzDateConfig } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
-export declare function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig, convertFormat: boolean): DateHelperService;
+export declare function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig): DateHelperService;
 /**
  * Abstract DateHelperService(Token via Class)
  * Compatibility: compact for original usage by default which using DatePipe
@@ -14,11 +14,10 @@ export declare function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: 
 export declare abstract class DateHelperService {
     protected i18n: NzI18nService;
     protected config: NzDateConfig;
-    protected convertFormat: boolean;
-    constructor(i18n: NzI18nService, config: NzDateConfig, convertFormat: boolean);
+    constructor(i18n: NzI18nService, config: NzDateConfig);
     abstract getISOWeek(date: Date): number;
     abstract getFirstDayOfWeek(): WeekDayIndex;
-    abstract format(date: Date, formatStr: string): string;
+    abstract format(date: Date | null, formatStr: string): string;
     abstract parseDate(text: string, formatStr?: string): Date;
     abstract parseTime(text: string, formatStr?: string): Date | undefined;
 }
@@ -49,5 +48,5 @@ export declare class DateHelperByDatePipe extends DateHelperService {
     getFirstDayOfWeek(): WeekDayIndex;
     format(date: Date | null, formatStr: string): string;
     parseDate(text: string): Date;
-    parseTime(text: string): Date | undefined;
+    parseTime(text: string, formatStr: string): Date;
 }

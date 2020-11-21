@@ -3,7 +3,8 @@ import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { Overlay, OverlayModule, ConnectionPositionPair } from '@angular/cdk/overlay';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { EventEmitter, Directive, ElementRef, Renderer2, ViewContainerRef, Input, Output, NgModule, Host, Optional, Component, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, TemplateRef, Injectable, ɵɵdefineInjectable, ɵɵinject } from '@angular/core';
+import { EventEmitter, Directive, ElementRef, Renderer2, ViewContainerRef, Input, Output, NgModule, Host, Optional, Component, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, TemplateRef, ɵɵdefineInjectable, ɵɵinject, Injectable } from '@angular/core';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { POSITION_MAP, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject, BehaviorSubject, merge, fromEvent, EMPTY, combineLatest, Subscription } from 'rxjs';
@@ -18,20 +19,11 @@ import { MenuService, NzIsMenuInsideDropDownToken, NzMenuModule } from 'ng-zorro
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: dropdown.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const listOfPositions = [POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSITION_MAP.topRight, POSITION_MAP.topLeft];
 class NzDropDownDirective {
-    /**
-     * @param {?} elementRef
-     * @param {?} overlay
-     * @param {?} renderer
-     * @param {?} viewContainerRef
-     * @param {?} platform
-     */
     constructor(elementRef, overlay, renderer, viewContainerRef, platform) {
         this.elementRef = elementRef;
         this.overlay = overlay;
@@ -51,6 +43,10 @@ class NzDropDownDirective {
         this.nzDropdownMenu = null;
         this.nzTrigger = 'hover';
         this.nzMatchWidthElement = null;
+        /**
+         * @deprecated Not supported.
+         * @breaking-change 11.0.0
+         */
         this.nzBackdrop = true;
         this.nzClickHide = true;
         this.nzDisabled = false;
@@ -60,57 +56,25 @@ class NzDropDownDirective {
         this.nzPlacement = 'bottomLeft';
         this.nzVisibleChange = new EventEmitter();
     }
-    /**
-     * @template T
-     * @param {?} key
-     * @param {?} value
-     * @return {?}
-     */
     setDropdownMenuValue(key, value) {
         if (this.nzDropdownMenu) {
             this.nzDropdownMenu.setValue(key, value);
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() { }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
         if (this.nzDropdownMenu) {
-            /** @type {?} */
             const nativeElement = this.elementRef.nativeElement;
-            /**
-             * host mouse state *
-             * @type {?}
-             */
+            /** host mouse state **/
             const hostMouseState$ = merge(fromEvent(nativeElement, 'mouseenter').pipe(mapTo(true)), fromEvent(nativeElement, 'mouseleave').pipe(mapTo(false)));
-            /**
-             * menu mouse state *
-             * @type {?}
-             */
+            /** menu mouse state **/
             const menuMouseState$ = this.nzDropdownMenu.mouseState$;
-            /**
-             * merged mouse state *
-             * @type {?}
-             */
+            /** merged mouse state **/
             const mergedMouseState$ = merge(menuMouseState$, hostMouseState$);
-            /**
-             * host click state *
-             * @type {?}
-             */
+            /** host click state **/
             const hostClickState$ = fromEvent(nativeElement, 'click').pipe(mapTo(true));
-            /**
-             * visible state switch by nzTrigger *
-             * @type {?}
-             */
-            const visibleStateByTrigger$ = this.nzTrigger$.pipe(switchMap((/**
-             * @param {?} trigger
-             * @return {?}
-             */
-            trigger => {
+            /** visible state switch by nzTrigger **/
+            const visibleStateByTrigger$ = this.nzTrigger$.pipe(switchMap(trigger => {
                 if (trigger === 'hover') {
                     return mergedMouseState$;
                 }
@@ -120,36 +84,14 @@ class NzDropDownDirective {
                 else {
                     return EMPTY;
                 }
-            })));
-            /** @type {?} */
-            const descendantMenuItemClick$ = this.nzDropdownMenu.descendantMenuItemClick$.pipe(filter((/**
-             * @return {?}
-             */
-            () => this.nzClickHide)), mapTo(false));
-            /** @type {?} */
-            const domTriggerVisible$ = merge(visibleStateByTrigger$, descendantMenuItemClick$, this.overlayClose$).pipe(filter((/**
-             * @return {?}
-             */
-            () => !this.nzDisabled)));
-            /** @type {?} */
+            }));
+            const descendantMenuItemClick$ = this.nzDropdownMenu.descendantMenuItemClick$.pipe(filter(() => this.nzClickHide), mapTo(false));
+            const domTriggerVisible$ = merge(visibleStateByTrigger$, descendantMenuItemClick$, this.overlayClose$).pipe(filter(() => !this.nzDisabled));
             const visible$ = merge(this.inputVisible$, domTriggerVisible$);
             combineLatest([visible$, this.nzDropdownMenu.isChildSubMenuOpen$])
-                .pipe(map((/**
-             * @param {?} __0
-             * @return {?}
-             */
-            ([visible, sub]) => visible || sub)), auditTime(150), distinctUntilChanged(), filter((/**
-             * @return {?}
-             */
-            () => this.platform.isBrowser)), takeUntil(this.destroy$))
-                .subscribe((/**
-             * @param {?} visible
-             * @return {?}
-             */
-            (visible) => {
-                /** @type {?} */
+                .pipe(map(([visible, sub]) => visible || sub), auditTime(150), distinctUntilChanged(), filter(() => this.platform.isBrowser), takeUntil(this.destroy$))
+                .subscribe((visible) => {
                 const element = this.nzMatchWidthElement ? this.nzMatchWidthElement.nativeElement : nativeElement;
-                /** @type {?} */
                 const triggerWidth = element.getBoundingClientRect().width;
                 if (this.nzVisible !== visible) {
                     this.nzVisibleChange.emit(visible);
@@ -167,28 +109,20 @@ class NzDropDownDirective {
                             backdropClass: this.nzBackdrop ? undefined : 'nz-overlay-transparent-backdrop',
                             scrollStrategy: this.overlay.scrollStrategies.reposition()
                         });
-                        merge(this.overlayRef.backdropClick(), this.overlayRef.detachments(), this.overlayRef.keydownEvents().pipe(filter((/**
-                         * @param {?} e
-                         * @return {?}
-                         */
-                        e => e.keyCode === ESCAPE && !hasModifierKey(e)))))
+                        merge(this.overlayRef.backdropClick(), this.overlayRef.detachments(), this.overlayRef.keydownEvents().pipe(filter(e => e.keyCode === ESCAPE && !hasModifierKey(e))))
                             .pipe(mapTo(false), takeUntil(this.destroy$))
                             .subscribe(this.overlayClose$);
                     }
                     else {
-                        /**
-                         * update overlay config *
-                         * @type {?}
-                         */
+                        /** update overlay config **/
                         const overlayConfig = this.overlayRef.getConfig();
                         overlayConfig.minWidth = triggerWidth;
-                        overlayConfig.hasBackdrop = this.nzTrigger === 'click';
                     }
                     /** open dropdown with animation **/
                     this.positionStrategy.withPositions([POSITION_MAP[this.nzPlacement], ...listOfPositions]);
                     /** reset portal if needed **/
-                    if (!this.portal || this.portal.templateRef !== (/** @type {?} */ (this.nzDropdownMenu)).templateRef) {
-                        this.portal = new TemplatePortal((/** @type {?} */ (this.nzDropdownMenu)).templateRef, this.viewContainerRef);
+                    if (!this.portal || this.portal.templateRef !== this.nzDropdownMenu.templateRef) {
+                        this.portal = new TemplatePortal(this.nzDropdownMenu.templateRef, this.viewContainerRef);
                     }
                     this.overlayRef.attach(this.portal);
                 }
@@ -198,12 +132,9 @@ class NzDropDownDirective {
                         this.overlayRef.detach();
                     }
                 }
-            }));
+            });
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -212,12 +143,8 @@ class NzDropDownDirective {
             this.overlayRef = null;
         }
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
-        const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger } = changes;
+        const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger, nzBackdrop } = changes;
         if (nzTrigger) {
             this.nzTrigger$.next(this.nzTrigger);
         }
@@ -225,7 +152,6 @@ class NzDropDownDirective {
             this.inputVisible$.next(this.nzVisible);
         }
         if (nzDisabled) {
-            /** @type {?} */
             const nativeElement = this.elementRef.nativeElement;
             if (this.nzDisabled) {
                 this.renderer.setAttribute(nativeElement, 'disabled', '');
@@ -241,6 +167,9 @@ class NzDropDownDirective {
         if (nzOverlayStyle) {
             this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
         }
+        if (nzBackdrop) {
+            warnDeprecation('`nzBackdrop` in dropdown component will be removed in 11.0.0.');
+        }
     }
 }
 NzDropDownDirective.decorators = [
@@ -252,7 +181,6 @@ NzDropDownDirective.decorators = [
                 }
             },] }
 ];
-/** @nocollapse */
 NzDropDownDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: Overlay },
@@ -289,100 +217,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzDropDownDirective.prototype, "nzVisible", void 0);
-if (false) {
-    /** @type {?} */
-    NzDropDownDirective.ngAcceptInputType_nzBackdrop;
-    /** @type {?} */
-    NzDropDownDirective.ngAcceptInputType_nzClickHide;
-    /** @type {?} */
-    NzDropDownDirective.ngAcceptInputType_nzDisabled;
-    /** @type {?} */
-    NzDropDownDirective.ngAcceptInputType_nzVisible;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropDownDirective.prototype.portal;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropDownDirective.prototype.overlayRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropDownDirective.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropDownDirective.prototype.positionStrategy;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropDownDirective.prototype.inputVisible$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropDownDirective.prototype.nzTrigger$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropDownDirective.prototype.overlayClose$;
-    /** @type {?} */
-    NzDropDownDirective.prototype.nzDropdownMenu;
-    /** @type {?} */
-    NzDropDownDirective.prototype.nzTrigger;
-    /** @type {?} */
-    NzDropDownDirective.prototype.nzMatchWidthElement;
-    /** @type {?} */
-    NzDropDownDirective.prototype.nzBackdrop;
-    /** @type {?} */
-    NzDropDownDirective.prototype.nzClickHide;
-    /** @type {?} */
-    NzDropDownDirective.prototype.nzDisabled;
-    /** @type {?} */
-    NzDropDownDirective.prototype.nzVisible;
-    /** @type {?} */
-    NzDropDownDirective.prototype.nzOverlayClassName;
-    /** @type {?} */
-    NzDropDownDirective.prototype.nzOverlayStyle;
-    /** @type {?} */
-    NzDropDownDirective.prototype.nzPlacement;
-    /** @type {?} */
-    NzDropDownDirective.prototype.nzVisibleChange;
-    /** @type {?} */
-    NzDropDownDirective.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropDownDirective.prototype.overlay;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropDownDirective.prototype.renderer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropDownDirective.prototype.viewContainerRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropDownDirective.prototype.platform;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: context-menu.service.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzContextMenuServiceModule {
 }
@@ -391,9 +229,8 @@ NzContextMenuServiceModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: dropdown-a.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDropDownADirective {
 }
@@ -407,26 +244,16 @@ NzDropDownADirective.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: dropdown-button.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDropdownButtonDirective {
-    /**
-     * @param {?} renderer
-     * @param {?} nzButtonGroupComponent
-     * @param {?} elementRef
-     */
     constructor(renderer, nzButtonGroupComponent, elementRef) {
         this.renderer = renderer;
         this.nzButtonGroupComponent = nzButtonGroupComponent;
         this.elementRef = elementRef;
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
-        /** @type {?} */
         const parentElement = this.renderer.parentNode(this.elementRef.nativeElement);
         if (this.nzButtonGroupComponent && parentElement) {
             this.renderer.addClass(parentElement, 'ant-dropdown-button');
@@ -438,44 +265,17 @@ NzDropdownButtonDirective.decorators = [
                 selector: '[nz-button][nz-dropdown]'
             },] }
 ];
-/** @nocollapse */
 NzDropdownButtonDirective.ctorParameters = () => [
     { type: Renderer2 },
     { type: NzButtonGroupComponent, decorators: [{ type: Host }, { type: Optional }] },
     { type: ElementRef }
 ];
-if (false) {
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropdownButtonDirective.prototype.renderer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropdownButtonDirective.prototype.nzButtonGroupComponent;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropdownButtonDirective.prototype.elementRef;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: dropdown-menu.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDropdownMenuComponent {
-    /**
-     * @param {?} cdr
-     * @param {?} elementRef
-     * @param {?} renderer
-     * @param {?} viewContainerRef
-     * @param {?} nzMenuService
-     * @param {?=} noAnimation
-     */
     constructor(cdr, elementRef, renderer, viewContainerRef, nzMenuService, noAnimation) {
         this.cdr = cdr;
         this.elementRef = elementRef;
@@ -489,26 +289,13 @@ class NzDropdownMenuComponent {
         this.nzOverlayClassName = '';
         this.nzOverlayStyle = {};
     }
-    /**
-     * @param {?} visible
-     * @return {?}
-     */
     setMouseState(visible) {
         this.mouseState$.next(visible);
     }
-    /**
-     * @template T
-     * @param {?} key
-     * @param {?} value
-     * @return {?}
-     */
     setValue(key, value) {
         this[key] = value;
         this.cdr.markForCheck();
     }
-    /**
-     * @return {?}
-     */
     ngAfterContentInit() {
         this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
     }
@@ -545,9 +332,8 @@ NzDropdownMenuComponent.decorators = [
                 preserveWhitespaces: false,
                 encapsulation: ViewEncapsulation.None,
                 changeDetection: ChangeDetectionStrategy.OnPush
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzDropdownMenuComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: ElementRef },
@@ -559,46 +345,10 @@ NzDropdownMenuComponent.ctorParameters = () => [
 NzDropdownMenuComponent.propDecorators = {
     templateRef: [{ type: ViewChild, args: [TemplateRef, { static: true },] }]
 };
-if (false) {
-    /** @type {?} */
-    NzDropdownMenuComponent.prototype.mouseState$;
-    /** @type {?} */
-    NzDropdownMenuComponent.prototype.isChildSubMenuOpen$;
-    /** @type {?} */
-    NzDropdownMenuComponent.prototype.descendantMenuItemClick$;
-    /** @type {?} */
-    NzDropdownMenuComponent.prototype.nzOverlayClassName;
-    /** @type {?} */
-    NzDropdownMenuComponent.prototype.nzOverlayStyle;
-    /** @type {?} */
-    NzDropdownMenuComponent.prototype.templateRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropdownMenuComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropdownMenuComponent.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDropdownMenuComponent.prototype.renderer;
-    /** @type {?} */
-    NzDropdownMenuComponent.prototype.viewContainerRef;
-    /** @type {?} */
-    NzDropdownMenuComponent.prototype.nzMenuService;
-    /** @type {?} */
-    NzDropdownMenuComponent.prototype.noAnimation;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: dropdown.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDropDownModule {
 }
@@ -624,11 +374,9 @@ NzDropDownModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: context-menu.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const listOfPositions$1 = [
     new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'top' }),
     new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' }),
@@ -636,26 +384,17 @@ const listOfPositions$1 = [
     new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'end', overlayY: 'top' })
 ];
 class NzContextMenuService {
-    /**
-     * @param {?} overlay
-     */
     constructor(overlay) {
         this.overlay = overlay;
         this.overlayRef = null;
         this.closeSubscription = Subscription.EMPTY;
     }
-    /**
-     * @param {?} $event
-     * @param {?} nzDropdownMenuComponent
-     * @return {?}
-     */
     create($event, nzDropdownMenuComponent) {
         this.close(true);
         const { x, y } = $event;
         if ($event instanceof MouseEvent) {
             $event.preventDefault();
         }
-        /** @type {?} */
         const positionStrategy = this.overlay
             .position()
             .flexibleConnectedTo({ x, y })
@@ -666,28 +405,13 @@ class NzContextMenuService {
             disposeOnNavigation: true,
             scrollStrategy: this.overlay.scrollStrategies.close()
         });
-        this.closeSubscription = merge(nzDropdownMenuComponent.descendantMenuItemClick$, fromEvent(document, 'click').pipe(filter((/**
-         * @param {?} event
-         * @return {?}
-         */
-        event => !!this.overlayRef && !this.overlayRef.overlayElement.contains((/** @type {?} */ (event.target))))), 
+        this.closeSubscription = merge(nzDropdownMenuComponent.descendantMenuItemClick$, fromEvent(document, 'click').pipe(filter(event => !!this.overlayRef && !this.overlayRef.overlayElement.contains(event.target)), 
         /** handle firefox contextmenu event **/
-        filter((/**
-         * @param {?} event
-         * @return {?}
-         */
-        event => event.button !== 2)), take(1))).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        filter(event => event.button !== 2), take(1))).subscribe(() => {
             this.close();
-        }));
+        });
         this.overlayRef.attach(new TemplatePortal(nzDropdownMenuComponent.templateRef, nzDropdownMenuComponent.viewContainerRef));
     }
-    /**
-     * @param {?=} clear
-     * @return {?}
-     */
     close(clear = false) {
         if (this.overlayRef) {
             this.overlayRef.detach();
@@ -699,44 +423,23 @@ class NzContextMenuService {
         }
     }
 }
+NzContextMenuService.ɵprov = ɵɵdefineInjectable({ factory: function NzContextMenuService_Factory() { return new NzContextMenuService(ɵɵinject(Overlay)); }, token: NzContextMenuService, providedIn: NzContextMenuServiceModule });
 NzContextMenuService.decorators = [
     { type: Injectable, args: [{
                 providedIn: NzContextMenuServiceModule
             },] }
 ];
-/** @nocollapse */
 NzContextMenuService.ctorParameters = () => [
     { type: Overlay }
 ];
-/** @nocollapse */ NzContextMenuService.ɵprov = ɵɵdefineInjectable({ factory: function NzContextMenuService_Factory() { return new NzContextMenuService(ɵɵinject(Overlay)); }, token: NzContextMenuService, providedIn: NzContextMenuServiceModule });
-if (false) {
-    /**
-     * @type {?}
-     * @private
-     */
-    NzContextMenuService.prototype.overlayRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzContextMenuService.prototype.closeSubscription;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzContextMenuService.prototype.overlay;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-dropdown.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzContextMenuService, NzContextMenuServiceModule, NzDropDownADirective, NzDropDownDirective, NzDropDownModule, NzDropdownButtonDirective, NzDropdownMenuComponent };

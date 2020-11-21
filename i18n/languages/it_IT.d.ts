@@ -99,6 +99,9 @@ declare const _default: {
         selectAll: string;
         selectInvert: string;
         sortTitle: string;
+        triggerDesc: string;
+        triggerAsc: string;
+        cancelSort: string;
     };
     Modal: {
         okText: string;

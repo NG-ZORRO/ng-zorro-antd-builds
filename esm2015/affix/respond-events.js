@@ -1,21 +1,15 @@
 /**
- * @fileoverview added by tsickle
- * Generated from: respond-events.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @enum {string} */
-const AffixRespondEvents = {
-    resize: "resize",
-    scroll: "scroll",
-    touchstart: "touchstart",
-    touchmove: "touchmove",
-    touchend: "touchend",
-    pageshow: "pageshow",
-    load: "LOAD",
-};
-export { AffixRespondEvents };
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmVzcG9uZC1ldmVudHMuanMiLCJzb3VyY2VSb290Ijoibmc6Ly9uZy16b3Jyby1hbnRkL2FmZml4LyIsInNvdXJjZXMiOlsicmVzcG9uZC1ldmVudHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7OztBQUtBLE1BQVksa0JBQWtCO0lBQzVCLE1BQU0sVUFBVztJQUNqQixNQUFNLFVBQVc7SUFDakIsVUFBVSxjQUFlO0lBQ3pCLFNBQVMsYUFBYztJQUN2QixRQUFRLFlBQWE7SUFDckIsUUFBUSxZQUFhO0lBQ3JCLElBQUksUUFBUztFQUNkIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBVc2Ugb2YgdGhpcyBzb3VyY2UgY29kZSBpcyBnb3Zlcm5lZCBieSBhbiBNSVQtc3R5bGUgbGljZW5zZSB0aGF0IGNhbiBiZVxuICogZm91bmQgaW4gdGhlIExJQ0VOU0UgZmlsZSBhdCBodHRwczovL2dpdGh1Yi5jb20vTkctWk9SUk8vbmctem9ycm8tYW50ZC9ibG9iL21hc3Rlci9MSUNFTlNFXG4gKi9cblxuZXhwb3J0IGVudW0gQWZmaXhSZXNwb25kRXZlbnRzIHtcbiAgcmVzaXplID0gJ3Jlc2l6ZScsXG4gIHNjcm9sbCA9ICdzY3JvbGwnLFxuICB0b3VjaHN0YXJ0ID0gJ3RvdWNoc3RhcnQnLFxuICB0b3VjaG1vdmUgPSAndG91Y2htb3ZlJyxcbiAgdG91Y2hlbmQgPSAndG91Y2hlbmQnLFxuICBwYWdlc2hvdyA9ICdwYWdlc2hvdycsXG4gIGxvYWQgPSAnTE9BRCdcbn1cbiJdfQ==
+export var AffixRespondEvents;
+(function (AffixRespondEvents) {
+    AffixRespondEvents["resize"] = "resize";
+    AffixRespondEvents["scroll"] = "scroll";
+    AffixRespondEvents["touchstart"] = "touchstart";
+    AffixRespondEvents["touchmove"] = "touchmove";
+    AffixRespondEvents["touchend"] = "touchend";
+    AffixRespondEvents["pageshow"] = "pageshow";
+    AffixRespondEvents["load"] = "LOAD";
+})(AffixRespondEvents || (AffixRespondEvents = {}));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicmVzcG9uZC1ldmVudHMuanMiLCJzb3VyY2VSb290IjoiL2hvbWUvdnN0cy93b3JrLzEvcy9jb21wb25lbnRzL2FmZml4LyIsInNvdXJjZXMiOlsicmVzcG9uZC1ldmVudHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7OztHQUdHO0FBRUgsTUFBTSxDQUFOLElBQVksa0JBUVg7QUFSRCxXQUFZLGtCQUFrQjtJQUM1Qix1Q0FBaUIsQ0FBQTtJQUNqQix1Q0FBaUIsQ0FBQTtJQUNqQiwrQ0FBeUIsQ0FBQTtJQUN6Qiw2Q0FBdUIsQ0FBQTtJQUN2QiwyQ0FBcUIsQ0FBQTtJQUNyQiwyQ0FBcUIsQ0FBQTtJQUNyQixtQ0FBYSxDQUFBO0FBQ2YsQ0FBQyxFQVJXLGtCQUFrQixLQUFsQixrQkFBa0IsUUFRN0IiLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiAqIFVzZSBvZiB0aGlzIHNvdXJjZSBjb2RlIGlzIGdvdmVybmVkIGJ5IGFuIE1JVC1zdHlsZSBsaWNlbnNlIHRoYXQgY2FuIGJlXG4gKiBmb3VuZCBpbiB0aGUgTElDRU5TRSBmaWxlIGF0IGh0dHBzOi8vZ2l0aHViLmNvbS9ORy1aT1JSTy9uZy16b3Jyby1hbnRkL2Jsb2IvbWFzdGVyL0xJQ0VOU0VcbiAqL1xuXG5leHBvcnQgZW51bSBBZmZpeFJlc3BvbmRFdmVudHMge1xuICByZXNpemUgPSAncmVzaXplJyxcbiAgc2Nyb2xsID0gJ3Njcm9sbCcsXG4gIHRvdWNoc3RhcnQgPSAndG91Y2hzdGFydCcsXG4gIHRvdWNobW92ZSA9ICd0b3VjaG1vdmUnLFxuICB0b3VjaGVuZCA9ICd0b3VjaGVuZCcsXG4gIHBhZ2VzaG93ID0gJ3BhZ2VzaG93JyxcbiAgbG9hZCA9ICdMT0FEJ1xufVxuIl19

@@ -4,6 +4,14 @@
  */
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export declare type EasyingFn = (t: number, b: number, c: number, d: number) => number;
+export interface NzScrollToOptions {
+    /** Scroll container, default as window */
+    easing?: EasyingFn;
+    /** Scroll end callback */
+    callback?(): void;
+    /** Animation duration, default as 450 */
+    duration?: number;
+}
 export declare class NzScrollService {
     private doc;
     constructor(doc: NzSafeAny);
@@ -15,14 +23,13 @@ export declare class NzScrollService {
         left: number;
     };
     /** Get the position of the scoll bar of `el`. */
-    getScroll(el?: Element | Window, top?: boolean): number;
+    getScroll(target?: Element | HTMLElement | Window | Document | null, top?: boolean): number;
+    isWindow(obj: NzSafeAny): boolean;
     /**
      * Scroll `el` to some position with animation.
      *
      * @param containerEl container, `window` by default
-     * @param targetTopValue Scroll to `top`, 0 by default
-     * @param easing Transition curve, `easeInOutCubic` by default
-     * @param callback callback invoked when transition is done
+     * @param y Scroll to `top`, 0 by default
      */
-    scrollTo(containerEl: Element | Window, targetTopValue?: number, easing?: EasyingFn, callback?: () => void): void;
+    scrollTo(containerEl?: Element | HTMLElement | Window | Document | null, y?: number, options?: NzScrollToOptions): void;
 }

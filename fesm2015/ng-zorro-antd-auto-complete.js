@@ -9,14 +9,13 @@ import { __decorate, __metadata } from 'tslib';
 import { scrollIntoView, InputBoolean } from 'ng-zorro-antd/core/util';
 import { UP_ARROW, DOWN_ARROW, ESCAPE, TAB, ENTER } from '@angular/cdk/keycodes';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Subscription, defer, merge, Subject, fromEvent } from 'rxjs';
+import { Subscription, defer, merge, Subject } from 'rxjs';
 import { take, switchMap, filter, tap, delay, takeUntil } from 'rxjs/operators';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: autocomplete-optgroup.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzAutocompleteOptgroupComponent {
     constructor() { }
@@ -34,45 +33,24 @@ NzAutocompleteOptgroupComponent.decorators = [
     </div>
     <ng-content select="nz-auto-option"></ng-content>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzAutocompleteOptgroupComponent.ctorParameters = () => [];
 NzAutocompleteOptgroupComponent.propDecorators = {
     nzLabel: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzAutocompleteOptgroupComponent.prototype.nzLabel;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: autocomplete-option.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzOptionSelectionChange {
-    /**
-     * @param {?} source
-     * @param {?=} isUserInput
-     */
     constructor(source, isUserInput = false) {
         this.source = source;
         this.isUserInput = isUserInput;
     }
 }
-if (false) {
-    /** @type {?} */
-    NzOptionSelectionChange.prototype.source;
-    /** @type {?} */
-    NzOptionSelectionChange.prototype.isUserInput;
-}
 class NzAutocompleteOptionComponent {
-    /**
-     * @param {?} changeDetectorRef
-     * @param {?} element
-     * @param {?} nzAutocompleteOptgroupComponent
-     */
     constructor(changeDetectorRef, element, nzAutocompleteOptgroupComponent) {
         this.changeDetectorRef = changeDetectorRef;
         this.element = element;
@@ -83,10 +61,6 @@ class NzAutocompleteOptionComponent {
         this.active = false;
         this.selected = false;
     }
-    /**
-     * @param {?=} emit
-     * @return {?}
-     */
     select(emit = true) {
         this.selected = true;
         this.changeDetectorRef.markForCheck();
@@ -94,56 +68,35 @@ class NzAutocompleteOptionComponent {
             this.emitSelectionChangeEvent();
         }
     }
-    /**
-     * @return {?}
-     */
     onMouseEnter() {
         this.mouseEntered.emit(this);
     }
-    /**
-     * @return {?}
-     */
     deselect() {
         this.selected = false;
         this.changeDetectorRef.markForCheck();
         this.emitSelectionChangeEvent();
     }
-    /**
-     * Git display label
-     * @return {?}
-     */
+    /** Git display label */
     getLabel() {
         return this.nzLabel || this.nzValue.toString();
     }
-    /**
-     * Set active (only styles)
-     * @return {?}
-     */
+    /** Set active (only styles) */
     setActiveStyles() {
         if (!this.active) {
             this.active = true;
             this.changeDetectorRef.markForCheck();
         }
     }
-    /**
-     * Unset active (only styles)
-     * @return {?}
-     */
+    /** Unset active (only styles) */
     setInactiveStyles() {
         if (this.active) {
             this.active = false;
             this.changeDetectorRef.markForCheck();
         }
     }
-    /**
-     * @return {?}
-     */
     scrollIntoViewIfNeeded() {
         scrollIntoView(this.element.nativeElement);
     }
-    /**
-     * @return {?}
-     */
     selectViaInteraction() {
         if (!this.nzDisabled) {
             this.selected = !this.selected;
@@ -157,11 +110,6 @@ class NzAutocompleteOptionComponent {
             this.changeDetectorRef.markForCheck();
         }
     }
-    /**
-     * @private
-     * @param {?=} isUserInput
-     * @return {?}
-     */
     emitSelectionChangeEvent(isUserInput = false) {
         this.selectionChange.emit(new NzOptionSelectionChange(this, isUserInput));
     }
@@ -191,9 +139,8 @@ NzAutocompleteOptionComponent.decorators = [
                     '(mouseenter)': 'onMouseEnter()',
                     '(mousedown)': '$event.preventDefault()'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzAutocompleteOptionComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: ElementRef },
@@ -210,58 +157,12 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzAutocompleteOptionComponent.prototype, "nzDisabled", void 0);
-if (false) {
-    /** @type {?} */
-    NzAutocompleteOptionComponent.ngAcceptInputType_nzDisabled;
-    /** @type {?} */
-    NzAutocompleteOptionComponent.prototype.nzValue;
-    /** @type {?} */
-    NzAutocompleteOptionComponent.prototype.nzLabel;
-    /** @type {?} */
-    NzAutocompleteOptionComponent.prototype.nzDisabled;
-    /** @type {?} */
-    NzAutocompleteOptionComponent.prototype.selectionChange;
-    /** @type {?} */
-    NzAutocompleteOptionComponent.prototype.mouseEntered;
-    /** @type {?} */
-    NzAutocompleteOptionComponent.prototype.active;
-    /** @type {?} */
-    NzAutocompleteOptionComponent.prototype.selected;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteOptionComponent.prototype.changeDetectorRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteOptionComponent.prototype.element;
-    /** @type {?} */
-    NzAutocompleteOptionComponent.prototype.nzAutocompleteOptgroupComponent;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: autocomplete.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @record
- */
-function AutocompleteDataSourceItem() { }
-if (false) {
-    /** @type {?} */
-    AutocompleteDataSourceItem.prototype.value;
-    /** @type {?} */
-    AutocompleteDataSourceItem.prototype.label;
-}
 class NzAutocompleteComponent {
-    /**
-     * @param {?} changeDetectorRef
-     * @param {?} ngZone
-     * @param {?=} noAnimation
-     */
     constructor(changeDetectorRef, ngZone, noAnimation) {
         this.changeDetectorRef = changeDetectorRef;
         this.ngZone = ngZone;
@@ -270,12 +171,7 @@ class NzAutocompleteComponent {
         this.nzOverlayStyle = {};
         this.nzDefaultActiveFirstOption = true;
         this.nzBackfill = false;
-        this.compareWith = (/**
-         * @param {?} o1
-         * @param {?} o2
-         * @return {?}
-         */
-        (o1, o2) => o1 === o2);
+        this.compareWith = (o1, o2) => o1 === o2;
         this.selectionChange = new EventEmitter();
         this.showPanel = true;
         this.isOpen = false;
@@ -283,45 +179,22 @@ class NzAutocompleteComponent {
         this.selectionChangeSubscription = Subscription.EMPTY;
         this.optionMouseEnterSubscription = Subscription.EMPTY;
         this.dataSourceChangeSubscription = Subscription.EMPTY;
-        /**
-         * Options changes listener
-         */
-        this.optionSelectionChanges = defer((/**
-         * @return {?}
-         */
-        () => {
+        /** Options changes listener */
+        this.optionSelectionChanges = defer(() => {
             if (this.options) {
-                return merge(...this.options.map((/**
-                 * @param {?} option
-                 * @return {?}
-                 */
-                option => option.selectionChange)));
+                return merge(...this.options.map(option => option.selectionChange));
             }
-            return this.ngZone.onStable.asObservable().pipe(take(1), switchMap((/**
-             * @return {?}
-             */
-            () => this.optionSelectionChanges)));
-        }));
-        this.optionMouseEnter = defer((/**
-         * @return {?}
-         */
-        () => {
+            return this.ngZone.onStable.asObservable().pipe(take(1), switchMap(() => this.optionSelectionChanges));
+        });
+        this.optionMouseEnter = defer(() => {
             if (this.options) {
-                return merge(...this.options.map((/**
-                 * @param {?} option
-                 * @return {?}
-                 */
-                option => option.mouseEntered)));
+                return merge(...this.options.map(option => option.mouseEntered));
             }
-            return this.ngZone.onStable.asObservable().pipe(take(1), switchMap((/**
-             * @return {?}
-             */
-            () => this.optionMouseEnter)));
-        }));
+            return this.ngZone.onStable.asObservable().pipe(take(1), switchMap(() => this.optionMouseEnter));
+        });
     }
     /**
      * Options accessor, its source may be content or dataSource
-     * @return {?}
      */
     get options() {
         // first dataSource
@@ -332,43 +205,26 @@ class NzAutocompleteComponent {
             return this.fromContentOptions;
         }
     }
-    /**
-     * @return {?}
-     */
     ngAfterContentInit() {
         if (!this.nzDataSource) {
             this.optionsInit();
         }
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
         if (this.nzDataSource) {
             this.optionsInit();
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.dataSourceChangeSubscription.unsubscribe();
         this.selectionChangeSubscription.unsubscribe();
         this.optionMouseEnterSubscription.unsubscribe();
     }
-    /**
-     * @return {?}
-     */
     setVisibility() {
         this.showPanel = !!this.options.length;
         this.changeDetectorRef.markForCheck();
     }
-    /**
-     * @param {?} index
-     * @return {?}
-     */
     setActiveItem(index) {
-        /** @type {?} */
         const activeItem = this.options.toArray()[index];
         if (activeItem && !activeItem.active) {
             this.activeItem = activeItem;
@@ -378,127 +234,66 @@ class NzAutocompleteComponent {
             this.changeDetectorRef.markForCheck();
         }
     }
-    /**
-     * @return {?}
-     */
     setNextItemActive() {
-        /** @type {?} */
         const nextIndex = this.activeItemIndex + 1 <= this.options.length - 1 ? this.activeItemIndex + 1 : 0;
         this.setActiveItem(nextIndex);
     }
-    /**
-     * @return {?}
-     */
     setPreviousItemActive() {
-        /** @type {?} */
         const previousIndex = this.activeItemIndex - 1 < 0 ? this.options.length - 1 : this.activeItemIndex - 1;
         this.setActiveItem(previousIndex);
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     getOptionIndex(value) {
-        return (/** @type {?} */ (this.options.reduce((/**
-         * @param {?} result
-         * @param {?} current
-         * @param {?} index
-         * @return {?}
-         */
-        (result, current, index) => {
+        return this.options.reduce((result, current, index) => {
             return result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result;
-        }), -1)));
+        }, -1);
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     getOption(value) {
-        return this.options.find((/**
-         * @param {?} item
-         * @return {?}
-         */
-        item => this.compareWith(value, item.nzValue))) || null;
+        return this.options.find(item => this.compareWith(value, item.nzValue)) || null;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     optionsInit() {
         this.setVisibility();
         this.subscribeOptionChanges();
-        /** @type {?} */
         const changes = this.nzDataSource ? this.fromDataSourceOptions.changes : this.fromContentOptions.changes;
         // async
-        this.dataSourceChangeSubscription = changes.subscribe((/**
-         * @param {?} e
-         * @return {?}
-         */
-        e => {
+        this.dataSourceChangeSubscription = changes.subscribe(e => {
             if (!e.dirty && this.isOpen) {
-                setTimeout((/**
-                 * @return {?}
-                 */
-                () => this.setVisibility()));
+                setTimeout(() => this.setVisibility());
             }
             this.subscribeOptionChanges();
-        }));
+        });
     }
     /**
      * Clear the status of options
-     * @param {?=} skip
-     * @param {?=} deselect
-     * @return {?}
      */
     clearSelectedOptions(skip, deselect = false) {
-        this.options.forEach((/**
-         * @param {?} option
-         * @return {?}
-         */
-        option => {
+        this.options.forEach(option => {
             if (option !== skip) {
                 if (deselect) {
                     option.deselect();
                 }
                 option.setInactiveStyles();
             }
-        }));
+        });
     }
-    /**
-     * @private
-     * @return {?}
-     */
     subscribeOptionChanges() {
         this.selectionChangeSubscription.unsubscribe();
         this.selectionChangeSubscription = this.optionSelectionChanges
-            .pipe(filter((/**
-         * @param {?} event
-         * @return {?}
-         */
-        (event) => event.isUserInput)))
-            .subscribe((/**
-         * @param {?} event
-         * @return {?}
-         */
-        (event) => {
+            .pipe(filter((event) => event.isUserInput))
+            .subscribe((event) => {
             event.source.select();
             event.source.setActiveStyles();
             this.activeItem = event.source;
             this.activeItemIndex = this.getOptionIndex(this.activeItem.nzValue);
             this.clearSelectedOptions(event.source, true);
             this.selectionChange.emit(event.source);
-        }));
+        });
         this.optionMouseEnterSubscription.unsubscribe();
-        this.optionMouseEnterSubscription = this.optionMouseEnter.subscribe((/**
-         * @param {?} event
-         * @return {?}
-         */
-        (event) => {
+        this.optionMouseEnterSubscription = this.optionMouseEnter.subscribe((event) => {
             event.setActiveStyles();
             this.activeItem = event;
             this.activeItemIndex = this.getOptionIndex(this.activeItem.nzValue);
             this.clearSelectedOptions(event);
-        }));
+        });
     }
 }
 NzAutocompleteComponent.decorators = [
@@ -541,9 +336,8 @@ NzAutocompleteComponent.decorators = [
     </ng-template>
   `,
                 animations: [slideMotion]
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzAutocompleteComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: NgZone },
@@ -572,209 +366,70 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzAutocompleteComponent.prototype, "nzBackfill", void 0);
-if (false) {
-    /** @type {?} */
-    NzAutocompleteComponent.ngAcceptInputType_nzDefaultActiveFirstOption;
-    /** @type {?} */
-    NzAutocompleteComponent.ngAcceptInputType_nzBackfill;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.nzWidth;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.nzOverlayClassName;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.nzOverlayStyle;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.nzDefaultActiveFirstOption;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.nzBackfill;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.compareWith;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.nzDataSource;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.selectionChange;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.showPanel;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.isOpen;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.activeItem;
-    /**
-     * Provided by content
-     * @type {?}
-     */
-    NzAutocompleteComponent.prototype.fromContentOptions;
-    /**
-     * Provided by dataSource
-     * @type {?}
-     */
-    NzAutocompleteComponent.prototype.fromDataSourceOptions;
-    /**
-     * cdk-overlay
-     * @type {?}
-     */
-    NzAutocompleteComponent.prototype.template;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.panel;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.content;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteComponent.prototype.activeItemIndex;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteComponent.prototype.selectionChangeSubscription;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteComponent.prototype.optionMouseEnterSubscription;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteComponent.prototype.dataSourceChangeSubscription;
-    /**
-     * Options changes listener
-     * @type {?}
-     */
-    NzAutocompleteComponent.prototype.optionSelectionChanges;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.optionMouseEnter;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteComponent.prototype.changeDetectorRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteComponent.prototype.ngZone;
-    /** @type {?} */
-    NzAutocompleteComponent.prototype.noAnimation;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: autocomplete-trigger.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const NZ_AUTOCOMPLETE_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef((/**
-     * @return {?}
-     */
-    () => NzAutocompleteTriggerDirective)),
+    useExisting: forwardRef(() => NzAutocompleteTriggerDirective),
     multi: true
 };
-/**
- * @return {?}
- */
 function getNzAutocompleteMissingPanelError() {
     return Error('Attempting to open an undefined instance of `nz-autocomplete`. ' +
         'Make sure that the id passed to the `nzAutocomplete` is correct and that ' +
         "you're attempting to open it after the ngAfterContentInit hook.");
 }
 class NzAutocompleteTriggerDirective {
-    /**
-     * @param {?} elementRef
-     * @param {?} overlay
-     * @param {?} viewContainerRef
-     * @param {?} nzInputGroupWhitSuffixOrPrefixDirective
-     * @param {?} document
-     */
     constructor(elementRef, overlay, viewContainerRef, nzInputGroupWhitSuffixOrPrefixDirective, document) {
         this.elementRef = elementRef;
         this.overlay = overlay;
         this.viewContainerRef = viewContainerRef;
         this.nzInputGroupWhitSuffixOrPrefixDirective = nzInputGroupWhitSuffixOrPrefixDirective;
         this.document = document;
-        this.onChange = (/**
-         * @return {?}
-         */
-        () => { });
-        this.onTouched = (/**
-         * @return {?}
-         */
-        () => { });
+        this.onChange = () => { };
+        this.onTouched = () => { };
         this.panelOpen = false;
         this.destroy$ = new Subject();
         this.overlayRef = null;
         this.portal = null;
         this.previousValue = null;
     }
-    /**
-     * Current active option
-     * @return {?}
-     */
+    /** Current active option */
     get activeOption() {
         if (this.nzAutocomplete && this.nzAutocomplete.options.length) {
             return this.nzAutocomplete.activeItem;
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroyPanel();
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     writeValue(value) {
-        Promise.resolve(null).then((/**
-         * @return {?}
-         */
-        () => this.setTriggerValue(value)));
+        Promise.resolve(null).then(() => this.setTriggerValue(value));
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnChange(fn) {
         this.onChange = fn;
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnTouched(fn) {
         this.onTouched = fn;
     }
-    /**
-     * @param {?} isDisabled
-     * @return {?}
-     */
     setDisabledState(isDisabled) {
-        /** @type {?} */
         const element = this.elementRef.nativeElement;
         element.disabled = isDisabled;
         this.closePanel();
     }
-    /**
-     * @return {?}
-     */
     openPanel() {
         this.previousValue = this.elementRef.nativeElement.value;
         this.attachOverlay();
         this.updateStatus();
     }
-    /**
-     * @return {?}
-     */
     closePanel() {
         if (this.panelOpen) {
             this.nzAutocomplete.isOpen = this.panelOpen = false;
             if (this.overlayRef && this.overlayRef.hasAttached()) {
                 this.selectionChangeSubscription.unsubscribe();
-                this.overlayBackdropClickSubscription.unsubscribe();
+                this.overlayOutsideClickSubscription.unsubscribe();
                 this.optionsChangeSubscription.unsubscribe();
                 this.overlayRef.dispose();
                 this.overlayRef = null;
@@ -782,14 +437,8 @@ class NzAutocompleteTriggerDirective {
             }
         }
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
     handleKeydown(event) {
-        /** @type {?} */
         const keyCode = event.keyCode;
-        /** @type {?} */
         const isArrowKey = keyCode === UP_ARROW || keyCode === DOWN_ARROW;
         if (keyCode === ESCAPE) {
             event.preventDefault();
@@ -822,16 +471,9 @@ class NzAutocompleteTriggerDirective {
             this.doBackfill();
         }
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
     handleInput(event) {
-        /** @type {?} */
-        const target = (/** @type {?} */ (event.target));
-        /** @type {?} */
-        const document = (/** @type {?} */ (this.document));
-        /** @type {?} */
+        const target = event.target;
+        const document = this.document;
         let value = target.value;
         if (target.type === 'number') {
             value = value === '' ? null : parseFloat(value);
@@ -844,78 +486,41 @@ class NzAutocompleteTriggerDirective {
             }
         }
     }
-    /**
-     * @return {?}
-     */
     handleFocus() {
         if (this.canOpen()) {
             this.openPanel();
         }
     }
-    /**
-     * @return {?}
-     */
     handleBlur() {
         this.onTouched();
     }
     /**
      * Subscription data source changes event
-     * @private
-     * @return {?}
      */
     subscribeOptionsChange() {
-        /** @type {?} */
-        const optionChanges = this.nzAutocomplete.options.changes.pipe(tap((/**
-         * @return {?}
-         */
-        () => this.positionStrategy.reapplyLastPosition())), delay(0));
-        return optionChanges.subscribe((/**
-         * @return {?}
-         */
-        () => {
+        const optionChanges = this.nzAutocomplete.options.changes.pipe(tap(() => this.positionStrategy.reapplyLastPosition()), delay(0));
+        return optionChanges.subscribe(() => {
             this.resetActiveItem();
             if (this.panelOpen) {
-                (/** @type {?} */ (this.overlayRef)).updatePosition();
+                this.overlayRef.updatePosition();
             }
-        }));
+        });
     }
     /**
      * Subscription option changes event and set the value
-     * @private
-     * @return {?}
      */
     subscribeSelectionChange() {
-        return this.nzAutocomplete.selectionChange.subscribe((/**
-         * @param {?} option
-         * @return {?}
-         */
-        (option) => {
+        return this.nzAutocomplete.selectionChange.subscribe((option) => {
             this.setValueAndClose(option);
-        }));
+        });
     }
-    /**
-     * Subscription external click and close panel
-     * @private
-     * @return {?}
-     */
-    subscribeOverlayBackdropClick() {
-        return merge(fromEvent(this.document, 'click'), fromEvent(this.document, 'touchend')).subscribe((/**
-         * @param {?} event
-         * @return {?}
-         */
-        (event) => {
-            /** @type {?} */
-            const clickTarget = (/** @type {?} */ (event.target));
-            // Make sure is not self
-            if (clickTarget !== this.elementRef.nativeElement && !(/** @type {?} */ (this.overlayRef)).overlayElement.contains(clickTarget) && this.panelOpen) {
-                this.closePanel();
-            }
-        }));
+    subscribeOverlayOutsideClick() {
+        return this.overlayRef.outsidePointerEvents()
+            .pipe(filter((e) => !this.elementRef.nativeElement.contains(e.target)))
+            .subscribe(() => {
+            this.closePanel();
+        });
     }
-    /**
-     * @private
-     * @return {?}
-     */
     attachOverlay() {
         if (!this.nzAutocomplete) {
             throw getNzAutocompleteMissingPanelError();
@@ -929,24 +534,17 @@ class NzAutocompleteTriggerDirective {
         if (this.overlayRef && !this.overlayRef.hasAttached()) {
             this.overlayRef.attach(this.portal);
             this.selectionChangeSubscription = this.subscribeSelectionChange();
-            this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
             this.optionsChangeSubscription = this.subscribeOptionsChange();
+            this.overlayOutsideClickSubscription = this.subscribeOverlayOutsideClick();
             this.overlayRef
                 .detachments()
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((/**
-             * @return {?}
-             */
-            () => {
+                .subscribe(() => {
                 this.closePanel();
-            }));
+            });
         }
         this.nzAutocomplete.isOpen = this.panelOpen = true;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     updateStatus() {
         if (this.overlayRef) {
             this.overlayRef.updateSize({ width: this.nzAutocomplete.nzWidth || this.getHostWidth() });
@@ -957,19 +555,11 @@ class NzAutocompleteTriggerDirective {
             this.activeOption.scrollIntoViewIfNeeded();
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     destroyPanel() {
         if (this.overlayRef) {
             this.closePanel();
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     getOverlayConfig() {
         return new OverlayConfig({
             positionStrategy: this.getOverlayPosition(),
@@ -979,26 +569,13 @@ class NzAutocompleteTriggerDirective {
             width: this.nzAutocomplete.nzWidth || this.getHostWidth()
         });
     }
-    /**
-     * @private
-     * @return {?}
-     */
     getConnectedElement() {
         return this.nzInputGroupWhitSuffixOrPrefixDirective ? this.nzInputGroupWhitSuffixOrPrefixDirective.elementRef : this.elementRef;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     getHostWidth() {
         return this.getConnectedElement().nativeElement.getBoundingClientRect().width;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     getOverlayPosition() {
-        /** @type {?} */
         const positions = [
             new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
             new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
@@ -1012,12 +589,7 @@ class NzAutocompleteTriggerDirective {
             .withTransformOriginOn('.ant-select-dropdown');
         return this.positionStrategy;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     resetActiveItem() {
-        /** @type {?} */
         const index = this.nzAutocomplete.getOptionIndex(this.previousValue);
         this.nzAutocomplete.clearSelectedOptions(null, true);
         if (index !== -1) {
@@ -1028,49 +600,27 @@ class NzAutocompleteTriggerDirective {
             this.nzAutocomplete.setActiveItem(this.nzAutocomplete.nzDefaultActiveFirstOption ? 0 : -1);
         }
     }
-    /**
-     * @private
-     * @param {?} option
-     * @return {?}
-     */
     setValueAndClose(option) {
-        /** @type {?} */
         const value = option.nzValue;
         this.setTriggerValue(option.getLabel());
         this.onChange(value);
         this.elementRef.nativeElement.focus();
         this.closePanel();
     }
-    /**
-     * @private
-     * @param {?} value
-     * @return {?}
-     */
     setTriggerValue(value) {
-        /** @type {?} */
         const option = this.nzAutocomplete.getOption(value);
-        /** @type {?} */
         const displayValue = option ? option.getLabel() : value;
         this.elementRef.nativeElement.value = displayValue != null ? displayValue : '';
         if (!this.nzAutocomplete.nzBackfill) {
             this.previousValue = displayValue;
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     doBackfill() {
         if (this.nzAutocomplete.nzBackfill && this.nzAutocomplete.activeItem) {
             this.setTriggerValue(this.nzAutocomplete.activeItem.getLabel());
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     canOpen() {
-        /** @type {?} */
         const element = this.elementRef.nativeElement;
         return !element.readOnly && !element.disabled;
     }
@@ -1090,7 +640,6 @@ NzAutocompleteTriggerDirective.decorators = [
                 }
             },] }
 ];
-/** @nocollapse */
 NzAutocompleteTriggerDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: Overlay },
@@ -1101,89 +650,10 @@ NzAutocompleteTriggerDirective.ctorParameters = () => [
 NzAutocompleteTriggerDirective.propDecorators = {
     nzAutocomplete: [{ type: Input }]
 };
-if (false) {
-    /**
-     * Bind nzAutocomplete component
-     * @type {?}
-     */
-    NzAutocompleteTriggerDirective.prototype.nzAutocomplete;
-    /** @type {?} */
-    NzAutocompleteTriggerDirective.prototype.onChange;
-    /** @type {?} */
-    NzAutocompleteTriggerDirective.prototype.onTouched;
-    /** @type {?} */
-    NzAutocompleteTriggerDirective.prototype.panelOpen;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.overlayRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.portal;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.positionStrategy;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.previousValue;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.selectionChangeSubscription;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.optionsChangeSubscription;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.overlayBackdropClickSubscription;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.overlay;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.viewContainerRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.nzInputGroupWhitSuffixOrPrefixDirective;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAutocompleteTriggerDirective.prototype.document;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: autocomplete.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzAutocompleteModule {
 }
@@ -1196,15 +666,12 @@ NzAutocompleteModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-auto-complete.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NZ_AUTOCOMPLETE_VALUE_ACCESSOR, NzAutocompleteComponent, NzAutocompleteModule, NzAutocompleteOptgroupComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzOptionSelectionChange, getNzAutocompleteMissingPanelError };

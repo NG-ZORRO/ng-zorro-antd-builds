@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DropdownClassRule = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
 const ts = require("typescript");
 class DropdownClassRule extends schematics_1.Migration {

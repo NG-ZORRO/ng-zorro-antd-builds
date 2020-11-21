@@ -3,23 +3,15 @@ import * as AllIcons from '@ant-design/icons-angular/icons';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-icon-test.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const antDesignIcons = (/** @type {?} */ (AllIcons));
-const ɵ0 = /**
- * @param {?} key
- * @return {?}
- */
-key => {
-    /** @type {?} */
+const antDesignIcons = AllIcons;
+const ɵ0 = key => {
     const i = antDesignIcons[key];
     return i;
 };
-/** @type {?} */
-const icons = Object.keys(antDesignIcons).map((ɵ0));
+const icons = Object.keys(antDesignIcons).map(ɵ0);
 const ɵ1 = icons;
 /**
  * Include this module in every testing spec, except `icon.spec.ts`.
@@ -40,16 +32,13 @@ NzIconTestModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-icon-testing.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
-export { NzIconTestModule };
+export { NzIconTestModule, ɵ0, ɵ1 };
 //# sourceMappingURL=ng-zorro-antd-icon-testing.js.map

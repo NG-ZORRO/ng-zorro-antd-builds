@@ -25,7 +25,7 @@ export declare class InnerPopupComponent implements OnChanges {
     readonly headerChange: EventEmitter<CandyDate>;
     readonly selectDate: EventEmitter<CandyDate>;
     readonly selectTime: EventEmitter<CandyDate>;
-    readonly dayHover: EventEmitter<CandyDate>;
+    readonly cellHover: EventEmitter<CandyDate>;
     prefixCls: string;
     /**
      * Hide "next" arrow in left panel,

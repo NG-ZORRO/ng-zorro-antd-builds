@@ -5,6 +5,7 @@ import { Directive, ElementRef, Renderer2, Input, Component, ChangeDetectionStra
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { AbstractControl, NgModel, FormControlName, FormControlDirective, NgControl } from '@angular/forms';
 import { helpMotion } from 'ng-zorro-antd/core/animation';
 import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
@@ -13,59 +14,38 @@ import { Subject, Subscription } from 'rxjs';
 import { filter, map, tap, startWith, takeUntil } from 'rxjs/operators';
 import { __decorate, __metadata } from 'tslib';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: form.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'form';
+const NZ_CONFIG_MODULE_NAME = 'form';
+const DefaultTooltipIcon = {
+    type: 'question-circle',
+    theme: 'outline'
+};
 class NzFormDirective {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} elementRef
-     * @param {?} renderer
-     */
     constructor(nzConfigService, elementRef, renderer) {
         this.nzConfigService = nzConfigService;
         this.renderer = renderer;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzLayout = 'horizontal';
         this.nzNoColon = false;
         this.nzAutoTips = {};
         this.nzDisableAutoTips = false;
+        this.nzTooltipIcon = DefaultTooltipIcon;
         this.destroy$ = new Subject();
         this.inputChanges$ = new Subject();
         this.renderer.addClass(elementRef.nativeElement, 'ant-form');
     }
-    /**
-     * @template K
-     * @param {?} changeType
-     * @return {?}
-     */
     getInputObservable(changeType) {
-        return this.inputChanges$.pipe(filter((/**
-         * @param {?} changes
-         * @return {?}
-         */
-        changes => changeType in changes)), map((/**
-         * @param {?} value
-         * @return {?}
-         */
-        value => value[(/** @type {?} */ (changeType))])));
+        return this.inputChanges$.pipe(filter(changes => changeType in changes), map(value => value[changeType]));
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         this.inputChanges$.next(changes);
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
+        this.inputChanges$.complete();
         this.destroy$.next();
         this.destroy$.complete();
     }
@@ -81,7 +61,6 @@ NzFormDirective.decorators = [
                 }
             },] }
 ];
-/** @nocollapse */
 NzFormDirective.ctorParameters = () => [
     { type: NzConfigService },
     { type: ElementRef },
@@ -91,63 +70,33 @@ NzFormDirective.propDecorators = {
     nzLayout: [{ type: Input }],
     nzNoColon: [{ type: Input }],
     nzAutoTips: [{ type: Input }],
-    nzDisableAutoTips: [{ type: Input }]
+    nzDisableAutoTips: [{ type: Input }],
+    nzTooltipIcon: [{ type: Input }]
 };
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzFormDirective.prototype, "nzNoColon", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", Object)
 ], NzFormDirective.prototype, "nzAutoTips", void 0);
 __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzFormDirective.prototype, "nzDisableAutoTips", void 0);
-if (false) {
-    /** @type {?} */
-    NzFormDirective.ngAcceptInputType_nzNoColon;
-    /** @type {?} */
-    NzFormDirective.ngAcceptInputType_nzDisableAutoTips;
-    /** @type {?} */
-    NzFormDirective.prototype.nzLayout;
-    /** @type {?} */
-    NzFormDirective.prototype.nzNoColon;
-    /** @type {?} */
-    NzFormDirective.prototype.nzAutoTips;
-    /** @type {?} */
-    NzFormDirective.prototype.nzDisableAutoTips;
-    /** @type {?} */
-    NzFormDirective.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormDirective.prototype.inputChanges$;
-    /** @type {?} */
-    NzFormDirective.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormDirective.prototype.renderer;
-}
+__decorate([
+    WithConfig(),
+    __metadata("design:type", Object)
+], NzFormDirective.prototype, "nzTooltipIcon", void 0);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: form-item.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 *
- */
+/** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
 class NzFormItemComponent {
-    /**
-     * @param {?} elementRef
-     * @param {?} renderer
-     * @param {?} cdr
-     */
     constructor(elementRef, renderer, cdr) {
         this.cdr = cdr;
         this.status = null;
@@ -156,41 +105,18 @@ class NzFormItemComponent {
         this.destroy$ = new Subject();
         renderer.addClass(elementRef.nativeElement, 'ant-form-item');
     }
-    /**
-     * @deprecated 10.0.0. 'nzFlex' is deprecated and going to be removed in 10.0.0.
-     * @param {?} _
-     * @return {?}
-     */
-    set nzFlex(_) {
-        warnDeprecation(`'nzFlex' is deprecated and going to be removed in 10.0.0.`);
-    }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     setWithHelpViaTips(value) {
         this.withHelpClass = value;
         this.cdr.markForCheck();
     }
-    /**
-     * @param {?} status
-     * @return {?}
-     */
     setStatus(status) {
         this.status = status;
         this.cdr.markForCheck();
     }
-    /**
-     * @param {?} hasFeedback
-     * @return {?}
-     */
     setHasFeedback(hasFeedback) {
         this.hasFeedback = hasFeedback;
         this.cdr.markForCheck();
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -211,58 +137,28 @@ NzFormItemComponent.decorators = [
                     '[class.ant-form-item-has-feedback]': 'hasFeedback && status',
                     '[class.ant-form-item-with-help]': 'withHelpClass'
                 },
-                template: ` <ng-content></ng-content> `
-            }] }
+                template: `
+    <ng-content></ng-content>
+  `
+            },] }
 ];
-/** @nocollapse */
 NzFormItemComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: Renderer2 },
     { type: ChangeDetectorRef }
 ];
-NzFormItemComponent.propDecorators = {
-    nzFlex: [{ type: Input }]
-};
-if (false) {
-    /** @type {?} */
-    NzFormItemComponent.prototype.status;
-    /** @type {?} */
-    NzFormItemComponent.prototype.hasFeedback;
-    /** @type {?} */
-    NzFormItemComponent.prototype.withHelpClass;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormItemComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormItemComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: form-control.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const iconTypeMap = (/** @type {?} */ ({
+const iconTypeMap = {
     error: 'close-circle-fill',
     validating: 'loading',
     success: 'check-circle-fill',
     warning: 'exclamation-circle-fill'
-}));
+};
 class NzFormControlComponent {
-    /**
-     * @param {?} elementRef
-     * @param {?} nzFormItemComponent
-     * @param {?} cdr
-     * @param {?} renderer
-     * @param {?} i18n
-     * @param {?} nzFormDirective
-     */
     constructor(elementRef, nzFormItemComponent, cdr, renderer, i18n, nzFormDirective) {
         var _a, _b;
         this.nzFormItemComponent = nzFormItemComponent;
@@ -271,53 +167,31 @@ class NzFormControlComponent {
         this._hasFeedback = false;
         this.validateChanges = Subscription.EMPTY;
         this.validateString = null;
-        this.status = null;
         this.destroyed$ = new Subject();
+        this.status = null;
         this.validateControl = null;
         this.iconType = null;
         this.innerTip = null;
         this.nzAutoTips = {};
         this.nzDisableAutoTips = 'default';
         renderer.addClass(elementRef.nativeElement, 'ant-form-item-control');
-        this.subscribeAutoTips(i18n.localeChange.pipe(tap((/**
-         * @param {?} locale
-         * @return {?}
-         */
-        locale => (this.localeId = locale.locale)))));
+        this.subscribeAutoTips(i18n.localeChange.pipe(tap(locale => (this.localeId = locale.locale))));
         this.subscribeAutoTips((_a = this.nzFormDirective) === null || _a === void 0 ? void 0 : _a.getInputObservable('nzAutoTips'));
-        this.subscribeAutoTips((_b = this.nzFormDirective) === null || _b === void 0 ? void 0 : _b.getInputObservable('nzDisableAutoTips').pipe(filter((/**
-         * @return {?}
-         */
-        () => this.nzDisableAutoTips === 'default'))));
+        this.subscribeAutoTips((_b = this.nzFormDirective) === null || _b === void 0 ? void 0 : _b.getInputObservable('nzDisableAutoTips').pipe(filter(() => this.nzDisableAutoTips === 'default')));
     }
-    /**
-     * @private
-     * @return {?}
-     */
     get disableAutoTips() {
         var _a;
         return this.nzDisableAutoTips !== 'default' ? toBoolean(this.nzDisableAutoTips) : (_a = this.nzFormDirective) === null || _a === void 0 ? void 0 : _a.nzDisableAutoTips;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzHasFeedback(value) {
         this._hasFeedback = toBoolean(value);
         if (this.nzFormItemComponent) {
             this.nzFormItemComponent.setHasFeedback(this._hasFeedback);
         }
     }
-    /**
-     * @return {?}
-     */
     get nzHasFeedback() {
         return this._hasFeedback;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzValidateStatus(value) {
         if (value instanceof AbstractControl || value instanceof NgModel) {
             this.validateControl = value;
@@ -335,31 +209,19 @@ class NzFormControlComponent {
             this.setStatus();
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     watchControl() {
         this.validateChanges.unsubscribe();
         /** miss detect https://github.com/angular/angular/issues/10887 **/
         if (this.validateControl && this.validateControl.statusChanges) {
-            this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null), takeUntil(this.destroyed$)).subscribe((/**
-             * @param {?} _
-             * @return {?}
-             */
-            _ => {
+            this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null), takeUntil(this.destroyed$)).subscribe(_ => {
                 if (!this.disableAutoTips) {
                     this.updateAutoErrorTip();
                 }
                 this.setStatus();
                 this.cdr.markForCheck();
-            }));
+            });
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     setStatus() {
         this.status = this.getControlStatus(this.validateString);
         this.iconType = this.status ? iconTypeMap[this.status] : null;
@@ -369,13 +231,7 @@ class NzFormControlComponent {
             this.nzFormItemComponent.setStatus(this.status);
         }
     }
-    /**
-     * @private
-     * @param {?} validateString
-     * @return {?}
-     */
     getControlStatus(validateString) {
-        /** @type {?} */
         let status;
         if (validateString === 'warning' || this.validateControlStatus('INVALID', 'warning')) {
             status = 'warning';
@@ -394,12 +250,6 @@ class NzFormControlComponent {
         }
         return status;
     }
-    /**
-     * @private
-     * @param {?} validStatus
-     * @param {?=} statusType
-     * @return {?}
-     */
     validateControlStatus(validStatus, statusType) {
         if (!this.validateControl) {
             return false;
@@ -409,11 +259,6 @@ class NzFormControlComponent {
             return (!!dirty || !!touched) && (statusType ? this.validateControl.hasError(statusType) : status === validStatus);
         }
     }
-    /**
-     * @private
-     * @param {?} status
-     * @return {?}
-     */
     getInnerTip(status) {
         switch (status) {
             case 'error':
@@ -428,20 +273,14 @@ class NzFormControlComponent {
                 return null;
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     updateAutoErrorTip() {
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
         if (this.validateControl) {
-            /** @type {?} */
             const errors = this.validateControl.errors || {};
-            /** @type {?} */
             let autoErrorTip = '';
             for (const key in errors) {
                 if (errors.hasOwnProperty(key)) {
-                    autoErrorTip = (_d = (_a = errors[key][this.localeId]) !== null && _a !== void 0 ? _a : (_c = (_b = this.nzAutoTips) === null || _b === void 0 ? void 0 : _b[this.localeId]) === null || _c === void 0 ? void 0 : _c[key]) !== null && _d !== void 0 ? _d : (_g = (_f = (_e = this.nzFormDirective) === null || _e === void 0 ? void 0 : _e.nzAutoTips) === null || _f === void 0 ? void 0 : _f[this.localeId]) === null || _g === void 0 ? void 0 : _g[key];
+                    autoErrorTip = (_l = (_g = (_e = (_b = (_a = errors[key]) === null || _a === void 0 ? void 0 : _a[this.localeId]) !== null && _b !== void 0 ? _b : (_d = (_c = this.nzAutoTips) === null || _c === void 0 ? void 0 : _c[this.localeId]) === null || _d === void 0 ? void 0 : _d[key]) !== null && _e !== void 0 ? _e : (_f = this.nzAutoTips.default) === null || _f === void 0 ? void 0 : _f[key]) !== null && _g !== void 0 ? _g : (_k = (_j = (_h = this.nzFormDirective) === null || _h === void 0 ? void 0 : _h.nzAutoTips) === null || _j === void 0 ? void 0 : _j[this.localeId]) === null || _k === void 0 ? void 0 : _k[key]) !== null && _l !== void 0 ? _l : (_o = (_m = this.nzFormDirective) === null || _m === void 0 ? void 0 : _m.nzAutoTips.default) === null || _o === void 0 ? void 0 : _o[key];
                 }
                 if (!!autoErrorTip) {
                     break;
@@ -450,27 +289,15 @@ class NzFormControlComponent {
             this.autoErrorTip = autoErrorTip;
         }
     }
-    /**
-     * @private
-     * @param {?} observable
-     * @return {?}
-     */
     subscribeAutoTips(observable) {
-        observable === null || observable === void 0 ? void 0 : observable.pipe(takeUntil(this.destroyed$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        observable === null || observable === void 0 ? void 0 : observable.pipe(takeUntil(this.destroyed$)).subscribe(() => {
             if (!this.disableAutoTips) {
                 this.updateAutoErrorTip();
                 this.setStatus();
                 this.cdr.markForCheck();
             }
-        }));
+        });
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzDisableAutoTips, nzAutoTips, nzSuccessTip, nzWarningTip, nzErrorTip, nzValidatingTip } = changes;
         if (nzDisableAutoTips || nzAutoTips) {
@@ -481,29 +308,20 @@ class NzFormControlComponent {
             this.setStatus();
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.setStatus();
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroyed$.next();
         this.destroyed$.complete();
     }
-    /**
-     * @return {?}
-     */
     ngAfterContentInit() {
         if (!this.validateControl && !this.validateString) {
             if (this.defaultValidateControl instanceof FormControlDirective) {
                 this.nzValidateStatus = this.defaultValidateControl.control;
             }
             else {
-                this.nzValidateStatus = (/** @type {?} */ (this.defaultValidateControl));
+                this.nzValidateStatus = this.defaultValidateControl;
             }
         }
     }
@@ -525,7 +343,7 @@ NzFormControlComponent.decorators = [
         <i *ngIf="nzHasFeedback && iconType" nz-icon [nzType]="iconType"></i>
       </span>
     </div>
-    <div class="ant-form-item-explain" *ngIf="innerTip">
+    <div [ngClass]="['ant-form-item-explain', 'ant-form-item-explain-' + status]" *ngIf="innerTip">
       <div @helpMotion>
         <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{ innerTip }}</ng-container>
       </div>
@@ -534,16 +352,15 @@ NzFormControlComponent.decorators = [
       <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
     </div>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzFormControlComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: NzFormItemComponent, decorators: [{ type: Optional }, { type: Host }] },
     { type: ChangeDetectorRef },
     { type: Renderer2 },
     { type: NzI18nService },
-    { type: NzFormDirective, decorators: [{ type: Optional }, { type: Host }] }
+    { type: NzFormDirective, decorators: [{ type: Optional }] }
 ];
 NzFormControlComponent.propDecorators = {
     defaultValidateControl: [{ type: ContentChild, args: [NgControl, { static: false },] }],
@@ -557,138 +374,50 @@ NzFormControlComponent.propDecorators = {
     nzHasFeedback: [{ type: Input }],
     nzValidateStatus: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzFormControlComponent.ngAcceptInputType_nzHasFeedback;
-    /** @type {?} */
-    NzFormControlComponent.ngAcceptInputType_nzRequired;
-    /** @type {?} */
-    NzFormControlComponent.ngAcceptInputType_nzNoColon;
-    /** @type {?} */
-    NzFormControlComponent.ngAcceptInputType_nzDisableAutoTips;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormControlComponent.prototype._hasFeedback;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormControlComponent.prototype.validateChanges;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormControlComponent.prototype.validateString;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormControlComponent.prototype.status;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormControlComponent.prototype.destroyed$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormControlComponent.prototype.localeId;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormControlComponent.prototype.autoErrorTip;
-    /** @type {?} */
-    NzFormControlComponent.prototype.validateControl;
-    /** @type {?} */
-    NzFormControlComponent.prototype.iconType;
-    /** @type {?} */
-    NzFormControlComponent.prototype.innerTip;
-    /** @type {?} */
-    NzFormControlComponent.prototype.defaultValidateControl;
-    /** @type {?} */
-    NzFormControlComponent.prototype.nzSuccessTip;
-    /** @type {?} */
-    NzFormControlComponent.prototype.nzWarningTip;
-    /** @type {?} */
-    NzFormControlComponent.prototype.nzErrorTip;
-    /** @type {?} */
-    NzFormControlComponent.prototype.nzValidatingTip;
-    /** @type {?} */
-    NzFormControlComponent.prototype.nzExtra;
-    /** @type {?} */
-    NzFormControlComponent.prototype.nzAutoTips;
-    /** @type {?} */
-    NzFormControlComponent.prototype.nzDisableAutoTips;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormControlComponent.prototype.nzFormItemComponent;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormControlComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormControlComponent.prototype.nzFormDirective;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: form-label.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+function toTooltipIcon(value) {
+    const icon = typeof value === 'string' ? { type: value } : value;
+    return Object.assign(Object.assign({}, DefaultTooltipIcon), icon);
+}
 class NzFormLabelComponent {
-    /**
-     * @param {?} elementRef
-     * @param {?} renderer
-     * @param {?} cdr
-     * @param {?} nzFormDirective
-     */
     constructor(elementRef, renderer, cdr, nzFormDirective) {
         this.cdr = cdr;
         this.nzFormDirective = nzFormDirective;
         this.nzRequired = false;
         this.noColon = 'default';
+        this._tooltipIcon = 'default';
         this.destroy$ = new Subject();
         renderer.addClass(elementRef.nativeElement, 'ant-form-item-label');
         if (this.nzFormDirective) {
             this.nzFormDirective
                 .getInputObservable('nzNoColon')
-                .pipe(filter((/**
-             * @return {?}
-             */
-            () => this.noColon === 'default')), takeUntil(this.destroy$))
-                .subscribe((/**
-             * @return {?}
-             */
-            () => this.cdr.markForCheck()));
+                .pipe(filter(() => this.noColon === 'default'), takeUntil(this.destroy$))
+                .subscribe(() => this.cdr.markForCheck());
+            this.nzFormDirective
+                .getInputObservable('nzTooltipIcon')
+                .pipe(filter(() => this._tooltipIcon === 'default'), takeUntil(this.destroy$))
+                .subscribe(() => this.cdr.markForCheck());
         }
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzNoColon(value) {
         this.noColon = toBoolean(value);
     }
-    /**
-     * @return {?}
-     */
     get nzNoColon() {
         var _a;
         return this.noColon !== 'default' ? this.noColon : (_a = this.nzFormDirective) === null || _a === void 0 ? void 0 : _a.nzNoColon;
     }
-    /**
-     * @return {?}
-     */
+    set nzTooltipIcon(value) {
+        this._tooltipIcon = toTooltipIcon(value);
+    }
+    // due to 'get' and 'set' accessor must have the same type, so it was renamed to `tooltipIcon`
+    get tooltipIcon() {
+        var _a;
+        return this._tooltipIcon !== 'default' ? this._tooltipIcon : toTooltipIcon(((_a = this.nzFormDirective) === null || _a === void 0 ? void 0 : _a.nzTooltipIcon) || DefaultTooltipIcon);
+    }
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -704,11 +433,15 @@ NzFormLabelComponent.decorators = [
                 template: `
     <label [attr.for]="nzFor" [class.ant-form-item-no-colon]="nzNoColon" [class.ant-form-item-required]="nzRequired">
       <ng-content></ng-content>
+      <span *ngIf="nzTooltipTitle" class="ant-form-item-tooltip" nz-tooltip [nzTooltipTitle]="nzTooltipTitle">
+        <ng-container *nzStringTemplateOutlet="tooltipIcon.type; let tooltipIconType">
+          <i nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme"></i>
+        </ng-container>
+      </span>
     </label>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzFormLabelComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: Renderer2 },
@@ -718,50 +451,20 @@ NzFormLabelComponent.ctorParameters = () => [
 NzFormLabelComponent.propDecorators = {
     nzFor: [{ type: Input }],
     nzRequired: [{ type: Input }],
-    nzNoColon: [{ type: Input }]
+    nzNoColon: [{ type: Input }],
+    nzTooltipTitle: [{ type: Input }],
+    nzTooltipIcon: [{ type: Input }]
 };
 __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzFormLabelComponent.prototype, "nzRequired", void 0);
-if (false) {
-    /** @type {?} */
-    NzFormLabelComponent.ngAcceptInputType_nzRequired;
-    /** @type {?} */
-    NzFormLabelComponent.ngAcceptInputType_nzNoColon;
-    /** @type {?} */
-    NzFormLabelComponent.prototype.nzFor;
-    /** @type {?} */
-    NzFormLabelComponent.prototype.nzRequired;
-    /** @type {?} */
-    NzFormLabelComponent.prototype.noColon;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormLabelComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormLabelComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormLabelComponent.prototype.nzFormDirective;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: form-split.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzFormSplitComponent {
-    /**
-     * @param {?} elementRef
-     * @param {?} renderer
-     */
     constructor(elementRef, renderer) {
         this.elementRef = elementRef;
         this.renderer = renderer;
@@ -776,33 +479,18 @@ NzFormSplitComponent.decorators = [
                 encapsulation: ViewEncapsulation.None,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 template: ` <ng-content></ng-content> `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzFormSplitComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: Renderer2 }
 ];
-if (false) {
-    /** @type {?} */
-    NzFormSplitComponent.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormSplitComponent.prototype.renderer;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: form-text.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzFormTextComponent {
-    /**
-     * @param {?} elementRef
-     * @param {?} renderer
-     */
     constructor(elementRef, renderer) {
         this.elementRef = elementRef;
         this.renderer = renderer;
@@ -817,27 +505,16 @@ NzFormTextComponent.decorators = [
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 encapsulation: ViewEncapsulation.None,
                 template: ` <ng-content></ng-content> `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzFormTextComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: Renderer2 }
 ];
-if (false) {
-    /** @type {?} */
-    NzFormTextComponent.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzFormTextComponent.prototype.renderer;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: form.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzFormModule {
 }
@@ -860,21 +537,18 @@ NzFormModule.decorators = [
                     NzFormTextComponent,
                     NzFormSplitComponent
                 ],
-                imports: [CommonModule, NzGridModule, NzIconModule, LayoutModule, PlatformModule, NzOutletModule]
+                imports: [CommonModule, NzGridModule, NzIconModule, NzToolTipModule, LayoutModule, PlatformModule, NzOutletModule]
             },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-form.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
-export { NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent, NzFormModule, NzFormSplitComponent, NzFormTextComponent };
+export { DefaultTooltipIcon, NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent, NzFormModule, NzFormSplitComponent, NzFormTextComponent };
 //# sourceMappingURL=ng-zorro-antd-form.js.map

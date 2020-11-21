@@ -2,6 +2,7 @@ import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { DOCUMENT, CommonModule } from '@angular/common';
 import { EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, ChangeDetectorRef, Input, Output, ViewChild, ViewContainerRef, Renderer2, Inject, NgModule } from '@angular/core';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
 import { NzI18nService, NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -16,17 +17,10 @@ import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { isStyleSupport, measure, InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: text-copy.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzTextCopyComponent {
-    /**
-     * @param {?} host
-     * @param {?} cdr
-     * @param {?} clipboard
-     * @param {?} i18n
-     */
     constructor(host, cdr, clipboard, i18n) {
         this.host = host;
         this.cdr = cdr;
@@ -35,56 +29,75 @@ class NzTextCopyComponent {
         this.copied = false;
         this.copyId = -1;
         this.nativeElement = this.host.nativeElement;
+        this.copyTooltip = null;
+        this.copedTooltip = null;
+        this.copyIcon = 'copy';
+        this.copedIcon = 'check';
         this.destroy$ = new Subject();
+        this.icons = ['copy', 'check'];
         this.textCopy = new EventEmitter();
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
-        this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.locale = this.i18n.getLocaleData('Text');
+            this.updateTooltips();
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
+    ngOnChanges(changes) {
+        const { tooltips, icons } = changes;
+        if (tooltips) {
+            this.updateTooltips();
+        }
+        if (icons) {
+            this.updateIcons();
+        }
+    }
     ngOnDestroy() {
         clearTimeout(this.copyId);
         this.destroy$.next();
         this.destroy$.complete();
     }
-    /**
-     * @return {?}
-     */
     onClick() {
         if (this.copied) {
             return;
         }
         this.copied = true;
         this.cdr.detectChanges();
-        /** @type {?} */
         const text = this.text;
         this.textCopy.emit(text);
         this.clipboard.copy(text);
         this.onCopied();
     }
-    /**
-     * @return {?}
-     */
     onCopied() {
         clearTimeout(this.copyId);
-        this.copyId = setTimeout((/**
-         * @return {?}
-         */
-        () => {
+        this.copyId = setTimeout(() => {
             this.copied = false;
             this.cdr.detectChanges();
-        }), 3000);
+        }, 3000);
+    }
+    updateTooltips() {
+        var _a, _b, _c, _d;
+        if (this.tooltips === null) {
+            this.copedTooltip = null;
+            this.copyTooltip = null;
+        }
+        else if (Array.isArray(this.tooltips)) {
+            const [copyTooltip, copedTooltip] = this.tooltips;
+            this.copyTooltip = copyTooltip || ((_a = this.locale) === null || _a === void 0 ? void 0 : _a.copy);
+            this.copedTooltip = copedTooltip || ((_b = this.locale) === null || _b === void 0 ? void 0 : _b.copied);
+        }
+        else {
+            this.copyTooltip = (_c = this.locale) === null || _c === void 0 ? void 0 : _c.copy;
+            this.copedTooltip = (_d = this.locale) === null || _d === void 0 ? void 0 : _d.copied;
+        }
+        this.cdr.markForCheck();
+    }
+    updateIcons() {
+        const [copyIcon, copedIcon] = this.icons;
+        this.copyIcon = copyIcon;
+        this.copedIcon = copedIcon;
+        this.cdr.markForCheck();
     }
 }
 NzTextCopyComponent.decorators = [
@@ -95,20 +108,21 @@ NzTextCopyComponent.decorators = [
     <button
       nz-tooltip
       nz-trans-button
-      [nzTooltipTitle]="copied ? locale?.copied : locale?.copy"
+      [nzTooltipTitle]="copied ? copedTooltip : copyTooltip"
       class="ant-typography-copy"
       [class.ant-typography-copy-success]="copied"
       (click)="onClick()"
     >
-      <i nz-icon [nzType]="copied ? 'check' : 'copy'"></i>
+      <ng-container *nzStringTemplateOutlet="copied ? copedIcon : copyIcon; let icon">
+        <i nz-icon [nzType]="icon"></i>
+      </ng-container>
     </button>
   `,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 encapsulation: ViewEncapsulation.None,
                 preserveWhitespaces: false
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzTextCopyComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: ChangeDetectorRef },
@@ -117,91 +131,37 @@ NzTextCopyComponent.ctorParameters = () => [
 ];
 NzTextCopyComponent.propDecorators = {
     text: [{ type: Input }],
+    tooltips: [{ type: Input }],
+    icons: [{ type: Input }],
     textCopy: [{ type: Output }]
 };
-if (false) {
-    /** @type {?} */
-    NzTextCopyComponent.prototype.copied;
-    /** @type {?} */
-    NzTextCopyComponent.prototype.copyId;
-    /** @type {?} */
-    NzTextCopyComponent.prototype.locale;
-    /** @type {?} */
-    NzTextCopyComponent.prototype.nativeElement;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTextCopyComponent.prototype.destroy$;
-    /** @type {?} */
-    NzTextCopyComponent.prototype.text;
-    /** @type {?} */
-    NzTextCopyComponent.prototype.textCopy;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTextCopyComponent.prototype.host;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTextCopyComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTextCopyComponent.prototype.clipboard;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTextCopyComponent.prototype.i18n;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: text-edit.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzTextEditComponent {
-    /**
-     * @param {?} host
-     * @param {?} cdr
-     * @param {?} i18n
-     */
     constructor(host, cdr, i18n) {
         this.host = host;
         this.cdr = cdr;
         this.i18n = i18n;
         this.editing = false;
         this.destroy$ = new Subject();
+        this.icon = 'edit';
         this.startEditing = new EventEmitter();
         this.endEditing = new EventEmitter();
         this.nativeElement = this.host.nativeElement;
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
-        this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.locale = this.i18n.getLocaleData('Text');
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
     }
-    /**
-     * @return {?}
-     */
     onClick() {
         this.beforeText = this.text;
         this.currentText = this.beforeText;
@@ -209,53 +169,32 @@ class NzTextEditComponent {
         this.startEditing.emit();
         this.focusAndSetValue();
     }
-    /**
-     * @return {?}
-     */
     confirm() {
         this.editing = false;
         this.endEditing.emit(this.currentText);
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
     onInput(event) {
-        /** @type {?} */
-        const target = (/** @type {?} */ (event.target));
+        const target = event.target;
         this.currentText = target.value;
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
     onEnter(event) {
         event.stopPropagation();
         event.preventDefault();
         this.confirm();
     }
-    /**
-     * @return {?}
-     */
     onCancel() {
         this.currentText = this.beforeText;
         this.confirm();
     }
-    /**
-     * @return {?}
-     */
     focusAndSetValue() {
-        setTimeout((/**
-         * @return {?}
-         */
-        () => {
+        setTimeout(() => {
             var _a;
             if ((_a = this.textarea) === null || _a === void 0 ? void 0 : _a.nativeElement) {
                 this.textarea.nativeElement.focus();
                 this.textarea.nativeElement.value = this.currentText || '';
                 this.autosizeDirective.resizeToFitContent();
             }
-        }));
+        });
     }
 }
 NzTextEditComponent.decorators = [
@@ -263,8 +202,17 @@ NzTextEditComponent.decorators = [
                 selector: 'nz-text-edit',
                 exportAs: 'nzTextEdit',
                 template: `
-    <button *ngIf="!editing" [nzTooltipTitle]="locale?.edit" nz-tooltip nz-trans-button class="ant-typography-edit" (click)="onClick()">
-      <i nz-icon nzType="edit"></i>
+    <button
+      *ngIf="!editing"
+      nz-tooltip
+      nz-trans-button
+      class="ant-typography-edit"
+      [nzTooltipTitle]="tooltip === null ? null : tooltip || locale?.edit"
+      (click)="onClick()"
+    >
+      <ng-container *nzStringTemplateOutlet="icon; let icon">
+        <i nz-icon [nzType]="icon"></i>
+      </ng-container>
     </button>
     <ng-container *ngIf="editing">
       <textarea
@@ -275,8 +223,7 @@ NzTextEditComponent.decorators = [
         (blur)="confirm()"
         (keydown.esc)="onCancel()"
         (keydown.enter)="onEnter($event)"
-      >
-      </textarea>
+      ></textarea>
       <button nz-trans-button class="ant-typography-edit-content-confirm" (click)="confirm()">
         <i nz-icon nzType="enter"></i>
       </button>
@@ -285,9 +232,8 @@ NzTextEditComponent.decorators = [
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 encapsulation: ViewEncapsulation.None,
                 preserveWhitespaces: false
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzTextEditComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: ChangeDetectorRef },
@@ -295,75 +241,21 @@ NzTextEditComponent.ctorParameters = () => [
 ];
 NzTextEditComponent.propDecorators = {
     text: [{ type: Input }],
+    icon: [{ type: Input }],
+    tooltip: [{ type: Input }],
     startEditing: [{ type: Output }],
     endEditing: [{ type: Output }],
     textarea: [{ type: ViewChild, args: ['textarea', { static: false },] }],
     autosizeDirective: [{ type: ViewChild, args: [NzAutosizeDirective, { static: false },] }]
 };
-if (false) {
-    /** @type {?} */
-    NzTextEditComponent.prototype.editing;
-    /** @type {?} */
-    NzTextEditComponent.prototype.locale;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTextEditComponent.prototype.destroy$;
-    /** @type {?} */
-    NzTextEditComponent.prototype.text;
-    /** @type {?} */
-    NzTextEditComponent.prototype.startEditing;
-    /** @type {?} */
-    NzTextEditComponent.prototype.endEditing;
-    /** @type {?} */
-    NzTextEditComponent.prototype.textarea;
-    /** @type {?} */
-    NzTextEditComponent.prototype.autosizeDirective;
-    /** @type {?} */
-    NzTextEditComponent.prototype.beforeText;
-    /** @type {?} */
-    NzTextEditComponent.prototype.currentText;
-    /** @type {?} */
-    NzTextEditComponent.prototype.nativeElement;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTextEditComponent.prototype.host;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTextEditComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTextEditComponent.prototype.i18n;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: typography.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'typography';
-/** @type {?} */
+const NZ_CONFIG_MODULE_NAME = 'typography';
 const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
 class NzTypographyComponent {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} host
-     * @param {?} cdr
-     * @param {?} viewContainerRef
-     * @param {?} renderer
-     * @param {?} platform
-     * @param {?} i18n
-     * @param {?} document
-     * @param {?} resizeService
-     */
     constructor(nzConfigService, host, cdr, viewContainerRef, renderer, platform, i18n, document, resizeService) {
         this.nzConfigService = nzConfigService;
         this.host = host;
@@ -373,11 +265,16 @@ class NzTypographyComponent {
         this.platform = platform;
         this.i18n = i18n;
         this.resizeService = resizeService;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzCopyable = false;
         this.nzEditable = false;
         this.nzDisabled = false;
         this.nzExpandable = false;
         this.nzEllipsis = false;
+        this.nzCopyTooltips = undefined;
+        this.nzCopyIcons = ['copy', 'check'];
+        this.nzEditTooltip = undefined;
+        this.nzEditIcon = 'edit';
         this.nzEllipsisRows = 1;
         this.nzContentChange = new EventEmitter();
         this.nzCopy = new EventEmitter();
@@ -396,41 +293,24 @@ class NzTypographyComponent {
         this.windowResizeSubscription = Subscription.EMPTY;
         this.document = document;
     }
-    /**
-     * @return {?}
-     */
     get hasEllipsisObservers() {
         return this.nzOnEllipsis.observers.length > 0;
     }
-    /**
-     * @return {?}
-     */
     get canCssEllipsis() {
         return this.nzEllipsis && this.cssEllipsis && !this.expanded && !this.hasEllipsisObservers;
     }
-    /**
-     * @return {?}
-     */
-    get copyText() {
-        return (/** @type {?} */ ((typeof this.nzCopyText === 'string' ? this.nzCopyText : this.nzContent)));
+    get hasOperationsWithEllipsis() {
+        return (this.nzCopyable || this.nzEditable || this.nzExpandable) && this.nzEllipsis;
     }
-    /**
-     * @param {?} text
-     * @return {?}
-     */
+    get copyText() {
+        return (typeof this.nzCopyText === 'string' ? this.nzCopyText : this.nzContent);
+    }
     onTextCopy(text) {
         this.nzCopy.emit(text);
     }
-    /**
-     * @return {?}
-     */
     onStartEditing() {
         this.editing = true;
     }
-    /**
-     * @param {?} text
-     * @return {?}
-     */
     onEndEditing(text) {
         this.editing = false;
         this.nzContentChange.emit(text);
@@ -438,18 +318,12 @@ class NzTypographyComponent {
             this.renderOnNextFrame();
         }
     }
-    /**
-     * @return {?}
-     */
     onExpand() {
         this.isEllipsis = false;
         this.expanded = true;
         this.nzExpandChange.emit();
         this.nzOnEllipsis.emit(false);
     }
-    /**
-     * @return {?}
-     */
     canUseCSSEllipsis() {
         if (this.nzEditable || this.nzCopyable || this.nzExpandable || this.nzSuffix) {
             return false;
@@ -465,59 +339,33 @@ class NzTypographyComponent {
             return isStyleSupport('webkitLineClamp');
         }
     }
-    /**
-     * @return {?}
-     */
     renderOnNextFrame() {
         cancelRequestAnimationFrame(this.rfaId);
         if (!this.viewInit || !this.nzEllipsis || this.nzEllipsisRows < 0 || this.expanded || !this.platform.isBrowser) {
             return;
         }
-        this.rfaId = reqAnimFrame((/**
-         * @return {?}
-         */
-        () => {
+        this.rfaId = reqAnimFrame(() => {
             this.syncEllipsis();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     getOriginContentViewRef() {
-        /** @type {?} */
-        const viewRef = this.viewContainerRef.createEmbeddedView((/** @type {?} */ (this.contentTemplate)), {
-            content: (/** @type {?} */ (this.nzContent))
+        const viewRef = this.viewContainerRef.createEmbeddedView(this.contentTemplate, {
+            content: this.nzContent
         });
         viewRef.detectChanges();
         return {
             viewRef,
-            removeView: (/**
-             * @return {?}
-             */
-            () => {
+            removeView: () => {
                 this.viewContainerRef.remove(this.viewContainerRef.indexOf(viewRef));
-            })
+            }
         };
     }
-    /**
-     * @return {?}
-     */
     syncEllipsis() {
         if (this.cssEllipsis) {
             return;
         }
         const { viewRef, removeView } = this.getOriginContentViewRef();
-        /** @type {?} */
-        const fixedNodes = [this.textCopyRef, this.textEditRef].filter((/**
-         * @param {?} e
-         * @return {?}
-         */
-        e => e && e.nativeElement)).map((/**
-         * @param {?} e
-         * @return {?}
-         */
-        e => (/** @type {?} */ (e)).nativeElement));
-        /** @type {?} */
+        const fixedNodes = [this.textCopyRef, this.textEditRef].filter(e => e && e.nativeElement).map(e => e.nativeElement);
         const expandableBtnElement = this.getExpandableBtnElement();
         if (expandableBtnElement) {
             fixedNodes.push(expandableBtnElement);
@@ -529,33 +377,21 @@ class NzTypographyComponent {
             this.isEllipsis = ellipsis;
             this.nzOnEllipsis.emit(ellipsis);
         }
-        /** @type {?} */
-        const ellipsisContainerNativeElement = (/** @type {?} */ (this.ellipsisContainer)).nativeElement;
+        const ellipsisContainerNativeElement = this.ellipsisContainer.nativeElement;
         while (ellipsisContainerNativeElement.firstChild) {
             this.renderer.removeChild(ellipsisContainerNativeElement, ellipsisContainerNativeElement.firstChild);
         }
-        contentNodes.forEach((/**
-         * @param {?} n
-         * @return {?}
-         */
-        n => {
+        contentNodes.forEach(n => {
             this.renderer.appendChild(ellipsisContainerNativeElement, n.cloneNode(true));
-        }));
+        });
         this.cdr.markForCheck();
     }
     // Need to create the element for calculation size before view init
-    /**
-     * @private
-     * @return {?}
-     */
     getExpandableBtnElement() {
         if (this.nzExpandable) {
-            /** @type {?} */
             const expandText = this.locale ? this.locale.expand : '';
-            /** @type {?} */
             const cache = this.expandableBtnElementCache;
             if (!cache || cache.innerText === expandText) {
-                /** @type {?} */
                 const el = this.document.createElement('a');
                 el.className = EXPAND_ELEMENT_CLASSNAME;
                 el.innerText = expandText;
@@ -568,10 +404,6 @@ class NzTypographyComponent {
             return null;
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     renderAndSubscribeWindowResize() {
         if (this.platform.isBrowser) {
             this.windowResizeSubscription.unsubscribe();
@@ -580,35 +412,19 @@ class NzTypographyComponent {
             this.windowResizeSubscription = this.resizeService
                 .subscribe()
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((/**
-             * @return {?}
-             */
-            () => this.renderOnNextFrame()));
+                .subscribe(() => this.renderOnNextFrame());
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
-        this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.locale = this.i18n.getLocaleData('Text');
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
         this.viewInit = true;
         this.renderAndSubscribeWindowResize();
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzCopyable, nzEditable, nzExpandable, nzEllipsis, nzContent, nzEllipsisRows, nzSuffix } = changes;
         if (nzCopyable || nzEditable || nzExpandable || nzEllipsis || nzContent || nzEllipsisRows || nzSuffix) {
@@ -622,9 +438,6 @@ class NzTypographyComponent {
             }
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -650,7 +463,10 @@ NzTypographyComponent.decorators = [
     <ng-container *ngIf="!editing">
       <ng-container
         *ngIf="
-          expanded || (!nzExpandable && nzEllipsisRows === 1 && !hasEllipsisObservers) || canCssEllipsis || (nzSuffix && expanded);
+          expanded ||
+            (!hasOperationsWithEllipsis && nzEllipsisRows === 1 && !hasEllipsisObservers) ||
+            canCssEllipsis ||
+            (nzSuffix && expanded);
           else jsEllipsis
         "
       >
@@ -665,10 +481,22 @@ NzTypographyComponent.decorators = [
       </ng-template>
     </ng-container>
 
-    <nz-text-edit *ngIf="nzEditable" [text]="nzContent" (endEditing)="onEndEditing($event)" (startEditing)="onStartEditing()">
-    </nz-text-edit>
+    <nz-text-edit
+      *ngIf="nzEditable"
+      [text]="nzContent"
+      [icon]="nzEditIcon"
+      [tooltip]="nzEditTooltip"
+      (endEditing)="onEndEditing($event)"
+      (startEditing)="onStartEditing()"
+    ></nz-text-edit>
 
-    <nz-text-copy *ngIf="nzCopyable && !editing" [text]="copyText" (textCopy)="onTextCopy($event)"></nz-text-copy>
+    <nz-text-copy
+      *ngIf="nzCopyable && !editing"
+      [text]="copyText"
+      [tooltips]="nzCopyTooltips"
+      [icons]="nzCopyIcons"
+      (textCopy)="onTextCopy($event)"
+    ></nz-text-copy>
   `,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 encapsulation: ViewEncapsulation.None,
@@ -679,15 +507,15 @@ NzTypographyComponent.decorators = [
                     '[class.ant-typography-secondary]': 'nzType === "secondary"',
                     '[class.ant-typography-warning]': 'nzType === "warning"',
                     '[class.ant-typography-danger]': 'nzType === "danger"',
+                    '[class.ant-typography-success]': 'nzType === "success"',
                     '[class.ant-typography-disabled]': 'nzDisabled',
                     '[class.ant-typography-ellipsis]': 'nzEllipsis && !expanded',
                     '[class.ant-typography-ellipsis-single-line]': 'canCssEllipsis && nzEllipsisRows === 1',
                     '[class.ant-typography-ellipsis-multiple-line]': 'canCssEllipsis && nzEllipsisRows > 1',
                     '[style.-webkit-line-clamp]': '(canCssEllipsis && nzEllipsisRows > 1) ? nzEllipsisRows : null'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzTypographyComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ElementRef },
@@ -705,6 +533,10 @@ NzTypographyComponent.propDecorators = {
     nzDisabled: [{ type: Input }],
     nzExpandable: [{ type: Input }],
     nzEllipsis: [{ type: Input }],
+    nzCopyTooltips: [{ type: Input }],
+    nzCopyIcons: [{ type: Input }],
+    nzEditTooltip: [{ type: Input }],
+    nzEditIcon: [{ type: Input }],
     nzContent: [{ type: Input }],
     nzEllipsisRows: [{ type: Input }],
     nzType: [{ type: Input }],
@@ -741,162 +573,48 @@ __decorate([
     __metadata("design:type", Object)
 ], NzTypographyComponent.prototype, "nzEllipsis", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputNumber(),
+    WithConfig(),
+    __metadata("design:type", Object)
+], NzTypographyComponent.prototype, "nzCopyTooltips", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", Array)
+], NzTypographyComponent.prototype, "nzCopyIcons", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", Object)
+], NzTypographyComponent.prototype, "nzEditTooltip", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", Object)
+], NzTypographyComponent.prototype, "nzEditIcon", void 0);
+__decorate([
+    WithConfig(),
+    InputNumber(),
     __metadata("design:type", Number)
 ], NzTypographyComponent.prototype, "nzEllipsisRows", void 0);
-if (false) {
-    /** @type {?} */
-    NzTypographyComponent.ngAcceptInputType_nzCopyable;
-    /** @type {?} */
-    NzTypographyComponent.ngAcceptInputType_nzEditable;
-    /** @type {?} */
-    NzTypographyComponent.ngAcceptInputType_nzDisabled;
-    /** @type {?} */
-    NzTypographyComponent.ngAcceptInputType_nzExpandable;
-    /** @type {?} */
-    NzTypographyComponent.ngAcceptInputType_nzEllipsis;
-    /** @type {?} */
-    NzTypographyComponent.ngAcceptInputType_nzEllipsisRows;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzCopyable;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzEditable;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzDisabled;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzExpandable;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzEllipsis;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzContent;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzEllipsisRows;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzType;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzCopyText;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzSuffix;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzContentChange;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzCopy;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzExpandChange;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzOnEllipsis;
-    /** @type {?} */
-    NzTypographyComponent.prototype.textEditRef;
-    /** @type {?} */
-    NzTypographyComponent.prototype.textCopyRef;
-    /** @type {?} */
-    NzTypographyComponent.prototype.ellipsisContainer;
-    /** @type {?} */
-    NzTypographyComponent.prototype.expandableBtn;
-    /** @type {?} */
-    NzTypographyComponent.prototype.contentTemplate;
-    /** @type {?} */
-    NzTypographyComponent.prototype.locale;
-    /** @type {?} */
-    NzTypographyComponent.prototype.document;
-    /** @type {?} */
-    NzTypographyComponent.prototype.expandableBtnElementCache;
-    /** @type {?} */
-    NzTypographyComponent.prototype.editing;
-    /** @type {?} */
-    NzTypographyComponent.prototype.ellipsisText;
-    /** @type {?} */
-    NzTypographyComponent.prototype.cssEllipsis;
-    /** @type {?} */
-    NzTypographyComponent.prototype.isEllipsis;
-    /** @type {?} */
-    NzTypographyComponent.prototype.expanded;
-    /** @type {?} */
-    NzTypographyComponent.prototype.ellipsisStr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTypographyComponent.prototype.viewInit;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTypographyComponent.prototype.rfaId;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTypographyComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTypographyComponent.prototype.windowResizeSubscription;
-    /** @type {?} */
-    NzTypographyComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTypographyComponent.prototype.host;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTypographyComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTypographyComponent.prototype.viewContainerRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTypographyComponent.prototype.renderer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTypographyComponent.prototype.platform;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTypographyComponent.prototype.i18n;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTypographyComponent.prototype.resizeService;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: typography.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzTypographyModule {
 }
 NzTypographyModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule, NzIconModule, NzToolTipModule, NzInputModule, NzI18nModule, NzTransButtonModule, ClipboardModule],
+                imports: [CommonModule, NzIconModule, NzToolTipModule, NzInputModule, NzI18nModule, NzTransButtonModule, ClipboardModule, NzOutletModule],
                 exports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent, PlatformModule],
                 declarations: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent]
             },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-typography.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzTextCopyComponent, NzTextEditComponent, NzTypographyComponent, NzTypographyModule };

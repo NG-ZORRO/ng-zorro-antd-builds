@@ -30,7 +30,9 @@ interface DataItem {
 export class <%= classify(name) %>Component {
   listOfColumn = [
     {
-      title: 'Name'
+      title: 'Name',
+      compare: null,
+      priority: false
     },
     {
       title: 'Chinese Score',

@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { AfterContentInit, ChangeDetectorRef, OnChanges, OnDestroy, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { NzDescriptionsItemComponent } from './descriptions-item.component';
@@ -12,6 +12,7 @@ export declare class NzDescriptionsComponent implements OnChanges, OnDestroy, Af
     nzConfigService: NzConfigService;
     private cdr;
     private breakpointService;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzBordered: BooleanInput;
     static ngAcceptInputType_nzColon: BooleanInput;
     items: QueryList<NzDescriptionsItemComponent>;
@@ -22,6 +23,7 @@ export declare class NzDescriptionsComponent implements OnChanges, OnDestroy, Af
     };
     nzSize: NzDescriptionsSize;
     nzTitle: string | TemplateRef<void>;
+    nzExtra?: string | TemplateRef<void>;
     nzColon: boolean;
     itemMatrix: NzDescriptionsItemRenderProps[][];
     realColumn: number;

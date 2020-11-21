@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.registerLocale = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
-const ast_utils_1 = require("@schematics/angular/utility/ast-utils");
 const change_1 = require("@schematics/angular/utility/change");
 const config_1 = require("@schematics/angular/utility/config");
 const ng_ast_utils_1 = require("@schematics/angular/utility/ng-ast-utils");
@@ -17,10 +17,10 @@ function registerLocale(options) {
         const localePrefix = locale.split('_')[0];
         const recorder = host.beginUpdate(appModulePath);
         const changes = [
-            ast_utils_1.insertImport(moduleSource, appModulePath, 'NZ_I18N', 'ng-zorro-antd/i18n'),
-            ast_utils_1.insertImport(moduleSource, appModulePath, locale, 'ng-zorro-antd/i18n'),
-            ast_utils_1.insertImport(moduleSource, appModulePath, 'registerLocaleData', '@angular/common'),
-            ast_utils_1.insertImport(moduleSource, appModulePath, localePrefix, `@angular/common/locales/${localePrefix}`, true),
+            schematics_1.insertImport(moduleSource, appModulePath, 'NZ_I18N', 'ng-zorro-antd/i18n'),
+            schematics_1.insertImport(moduleSource, appModulePath, locale, 'ng-zorro-antd/i18n'),
+            schematics_1.insertImport(moduleSource, appModulePath, 'registerLocaleData', '@angular/common'),
+            schematics_1.insertImport(moduleSource, appModulePath, localePrefix, `@angular/common/locales/${localePrefix}`, true),
             registerLocaleData(moduleSource, appModulePath, localePrefix),
             ...insertI18nTokenProvide(moduleSource, appModulePath, locale)
         ];
@@ -35,15 +35,15 @@ function registerLocale(options) {
 }
 exports.registerLocale = registerLocale;
 function registerLocaleData(moduleSource, modulePath, locale) {
-    const allImports = ast_utils_1.findNodes(moduleSource, ts.SyntaxKind.ImportDeclaration);
-    const allFun = ast_utils_1.findNodes(moduleSource, ts.SyntaxKind.ExpressionStatement);
+    const allImports = schematics_1.findNodes(moduleSource, ts.SyntaxKind.ImportDeclaration);
+    const allFun = schematics_1.findNodes(moduleSource, ts.SyntaxKind.ExpressionStatement);
     const registerLocaleDataFun = allFun.filter(node => {
         var _a;
         const fun = node.getChildren();
         return ((_a = fun[0].getChildren()[0]) === null || _a === void 0 ? void 0 : _a.getText()) === 'registerLocaleData';
     });
     if (registerLocaleDataFun.length === 0) {
-        return ast_utils_1.insertAfterLastOccurrence(allImports, `\n\nregisterLocaleData(${locale});`, modulePath, 0);
+        return schematics_1.insertAfterLastOccurrence(allImports, `\n\nregisterLocaleData(${locale});`, modulePath, 0);
     }
     else {
         console.log();
@@ -56,8 +56,8 @@ function registerLocaleData(moduleSource, modulePath, locale) {
 }
 function insertI18nTokenProvide(moduleSource, modulePath, locale) {
     const metadataField = 'providers';
-    const nodes = ast_utils_1.getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
-    const addProvide = ast_utils_1.addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers', `{ provide: NZ_I18N, useValue: ${locale} }`, null);
+    const nodes = schematics_1.getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
+    const addProvide = schematics_1.addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers', `{ provide: NZ_I18N, useValue: ${locale} }`, null);
     let node = nodes[0]; // tslint:disable-line:no-any
     if (!node) {
         return [];

@@ -2,31 +2,46 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ElementRef, EventEmitter, OnChanges, OnDestroy, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { EventEmitter, InjectionToken, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { TabTemplateContext } from './interfaces';
 import { Subject } from 'rxjs';
-import { NzTabLinkDirective } from './tab-link.directive';
-export declare class NzTabComponent implements OnChanges, OnDestroy {
-    elementRef: ElementRef;
-    private renderer;
-    static ngAcceptInputType_nzForceRender: BooleanInput;
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzTabLinkDirective, NzTabLinkTemplateDirective } from './tab-link.directive';
+/**
+ * Used to provide a tab set to a tab without causing a circular dependency.
+ */
+export declare const NZ_TAB_SET: InjectionToken<any>;
+export declare class NzTabComponent implements OnChanges, OnDestroy, OnInit {
+    closestTabSet: NzSafeAny;
     static ngAcceptInputType_nzDisabled: BooleanInput;
-    position: number | null;
-    origin: number | null;
-    isActive: boolean;
-    readonly stateChanges: Subject<void>;
-    content: TemplateRef<void>;
-    title: TemplateRef<void>;
-    template: TemplateRef<void>;
-    linkDirective: NzTabLinkDirective;
-    nzTitle?: string | TemplateRef<void>;
-    nzRouterIdentifier?: string;
-    nzForceRender: boolean;
+    static ngAcceptInputType_nzClosable: BooleanInput;
+    static ngAcceptInputType_nzForceRender: BooleanInput;
+    nzTitle: string | TemplateRef<TabTemplateContext>;
+    nzClosable: boolean;
+    nzCloseIcon: string | TemplateRef<NzSafeAny>;
     nzDisabled: boolean;
-    readonly nzClick: EventEmitter<void>;
+    nzForceRender: boolean;
     readonly nzSelect: EventEmitter<void>;
     readonly nzDeselect: EventEmitter<void>;
-    constructor(elementRef: ElementRef, renderer: Renderer2);
+    readonly nzClick: EventEmitter<void>;
+    readonly nzContextmenu: EventEmitter<MouseEvent>;
+    /**
+     * @deprecated Will be removed in 11.0.0
+     * @breaking-change 11.0.0
+     */
+    tabLinkTemplate: TemplateRef<void>;
+    nzTabLinkTemplateDirective: NzTabLinkTemplateDirective;
+    template: TemplateRef<void> | null;
+    linkDirective: NzTabLinkDirective;
+    contentTemplate: TemplateRef<NzSafeAny>;
+    isActive: boolean;
+    position: number | null;
+    origin: number | null;
+    readonly stateChanges: Subject<void>;
+    get content(): TemplateRef<NzSafeAny>;
+    get label(): string | TemplateRef<NzSafeAny>;
+    constructor(closestTabSet: NzSafeAny);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    ngOnInit(): void;
 }

@@ -6,9 +6,8 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: statistic.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzStatisticComponent {
     constructor() {
@@ -37,7 +36,7 @@ NzStatisticComponent.decorators = [
       </div>
     </div>
   `
-            }] }
+            },] }
 ];
 NzStatisticComponent.propDecorators = {
     nzPrefix: [{ type: Input }],
@@ -47,34 +46,13 @@ NzStatisticComponent.propDecorators = {
     nzValueStyle: [{ type: Input }],
     nzValueTemplate: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzStatisticComponent.prototype.nzPrefix;
-    /** @type {?} */
-    NzStatisticComponent.prototype.nzSuffix;
-    /** @type {?} */
-    NzStatisticComponent.prototype.nzTitle;
-    /** @type {?} */
-    NzStatisticComponent.prototype.nzValue;
-    /** @type {?} */
-    NzStatisticComponent.prototype.nzValueStyle;
-    /** @type {?} */
-    NzStatisticComponent.prototype.nzValueTemplate;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: countdown.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const REFRESH_INTERVAL = 1000 / 30;
 class NzCountdownComponent extends NzStatisticComponent {
-    /**
-     * @param {?} cdr
-     * @param {?} ngZone
-     * @param {?} platform
-     */
     constructor(cdr, ngZone, platform) {
         super();
         this.cdr = cdr;
@@ -84,10 +62,6 @@ class NzCountdownComponent extends NzStatisticComponent {
         this.nzCountdownFinish = new EventEmitter();
         this.target = 0;
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         if (changes.nzValue) {
             this.target = Number(changes.nzValue.currentValue);
@@ -96,21 +70,12 @@ class NzCountdownComponent extends NzStatisticComponent {
             }
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.syncTimer();
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.stopTimer();
     }
-    /**
-     * @return {?}
-     */
     syncTimer() {
         if (this.target >= Date.now()) {
             this.startTimer();
@@ -119,29 +84,17 @@ class NzCountdownComponent extends NzStatisticComponent {
             this.stopTimer();
         }
     }
-    /**
-     * @return {?}
-     */
     startTimer() {
         if (this.platform.isBrowser) {
-            this.ngZone.runOutsideAngular((/**
-             * @return {?}
-             */
-            () => {
+            this.ngZone.runOutsideAngular(() => {
                 this.stopTimer();
-                this.updater_ = interval(REFRESH_INTERVAL).subscribe((/**
-                 * @return {?}
-                 */
-                () => {
+                this.updater_ = interval(REFRESH_INTERVAL).subscribe(() => {
                     this.updateValue();
                     this.cdr.detectChanges();
-                }));
-            }));
+                });
+            });
         }
     }
-    /**
-     * @return {?}
-     */
     stopTimer() {
         if (this.updater_) {
             this.updater_.unsubscribe();
@@ -150,8 +103,6 @@ class NzCountdownComponent extends NzStatisticComponent {
     }
     /**
      * Update time that should be displayed on the screen.
-     * @protected
-     * @return {?}
      */
     updateValue() {
         this.diff = Math.max(this.target - Date.now(), 0);
@@ -180,9 +131,8 @@ NzCountdownComponent.decorators = [
 
     <ng-template #countDownTpl>{{ diff | nzTimeRange: nzFormat }}</ng-template>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCountdownComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: NgZone },
@@ -192,68 +142,22 @@ NzCountdownComponent.propDecorators = {
     nzFormat: [{ type: Input }],
     nzCountdownFinish: [{ type: Output }]
 };
-if (false) {
-    /** @type {?} */
-    NzCountdownComponent.prototype.nzFormat;
-    /** @type {?} */
-    NzCountdownComponent.prototype.nzCountdownFinish;
-    /** @type {?} */
-    NzCountdownComponent.prototype.diff;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCountdownComponent.prototype.target;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCountdownComponent.prototype.updater_;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCountdownComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCountdownComponent.prototype.ngZone;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCountdownComponent.prototype.platform;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: statistic-number.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzStatisticNumberComponent {
-    /**
-     * @param {?} locale_id
-     */
     constructor(locale_id) {
         this.locale_id = locale_id;
         this.displayInt = '';
         this.displayDecimal = '';
     }
-    /**
-     * @return {?}
-     */
     ngOnChanges() {
         this.formatNumber();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     formatNumber() {
-        /** @type {?} */
         const decimalSeparator = typeof this.nzValue === 'number' ? '.' : getLocaleNumberSymbol(this.locale_id, NumberSymbol.Decimal);
-        /** @type {?} */
         const value = String(this.nzValue);
         const [int, decimal] = value.split(decimalSeparator);
         this.displayInt = int;
@@ -277,9 +181,8 @@ NzStatisticNumberComponent.decorators = [
       </ng-container>
     </span>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzStatisticNumberComponent.ctorParameters = () => [
     { type: String, decorators: [{ type: Inject, args: [LOCALE_ID,] }] }
 ];
@@ -287,26 +190,10 @@ NzStatisticNumberComponent.propDecorators = {
     nzValue: [{ type: Input }],
     nzValueTemplate: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzStatisticNumberComponent.prototype.nzValue;
-    /** @type {?} */
-    NzStatisticNumberComponent.prototype.nzValueTemplate;
-    /** @type {?} */
-    NzStatisticNumberComponent.prototype.displayInt;
-    /** @type {?} */
-    NzStatisticNumberComponent.prototype.displayDecimal;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzStatisticNumberComponent.prototype.locale_id;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: statistic.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzStatisticModule {
 }
@@ -319,15 +206,12 @@ NzStatisticModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-statistic.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzCountdownComponent, NzStatisticComponent, NzStatisticModule, NzStatisticNumberComponent };

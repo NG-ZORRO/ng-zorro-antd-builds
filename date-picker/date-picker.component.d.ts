@@ -8,11 +8,11 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CompatibleValue } from 'ng-zorro-antd/core/time';
 import { BooleanInput, FunctionProp, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
-import { Subject } from 'rxjs';
 import { DatePickerService } from './date-picker.service';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzPickerComponent } from './picker.component';
 import { CompatibleDate, DisabledTimeFn, NzDateMode, PresetRanges, SupportTimeOptions } from './standard-types';
+export declare type NzDatePickerSizeType = 'large' | 'default' | 'small';
 /**
  * The base picker for all common APIs
  */
@@ -25,38 +25,39 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     private elementRef;
     protected dateHelper: DateHelperService;
     noAnimation?: NzNoAnimationDirective | undefined;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzAllowClear: BooleanInput;
     static ngAcceptInputType_nzAutoFocus: BooleanInput;
     static ngAcceptInputType_nzDisabled: BooleanInput;
+    static ngAcceptInputType_nzBorderless: BooleanInput;
+    static ngAcceptInputType_nzInputReadOnly: BooleanInput;
     static ngAcceptInputType_nzOpen: BooleanInput;
     static ngAcceptInputType_nzShowToday: BooleanInput;
     static ngAcceptInputType_nzMode: NzDateMode | NzDateMode[] | string | string[] | null | undefined;
     static ngAcceptInputType_nzShowTime: BooleanInput | SupportTimeOptions | null | undefined;
     isRange: boolean;
-    showWeek: boolean;
     focused: boolean;
     extraFooter?: TemplateRef<NzSafeAny> | string;
-    protected destroyed$: Subject<void>;
-    protected isCustomPlaceHolder: boolean;
+    panelMode: NzDateMode | NzDateMode[];
+    private destroyed$;
+    private isCustomPlaceHolder;
     private showTime;
     nzAllowClear: boolean;
     nzAutoFocus: boolean;
     nzDisabled: boolean;
-    nzOpen?: boolean;
+    nzBorderless: boolean;
+    nzInputReadOnly: boolean;
     /**
-     * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
+     * @deprecated use method `open` or `close` instead.
+     * @breaking-change 11.0.0
      */
-    nzClassName: string;
+    nzOpen?: boolean;
     nzDisabledDate?: (d: Date) => boolean;
     nzLocale: NzDatePickerI18nInterface;
-    nzPlaceHolder: string | [string, string];
+    nzPlaceHolder: string | string[];
     nzPopupStyle: object;
     nzDropdownClassName?: string;
-    nzSize: 'large' | 'small' | 'default';
-    /**
-     * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-     */
-    nzStyle: object | null;
+    nzSize: NzDatePickerSizeType;
     nzFormat: string;
     nzDateRender?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<Date> | string>;
     nzDisabledTime?: DisabledTimeFn;
@@ -67,24 +68,25 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     nzDefaultPickerValue: CompatibleDate | null;
     nzSeparator?: string;
     nzSuffixIcon: string | TemplateRef<NzSafeAny>;
-    readonly nzOnPanelChange: EventEmitter<string | string[] | NzDateMode[]>;
+    readonly nzOnPanelChange: EventEmitter<string | NzDateMode[] | string[]>;
     readonly nzOnCalendarChange: EventEmitter<(Date | null)[]>;
     readonly nzOnOk: EventEmitter<Date | Date[] | null>;
     readonly nzOnOpenChange: EventEmitter<boolean>;
     picker: NzPickerComponent;
     get nzShowTime(): SupportTimeOptions | boolean;
     set nzShowTime(value: SupportTimeOptions | boolean);
-    get realOpenState(): boolean;
     constructor(nzConfigService: NzConfigService, datePickerService: DatePickerService, i18n: NzI18nService, cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef, dateHelper: DateHelperService, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
-    setPanelMode(): void;
+    setModeAndFormat(): void;
     /**
      * Triggered when overlayOpen changes (different with realOpenState)
      * @param open The overlayOpen in picker component
      */
     onOpenChange(open: boolean): void;
+    open(): void;
+    close(): void;
     onChangeFn: OnChangeType;
     onTouchedFn: OnTouchedType;
     writeValue(value: CompatibleDate): void;
@@ -93,8 +95,8 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     setDisabledState(isDisabled: boolean): void;
     private setLocale;
     private setDefaultPlaceHolder;
+    private getPropertyOfLocale;
     private setValue;
-    get realShowToday(): boolean;
     onFocusChange(value: boolean): void;
     onPanelModeChange(panelMode: NzDateMode | NzDateMode[]): void;
     onCalendarChange(value: CompatibleValue): void;

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { ElementRef, InjectionToken, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzWaveRenderer } from './nz-wave-renderer';
 export interface NzWaveConfig {
     disabled?: boolean;
@@ -15,12 +16,13 @@ export declare class NzWaveDirective implements OnInit, OnDestroy {
     private elementRef;
     private config;
     private animationType;
+    private platformId;
     nzWaveExtraNode: boolean;
     private waveRenderer?;
     private waveDisabled;
     get disabled(): boolean;
     get rendererRef(): NzWaveRenderer | undefined;
-    constructor(ngZone: NgZone, elementRef: ElementRef, config: NzWaveConfig, animationType: string);
+    constructor(ngZone: NgZone, elementRef: ElementRef, config: NzWaveConfig, animationType: string, platformId: NzSafeAny);
     isConfigDisabled(): boolean;
     ngOnDestroy(): void;
     ngOnInit(): void;

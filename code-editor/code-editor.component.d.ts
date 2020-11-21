@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, ElementRef, EventEmitter, NgZone, OnDestroy, TemplateRef } from '@angular/core';
 import { editor } from 'monaco-editor';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -10,6 +11,7 @@ import { JoinedEditorOptions, NzEditorMode } from './typings';
 export declare class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     private nzCodeEditorService;
     private ngZone;
+    private platform;
     static ngAcceptInputType_nzLoading: BooleanInput;
     static ngAcceptInputType_nzFullControl: BooleanInput;
     nzEditorMode: NzEditorMode;
@@ -27,7 +29,7 @@ export declare class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     private editorInstance?;
     private value;
     private modelSet;
-    constructor(nzCodeEditorService: NzCodeEditorService, ngZone: NgZone, elementRef: ElementRef);
+    constructor(nzCodeEditorService: NzCodeEditorService, ngZone: NgZone, elementRef: ElementRef, platform: Platform);
     /**
      * Initialize a monaco editor instance.
      */
@@ -44,6 +46,12 @@ export declare class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     private initMonacoEditorInstance;
     private registerResizeChange;
     private setValue;
+    /**
+     * {@link editor.ICodeEditor}#setValue resets the cursor position to the start of the document.
+     * This helper memorizes the cursor position and selections and restores them after the given
+     * function has been called.
+     */
+    private preservePositionAndSelections;
     private setValueEmitter;
     private emitValue;
     private updateOptionToMonaco;

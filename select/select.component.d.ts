@@ -7,7 +7,7 @@ import { CdkConnectedOverlay, ConnectedOverlayPositionChange } from '@angular/cd
 import { Platform } from '@angular/cdk/platform';
 import { AfterContentInit, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzOptionGroupComponent } from './option-group.component';
@@ -22,6 +22,7 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     private platform;
     private focusMonitor;
     noAnimation?: NzNoAnimationDirective | undefined;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzAllowClear: BooleanInput;
     static ngAcceptInputType_nzBorderless: BooleanInput;
     static ngAcceptInputType_nzShowSearch: BooleanInput;
@@ -50,7 +51,6 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     nzClearIcon: TemplateRef<NzSafeAny> | null;
     nzRemoveIcon: TemplateRef<NzSafeAny> | null;
     nzMenuItemSelectedIcon: TemplateRef<NzSafeAny> | null;
-    nzShowArrow: boolean;
     nzTokenSeparators: string[];
     nzMaxTagPlaceholder: TemplateRef<{
         $implicit: NzSafeAny[];
@@ -69,6 +69,8 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     nzDisabled: boolean;
     nzOpen: boolean;
     nzOptions: NzSelectOptionInterface[];
+    set nzShowArrow(value: boolean);
+    get nzShowArrow(): boolean;
     readonly nzOnSearch: EventEmitter<string>;
     readonly nzScrollToBottom: EventEmitter<void>;
     readonly nzOpenChange: EventEmitter<boolean>;
@@ -88,6 +90,7 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     private isReactiveDriven;
     private value;
     private destroy$;
+    private _nzShowArrow;
     onChange: OnChangeType;
     onTouched: OnTouchedType;
     dropDownPosition: 'top' | 'center' | 'bottom';
@@ -100,15 +103,18 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     generateTagItem(value: string): NzSelectItemInterface;
     onItemClick(value: NzSafeAny): void;
     onItemDelete(item: NzSelectItemInterface): void;
+    onHostClick(): void;
     updateListOfContainerItem(): void;
     clearInput(): void;
     updateListOfValue(listOfValue: NzSafeAny[]): void;
     onTokenSeparate(listOfLabel: string[]): void;
+    onOverlayKeyDown(e: KeyboardEvent): void;
     onKeyDown(e: KeyboardEvent): void;
     setOpenState(value: boolean): void;
     onOpenChange(): void;
     onInputValueChange(value: string): void;
     onClearSelection(): void;
+    onClickOutside(event: MouseEvent): void;
     focus(): void;
     blur(): void;
     onPositionChange(position: ConnectedOverlayPositionChange): void;

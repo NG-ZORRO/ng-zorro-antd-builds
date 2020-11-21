@@ -14,6 +14,7 @@ export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
     nzKeyboard?: boolean;
     nzNoAnimation?: boolean;
     nzTitle?: string | TemplateRef<{}>;
+    nzFooter?: string | TemplateRef<{}>;
     nzContent?: TemplateRef<{
         $implicit: D;
         drawerRef: NzDrawerRef;

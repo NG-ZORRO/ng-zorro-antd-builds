@@ -4,7 +4,7 @@
  */
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, TrackByFunction } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
@@ -20,11 +20,13 @@ export declare class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestro
     private cdr;
     private nzTableStyleService;
     private nzTableDataService;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzFrontPagination: BooleanInput;
     static ngAcceptInputType_nzTemplateMode: BooleanInput;
     static ngAcceptInputType_nzShowPagination: BooleanInput;
     static ngAcceptInputType_nzLoading: BooleanInput;
     static ngAcceptInputType_nzBordered: BooleanInput;
+    static ngAcceptInputType_nzOuterBordered: BooleanInput;
     static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
     static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
     static ngAcceptInputType_nzShowQuickJumper: BooleanInput;
@@ -58,6 +60,7 @@ export declare class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestro
     nzTemplateMode: boolean;
     nzShowPagination: boolean;
     nzLoading: boolean;
+    nzOuterBordered: boolean;
     nzLoadingIndicator: TemplateRef<NzSafeAny> | null;
     nzBordered: boolean;
     nzSize: NzTableSize;

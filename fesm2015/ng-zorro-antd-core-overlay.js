@@ -2,14 +2,10 @@ import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overla
 import { Directive, NgModule } from '@angular/core';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-connected-overlay.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzConnectedOverlayDirective {
-    /**
-     * @param {?} cdkConnectedOverlay
-     */
     constructor(cdkConnectedOverlay) {
         this.cdkConnectedOverlay = cdkConnectedOverlay;
         this.cdkConnectedOverlay.backdropClass = 'nz-overlay-transparent-backdrop';
@@ -21,22 +17,13 @@ NzConnectedOverlayDirective.decorators = [
                 exportAs: 'nzConnectedOverlay'
             },] }
 ];
-/** @nocollapse */
 NzConnectedOverlayDirective.ctorParameters = () => [
     { type: CdkConnectedOverlay }
 ];
-if (false) {
-    /**
-     * @type {?}
-     * @private
-     */
-    NzConnectedOverlayDirective.prototype.cdkConnectedOverlay;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-overlay.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzOverlayModule {
 }
@@ -48,11 +35,9 @@ NzOverlayModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: overlay-position.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const POSITION_MAP = {
     top: new ConnectionPositionPair({ originX: 'center', originY: 'top' }, { overlayX: 'center', overlayY: 'bottom' }),
     topCenter: new ConnectionPositionPair({ originX: 'center', originY: 'top' }, { overlayX: 'center', overlayY: 'bottom' }),
@@ -69,24 +54,16 @@ const POSITION_MAP = {
     leftTop: new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'end', overlayY: 'top' }),
     leftBottom: new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'end', overlayY: 'bottom' })
 };
-/** @type {?} */
 const DEFAULT_TOOLTIP_POSITIONS = [POSITION_MAP.top, POSITION_MAP.right, POSITION_MAP.bottom, POSITION_MAP.left];
-/** @type {?} */
 const DEFAULT_CASCADER_POSITIONS = [POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSITION_MAP.topLeft, POSITION_MAP.topRight];
-/** @type {?} */
 const DEFAULT_MENTION_TOP_POSITIONS = [
     new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'bottom' }),
     new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'end', overlayY: 'bottom' })
 ];
-/** @type {?} */
 const DEFAULT_MENTION_BOTTOM_POSITIONS = [
     POSITION_MAP.bottomLeft,
     new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'end', overlayY: 'top' })
 ];
-/**
- * @param {?} position
- * @return {?}
- */
 function getPlacementName(position) {
     for (const placement in POSITION_MAP) {
         if (position.connectionPair.originX === POSITION_MAP[placement].originX &&
@@ -100,15 +77,12 @@ function getPlacementName(position) {
 }
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-core-overlay.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { DEFAULT_CASCADER_POSITIONS, DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS, DEFAULT_TOOLTIP_POSITIONS, NzConnectedOverlayDirective, NzOverlayModule, POSITION_MAP, getPlacementName };

@@ -18,7 +18,8 @@ export declare class NzBreadCrumbComponent implements OnInit, OnDestroy {
     nzAutoGenerate: boolean;
     nzSeparator: string | TemplateRef<void> | null;
     nzRouteLabel: string;
-    breadcrumbs: BreadcrumbOption[] | undefined;
+    nzRouteLabelFn: (label: string) => string;
+    breadcrumbs: BreadcrumbOption[];
     private destroy$;
     constructor(injector: Injector, ngZone: NgZone, cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2);
     ngOnInit(): void;

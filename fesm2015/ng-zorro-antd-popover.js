@@ -8,23 +8,17 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: popover.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPopoverDirective extends NzTooltipBaseDirective {
-    /**
-     * @param {?} elementRef
-     * @param {?} hostView
-     * @param {?} resolver
-     * @param {?} renderer
-     * @param {?=} noAnimation
-     */
     constructor(elementRef, hostView, resolver, renderer, noAnimation) {
         super(elementRef, hostView, resolver, renderer, noAnimation);
         this.noAnimation = noAnimation;
+        this.trigger = 'hover';
+        this.placement = 'top';
         // tslint:disable-next-line:no-output-rename
-        this.specificVisibleChange = new EventEmitter();
+        this.visibleChange = new EventEmitter();
         this.componentFactory = this.resolver.resolveComponentFactory(NzPopoverComponent);
     }
 }
@@ -37,7 +31,6 @@ NzPopoverDirective.decorators = [
                 }
             },] }
 ];
-/** @nocollapse */
 NzPopoverDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: ViewContainerRef },
@@ -46,51 +39,25 @@ NzPopoverDirective.ctorParameters = () => [
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 NzPopoverDirective.propDecorators = {
-    specificTitle: [{ type: Input, args: ['nzPopoverTitle',] }],
-    specificContent: [{ type: Input, args: ['nzPopoverContent',] }],
-    directiveNameTitle: [{ type: Input, args: ['nz-popover',] }],
-    specificTrigger: [{ type: Input, args: ['nzPopoverTrigger',] }],
-    specificPlacement: [{ type: Input, args: ['nzPopoverPlacement',] }],
-    specificOrigin: [{ type: Input, args: ['nzPopoverOrigin',] }],
-    specificVisible: [{ type: Input, args: ['nzPopoverVisible',] }],
-    specificVisibleChange: [{ type: Output, args: ['nzPopoverVisibleChange',] }]
+    title: [{ type: Input, args: ['nzPopoverTitle',] }],
+    content: [{ type: Input, args: ['nzPopoverContent',] }],
+    directiveTitle: [{ type: Input, args: ['nz-popover',] }],
+    trigger: [{ type: Input, args: ['nzPopoverTrigger',] }],
+    placement: [{ type: Input, args: ['nzPopoverPlacement',] }],
+    origin: [{ type: Input, args: ['nzPopoverOrigin',] }],
+    visible: [{ type: Input, args: ['nzPopoverVisible',] }],
+    mouseEnterDelay: [{ type: Input, args: ['nzPopoverMouseEnterDelay',] }],
+    mouseLeaveDelay: [{ type: Input, args: ['nzPopoverMouseLeaveDelay',] }],
+    overlayClassName: [{ type: Input, args: ['nzPopoverOverlayClassName',] }],
+    overlayStyle: [{ type: Input, args: ['nzPopoverOverlayStyle',] }],
+    visibleChange: [{ type: Output, args: ['nzPopoverVisibleChange',] }]
 };
-if (false) {
-    /** @type {?} */
-    NzPopoverDirective.prototype.specificTitle;
-    /** @type {?} */
-    NzPopoverDirective.prototype.specificContent;
-    /** @type {?} */
-    NzPopoverDirective.prototype.directiveNameTitle;
-    /** @type {?} */
-    NzPopoverDirective.prototype.specificTrigger;
-    /** @type {?} */
-    NzPopoverDirective.prototype.specificPlacement;
-    /** @type {?} */
-    NzPopoverDirective.prototype.specificOrigin;
-    /** @type {?} */
-    NzPopoverDirective.prototype.specificVisible;
-    /** @type {?} */
-    NzPopoverDirective.prototype.specificVisibleChange;
-    /** @type {?} */
-    NzPopoverDirective.prototype.componentFactory;
-    /** @type {?} */
-    NzPopoverDirective.prototype.noAnimation;
-}
 class NzPopoverComponent extends NzToolTipComponent {
-    /**
-     * @param {?} cdr
-     * @param {?=} noAnimation
-     */
     constructor(cdr, noAnimation) {
         super(cdr, noAnimation);
         this.noAnimation = noAnimation;
-        this._prefix = 'ant-popover-placement';
+        this._prefix = 'ant-popover';
     }
-    /**
-     * @protected
-     * @return {?}
-     */
     isEmpty() {
         return isTooltipEmpty(this.nzTitle) && isTooltipEmpty(this.nzContent);
     }
@@ -109,12 +76,12 @@ NzPopoverComponent.decorators = [
       cdkConnectedOverlay
       nzConnectedOverlay
       [cdkConnectedOverlayOrigin]="origin"
-      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
-      (backdropClick)="hide()"
-      (detach)="hide()"
-      (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
+      [cdkConnectedOverlayPush]="true"
+      (overlayOutsideClick)="onClickOutside($event)"
+      (detach)="hide()"
+      (positionChange)="onPositionChange($event)"
     >
       <div
         class="ant-popover"
@@ -140,24 +107,16 @@ NzPopoverComponent.decorators = [
       </div>
     </ng-template>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzPopoverComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
-if (false) {
-    /** @type {?} */
-    NzPopoverComponent.prototype._prefix;
-    /** @type {?} */
-    NzPopoverComponent.prototype.noAnimation;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: popover.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPopoverModule {
 }
@@ -171,15 +130,12 @@ NzPopoverModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-popover.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzPopoverComponent, NzPopoverDirective, NzPopoverModule };

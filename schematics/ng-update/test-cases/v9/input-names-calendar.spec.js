@@ -65,7 +65,7 @@ describe('calendar migration', () => {
       export class MyComp {
       }`);
             yield runMigration();
-            expect(warnOutput).toContain('index.ts@5:24 - Found deprecated input "nzCard" component. ' +
+            expect(warnOutput).toContain('/index.ts@5:24 - Found deprecated input "nzCard" component. ' +
                 'Use "nzFullscreen" to instead please.');
         }));
     });

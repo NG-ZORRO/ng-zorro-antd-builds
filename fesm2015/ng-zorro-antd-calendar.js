@@ -10,9 +10,8 @@ import { __decorate, __metadata } from 'tslib';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: calendar-cells.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDateCellDirective {
 }
@@ -48,15 +47,10 @@ NzMonthFullCellDirective.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: calendar-header.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCalendarHeaderComponent {
-    /**
-     * @param {?} i18n
-     * @param {?} dateHelper
-     */
     constructor(i18n, dateHelper) {
         this.i18n = i18n;
         this.dateHelper = dateHelper;
@@ -72,76 +66,41 @@ class NzCalendarHeaderComponent {
         this.years = [];
         this.months = [];
     }
-    /**
-     * @return {?}
-     */
     get activeYear() {
         return this.activeDate.getYear();
     }
-    /**
-     * @return {?}
-     */
     get activeMonth() {
         return this.activeDate.getMonth();
     }
-    /**
-     * @return {?}
-     */
     get size() {
         return this.fullscreen ? 'default' : 'small';
     }
-    /**
-     * @return {?}
-     */
     get yearTypeText() {
         return this.i18n.getLocale().Calendar.lang.year;
     }
-    /**
-     * @return {?}
-     */
     get monthTypeText() {
         return this.i18n.getLocale().Calendar.lang.month;
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.setUpYears();
         this.setUpMonths();
     }
-    /**
-     * @param {?} year
-     * @return {?}
-     */
     updateYear(year) {
         this.yearChange.emit(year);
         this.setUpYears(year);
     }
-    /**
-     * @private
-     * @param {?=} year
-     * @return {?}
-     */
     setUpYears(year) {
-        /** @type {?} */
         const start = (year || this.activeYear) - this.yearOffset;
-        /** @type {?} */
         const end = start + this.yearTotal;
         this.years = [];
         for (let i = start; i < end; i++) {
             this.years.push({ label: `${i}`, value: i });
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     setUpMonths() {
         this.months = [];
         for (let i = 0; i < 12; i++) {
-            /** @type {?} */
             const dateInMonth = this.activeDate.setMonth(i);
-            /** @type {?} */
             const monthText = this.dateHelper.format(dateInMonth.nativeDate, 'MMM');
             this.months.push({ label: monthText, value: i });
         }
@@ -186,9 +145,8 @@ NzCalendarHeaderComponent.decorators = [
                     '[style.display]': `'block'`,
                     '[class.ant-fullcalendar-header]': `true`
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCalendarHeaderComponent.ctorParameters = () => [
     { type: NzI18nService },
     { type: DateHelperService }
@@ -201,60 +159,18 @@ NzCalendarHeaderComponent.propDecorators = {
     yearChange: [{ type: Output }],
     monthChange: [{ type: Output }]
 };
-if (false) {
-    /** @type {?} */
-    NzCalendarHeaderComponent.prototype.mode;
-    /** @type {?} */
-    NzCalendarHeaderComponent.prototype.fullscreen;
-    /** @type {?} */
-    NzCalendarHeaderComponent.prototype.activeDate;
-    /** @type {?} */
-    NzCalendarHeaderComponent.prototype.modeChange;
-    /** @type {?} */
-    NzCalendarHeaderComponent.prototype.yearChange;
-    /** @type {?} */
-    NzCalendarHeaderComponent.prototype.monthChange;
-    /** @type {?} */
-    NzCalendarHeaderComponent.prototype.yearOffset;
-    /** @type {?} */
-    NzCalendarHeaderComponent.prototype.yearTotal;
-    /** @type {?} */
-    NzCalendarHeaderComponent.prototype.years;
-    /** @type {?} */
-    NzCalendarHeaderComponent.prototype.months;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCalendarHeaderComponent.prototype.i18n;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCalendarHeaderComponent.prototype.dateHelper;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: calendar.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCalendarComponent {
-    /**
-     * @param {?} cdr
-     */
     constructor(cdr) {
         this.cdr = cdr;
         this.activeDate = new CandyDate();
         this.prefixCls = 'ant-picker-calendar';
-        this.onChangeFn = (/**
-         * @return {?}
-         */
-        () => { });
-        this.onTouchFn = (/**
-         * @return {?}
-         */
-        () => { });
+        this.onChangeFn = () => { };
+        this.onTouchFn = () => { };
         this.nzMode = 'month';
         this.nzModeChange = new EventEmitter();
         this.nzPanelChange = new EventEmitter();
@@ -262,93 +178,45 @@ class NzCalendarComponent {
         this.nzValueChange = new EventEmitter();
         this.nzFullscreen = true;
     }
-    /**
-     * @return {?}
-     */
     get dateCell() {
-        return (/** @type {?} */ ((this.nzDateCell || this.nzDateCellChild)));
+        return (this.nzDateCell || this.nzDateCellChild);
     }
-    /**
-     * @return {?}
-     */
     get dateFullCell() {
-        return (/** @type {?} */ ((this.nzDateFullCell || this.nzDateFullCellChild)));
+        return (this.nzDateFullCell || this.nzDateFullCellChild);
     }
-    /**
-     * @return {?}
-     */
     get monthCell() {
-        return (/** @type {?} */ ((this.nzMonthCell || this.nzMonthCellChild)));
+        return (this.nzMonthCell || this.nzMonthCellChild);
     }
-    /**
-     * @return {?}
-     */
     get monthFullCell() {
-        return (/** @type {?} */ ((this.nzMonthFullCell || this.nzMonthFullCellChild)));
+        return (this.nzMonthFullCell || this.nzMonthFullCellChild);
     }
-    /**
-     * @param {?} mode
-     * @return {?}
-     */
     onModeChange(mode) {
         this.nzModeChange.emit(mode);
         this.nzPanelChange.emit({ date: this.activeDate.nativeDate, mode });
     }
-    /**
-     * @param {?} year
-     * @return {?}
-     */
     onYearSelect(year) {
-        /** @type {?} */
         const date = this.activeDate.setYear(year);
         this.updateDate(date);
     }
-    /**
-     * @param {?} month
-     * @return {?}
-     */
     onMonthSelect(month) {
-        /** @type {?} */
         const date = this.activeDate.setMonth(month);
         this.updateDate(date);
     }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     onDateSelect(date) {
         // Only activeDate is enough in calendar
         // this.value = date;
         this.updateDate(date);
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     writeValue(value) {
-        this.updateDate(new CandyDate((/** @type {?} */ (value))), false);
+        this.updateDate(new CandyDate(value), false);
         this.cdr.markForCheck();
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnChange(fn) {
         this.onChangeFn = fn;
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnTouched(fn) {
         this.onTouchFn = fn;
     }
-    /**
-     * @private
-     * @param {?} date
-     * @param {?=} touched
-     * @return {?}
-     */
     updateDate(date, touched = true) {
         this.activeDate = date;
         if (touched) {
@@ -358,10 +226,6 @@ class NzCalendarComponent {
             this.nzValueChange.emit(date.nativeDate);
         }
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         if (changes.nzValue) {
             this.updateDate(new CandyDate(this.nzValue), false);
@@ -422,13 +286,9 @@ NzCalendarComponent.decorators = [
                     '[class.ant-picker-calendar-full]': 'nzFullscreen',
                     '[class.ant-picker-calendar-mini]': '!nzFullscreen'
                 },
-                providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef((/**
-                         * @return {?}
-                         */
-                        () => NzCalendarComponent)), multi: true }]
-            }] }
+                providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
+            },] }
 ];
-/** @nocollapse */
 NzCalendarComponent.ctorParameters = () => [
     { type: ChangeDetectorRef }
 ];
@@ -454,71 +314,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzCalendarComponent.prototype, "nzFullscreen", void 0);
-if (false) {
-    /** @type {?} */
-    NzCalendarComponent.ngAcceptInputType_nzFullscreen;
-    /** @type {?} */
-    NzCalendarComponent.prototype.activeDate;
-    /** @type {?} */
-    NzCalendarComponent.prototype.prefixCls;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCalendarComponent.prototype.onChangeFn;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCalendarComponent.prototype.onTouchFn;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzMode;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzValue;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzDisabledDate;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzModeChange;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzPanelChange;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzSelectChange;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzValueChange;
-    /**
-     * Cannot use \@Input and \@ContentChild on one variable
-     * because { static: false } will make \@Input property get delayed
-     *
-     * @type {?}
-     */
-    NzCalendarComponent.prototype.nzDateCell;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzDateCellChild;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzDateFullCell;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzDateFullCellChild;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzMonthCell;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzMonthCellChild;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzMonthFullCell;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzMonthFullCellChild;
-    /** @type {?} */
-    NzCalendarComponent.prototype.nzFullscreen;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCalendarComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: calendar.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCalendarModule {
 }
@@ -538,15 +337,12 @@ NzCalendarModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-calendar.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzCalendarComponent, NzCalendarHeaderComponent, NzCalendarModule, NzDateCellDirective, NzDateFullCellDirective, NzMonthCellDirective, NzMonthFullCellDirective };

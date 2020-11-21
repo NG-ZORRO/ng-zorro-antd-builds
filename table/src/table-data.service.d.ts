@@ -4,7 +4,7 @@
  */
 import { OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { NzTableData, NzTableFilterFn, NzTableQueryParams, NzTableSortFn, NzTableSortOrder } from './table.types';
+import { NzTableData, NzTableFilterFn, NzTableFilterValue, NzTableQueryParams, NzTableSortFn, NzTableSortOrder } from './table.types';
 export declare class NzTableDataService implements OnDestroy {
     private destroy$;
     private pageIndex$;
@@ -15,10 +15,10 @@ export declare class NzTableDataService implements OnDestroy {
     pageSizeDistinct$: Observable<number>;
     listOfCalcOperator$: BehaviorSubject<{
         key?: string | undefined;
-        sortFn: boolean | NzTableSortFn | null;
+        sortFn: NzTableSortFn | null | boolean;
         sortOrder: NzTableSortOrder;
-        filterFn: boolean | NzTableFilterFn | null;
-        filterValue: any;
+        filterFn: NzTableFilterFn | null | boolean;
+        filterValue: NzTableFilterValue;
         sortPriority: number | boolean;
     }[]>;
     queryParams$: Observable<NzTableQueryParams>;

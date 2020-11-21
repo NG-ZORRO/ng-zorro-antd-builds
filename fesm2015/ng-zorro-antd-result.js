@@ -4,9 +4,8 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: result-cells.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzResultTitleDirective {
 }
@@ -62,45 +61,34 @@ NzResultExtraDirective.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: result.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const IconMap = {
     success: 'check-circle',
     error: 'close-circle',
     info: 'exclamation-circle',
     warning: 'warning'
 };
-/** @type {?} */
 const ExceptionStatus = ['404', '500', '403'];
 class NzResultComponent {
     constructor() {
         this.nzStatus = 'info';
         this.isException = false;
     }
-    /**
-     * @return {?}
-     */
     ngOnChanges() {
         this.setStatusIcon();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     setStatusIcon() {
-        /** @type {?} */
         const icon = this.nzIcon;
         this.isException = ExceptionStatus.indexOf(this.nzStatus) !== -1;
         this.icon = icon
             ? typeof icon === 'string'
-                ? IconMap[(/** @type {?} */ (icon))] || icon
+                ? IconMap[icon] || icon
                 : icon
             : this.isException
                 ? undefined
-                : IconMap[(/** @type {?} */ (this.nzStatus))];
+                : IconMap[this.nzStatus];
     }
 }
 NzResultComponent.decorators = [
@@ -155,9 +143,8 @@ NzResultComponent.decorators = [
                     '[class.ant-result-info]': `nzStatus === 'info'`,
                     '[class.ant-result-warning]': `nzStatus === 'warning'`
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzResultComponent.ctorParameters = () => [];
 NzResultComponent.propDecorators = {
     nzIcon: [{ type: Input }],
@@ -166,27 +153,10 @@ NzResultComponent.propDecorators = {
     nzSubTitle: [{ type: Input }],
     nzExtra: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzResultComponent.prototype.nzIcon;
-    /** @type {?} */
-    NzResultComponent.prototype.nzTitle;
-    /** @type {?} */
-    NzResultComponent.prototype.nzStatus;
-    /** @type {?} */
-    NzResultComponent.prototype.nzSubTitle;
-    /** @type {?} */
-    NzResultComponent.prototype.nzExtra;
-    /** @type {?} */
-    NzResultComponent.prototype.icon;
-    /** @type {?} */
-    NzResultComponent.prototype.isException;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: partial/not-found.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzResultNotFoundComponent {
 }
@@ -441,13 +411,12 @@ NzResultNotFoundComponent.decorators = [
       </g>
     </svg>
   `
-            }] }
+            },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: partial/server-error.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzResultServerErrorComponent {
 }
@@ -753,13 +722,12 @@ NzResultServerErrorComponent.decorators = [
       </g>
     </svg>
   `
-            }] }
+            },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: partial/unauthorized.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzResultUnauthorizedComponent {
 }
@@ -1011,17 +979,14 @@ NzResultUnauthorizedComponent.decorators = [
       </g>
     </svg>
   `
-            }] }
+            },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: result.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const partial = [NzResultNotFoundComponent, NzResultServerErrorComponent, NzResultUnauthorizedComponent];
-/** @type {?} */
 const cellDirectives = [
     NzResultContentDirective,
     NzResultExtraDirective,
@@ -1040,15 +1005,12 @@ NzResultModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-result.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzResultComponent, NzResultContentDirective, NzResultExtraDirective, NzResultIconDirective, NzResultModule, NzResultSubtitleDirective, NzResultTitleDirective, NzResultNotFoundComponent as ɵNzResultNotFoundComponent, NzResultServerErrorComponent as ɵNzResultServerErrorComponent, NzResultUnauthorizedComponent as ɵNzResultUnauthorizedComponent };

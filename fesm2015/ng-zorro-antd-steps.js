@@ -8,21 +8,16 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: step.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzStepComponent {
-    /**
-     * @param {?} cdr
-     */
     constructor(cdr) {
         this.cdr = cdr;
         this.nzDisabled = false;
         this.isCustomStatus = false;
         this._status = 'wait';
         this.oldAPIIcon = true;
-        // Set by parent.
         this.direction = 'horizontal';
         this.index = 0;
         this.last = false;
@@ -32,30 +27,16 @@ class NzStepComponent {
         this.click$ = new Subject();
         this._currentIndex = 0;
     }
-    /**
-     * @return {?}
-     */
     get nzStatus() {
         return this._status;
     }
-    /**
-     * @param {?} status
-     * @return {?}
-     */
     set nzStatus(status) {
         this._status = status;
         this.isCustomStatus = true;
     }
-    /**
-     * @return {?}
-     */
     get nzIcon() {
         return this._icon;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzIcon(value) {
         if (!(value instanceof TemplateRef)) {
             this.oldAPIIcon = typeof value === 'string' && value.indexOf('anticon') > -1;
@@ -64,39 +45,23 @@ class NzStepComponent {
         }
         this._icon = value;
     }
-    /**
-     * @return {?}
-     */
     get currentIndex() {
         return this._currentIndex;
     }
-    /**
-     * @param {?} current
-     * @return {?}
-     */
     set currentIndex(current) {
         this._currentIndex = current;
         if (!this.isCustomStatus) {
             this._status = current > this.index ? 'finish' : current === this.index ? this.outStatus || '' : 'wait';
         }
     }
-    /**
-     * @return {?}
-     */
     onClick() {
         if (this.clickable && this.currentIndex !== this.index && !this.nzDisabled) {
             this.click$.next(this.index);
         }
     }
-    /**
-     * @return {?}
-     */
     markForCheck() {
         this.cdr.markForCheck();
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.click$.complete();
     }
@@ -168,9 +133,8 @@ NzStepComponent.decorators = [
                     '[class.ant-steps-item-custom]': '!!nzIcon',
                     '[class.ant-steps-next-error]': '(outStatus === "error") && (currentIndex === index + 1)'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzStepComponent.ctorParameters = () => [
     { type: ChangeDetectorRef }
 ];
@@ -187,65 +151,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzStepComponent.prototype, "nzDisabled", void 0);
-if (false) {
-    /** @type {?} */
-    NzStepComponent.ngAcceptInputType_nzDisabled;
-    /** @type {?} */
-    NzStepComponent.prototype.processDotTemplate;
-    /** @type {?} */
-    NzStepComponent.prototype.nzTitle;
-    /** @type {?} */
-    NzStepComponent.prototype.nzSubtitle;
-    /** @type {?} */
-    NzStepComponent.prototype.nzDescription;
-    /** @type {?} */
-    NzStepComponent.prototype.nzDisabled;
-    /** @type {?} */
-    NzStepComponent.prototype.isCustomStatus;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzStepComponent.prototype._status;
-    /** @type {?} */
-    NzStepComponent.prototype.oldAPIIcon;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzStepComponent.prototype._icon;
-    /** @type {?} */
-    NzStepComponent.prototype.customProcessTemplate;
-    /** @type {?} */
-    NzStepComponent.prototype.direction;
-    /** @type {?} */
-    NzStepComponent.prototype.index;
-    /** @type {?} */
-    NzStepComponent.prototype.last;
-    /** @type {?} */
-    NzStepComponent.prototype.outStatus;
-    /** @type {?} */
-    NzStepComponent.prototype.showProcessDot;
-    /** @type {?} */
-    NzStepComponent.prototype.clickable;
-    /** @type {?} */
-    NzStepComponent.prototype.click$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzStepComponent.prototype._currentIndex;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzStepComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: steps.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzStepsComponent {
     constructor() {
@@ -261,10 +170,6 @@ class NzStepsComponent {
         this.showProcessDot = false;
         this.classMap = {};
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzProgressDot(value) {
         if (value instanceof TemplateRef) {
             this.showProcessDot = true;
@@ -275,10 +180,6 @@ class NzStepsComponent {
         }
         this.updateChildrenSteps();
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         if (changes.nzStartIndex || changes.nzDirection || changes.nzStatus || changes.nzCurrent) {
             this.updateChildrenSteps();
@@ -287,16 +188,10 @@ class NzStepsComponent {
             this.setClassMap();
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.setClassMap();
         this.updateChildrenSteps();
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -304,37 +199,18 @@ class NzStepsComponent {
             this.indexChangeSubscription.unsubscribe();
         }
     }
-    /**
-     * @return {?}
-     */
     ngAfterContentInit() {
         if (this.steps) {
-            this.steps.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe((/**
-             * @return {?}
-             */
-            () => {
+            this.steps.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
                 this.updateChildrenSteps();
-            }));
+            });
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     updateChildrenSteps() {
         if (this.steps) {
-            /** @type {?} */
             const length = this.steps.length;
-            this.steps.toArray().forEach((/**
-             * @param {?} step
-             * @param {?} index
-             * @return {?}
-             */
-            (step, index) => {
-                Promise.resolve().then((/**
-                 * @return {?}
-                 */
-                () => {
+            this.steps.toArray().forEach((step, index) => {
+                Promise.resolve().then(() => {
                     step.outStatus = this.nzStatus;
                     step.showProcessDot = this.showProcessDot;
                     if (this.customProcessDotTemplate) {
@@ -346,26 +222,14 @@ class NzStepsComponent {
                     step.currentIndex = this.nzCurrent;
                     step.last = length === index + 1;
                     step.markForCheck();
-                }));
-            }));
+                });
+            });
             if (this.indexChangeSubscription) {
                 this.indexChangeSubscription.unsubscribe();
             }
-            this.indexChangeSubscription = merge(...this.steps.map((/**
-             * @param {?} step
-             * @return {?}
-             */
-            step => step.click$))).subscribe((/**
-             * @param {?} index
-             * @return {?}
-             */
-            index => this.nzIndexChange.emit(index)));
+            this.indexChangeSubscription = merge(...this.steps.map(step => step.click$)).subscribe(index => this.nzIndexChange.emit(index));
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     setClassMap() {
         this.classMap = {
             [`ant-steps-${this.nzDirection}`]: true,
@@ -389,7 +253,7 @@ NzStepsComponent.decorators = [
       <ng-content></ng-content>
     </div>
   `
-            }] }
+            },] }
 ];
 NzStepsComponent.propDecorators = {
     steps: [{ type: ContentChildren, args: [NzStepComponent,] }],
@@ -403,49 +267,10 @@ NzStepsComponent.propDecorators = {
     nzProgressDot: [{ type: Input }],
     nzIndexChange: [{ type: Output }]
 };
-if (false) {
-    /** @type {?} */
-    NzStepsComponent.ngAcceptInputType_nzProgressDot;
-    /** @type {?} */
-    NzStepsComponent.prototype.steps;
-    /** @type {?} */
-    NzStepsComponent.prototype.nzCurrent;
-    /** @type {?} */
-    NzStepsComponent.prototype.nzDirection;
-    /** @type {?} */
-    NzStepsComponent.prototype.nzLabelPlacement;
-    /** @type {?} */
-    NzStepsComponent.prototype.nzType;
-    /** @type {?} */
-    NzStepsComponent.prototype.nzSize;
-    /** @type {?} */
-    NzStepsComponent.prototype.nzStartIndex;
-    /** @type {?} */
-    NzStepsComponent.prototype.nzStatus;
-    /** @type {?} */
-    NzStepsComponent.prototype.nzIndexChange;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzStepsComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzStepsComponent.prototype.indexChangeSubscription;
-    /** @type {?} */
-    NzStepsComponent.prototype.showProcessDot;
-    /** @type {?} */
-    NzStepsComponent.prototype.customProcessDotTemplate;
-    /** @type {?} */
-    NzStepsComponent.prototype.classMap;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: steps.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzStepsModule {
 }
@@ -458,15 +283,12 @@ NzStepsModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-steps.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzStepComponent, NzStepsComponent, NzStepsModule };

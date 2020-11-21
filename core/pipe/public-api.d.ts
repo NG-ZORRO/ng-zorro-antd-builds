@@ -4,4 +4,3 @@
  */
 export * from './nz-pipe.module';
 export * from './time-range.pipe';
-export * from './nz-css-unit.pipe';

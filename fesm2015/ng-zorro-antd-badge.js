@@ -1,24 +1,16 @@
 import { __decorate, __metadata } from 'tslib';
-import { ContentObserver, ObserversModule } from '@angular/cdk/observers';
-import { TemplateRef, Component, ViewEncapsulation, ChangeDetectionStrategy, Renderer2, ElementRef, ChangeDetectorRef, NgZone, ViewChild, Input, NgModule } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy, Input, NgModule } from '@angular/core';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { isEmpty, InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { take, startWith, takeUntil } from 'rxjs/operators';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { ObserversModule } from '@angular/cdk/observers';
 import { CommonModule } from '@angular/common';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: preset-colors.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const badgePresetColors = [
     'pink',
     'red',
@@ -36,125 +28,33 @@ const badgePresetColors = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: badge.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'backTop';
+const NZ_CONFIG_MODULE_NAME = 'badge';
 class NzBadgeComponent {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} renderer
-     * @param {?} elementRef
-     * @param {?} contentObserver
-     * @param {?} cdr
-     * @param {?} ngZone
-     */
-    constructor(nzConfigService, renderer, elementRef, contentObserver, cdr, ngZone) {
+    constructor(nzConfigService) {
         this.nzConfigService = nzConfigService;
-        this.renderer = renderer;
-        this.elementRef = elementRef;
-        this.contentObserver = contentObserver;
-        this.cdr = cdr;
-        this.ngZone = ngZone;
-        this.destroy$ = new Subject();
-        this.notWrapper = true;
-        this.viewInit = false;
-        this.maxNumberArray = [];
-        this.countArray = [];
-        this.countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
+        this.showSup = false;
         this.presetColor = null;
-        this.count = 0;
         this.nzShowZero = false;
         this.nzShowDot = true;
+        this.nzStandalone = false;
         this.nzDot = false;
         this.nzOverflowCount = 99;
         this.nzColor = undefined;
         this.nzStyle = null;
+        this.nzText = null;
     }
-    /**
-     * @return {?}
-     */
-    checkContent() {
-        var _a;
-        this.notWrapper = isEmpty((_a = this.contentElement) === null || _a === void 0 ? void 0 : _a.nativeElement);
-        if (this.notWrapper) {
-            this.renderer.addClass(this.elementRef.nativeElement, 'ant-badge-not-a-wrapper');
-        }
-        else {
-            this.renderer.removeClass(this.elementRef.nativeElement, 'ant-badge-not-a-wrapper');
-        }
-    }
-    /**
-     * @return {?}
-     */
-    get showSup() {
-        return (this.nzShowDot && this.nzDot) || this.count > 0 || (this.count === 0 && this.nzShowZero);
-    }
-    /**
-     * @return {?}
-     */
-    generateMaxNumberArray() {
-        this.maxNumberArray = this.nzOverflowCount.toString().split('');
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        this.generateMaxNumberArray();
-    }
-    /**
-     * @return {?}
-     */
-    ngAfterViewInit() {
-        this.ngZone.onStable.pipe(take(1)).subscribe((/**
-         * @return {?}
-         */
-        () => {
-            this.viewInit = true;
-            this.cdr.detectChanges();
-        }));
-        this.contentObserver
-            .observe((/** @type {?} */ (this.contentElement)))
-            .pipe(startWith(true), takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => {
-            this.checkContent();
-        }));
-    }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
-        const { nzOverflowCount, nzCount, nzColor } = changes;
-        if (nzCount && !(nzCount.currentValue instanceof TemplateRef)) {
-            this.count = Math.max(0, nzCount.currentValue);
-            this.countArray = this.count
-                .toString()
-                .split('')
-                .map((/**
-             * @param {?} item
-             * @return {?}
-             */
-            item => +item));
-        }
-        if (nzOverflowCount) {
-            this.generateMaxNumberArray();
-        }
+        const { nzColor, nzShowDot, nzDot, nzCount, nzShowZero } = changes;
         if (nzColor) {
             this.presetColor = this.nzColor && badgePresetColors.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
         }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        this.destroy$.next();
-        this.destroy$.complete();
+        if (nzShowDot || nzDot || nzCount || nzShowZero) {
+            this.showSup = (this.nzShowDot && this.nzDot) || this.nzCount > 0 || (this.nzCount <= 0 && this.nzShowZero);
+        }
     }
 }
 NzBadgeComponent.decorators = [
@@ -166,64 +66,44 @@ NzBadgeComponent.decorators = [
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 animations: [zoomBadgeMotion],
                 template: `
-    <span #contentElement><ng-content></ng-content></span>
-    <span
-      class="ant-badge-status-dot ant-badge-status-{{ nzStatus || presetColor }}"
-      [style.background]="!presetColor && nzColor"
-      *ngIf="nzStatus || nzColor"
-      [ngStyle]="nzStyle"
-    ></span>
-    <span class="ant-badge-status-text" *ngIf="nzStatus || nzColor">{{ nzText }}</span>
-    <ng-container *nzStringTemplateOutlet="nzCount">
-      <sup
-        class="ant-scroll-number"
-        *ngIf="showSup && viewInit"
-        [@.disabled]="notWrapper"
-        [@zoomBadgeMotion]
+    <ng-container *ngIf="nzStatus || nzColor">
+      <span
+        class="ant-badge-status-dot ant-badge-status-{{ nzStatus || presetColor }}"
+        [style.background]="!presetColor && nzColor"
         [ngStyle]="nzStyle"
-        [attr.title]="nzTitle === null ? '' : nzTitle || nzCount"
-        [style.right.px]="nzOffset && nzOffset[0] ? -nzOffset[0] : null"
-        [style.marginTop.px]="nzOffset && nzOffset[1] ? nzOffset[1] : null"
-        [class.ant-badge-count]="!nzDot"
-        [class.ant-badge-dot]="nzDot"
-        [class.ant-badge-multiple-words]="countArray.length >= 2"
-      >
-        <ng-container *ngFor="let n of maxNumberArray; let i = index">
-          <span
-            class="ant-scroll-number-only"
-            *ngIf="count <= nzOverflowCount"
-            [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
-          >
-            <ng-container *ngIf="!nzDot && countArray[i] !== undefined">
-              <p *ngFor="let p of countSingleArray" class="ant-scroll-number-only-unit" [class.current]="p === countArray[i]">
-                {{ p }}
-              </p>
-            </ng-container>
-          </span>
-        </ng-container>
-        <ng-container *ngIf="count > nzOverflowCount">{{ nzOverflowCount }}+</ng-container>
-      </sup>
+      ></span>
+      <span class="ant-badge-status-text">
+        <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
+      </span>
+    </ng-container>
+    <ng-content></ng-content>
+    <ng-container *nzStringTemplateOutlet="nzCount">
+      <nz-badge-sup
+        *ngIf="showSup"
+        [nzOffset]="nzOffset"
+        [nzTitle]="nzTitle"
+        [nzStyle]="nzStyle"
+        [nzDot]="nzDot"
+        [nzOverflowCount]="nzOverflowCount"
+        [disableAnimation]="!!(nzStandalone || nzStatus || nzColor)"
+        [nzCount]="nzCount"
+      ></nz-badge-sup>
     </ng-container>
   `,
                 host: {
-                    class: 'ant-badge',
-                    '[class.ant-badge-status]': 'nzStatus'
+                    '[class.ant-badge]': 'true',
+                    '[class.ant-badge-status]': 'nzStatus',
+                    '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || nzColor)'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzBadgeComponent.ctorParameters = () => [
-    { type: NzConfigService },
-    { type: Renderer2 },
-    { type: ElementRef },
-    { type: ContentObserver },
-    { type: ChangeDetectorRef },
-    { type: NgZone }
+    { type: NzConfigService }
 ];
 NzBadgeComponent.propDecorators = {
-    contentElement: [{ type: ViewChild, args: ['contentElement', { static: false },] }],
     nzShowZero: [{ type: Input }],
     nzShowDot: [{ type: Input }],
+    nzStandalone: [{ type: Input }],
     nzDot: [{ type: Input }],
     nzOverflowCount: [{ type: Input }],
     nzColor: [{ type: Input }],
@@ -245,120 +125,173 @@ __decorate([
 __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
+], NzBadgeComponent.prototype, "nzStandalone", void 0);
+__decorate([
+    InputBoolean(),
+    __metadata("design:type", Object)
 ], NzBadgeComponent.prototype, "nzDot", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", Number)
 ], NzBadgeComponent.prototype, "nzOverflowCount", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", String)
 ], NzBadgeComponent.prototype, "nzColor", void 0);
-if (false) {
-    /** @type {?} */
-    NzBadgeComponent.ngAcceptInputType_nzShowZero;
-    /** @type {?} */
-    NzBadgeComponent.ngAcceptInputType_nzShowDot;
-    /** @type {?} */
-    NzBadgeComponent.ngAcceptInputType_nzDot;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBadgeComponent.prototype.destroy$;
-    /** @type {?} */
-    NzBadgeComponent.prototype.notWrapper;
-    /** @type {?} */
-    NzBadgeComponent.prototype.viewInit;
-    /** @type {?} */
-    NzBadgeComponent.prototype.maxNumberArray;
-    /** @type {?} */
-    NzBadgeComponent.prototype.countArray;
-    /** @type {?} */
-    NzBadgeComponent.prototype.countSingleArray;
-    /** @type {?} */
-    NzBadgeComponent.prototype.presetColor;
-    /** @type {?} */
-    NzBadgeComponent.prototype.count;
-    /** @type {?} */
-    NzBadgeComponent.prototype.contentElement;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzShowZero;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzShowDot;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzDot;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzOverflowCount;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzColor;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzStyle;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzText;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzTitle;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzStatus;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzCount;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzOffset;
-    /** @type {?} */
-    NzBadgeComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBadgeComponent.prototype.renderer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBadgeComponent.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBadgeComponent.prototype.contentObserver;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBadgeComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzBadgeComponent.prototype.ngZone;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: badge.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+class NzBadgeSupComponent {
+    constructor() {
+        this.nzStyle = null;
+        this.nzDot = false;
+        this.nzOverflowCount = 99;
+        this.disableAnimation = false;
+        this.maxNumberArray = [];
+        this.countArray = [];
+        this.count = 0;
+        this.countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    }
+    generateMaxNumberArray() {
+        this.maxNumberArray = this.nzOverflowCount.toString().split('');
+    }
+    ngOnInit() {
+        this.generateMaxNumberArray();
+    }
+    ngOnChanges(changes) {
+        const { nzOverflowCount, nzCount } = changes;
+        if (nzCount && typeof nzCount.currentValue === 'number') {
+            this.count = Math.max(0, nzCount.currentValue);
+            this.countArray = this.count
+                .toString()
+                .split('')
+                .map(item => +item);
+        }
+        if (nzOverflowCount) {
+            this.generateMaxNumberArray();
+        }
+    }
+}
+NzBadgeSupComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'nz-badge-sup',
+                exportAs: 'nzBadgeSup',
+                preserveWhitespaces: false,
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                animations: [zoomBadgeMotion],
+                template: `
+    <ng-container *ngIf="count <= nzOverflowCount; else overflowTemplate">
+      <span
+        *ngFor="let n of maxNumberArray; let i = index"
+        class="ant-scroll-number-only"
+        [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
+      >
+        <ng-container *ngIf="!nzDot && countArray[i] !== undefined">
+          <p *ngFor="let p of countSingleArray" class="ant-scroll-number-only-unit" [class.current]="p === countArray[i]">
+            {{ p }}
+          </p>
+        </ng-container>
+      </span>
+    </ng-container>
+    <ng-template #overflowTemplate>{{ nzOverflowCount }}+</ng-template>
+  `,
+                host: {
+                    '[@.disabled]': `disableAnimation`,
+                    '[@zoomBadgeMotion]': '',
+                    '[attr.title]': `nzTitle === null ? '' : nzTitle || nzCount`,
+                    '[style]': `nzStyle`,
+                    '[style.right.px]': `nzOffset && nzOffset[0] ? -nzOffset[0] : null`,
+                    '[style.margin-top.px]': `nzOffset && nzOffset[1] ? nzOffset[1] : null`,
+                    '[class.ant-scroll-number]': 'true',
+                    '[class.ant-badge-count]': `!nzDot`,
+                    '[class.ant-badge-dot]': `nzDot`,
+                    '[class.ant-badge-multiple-words]': `countArray.length >= 2`
+                }
+            },] }
+];
+NzBadgeSupComponent.propDecorators = {
+    nzOffset: [{ type: Input }],
+    nzTitle: [{ type: Input }],
+    nzStyle: [{ type: Input }],
+    nzDot: [{ type: Input }],
+    nzOverflowCount: [{ type: Input }],
+    disableAnimation: [{ type: Input }],
+    nzCount: [{ type: Input }]
+};
+
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+class NzRibbonComponent {
+    constructor() {
+        this.nzPlacement = 'end';
+        this.nzText = null;
+        this.presetColor = null;
+    }
+    ngOnChanges(changes) {
+        const { nzColor } = changes;
+        if (nzColor) {
+            this.presetColor = this.nzColor && badgePresetColors.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
+        }
+    }
+}
+NzRibbonComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'nz-ribbon',
+                exportAs: 'nzRibbon',
+                preserveWhitespaces: false,
+                encapsulation: ViewEncapsulation.None,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                template: `
+    <ng-content></ng-content>
+    <div
+      class="ant-ribbon"
+      [class]="presetColor && 'ant-ribbon-color-' + presetColor"
+      [class.ant-ribbon-placement-end]="nzPlacement === 'end'"
+      [class.ant-ribbon-placement-start]="nzPlacement === 'start'"
+      [style.background-color]="!presetColor && nzColor"
+    >
+      <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
+      <div class="ant-ribbon-corner" [style.color]="!presetColor && nzColor"></div>
+    </div>
+  `,
+                host: {
+                    '[class.ant-ribbon-wrapper]': 'true'
+                }
+            },] }
+];
+NzRibbonComponent.propDecorators = {
+    nzColor: [{ type: Input }],
+    nzPlacement: [{ type: Input }],
+    nzText: [{ type: Input }]
+};
+
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzBadgeModule {
 }
 NzBadgeModule.decorators = [
     { type: NgModule, args: [{
-                declarations: [NzBadgeComponent],
-                exports: [NzBadgeComponent],
+                declarations: [NzBadgeComponent, NzBadgeSupComponent, NzRibbonComponent],
+                exports: [NzBadgeComponent, NzRibbonComponent],
                 imports: [CommonModule, ObserversModule, NzOutletModule]
             },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-badge.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
-export { NzBadgeComponent, NzBadgeModule };
+export { NzBadgeComponent, NzBadgeModule, NzBadgeSupComponent as ɵa, NzRibbonComponent as ɵb };
 //# sourceMappingURL=ng-zorro-antd-badge.js.map

@@ -6,6 +6,7 @@
       [nzMinWidth]="80"
       [nzMaxHeight]="200"
       [nzMinHeight]="80"
+      [nzDisabled]="disabled"
       [style.height.px]="height"
       [style.width.px]="width"
       (nzResize)="onResize($event)"

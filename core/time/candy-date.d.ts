@@ -3,13 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { IndexableObject } from 'ng-zorro-antd/core/types';
+export declare type CandyDateMode = 'decade' | 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
+export declare type NormalizedMode = 'decade' | 'year' | 'month';
 export declare type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-export declare type CandyDateCompareGrain = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 export declare type CandyDateType = CandyDate | Date | null;
 export declare type SingleValue = CandyDate | null;
 export declare type CompatibleValue = SingleValue | SingleValue[];
-export declare function sortRangeValue(rangeValue: SingleValue[]): SingleValue[];
-export declare function normalizeRangeValue(value: SingleValue[]): CandyDate[];
+export declare function wrongSortOrder(rangeValue: SingleValue[]): boolean;
+export declare function normalizeRangeValue(value: SingleValue[], allowSameInTwoPanel: boolean, type?: NormalizedMode): CandyDate[];
 export declare function cloneDate(value: CompatibleValue): CompatibleValue;
 /**
  * Wrapping kind APIs for date operating and unify
@@ -43,26 +44,18 @@ export declare class CandyDate implements IndexableObject {
     }): CandyDate;
     setDate(amount: number): CandyDate;
     addDays(amount: number): CandyDate;
-    isSame(date: CandyDateType, grain?: CandyDateCompareGrain): boolean;
+    add(amount: number, mode: NormalizedMode): CandyDate;
+    isSame(date: CandyDateType, grain?: CandyDateMode): boolean;
     isSameYear(date: CandyDateType): boolean;
     isSameMonth(date: CandyDateType): boolean;
     isSameDay(date: CandyDateType): boolean;
     isSameHour(date: CandyDateType): boolean;
     isSameMinute(date: CandyDateType): boolean;
     isSameSecond(date: CandyDateType): boolean;
-    compare(date: CandyDateType, grain?: CandyDateCompareGrain, isBefore?: boolean): boolean;
+    isBefore(date: CandyDateType, grain?: CandyDateMode): boolean;
     isBeforeYear(date: CandyDateType): boolean;
     isBeforeMonth(date: CandyDateType): boolean;
     isBeforeDay(date: CandyDateType): boolean;
-    isBeforeHour(date: CandyDateType): boolean;
-    isBeforeMinute(date: CandyDateType): boolean;
-    isBeforeSecond(date: CandyDateType): boolean;
-    isAfterYear(date: CandyDateType): boolean;
-    isAfterMonth(date: CandyDateType): boolean;
-    isAfterDay(date: CandyDateType): boolean;
-    isAfterHour(date: CandyDateType): boolean;
-    isAfterMinute(date: CandyDateType): boolean;
-    isAfterSecond(date: CandyDateType): boolean;
     isToday(): boolean;
     isValid(): boolean;
     isFirstDayOfMonth(): boolean;

@@ -98,11 +98,11 @@ describe('dropdown class migration', () => {
       }`);
             yield runMigration();
             const messages = [
-                'index.ts@3:16 - Found "NzDropdownContextComponent" which has been removed. Your code need to be updated.',
-                'index.ts@3:44 - Found usage of "NzDropdownService" which has been removed. Please use "NzContextMenuService" ' +
+                '/index.ts@3:16 - Found "NzDropdownContextComponent" which has been removed. Your code need to be updated.',
+                '/index.ts@3:44 - Found usage of "NzDropdownService" which has been removed. Please use "NzContextMenuService" ' +
                     'instead.',
-                'index.ts@29:27 - Found "NzDropdownContextComponent" which has been removed. Your code need to be updated.',
-                'index.ts@40:48 - Found usage of "NzDropdownService" which has been removed. Please use "NzContextMenuService" ' +
+                '/index.ts@29:27 - Found "NzDropdownContextComponent" which has been removed. Your code need to be updated.',
+                '/index.ts@40:48 - Found usage of "NzDropdownService" which has been removed. Please use "NzContextMenuService" ' +
                     'instead.'
             ];
             messages.forEach(message => {

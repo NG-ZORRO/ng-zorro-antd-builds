@@ -11,22 +11,16 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: rate.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'rate';
+const NZ_CONFIG_MODULE_NAME = 'rate';
 class NzRateComponent {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} renderer
-     * @param {?} cdr
-     */
     constructor(nzConfigService, renderer, cdr) {
         this.nzConfigService = nzConfigService;
         this.renderer = renderer;
         this.cdr = cdr;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzAllowClear = true;
         this.nzAllowHalf = false;
         this.nzDisabled = false;
@@ -45,25 +39,12 @@ class NzRateComponent {
         this.hoverValue = 0;
         this.isFocused = false;
         this._value = 0;
-        this.onChange = (/**
-         * @return {?}
-         */
-        () => null);
-        this.onTouched = (/**
-         * @return {?}
-         */
-        () => null);
+        this.onChange = () => null;
+        this.onTouched = () => null;
     }
-    /**
-     * @return {?}
-     */
     get nzValue() {
         return this._value;
     }
-    /**
-     * @param {?} input
-     * @return {?}
-     */
     set nzValue(input) {
         if (this._value === input) {
             return;
@@ -72,15 +53,10 @@ class NzRateComponent {
         this.hasHalf = !Number.isInteger(input);
         this.hoverValue = Math.ceil(input);
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzAutoFocus, nzCount, nzValue } = changes;
         if (nzAutoFocus && !nzAutoFocus.isFirstChange()) {
-            /** @type {?} */
-            const el = (/** @type {?} */ (this.ulElement)).nativeElement;
+            const el = this.ulElement.nativeElement;
             if (this.nzAutoFocus && !this.nzDisabled) {
                 this.renderer.setAttribute(el, 'autofocus', 'autofocus');
             }
@@ -95,36 +71,21 @@ class NzRateComponent {
             this.updateStarStyle();
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.nzConfigService
-            .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+            .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => this.cdr.markForCheck()));
+            .subscribe(() => this.cdr.markForCheck());
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
     }
-    /**
-     * @param {?} index
-     * @param {?} isHalf
-     * @return {?}
-     */
     onItemClick(index, isHalf) {
         if (this.nzDisabled) {
             return;
         }
         this.hoverValue = index + 1;
-        /** @type {?} */
         const actualValue = isHalf ? index + 0.5 : index + 1;
         if (this.nzValue === actualValue) {
             if (this.nzAllowClear) {
@@ -138,11 +99,6 @@ class NzRateComponent {
         }
         this.updateStarStyle();
     }
-    /**
-     * @param {?} index
-     * @param {?} isHalf
-     * @return {?}
-     */
     onItemHover(index, isHalf) {
         if (this.nzDisabled || (this.hoverValue === index + 1 && isHalf === this.hasHalf)) {
             return;
@@ -152,48 +108,26 @@ class NzRateComponent {
         this.nzOnHoverChange.emit(this.hoverValue);
         this.updateStarStyle();
     }
-    /**
-     * @return {?}
-     */
     onRateLeave() {
         this.hasHalf = !Number.isInteger(this.nzValue);
         this.hoverValue = Math.ceil(this.nzValue);
         this.updateStarStyle();
     }
-    /**
-     * @param {?} e
-     * @return {?}
-     */
     onFocus(e) {
         this.isFocused = true;
         this.nzOnFocus.emit(e);
     }
-    /**
-     * @param {?} e
-     * @return {?}
-     */
     onBlur(e) {
         this.isFocused = false;
         this.nzOnBlur.emit(e);
     }
-    /**
-     * @return {?}
-     */
     focus() {
-        (/** @type {?} */ (this.ulElement)).nativeElement.focus();
+        this.ulElement.nativeElement.focus();
     }
-    /**
-     * @return {?}
-     */
     blur() {
-        (/** @type {?} */ (this.ulElement)).nativeElement.blur();
+        this.ulElement.nativeElement.blur();
     }
-    /**
-     * @param {?} e
-     * @return {?}
-     */
     onKeyDown(e) {
-        /** @type {?} */
         const oldVal = this.nzValue;
         if (e.keyCode === RIGHT_ARROW && this.nzValue < this.nzCount) {
             this.nzValue += this.nzAllowHalf ? 0.5 : 1;
@@ -208,34 +142,15 @@ class NzRateComponent {
             this.cdr.markForCheck();
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     updateStarArray() {
         this.starArray = Array(this.nzCount)
             .fill(0)
-            .map((/**
-         * @param {?} _
-         * @param {?} i
-         * @return {?}
-         */
-        (_, i) => i));
+            .map((_, i) => i);
         this.updateStarStyle();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     updateStarStyle() {
-        this.starStyleArray = this.starArray.map((/**
-         * @param {?} i
-         * @return {?}
-         */
-        i => {
-            /** @type {?} */
+        this.starStyleArray = this.starArray.map(i => {
             const prefix = 'ant-rate-star';
-            /** @type {?} */
             const value = i + 1;
             return {
                 [`${prefix}-full`]: value < this.hoverValue || (!this.hasHalf && value === this.hoverValue),
@@ -244,35 +159,19 @@ class NzRateComponent {
                 [`${prefix}-zero`]: value > this.hoverValue,
                 [`${prefix}-focused`]: this.hasHalf && value === this.hoverValue && this.isFocused
             };
-        }));
+        });
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     writeValue(value) {
         this.nzValue = value || 0;
         this.updateStarArray();
         this.cdr.markForCheck();
     }
-    /**
-     * @param {?} isDisabled
-     * @return {?}
-     */
     setDisabledState(isDisabled) {
         this.nzDisabled = isDisabled;
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnChange(fn) {
         this.onChange = fn;
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnTouched(fn) {
         this.onTouched = fn;
     }
@@ -316,16 +215,12 @@ NzRateComponent.decorators = [
                 providers: [
                     {
                         provide: NG_VALUE_ACCESSOR,
-                        useExisting: forwardRef((/**
-                         * @return {?}
-                         */
-                        () => NzRateComponent)),
+                        useExisting: forwardRef(() => NzRateComponent),
                         multi: true
                     }
                 ]
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzRateComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: Renderer2 },
@@ -346,11 +241,13 @@ NzRateComponent.propDecorators = {
     nzOnKeyDown: [{ type: Output }]
 };
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzRateComponent.prototype, "nzAllowClear", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzRateComponent.prototype, "nzAllowHalf", void 0);
 __decorate([
@@ -365,97 +262,10 @@ __decorate([
     InputNumber(),
     __metadata("design:type", Number)
 ], NzRateComponent.prototype, "nzCount", void 0);
-if (false) {
-    /** @type {?} */
-    NzRateComponent.ngAcceptInputType_nzAllowClear;
-    /** @type {?} */
-    NzRateComponent.ngAcceptInputType_nzAllowHalf;
-    /** @type {?} */
-    NzRateComponent.ngAcceptInputType_nzDisabled;
-    /** @type {?} */
-    NzRateComponent.ngAcceptInputType_nzAutoFocus;
-    /** @type {?} */
-    NzRateComponent.ngAcceptInputType_nzCount;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzRateComponent.prototype.ulElement;
-    /** @type {?} */
-    NzRateComponent.prototype.nzAllowClear;
-    /** @type {?} */
-    NzRateComponent.prototype.nzAllowHalf;
-    /** @type {?} */
-    NzRateComponent.prototype.nzDisabled;
-    /** @type {?} */
-    NzRateComponent.prototype.nzAutoFocus;
-    /** @type {?} */
-    NzRateComponent.prototype.nzCharacter;
-    /** @type {?} */
-    NzRateComponent.prototype.nzCount;
-    /** @type {?} */
-    NzRateComponent.prototype.nzTooltips;
-    /** @type {?} */
-    NzRateComponent.prototype.nzOnBlur;
-    /** @type {?} */
-    NzRateComponent.prototype.nzOnFocus;
-    /** @type {?} */
-    NzRateComponent.prototype.nzOnHoverChange;
-    /** @type {?} */
-    NzRateComponent.prototype.nzOnKeyDown;
-    /** @type {?} */
-    NzRateComponent.prototype.classMap;
-    /** @type {?} */
-    NzRateComponent.prototype.starArray;
-    /** @type {?} */
-    NzRateComponent.prototype.starStyleArray;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzRateComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzRateComponent.prototype.hasHalf;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzRateComponent.prototype.hoverValue;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzRateComponent.prototype.isFocused;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzRateComponent.prototype._value;
-    /** @type {?} */
-    NzRateComponent.prototype.onChange;
-    /** @type {?} */
-    NzRateComponent.prototype.onTouched;
-    /** @type {?} */
-    NzRateComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzRateComponent.prototype.renderer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzRateComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: rate-item.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzRateItemComponent {
     constructor() {
@@ -463,17 +273,9 @@ class NzRateItemComponent {
         this.itemHover = new EventEmitter();
         this.itemClick = new EventEmitter();
     }
-    /**
-     * @param {?} isHalf
-     * @return {?}
-     */
     hoverRate(isHalf) {
         this.itemHover.next(isHalf && this.allowHalf);
     }
-    /**
-     * @param {?} isHalf
-     * @return {?}
-     */
     clickRate(isHalf) {
         this.itemClick.next(isHalf && this.allowHalf);
     }
@@ -496,7 +298,7 @@ NzRateItemComponent.decorators = [
       <i nz-icon nzType="star" nzTheme="fill"></i>
     </ng-template>
   `
-            }] }
+            },] }
 ];
 NzRateItemComponent.propDecorators = {
     character: [{ type: Input }],
@@ -508,23 +310,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzRateItemComponent.prototype, "allowHalf", void 0);
-if (false) {
-    /** @type {?} */
-    NzRateItemComponent.ngAcceptInputType_allowHalf;
-    /** @type {?} */
-    NzRateItemComponent.prototype.character;
-    /** @type {?} */
-    NzRateItemComponent.prototype.allowHalf;
-    /** @type {?} */
-    NzRateItemComponent.prototype.itemHover;
-    /** @type {?} */
-    NzRateItemComponent.prototype.itemClick;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: rate.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzRateModule {
 }
@@ -537,15 +326,12 @@ NzRateModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-rate.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzRateComponent, NzRateItemComponent, NzRateModule };

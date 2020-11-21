@@ -51,7 +51,7 @@ export declare abstract class NzMNComponent implements OnInit, OnDestroy {
     protected eraseTimer: number | null;
     protected eraseTimingStart?: number;
     protected eraseTTL: number;
-    constructor(cdr: ChangeDetectorRef);
+    protected constructor(cdr: ChangeDetectorRef);
     ngOnInit(): void;
     ngOnDestroy(): void;
     onEnter(): void;

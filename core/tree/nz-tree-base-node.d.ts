@@ -38,10 +38,6 @@ export declare class NzTreeNode {
     private _children;
     private _isLeaf;
     private _isChecked;
-    /**
-     * @deprecated Maybe removed in next major version, use isChecked instead
-     */
-    private _isAllChecked;
     private _isSelectable;
     private _isDisabled;
     private _isDisableCheckbox;
@@ -79,11 +75,6 @@ export declare class NzTreeNode {
     set isLeaf(value: boolean);
     get isChecked(): boolean;
     set isChecked(value: boolean);
-    get isAllChecked(): boolean;
-    /**
-     * @deprecated Maybe removed in next major version, use `isChecked` instead.
-     */
-    set isAllChecked(value: boolean);
     get isHalfChecked(): boolean;
     set isHalfChecked(value: boolean);
     get isSelectable(): boolean;
@@ -99,19 +90,8 @@ export declare class NzTreeNode {
     get isLoading(): boolean;
     set isLoading(value: boolean);
     setSyncChecked(checked?: boolean, halfChecked?: boolean): void;
-    /**
-     * @deprecated Maybe removed in next major version, use `isChecked` instead.
-     */
     setChecked(checked?: boolean, halfChecked?: boolean): void;
-    /**
-     * @not-deprecated Maybe removed in next major version, use `isExpanded` instead.
-     * We need it until tree refactoring is finished
-     */
     setExpanded(value: boolean): void;
-    /**
-     * @deprecated Maybe removed in next major version, use `isSelected` instead.
-     */
-    setSelected(value: boolean): void;
     getParentNode(): NzTreeNode | null;
     getChildren(): NzTreeNode[];
     /**

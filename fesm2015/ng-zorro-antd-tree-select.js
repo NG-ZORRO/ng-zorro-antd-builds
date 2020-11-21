@@ -1,5 +1,6 @@
 import { __decorate, __metadata } from 'tslib';
-import { BACKSPACE } from '@angular/cdk/keycodes';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { TAB, ESCAPE, BACKSPACE } from '@angular/cdk/keycodes';
 import { CdkOverlayOrigin, CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
 import { Injectable, EventEmitter, Component, Self, Injector, forwardRef, Renderer2, ChangeDetectorRef, ElementRef, Host, Optional, Input, Output, ViewChild, ContentChild, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
@@ -18,9 +19,8 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: tree-select.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzTreeSelectService extends NzTreeBaseService {
 }
@@ -29,37 +29,24 @@ NzTreeSelectService.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: tree-select.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
- * @param {?} injector
- * @return {?}
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 function higherOrderServiceFactory(injector) {
     return injector.get(NzTreeSelectService);
 }
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'treeSelect';
-/** @type {?} */
+const NZ_CONFIG_MODULE_NAME = 'treeSelect';
 const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown';
 class NzTreeSelectComponent extends NzTreeBase {
-    /**
-     * @param {?} nzTreeService
-     * @param {?} nzConfigService
-     * @param {?} renderer
-     * @param {?} cdr
-     * @param {?} elementRef
-     * @param {?=} noAnimation
-     */
-    constructor(nzTreeService, nzConfigService, renderer, cdr, elementRef, noAnimation) {
+    constructor(nzTreeService, nzConfigService, renderer, cdr, elementRef, focusMonitor, noAnimation) {
         super(nzTreeService);
         this.nzConfigService = nzConfigService;
         this.renderer = renderer;
         this.cdr = cdr;
         this.elementRef = elementRef;
+        this.focusMonitor = focusMonitor;
         this.noAnimation = noAnimation;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzAllowClear = true;
         this.nzShowExpand = true;
         this.nzShowLine = false;
@@ -73,16 +60,16 @@ class NzTreeSelectComponent extends NzTreeBase {
         this.nzMultiple = false;
         this.nzDefaultExpandAll = false;
         this.nzCheckStrictly = false;
+        this.nzVirtualItemSize = 28;
+        this.nzVirtualMaxBufferPx = 500;
+        this.nzVirtualMinBufferPx = 28;
+        this.nzVirtualHeight = null;
         this.nzNodes = [];
         this.nzOpen = false;
         this.nzSize = 'default';
         this.nzPlaceHolder = '';
         this.nzDropdownStyle = null;
-        this.nzDisplayWith = (/**
-         * @param {?} node
-         * @return {?}
-         */
-        (node) => node.title);
+        this.nzDisplayWith = (node) => node.title;
         this.nzMaxTagPlaceholder = null;
         this.nzOpenChange = new EventEmitter();
         this.nzCleared = new EventEmitter();
@@ -94,206 +81,161 @@ class NzTreeSelectComponent extends NzTreeBase {
         this.isComposing = false;
         this.isDestroy = true;
         this.isNotFound = false;
+        this.focused = false;
         this.inputValue = '';
         this.dropDownPosition = 'bottom';
         this.selectedNodes = [];
         this.expandedKeys = [];
         this.value = [];
-        this.onChange = (/**
-         * @param {?} _value
-         * @return {?}
-         */
-        _value => { });
-        this.onTouched = (/**
-         * @return {?}
-         */
-        () => { });
+        this.onChange = _value => { };
+        this.onTouched = () => { };
         this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
         this.renderer.addClass(this.elementRef.nativeElement, 'ant-tree-select');
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzExpandedKeys(value) {
         this.expandedKeys = value;
     }
-    /**
-     * @return {?}
-     */
     get nzExpandedKeys() {
         return this.expandedKeys;
     }
-    /**
-     * @return {?}
-     */
     get treeTemplate() {
         return this.nzTreeTemplate || this.nzTreeTemplateChild;
     }
-    /**
-     * @return {?}
-     */
     get placeHolderDisplay() {
         return this.inputValue || this.isComposing || this.selectedNodes.length ? 'none' : 'block';
     }
-    /**
-     * @return {?}
-     */
     get isMultiple() {
         return this.nzMultiple || this.nzCheckable;
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.isDestroy = false;
         this.selectionChangeSubscription = this.subscribeSelectionChange();
+        this.focusChangeSubscription = this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
+            if (!focusOrigin) {
+                this.focused = false;
+                this.cdr.markForCheck();
+                Promise.resolve().then(() => {
+                    this.onTouched();
+                });
+            }
+            else {
+                this.focused = true;
+                this.cdr.markForCheck();
+            }
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.isDestroy = true;
         this.closeDropDown();
         this.selectionChangeSubscription.unsubscribe();
+        this.focusChangeSubscription.unsubscribe();
     }
-    /**
-     * @param {?} isDisabled
-     * @return {?}
-     */
+    isComposingChange(isComposing) {
+        this.isComposing = isComposing;
+    }
     setDisabledState(isDisabled) {
         this.nzDisabled = isDisabled;
         this.closeDropDown();
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzNodes, nzDropdownClassName } = changes;
         if (nzNodes) {
             this.updateSelectedNodes(true);
         }
         if (nzDropdownClassName) {
-            /** @type {?} */
             const className = this.nzDropdownClassName && this.nzDropdownClassName.trim();
             this.dropdownClassName = className ? `${TREE_SELECT_DEFAULT_CLASS} ${className}` : TREE_SELECT_DEFAULT_CLASS;
         }
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     writeValue(value) {
         if (isNotNil(value)) {
             if (this.isMultiple && Array.isArray(value)) {
                 this.value = value;
             }
             else {
-                this.value = [(/** @type {?} */ (value))];
+                this.value = [value];
             }
             this.updateSelectedNodes(true);
         }
         else {
             this.value = [];
-            this.selectedNodes.forEach((/**
-             * @param {?} node
-             * @return {?}
-             */
-            node => {
+            this.selectedNodes.forEach(node => {
                 this.removeSelected(node, false);
-            }));
+            });
             this.selectedNodes = [];
         }
         this.cdr.markForCheck();
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnChange(fn) {
         this.onChange = fn;
     }
-    /**
-     * @param {?} fn
-     * @return {?}
-     */
     registerOnTouched(fn) {
         this.onTouched = fn;
     }
-    /**
-     * @return {?}
-     */
+    onKeydown(event) {
+        if (this.nzDisabled) {
+            return;
+        }
+        switch (event.keyCode) {
+            case ESCAPE:
+                /**
+                 * Skip the ESCAPE processing, it will be handled in {@link onOverlayKeyDown}.
+                 */
+                break;
+            case TAB:
+                this.closeDropDown();
+                break;
+            default:
+                if (!this.nzOpen) {
+                    this.openDropdown();
+                }
+        }
+    }
     trigger() {
         if (this.nzDisabled || (!this.nzDisabled && this.nzOpen)) {
             this.closeDropDown();
         }
         else {
             this.openDropdown();
-            if (this.nzShowSearch || this.isMultiple) {
-                this.focusOnInput();
-            }
         }
     }
-    /**
-     * @return {?}
-     */
     openDropdown() {
         if (!this.nzDisabled) {
             this.nzOpen = true;
             this.nzOpenChange.emit(this.nzOpen);
             this.updateCdkConnectedOverlayStatus();
+            if (this.nzShowSearch || this.isMultiple) {
+                this.focusOnInput();
+            }
         }
     }
-    /**
-     * @return {?}
-     */
     closeDropDown() {
         this.onTouched();
         this.nzOpen = false;
         this.inputValue = '';
+        this.isNotFound = false;
         this.nzOpenChange.emit(this.nzOpen);
         this.cdr.markForCheck();
     }
-    /**
-     * @param {?} e
-     * @return {?}
-     */
     onKeyDownInput(e) {
-        /** @type {?} */
         const keyCode = e.keyCode;
-        /** @type {?} */
-        const eventTarget = (/** @type {?} */ (e.target));
+        const eventTarget = e.target;
         if (this.isMultiple && !eventTarget.value && keyCode === BACKSPACE) {
             e.preventDefault();
             if (this.selectedNodes.length) {
-                /** @type {?} */
                 const removeNode = this.selectedNodes[this.selectedNodes.length - 1];
                 this.removeSelected(removeNode);
             }
         }
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     onExpandedKeysChange(value) {
         this.nzExpandChange.emit(value);
-        this.expandedKeys = [...(/** @type {?} */ (value.keys))];
+        this.expandedKeys = [...value.keys];
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     setInputValue(value) {
         this.inputValue = value;
         this.updatePosition();
     }
-    /**
-     * @param {?} node
-     * @param {?=} emit
-     * @return {?}
-     */
     removeSelected(node, emit = true) {
         node.isSelected = false;
         node.isChecked = false;
@@ -307,25 +249,14 @@ class NzTreeSelectComponent extends NzTreeBase {
             this.nzRemoved.emit(node);
         }
     }
-    /**
-     * @return {?}
-     */
     focusOnInput() {
         if (this.nzSelectSearchComponent) {
             this.nzSelectSearchComponent.focus();
         }
     }
-    /**
-     * @return {?}
-     */
     subscribeSelectionChange() {
-        return merge(this.nzTreeClick.pipe(tap((/**
-         * @param {?} event
-         * @return {?}
-         */
-        (event) => {
-            /** @type {?} */
-            const node = (/** @type {?} */ (event.node));
+        return merge(this.nzTreeClick.pipe(tap((event) => {
+            const node = event.node;
             if (this.nzCheckable && !node.isDisabled && !node.isDisableCheckbox) {
                 node.isChecked = !node.isChecked;
                 node.isHalfChecked = false;
@@ -336,25 +267,12 @@ class NzTreeSelectComponent extends NzTreeBase {
             if (this.nzCheckable) {
                 node.isSelected = false;
             }
-        })), filter((/**
-         * @param {?} event
-         * @return {?}
-         */
-        (event) => {
-            /** @type {?} */
-            const node = (/** @type {?} */ (event.node));
+        }), filter((event) => {
+            const node = event.node;
             return this.nzCheckable ? !node.isDisabled && !node.isDisableCheckbox : !node.isDisabled && node.isSelectable;
-        }))), this.nzCheckable ? this.nzTreeCheckBoxChange : of(), this.nzCleared, this.nzRemoved).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        })), this.nzCheckable ? this.nzTreeCheckBoxChange : of(), this.nzCleared, this.nzRemoved).subscribe(() => {
             this.updateSelectedNodes();
-            /** @type {?} */
-            const value = this.selectedNodes.map((/**
-             * @param {?} node
-             * @return {?}
-             */
-            node => (/** @type {?} */ (node.key))));
+            const value = this.selectedNodes.map(node => node.key);
             this.value = [...value];
             if (this.nzShowSearch || this.isMultiple) {
                 this.inputValue = '';
@@ -369,15 +287,10 @@ class NzTreeSelectComponent extends NzTreeBase {
                 this.closeDropDown();
                 this.onChange(value.length ? value[0] : null);
             }
-        }));
+        });
     }
-    /**
-     * @param {?=} init
-     * @return {?}
-     */
     updateSelectedNodes(init = false) {
         if (init) {
-            /** @type {?} */
             const nodes = this.coerceTreeNodes(this.nzNodes);
             this.nzTreeService.isMultiple = this.isMultiple;
             this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
@@ -391,64 +304,37 @@ class NzTreeSelectComponent extends NzTreeBase {
         }
         this.selectedNodes = [...(this.nzCheckable ? this.getCheckedNodeList() : this.getSelectedNodeList())];
     }
-    /**
-     * @return {?}
-     */
     updatePosition() {
-        setTimeout((/**
-         * @return {?}
-         */
-        () => {
+        setTimeout(() => {
             if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
                 this.cdkConnectedOverlay.overlayRef.updatePosition();
             }
-        }));
+        });
     }
-    /**
-     * @param {?} position
-     * @return {?}
-     */
     onPositionChange(position) {
         this.dropDownPosition = position.connectionPair.originY;
     }
-    /**
-     * @return {?}
-     */
     onClearSelection() {
-        this.selectedNodes.forEach((/**
-         * @param {?} node
-         * @return {?}
-         */
-        node => {
+        this.selectedNodes.forEach(node => {
             this.removeSelected(node, false);
-        }));
+        });
         this.nzCleared.emit();
     }
-    /**
-     * @param {?} $event
-     * @return {?}
-     */
-    setSearchValues($event) {
-        Promise.resolve().then((/**
-         * @return {?}
-         */
-        () => {
-            this.isNotFound = (this.nzShowSearch || this.isMultiple) && !!this.inputValue && (/** @type {?} */ ($event.matchedKeys)).length === 0;
-        }));
+    onClickOutside(event) {
+        if (!this.elementRef.nativeElement.contains(event.target)) {
+            this.closeDropDown();
+        }
     }
-    /**
-     * @return {?}
-     */
+    setSearchValues($event) {
+        Promise.resolve().then(() => {
+            this.isNotFound = (this.nzShowSearch || this.isMultiple) && !!this.inputValue && $event.matchedKeys.length === 0;
+        });
+    }
     updateCdkConnectedOverlayStatus() {
         this.triggerWidth = this.cdkOverlayOrigin.elementRef.nativeElement.getBoundingClientRect().width;
     }
-    /**
-     * @param {?} _index
-     * @param {?} option
-     * @return {?}
-     */
     trackValue(_index, option) {
-        return (/** @type {?} */ (option.key));
+        return option.key;
     }
 }
 NzTreeSelectComponent.decorators = [
@@ -462,11 +348,10 @@ NzTreeSelectComponent.decorators = [
       nzConnectedOverlay
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayOpen]="nzOpen"
-      [cdkConnectedOverlayHasBackdrop]="true"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-tree-dropdown'"
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
-      (backdropClick)="closeDropDown()"
+      (overlayOutsideClick)="onClickOutside($event)"
       (detach)="closeDropDown()"
       (positionChange)="onPositionChange($event)"
     >
@@ -484,6 +369,7 @@ NzTreeSelectComponent.decorators = [
           [hidden]="isNotFound"
           nzNoAnimation
           nzSelectMode
+          nzBlockNode
           [nzData]="nzNodes"
           [nzMultiple]="nzMultiple"
           [nzSearchValue]="inputValue"
@@ -500,14 +386,17 @@ NzTreeSelectComponent.decorators = [
           [nzSelectedKeys]="!nzCheckable ? value : []"
           [nzTreeTemplate]="treeTemplate"
           [nzCheckStrictly]="nzCheckStrictly"
+          [nzVirtualItemSize]="nzVirtualItemSize"
+          [nzVirtualMaxBufferPx]="nzVirtualMaxBufferPx"
+          [nzVirtualMinBufferPx]="nzVirtualMinBufferPx"
+          [nzVirtualHeight]="nzVirtualHeight"
           (nzExpandChange)="onExpandedKeysChange($event)"
           (nzClick)="nzTreeClick.emit($event)"
           (nzCheckedKeysChange)="updateSelectedNodes()"
           (nzSelectedKeysChange)="updateSelectedNodes()"
           (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
           (nzSearchValueChange)="setSearchValues($event)"
-        >
-        </nz-tree>
+        ></nz-tree>
         <span *ngIf="nzNodes.length === 0 || isNotFound" class="ant-select-not-found">
           <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
         </span>
@@ -543,26 +432,24 @@ NzTreeSelectComponent.decorators = [
       </ng-container>
 
       <nz-select-search
-        *ngIf="nzShowSearch"
+        [showInput]="nzShowSearch"
         (keydown)="onKeyDownInput($event)"
         (isComposingChange)="isComposing = $event"
         (valueChange)="setInputValue($event)"
         [value]="inputValue"
         [mirrorSync]="isMultiple"
         [disabled]="nzDisabled"
-        [showInput]="nzOpen"
-      >
-      </nz-select-search>
+        [focusTrigger]="nzOpen"
+      ></nz-select-search>
 
       <nz-select-placeholder
         *ngIf="nzPlaceHolder && selectedNodes.length === 0"
         [placeholder]="nzPlaceHolder"
         [style.display]="placeHolderDisplay"
-      >
-      </nz-select-placeholder>
+      ></nz-select-placeholder>
 
       <nz-select-item
-        *ngIf="!isMultiple && selectedNodes.length === 1"
+        *ngIf="!isMultiple && selectedNodes.length === 1 && !isComposing && inputValue === ''"
         [deletable]="false"
         [disabled]="false"
         [label]="nzDisplayWith(selectedNodes[0])"
@@ -570,7 +457,7 @@ NzTreeSelectComponent.decorators = [
 
       <nz-select-arrow *ngIf="!isMultiple"></nz-select-arrow>
 
-      <nz-select-clear *ngIf="nzAllowClear" (clear)="onClearSelection()"></nz-select-clear>
+      <nz-select-clear *ngIf="nzAllowClear && !nzDisabled && selectedNodes.length" (clear)="onClearSelection()"></nz-select-clear>
     </div>
   `,
                 providers: [
@@ -582,17 +469,14 @@ NzTreeSelectComponent.decorators = [
                     },
                     {
                         provide: NG_VALUE_ACCESSOR,
-                        useExisting: forwardRef((/**
-                         * @return {?}
-                         */
-                        () => NzTreeSelectComponent)),
+                        useExisting: forwardRef(() => NzTreeSelectComponent),
                         multi: true
                     }
                 ],
                 host: {
+                    '[class.ant-select]': 'true',
                     '[class.ant-select-lg]': 'nzSize==="large"',
                     '[class.ant-select-sm]': 'nzSize==="small"',
-                    '[class.ant-select-enabled]': '!nzDisabled',
                     '[class.ant-select-disabled]': 'nzDisabled',
                     '[class.ant-select-single]': '!isMultiple',
                     '[class.ant-select-show-arrow]': '!isMultiple',
@@ -600,17 +484,19 @@ NzTreeSelectComponent.decorators = [
                     '[class.ant-select-multiple]': 'isMultiple',
                     '[class.ant-select-allow-clear]': 'nzAllowClear',
                     '[class.ant-select-open]': 'nzOpen',
-                    '(click)': 'trigger()'
+                    '[class.ant-select-focused]': 'nzOpen || focused',
+                    '(click)': 'trigger()',
+                    '(keydown)': 'onKeydown($event)'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzTreeSelectComponent.ctorParameters = () => [
     { type: NzTreeSelectService },
     { type: NzConfigService },
     { type: Renderer2 },
     { type: ChangeDetectorRef },
     { type: ElementRef },
+    { type: FocusMonitor },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 NzTreeSelectComponent.propDecorators = {
@@ -627,6 +513,10 @@ NzTreeSelectComponent.propDecorators = {
     nzMultiple: [{ type: Input }],
     nzDefaultExpandAll: [{ type: Input }],
     nzCheckStrictly: [{ type: Input }],
+    nzVirtualItemSize: [{ type: Input }],
+    nzVirtualMaxBufferPx: [{ type: Input }],
+    nzVirtualMinBufferPx: [{ type: Input }],
+    nzVirtualHeight: [{ type: Input }],
     nzExpandedIcon: [{ type: Input }],
     nzNotFoundContent: [{ type: Input }],
     nzNodes: [{ type: Input }],
@@ -665,7 +555,8 @@ __decorate([
     __metadata("design:type", Boolean)
 ], NzTreeSelectComponent.prototype, "nzShowLine", void 0);
 __decorate([
-    InputBoolean(), WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    InputBoolean(),
+    WithConfig(),
     __metadata("design:type", Boolean)
 ], NzTreeSelectComponent.prototype, "nzDropdownMatchSelectWidth", void 0);
 __decorate([
@@ -673,11 +564,13 @@ __decorate([
     __metadata("design:type", Boolean)
 ], NzTreeSelectComponent.prototype, "nzCheckable", void 0);
 __decorate([
-    InputBoolean(), WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    InputBoolean(),
+    WithConfig(),
     __metadata("design:type", Boolean)
 ], NzTreeSelectComponent.prototype, "nzHideUnMatched", void 0);
 __decorate([
-    InputBoolean(), WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    InputBoolean(),
+    WithConfig(),
     __metadata("design:type", Boolean)
 ], NzTreeSelectComponent.prototype, "nzShowIcon", void 0);
 __decorate([
@@ -705,159 +598,13 @@ __decorate([
     __metadata("design:type", Object)
 ], NzTreeSelectComponent.prototype, "nzCheckStrictly", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", String)
 ], NzTreeSelectComponent.prototype, "nzSize", void 0);
-if (false) {
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzAllowClear;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzShowExpand;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzShowLine;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzDropdownMatchSelectWidth;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzCheckable;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzHideUnMatched;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzShowIcon;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzShowSearch;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzDisabled;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzAsyncData;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzMultiple;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzDefaultExpandAll;
-    /** @type {?} */
-    NzTreeSelectComponent.ngAcceptInputType_nzCheckStrictly;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzAllowClear;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzShowExpand;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzShowLine;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzDropdownMatchSelectWidth;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzCheckable;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzHideUnMatched;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzShowIcon;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzShowSearch;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzDisabled;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzAsyncData;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzMultiple;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzDefaultExpandAll;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzCheckStrictly;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzExpandedIcon;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzNotFoundContent;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzNodes;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzOpen;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzSize;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzPlaceHolder;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzDropdownStyle;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzDropdownClassName;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzDisplayWith;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzMaxTagCount;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzMaxTagPlaceholder;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzOpenChange;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzCleared;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzRemoved;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzExpandChange;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzTreeClick;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzTreeCheckBoxChange;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzSelectSearchComponent;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.treeRef;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.cdkOverlayOrigin;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.cdkConnectedOverlay;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzTreeTemplate;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzTreeTemplateChild;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.dropdownClassName;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.triggerWidth;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.isComposing;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.isDestroy;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.isNotFound;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.inputValue;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.dropDownPosition;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.selectionChangeSubscription;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.selectedNodes;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.expandedKeys;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.value;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.onChange;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.onTouched;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTreeSelectComponent.prototype.renderer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTreeSelectComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTreeSelectComponent.prototype.elementRef;
-    /** @type {?} */
-    NzTreeSelectComponent.prototype.noAnimation;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: tree-select.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzTreeSelectModule {
 }
@@ -880,15 +627,12 @@ NzTreeSelectModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-tree-select.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzTreeSelectComponent, NzTreeSelectModule, NzTreeSelectService, higherOrderServiceFactory };

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createCustomTheme = void 0;
 function createCustomTheme() {
     return `@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
 @theme: default;
@@ -12,7 +13,7 @@ function createCustomTheme() {
 
 // -------- Colors -----------
 @primary-color: @blue-6;
-@info-color: @blue-6;
+@info-color: @primary-color;
 @success-color: @green-6;
 @processing-color: @blue-6;
 @error-color: @red-5;
@@ -51,13 +52,12 @@ function createCustomTheme() {
 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
 'Noto Color Emoji';
 @code-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-@text-color: fade(@black, 65%);
+@text-color: fade(@black, 85%);
 @text-color-secondary: fade(@black, 45%);
 @text-color-inverse: @white;
 @icon-color: inherit;
 @icon-color-hover: fade(@black, 75%);
-@heading-color: fade(#000, 85%);
-@heading-color-dark: fade(@white, 100%);
+@heading-color: fade(@black, 85%);
 @text-color-dark: fade(@white, 85%);
 @text-color-secondary-dark: fade(@white, 65%);
 @text-selection-bg: @primary-color;
@@ -70,6 +70,7 @@ function createCustomTheme() {
 @heading-2-size: ceil(@font-size-base * 2.14);
 @heading-3-size: ceil(@font-size-base * 1.71);
 @heading-4-size: ceil(@font-size-base * 1.42);
+@heading-5-size: ceil(@font-size-base * 1.14);
 // https://github.com/ant-design/ant-design/issues/20210
 @line-height-base: 1.5715;
 @border-radius-base: 2px;
@@ -206,6 +207,8 @@ function createCustomTheme() {
 @btn-height-lg: @height-lg;
 @btn-height-sm: @height-sm;
 
+@btn-line-height: @line-height-base;
+
 @btn-circle-size: @btn-height-base;
 @btn-circle-size-lg: @btn-height-lg;
 @btn-circle-size-sm: @btn-height-sm;
@@ -219,7 +222,8 @@ function createCustomTheme() {
 
 @btn-group-border: @primary-5;
 
-@btn-link-ghost-color: @component-background;
+@btn-link-hover-bg: transparent;
+@btn-text-hover-bg: rgba(0, 0, 0, 0.018);
 
 // Checkbox
 @checkbox-size: 16px;
@@ -227,6 +231,7 @@ function createCustomTheme() {
 @checkbox-check-color: #fff;
 @checkbox-check-bg: @checkbox-check-color;
 @checkbox-border-width: @border-width-base;
+@checkbox-group-item-margin-right: 8px;
 
 // Descriptions
 @descriptions-bg: #fafafa;
@@ -234,6 +239,16 @@ function createCustomTheme() {
 @descriptions-default-padding: @padding-md @padding-lg;
 @descriptions-middle-padding: @padding-sm @padding-lg;
 @descriptions-small-padding: @padding-xs @padding-md;
+@descriptions-item-padding-bottom: @padding-md;
+@descriptions-item-trailing-colon: true;
+@descriptions-item-label-colon-margin-right: 8px;
+@descriptions-item-label-colon-margin-left: 2px;
+@descriptions-extra-color: @text-color;
+
+// Divider
+@divider-text-padding: 1em;
+@divider-orientation-margin: 5%;
+@divider-color: rgba(0, 0, 0, 6%);
 
 // Dropdown
 @dropdown-selected-color: @primary-color;
@@ -244,10 +259,10 @@ function createCustomTheme() {
 
 // Radio
 @radio-size: 16px;
+@radio-top: 0px;
 @radio-dot-color: @primary-color;
 @radio-dot-disabled-color: fade(@black, 20%);
-// solid text-color
-@radtio-solid-checked-color: @component-background;
+@radio-solid-checked-color: @component-background;
 
 // Radio buttons
 @radio-button-bg: @btn-default-bg;
@@ -256,7 +271,8 @@ function createCustomTheme() {
 @radio-button-hover-color: @primary-5;
 @radio-button-active-color: @primary-7;
 @radio-disabled-button-checked-bg: tint(@black, 90%);
-@radio-disabled-button-checked-color: @text-color-inverse;
+@radio-disabled-button-checked-color: @disabled-color;
+@radio-wrapper-margin-right: 8px;
 
 // Media queries breakpoints
 // Extra small screen / phone
@@ -292,7 +308,6 @@ function createCustomTheme() {
 
 // Grid system
 @grid-columns: 24;
-@grid-gutter-width: 0;
 
 // Layout
 @layout-body-background: #f0f2f5;
@@ -315,7 +330,7 @@ function createCustomTheme() {
 
 // z-index list, order by \`z-index\`
 @zindex-badge: auto;
-@zindex-table-fixed: auto;
+@zindex-table-fixed: 2;
 @zindex-affix: 10;
 @zindex-back-top: 10;
 @zindex-picker-panel: 10;
@@ -327,7 +342,9 @@ function createCustomTheme() {
 @zindex-popover: 1030;
 @zindex-dropdown: 1050;
 @zindex-picker: 1050;
-@zindex-tooltip: 1060;
+@zindex-popoconfirm: 1060;
+@zindex-tooltip: 1070;
+@zindex-image: 1080;
 
 // Animation
 @animation-duration-slow: 0.3s; // Modal
@@ -369,12 +386,12 @@ function createCustomTheme() {
 @input-padding-horizontal-sm: @control-padding-horizontal-sm - 1px;
 @input-padding-horizontal-lg: @input-padding-horizontal;
 @input-padding-vertical-base: max(
-    round((@input-height-base - @font-size-base * @line-height-base) / 2 * 10) / 10 -
-      @border-width-base,
+  round((@input-height-base - @font-size-base * @line-height-base) / 2 * 10) / 10 -
+  @border-width-base,
   3px
 );
 @input-padding-vertical-sm: max(
-    round((@input-height-sm - @font-size-base * @line-height-base) / 2 * 10) / 10 - @border-width-base,
+  round((@input-height-sm - @font-size-base * @line-height-base) / 2 * 10) / 10 - @border-width-base,
   0
 );
 @input-padding-vertical-lg: ceil((@input-height-lg - @font-size-lg * @line-height-base) / 2 * 10) /
@@ -394,6 +411,7 @@ function createCustomTheme() {
 @input-disabled-bg: @disabled-bg;
 @input-outline-offset: 0 0;
 @input-icon-hover-color: fade(@black, 85%);
+@input-disabled-color: @disabled-color;
 
 // Mentions
 // ---
@@ -403,6 +421,7 @@ function createCustomTheme() {
 // Select
 // ---
 @select-border-color: @border-color-base;
+@select-item-selected-color: @text-color;
 @select-item-selected-font-weight: 600;
 @select-dropdown-bg: @component-background;
 @select-item-selected-bg: @primary-1;
@@ -419,6 +438,9 @@ function createCustomTheme() {
 @select-multiple-item-height: @input-height-base - @input-padding-vertical-base * 2; // Normal 24px
 @select-multiple-item-height-lg: 32px;
 @select-multiple-item-spacing-half: ceil(@input-padding-vertical-base / 2);
+@select-multiple-disabled-background: @input-disabled-bg;
+@select-multiple-item-disabled-color: #bfbfbf;
+@select-multiple-item-disabled-border-color: @select-border-color;
 
 // Cascader
 // ---
@@ -438,6 +460,9 @@ function createCustomTheme() {
 // ---
 @anchor-bg: @component-background;
 @anchor-border-color: @border-color-split;
+@anchor-link-top: 7px;
+@anchor-link-left: 16px;
+@anchor-link-padding: @anchor-link-top 0 @anchor-link-top @anchor-link-left;
 
 // Tooltip
 // ---
@@ -476,17 +501,26 @@ function createCustomTheme() {
 
 // Modal
 // --
+@modal-header-padding-vertical: @padding-md;
+@modal-header-padding-horizontal: @padding-lg;
 @modal-body-padding: @padding-lg;
 @modal-header-bg: @component-background;
-@modal-header-padding: @padding-md @padding-lg;
+@modal-header-padding: @modal-header-padding-vertical @modal-header-padding-horizontal;
+@modal-header-border-width: @border-width-base;
+@modal-header-border-style: @border-style-base;
+@modal-header-title-line-height: 22px;
+@modal-header-title-font-size: @font-size-lg;
 @modal-header-border-color-split: @border-color-split;
 @modal-header-close-size: 56px;
 @modal-content-bg: @component-background;
 @modal-heading-color: @heading-color;
+@modal-close-color: @text-color-secondary;
 @modal-footer-bg: transparent;
 @modal-footer-border-color-split: @border-color-split;
+@modal-footer-border-style: @border-style-base;
 @modal-footer-padding-vertical: 10px;
 @modal-footer-padding-horizontal: 16px;
+@modal-footer-border-width: @border-width-base;
 @modal-mask-bg: fade(@black, 45%);
 @modal-confirm-body-padding: 32px 32px 24px;
 
@@ -497,7 +531,8 @@ function createCustomTheme() {
 @progress-text-color: @text-color;
 @progress-radius: 100px;
 @progress-steps-item-bg: #f3f3f3;
-
+@progress-text-font-size: 1em;
+@progress-circle-text-font-size: 1em;
 // Menu
 // ---
 @menu-inline-toplevel-item-height: 40px;
@@ -508,23 +543,30 @@ function createCustomTheme() {
 @menu-popup-bg: @component-background;
 @menu-item-color: @text-color;
 @menu-highlight-color: @primary-color;
+@menu-highlight-danger-color: @error-color;
 @menu-item-active-bg: @primary-1;
+@menu-item-active-danger-bg: @red-1;
 @menu-item-active-border-width: 3px;
 @menu-item-group-title-color: @text-color-secondary;
-@menu-icon-size: @font-size-base;
-@menu-icon-size-lg: @font-size-lg;
-
 @menu-item-vertical-margin: 4px;
 @menu-item-font-size: @font-size-base;
 @menu-item-boundary-margin: 8px;
+@menu-item-padding: 0 20px;
+@menu-horizontal-line-height: 46px;
+@menu-icon-margin-right: 10px;
+@menu-icon-size: @menu-item-font-size;
+@menu-icon-size-lg: @font-size-lg;
+@menu-item-group-title-font-size: @menu-item-font-size;
 
 // dark theme
 @menu-dark-color: @text-color-secondary-dark;
+@menu-dark-danger-color: @error-color;
 @menu-dark-bg: @layout-header-background;
 @menu-dark-arrow-color: #fff;
 @menu-dark-submenu-bg: #000c17;
 @menu-dark-highlight-color: #fff;
 @menu-dark-item-active-bg: @primary-color;
+@menu-dark-item-active-danger-bg: @error-color;
 @menu-dark-selected-item-icon-color: @white;
 @menu-dark-selected-item-text-color: @white;
 @menu-dark-item-hover-bg: transparent;
@@ -541,11 +583,11 @@ function createCustomTheme() {
 @table-header-color: @heading-color;
 @table-header-sort-bg: @background-color-base;
 @table-body-sort-bg: #fafafa;
-@table-row-hover-bg: @item-hover-bg;
+@table-row-hover-bg: @background-color-light;
 @table-selected-row-color: inherit;
 @table-selected-row-bg: @primary-1;
 @table-body-selected-sort-bg: @table-selected-row-bg;
-@table-selected-row-hover-bg: @table-selected-row-bg;
+@table-selected-row-hover-bg: darken(@table-selected-row-bg, 2%);
 @table-expanded-row-bg: #fbfbfb;
 @table-padding-vertical: 16px;
 @table-padding-horizontal: 16px;
@@ -557,6 +599,9 @@ function createCustomTheme() {
 @table-footer-bg: @background-color-light;
 @table-footer-color: @heading-color;
 @table-header-bg-sm: @table-header-bg;
+@table-font-size: @font-size-base;
+@table-font-size-md: @table-font-size;
+@table-font-size-sm: @table-font-size;
 // Sorter
 // Legacy: \`table-header-sort-active-bg\` is used for hover not real active
 @table-header-sort-active-bg: darken(@table-header-bg, 3%);
@@ -565,12 +610,18 @@ function createCustomTheme() {
 @table-filter-btns-bg: inherit;
 @table-filter-dropdown-bg: @component-background;
 @table-expand-icon-bg: @component-background;
+@table-selection-column-width: 60px;
+@table-selection-extra-right: 0;
+// Sticky
+@table-sticky-scroll-bar-bg: fade(#000, 35%);
+@table-sticky-scroll-bar-radius: 4px;
 
 // Tag
 // --
 @tag-default-bg: @background-color-light;
 @tag-default-color: @text-color;
 @tag-font-size: @font-size-sm;
+@tag-line-height: 20px;
 
 // TimePicker
 // ---
@@ -583,6 +634,10 @@ function createCustomTheme() {
 @picker-date-hover-range-border-color: lighten(@primary-color, 20%);
 @picker-date-hover-range-color: @picker-basic-cell-hover-with-range-color;
 @picker-time-panel-cell-height: 28px;
+@picker-panel-cell-height: 24px;
+@picker-panel-cell-width: 36px;
+@picker-text-height: 40px;
+@picker-panel-without-time-cell-height: 66px;
 
 // Calendar
 // ---
@@ -602,16 +657,21 @@ function createCustomTheme() {
 // Badge
 // ---
 @badge-height: 20px;
+@badge-height-sm: 14px;
 @badge-dot-size: 6px;
 @badge-font-size: @font-size-sm;
+@badge-font-size-sm: @font-size-sm;
 @badge-font-weight: normal;
 @badge-status-size: 6px;
 @badge-text-color: @component-background;
+@badge-color: @highlight-color;
 
 // Rate
 // ---
 @rate-star-color: @yellow-6;
 @rate-star-bg: @border-color-split;
+@rate-star-size: 20px;
+@rate-star-hover-scale: scale(1.1);
 
 // Card
 // ---
@@ -626,7 +686,7 @@ function createCustomTheme() {
 @card-inner-head-padding: 12px;
 @card-padding-base: 24px;
 @card-padding-base-sm: @card-padding-base / 2;
-@card-actions-background: @background-color-light;
+@card-actions-background: @component-background;
 @card-actions-li-margin: 12px 0;
 @card-skeleton-bg: #cfd8dc;
 @card-background: @component-background;
@@ -634,6 +694,7 @@ function createCustomTheme() {
 0 5px 12px 4px rgba(0, 0, 0, 0.09);
 @card-radius: @border-radius-base;
 @card-head-tabs-margin-bottom: -17px;
+@card-head-extra-color: @text-color;
 
 // Comment
 // ---
@@ -655,6 +716,10 @@ function createCustomTheme() {
 @tabs-card-head-background: @background-color-light;
 @tabs-card-height: 40px;
 @tabs-card-active-color: @primary-color;
+@tabs-card-horizontal-padding: (@tabs-card-height - floor(@font-size-base * @line-height-base)) / 2 -
+  @border-width-base @padding-md;
+@tabs-card-horizontal-padding-sm: 6px @padding-md;
+@tabs-card-horizontal-padding-lg: 7px @padding-md 6px;
 @tabs-title-font-size: @font-size-base;
 @tabs-title-font-size-lg: @font-size-lg;
 @tabs-title-font-size-sm: @font-size-base;
@@ -691,6 +756,9 @@ function createCustomTheme() {
 @avatar-bg: #ccc;
 @avatar-color: #fff;
 @avatar-border-radius: @border-radius-base;
+@avatar-group-overlapping: -8px;
+@avatar-group-space: 3px;
+@avatar-group-border-color: #fff;
 
 // Switch
 // ---
@@ -698,18 +766,22 @@ function createCustomTheme() {
 @switch-sm-height: 16px;
 @switch-min-width: 44px;
 @switch-sm-min-width: 28px;
-@switch-sm-checked-margin-left: -(@switch-sm-height - 3px);
 @switch-disabled-opacity: 0.4;
 @switch-color: @primary-color;
 @switch-bg: @component-background;
 @switch-shadow-color: fade(#00230b, 20%);
+@switch-padding: 2px;
+@switch-inner-margin-min: ceil(@switch-height * 0.3);
+@switch-inner-margin-max: ceil(@switch-height * 1.1);
+@switch-sm-inner-margin-min: ceil(@switch-sm-height * 0.3);
+@switch-sm-inner-margin-max: ceil(@switch-sm-height * 1.1);
 
 // Pagination
 // ---
 @pagination-item-bg: @component-background;
 @pagination-item-size: @height-base;
 @pagination-item-size-sm: 24px;
-@pagination-font-family: Arial;
+@pagination-font-family: @font-family;
 @pagination-font-weight-active: 500;
 @pagination-item-bg-active: @component-background;
 @pagination-item-link-bg: @component-background;
@@ -726,6 +798,9 @@ function createCustomTheme() {
 @page-header-content-padding-vertical: @padding-sm;
 @page-header-back-color: #000;
 @page-header-ghost-bg: inherit;
+@page-header-heading-title: @heading-4-size;
+@page-header-heading-sub-title: 14px;
+@page-header-tabs-tab-font-size: 16px;
 
 // Breadcrumb
 // ---
@@ -752,6 +827,8 @@ function createCustomTheme() {
 @slider-handle-color-focus: tint(@primary-color, 20%);
 @slider-handle-color-focus-shadow: fade(@primary-color, 12%);
 @slider-handle-color-tooltip-open: @primary-color;
+@slider-handle-size: 14px;
+@slider-handle-margin-top: -5px;
 @slider-handle-shadow: 0;
 @slider-dot-border-color: @border-color-split;
 @slider-dot-border-color-active: tint(@primary-color, 50%);
@@ -775,6 +852,7 @@ function createCustomTheme() {
 @collapse-header-bg: @background-color-light;
 @collapse-content-padding: @padding-md;
 @collapse-content-bg: @component-background;
+@collapse-header-arrow-left: 16px;
 
 // Skeleton
 // ---
@@ -782,6 +860,9 @@ function createCustomTheme() {
 @skeleton-to-color: shade(@skeleton-color, 5%);
 @skeleton-paragraph-margin-top: 28px;
 @skeleton-paragraph-li-margin-top: @margin-md;
+@skeleton-paragraph-li-height: 16px;
+@skeleton-title-height: 16px;
+@skeleton-title-paragraph-margin-top: @margin-lg;
 
 // Transfer
 // ---
@@ -821,6 +902,13 @@ function createCustomTheme() {
 @alert-close-hover-color: @icon-color-hover;
 @alert-no-icon-padding-vertical: @padding-xs;
 @alert-with-description-no-icon-padding-vertical: @padding-md - 1px;
+@alert-with-description-padding-vertical: @padding-md - 1px;
+@alert-with-description-padding: @alert-with-description-padding-vertical 15px
+@alert-with-description-no-icon-padding-vertical @alert-with-description-icon-size * 2 +
+  @alert-with-description-padding-vertical;
+@alert-icon-top: 8px + @font-size-base * @line-height-base / 2 - @font-size-base / 2;
+@alert-with-description-icon-size: 24px;
+@alert-with-description-icon-top: @alert-with-description-padding-vertical;
 
 // List
 // ---
@@ -891,10 +979,32 @@ function createCustomTheme() {
 @steps-current-dot-size: 10px;
 @steps-desciption-max-width: 140px;
 @steps-nav-content-max-width: auto;
+@steps-vertical-icon-width: 16px;
+@steps-vertical-tail-width: 16px;
+@steps-vertical-tail-width-sm: 12px;
 
 // Notification
 // ---
 @notification-bg: @component-background;
+@notification-padding-vertical: 16px;
+@notification-padding-horizontal: 24px;
+
+//  Result
+// ---
+@result-title-font-size: 24px;
+@result-subtitle-font-size: @font-size-base;
+@result-icon-font-size: 72px;
+@result-extra-margin: 24px 0 0 0;
+
+// Image
+// ---
+@image-size-base: 48px;
+@image-font-size-base: 24px;
+@image-bg: #f5f5f5;
+@image-color: #fff;
+@image-preview-operation-size: 18px;
+@image-preview-operation-color: @text-color-dark;
+@image-preview-operation-disabled-color: fade(@image-preview-operation-color, 45%);
 
 `;
 }

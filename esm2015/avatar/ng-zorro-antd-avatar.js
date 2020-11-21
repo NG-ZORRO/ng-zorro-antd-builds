@@ -1,10 +1,6 @@
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-avatar.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Generated bundle index. Do not edit.
  */
-export { NzAvatarComponent, NzAvatarModule } from './public-api';
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibmctem9ycm8tYW50ZC1hdmF0YXIuanMiLCJzb3VyY2VSb290Ijoibmc6Ly9uZy16b3Jyby1hbnRkL2F2YXRhci8iLCJzb3VyY2VzIjpbIm5nLXpvcnJvLWFudGQtYXZhdGFyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7O0FBSUEsa0RBQWMsY0FBYyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBHZW5lcmF0ZWQgYnVuZGxlIGluZGV4LiBEbyBub3QgZWRpdC5cbiAqL1xuXG5leHBvcnQgKiBmcm9tICcuL3B1YmxpYy1hcGknO1xuIl19
+export * from './public-api';
+export { NzAvatarGroupComponent as ɵa } from './avatar-group.component';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibmctem9ycm8tYW50ZC1hdmF0YXIuanMiLCJzb3VyY2VSb290IjoiL2hvbWUvdnN0cy93b3JrLzEvcy9jb21wb25lbnRzL2F2YXRhci8iLCJzb3VyY2VzIjpbIm5nLXpvcnJvLWFudGQtYXZhdGFyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOztHQUVHO0FBRUgsY0FBYyxjQUFjLENBQUM7QUFFN0IsT0FBTyxFQUFDLHNCQUFzQixJQUFJLEVBQUUsRUFBQyxNQUFNLDBCQUEwQixDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBHZW5lcmF0ZWQgYnVuZGxlIGluZGV4LiBEbyBub3QgZWRpdC5cbiAqL1xuXG5leHBvcnQgKiBmcm9tICcuL3B1YmxpYy1hcGknO1xuXG5leHBvcnQge056QXZhdGFyR3JvdXBDb21wb25lbnQgYXMgybVhfSBmcm9tICcuL2F2YXRhci1ncm91cC5jb21wb25lbnQnOyJdfQ==

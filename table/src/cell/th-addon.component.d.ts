@@ -34,12 +34,6 @@ export declare class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy 
     readonly nzCheckedChange: EventEmitter<boolean>;
     readonly nzSortOrderChange: EventEmitter<NzTableSortOrder>;
     readonly nzFilterChange: EventEmitter<any>;
-    /** @deprecated use nzColumnKey instead **/
-    nzSortKey?: string;
-    /** @deprecated use nzSortOrder instead **/
-    nzSort: NzTableSortOrder;
-    /** @deprecated use nzSortOrderChange instead **/
-    readonly nzSortChange: EventEmitter<NzTableSortOrder>;
     getNextSortDirection(sortDirections: NzTableSortOrder[], current: NzTableSortOrder): NzTableSortOrder;
     emitNextSortValue(): void;
     setSortOrder(order: NzTableSortOrder): void;

@@ -13,7 +13,7 @@ export declare class NzTransferListComponent {
     itemUnit: string | undefined;
     itemsUnit: string | undefined;
     filter: string;
-    disabled?: boolean;
+    disabled: boolean;
     showSearch?: boolean;
     searchPlaceholder?: string;
     notFoundContent?: string;

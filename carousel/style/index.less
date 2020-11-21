@@ -33,8 +33,26 @@
     .slick-slide {
       pointer-events: none;
 
+      // https://github.com/ant-design/ant-design/issues/23294
+      input.@{ant-prefix}-radio-input,
+      input.@{ant-prefix}-checkbox-input {
+        visibility: hidden;
+      }
+
       &.slick-active {
         pointer-events: auto;
+
+        input.@{ant-prefix}-radio-input,
+        input.@{ant-prefix}-checkbox-input {
+          visibility: visible;
+        }
+      }
+
+      // fix Carousel content height not match parent node
+      // when children is empty node
+      // https://github.com/ant-design/ant-design/issues/25878
+      > div > div {
+        vertical-align: bottom;
       }
     }
   }
@@ -92,7 +110,6 @@
   .slick-vertical .slick-slide {
     display: block;
     height: auto;
-    border: @border-width-base @border-style-base transparent;
   }
   .slick-arrow.slick-hidden {
     display: none;

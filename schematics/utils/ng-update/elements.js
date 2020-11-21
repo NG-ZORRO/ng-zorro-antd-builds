@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.findElementWithClassName = exports.findElementWithTag = void 0;
 const parse5_1 = require("parse5");
 const hasClassName = (node, className) => {
     var _a, _b;
@@ -20,7 +21,9 @@ function findElementWithTag(html, tagName) {
         });
     };
     visitNodes(document.childNodes);
-    return elements.map(element => element.sourceCodeLocation.startTag.startOffset);
+    return elements
+        .filter(e => { var _a; return (_a = e === null || e === void 0 ? void 0 : e.sourceCodeLocation) === null || _a === void 0 ? void 0 : _a.startTag; })
+        .map(element => element.sourceCodeLocation.startTag.startOffset);
 }
 exports.findElementWithTag = findElementWithTag;
 function findElementWithClassName(html, className, tagName) {
@@ -38,7 +41,9 @@ function findElementWithClassName(html, className, tagName) {
         });
     };
     visitNodes(document.childNodes);
-    return elements.map(element => element.sourceCodeLocation.attrs.class.startOffset);
+    return elements
+        .filter(e => { var _a; return (_a = e === null || e === void 0 ? void 0 : e.sourceCodeLocation) === null || _a === void 0 ? void 0 : _a.startTag; })
+        .map(element => element.sourceCodeLocation.attrs.class.startOffset);
 }
 exports.findElementWithClassName = findElementWithClassName;
 //# sourceMappingURL=elements.js.map

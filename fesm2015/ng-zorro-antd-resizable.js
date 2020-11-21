@@ -7,28 +7,18 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: resizable-utils.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
- * @param {?} event
- * @return {?}
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 function getEventWithPoint(event) {
-    return isTouchEvent(event) ? event.touches[0] || event.changedTouches[0] : ((/** @type {?} */ (event)));
+    return isTouchEvent(event) ? event.touches[0] || event.changedTouches[0] : event;
 }
 
 /**
- * @fileoverview added by tsickle
- * Generated from: resizable.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzResizableService {
-    /**
-     * @param {?} ngZone
-     * @param {?} document
-     */
     constructor(ngZone, document) {
         this.ngZone = ngZone;
         this.listeners = new Map();
@@ -38,69 +28,32 @@ class NzResizableService {
         this.mouseEntered$ = new Subject();
         this.document = document;
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
     startResizing(event) {
-        /** @type {?} */
         const _isTouchEvent = isTouchEvent(event);
         this.clearListeners();
-        /** @type {?} */
         const moveEvent = _isTouchEvent ? 'touchmove' : 'mousemove';
-        /** @type {?} */
         const upEvent = _isTouchEvent ? 'touchend' : 'mouseup';
-        /** @type {?} */
-        const moveEventHandler = (/**
-         * @param {?} e
-         * @return {?}
-         */
-        (e) => {
+        const moveEventHandler = (e) => {
             this.documentMouseMove$.next(e);
-        });
-        /** @type {?} */
-        const upEventHandler = (/**
-         * @param {?} e
-         * @return {?}
-         */
-        (e) => {
+        };
+        const upEventHandler = (e) => {
             this.documentMouseUp$.next(e);
             this.clearListeners();
-        });
+        };
         this.listeners.set(moveEvent, moveEventHandler);
         this.listeners.set(upEvent, upEventHandler);
-        this.ngZone.runOutsideAngular((/**
-         * @return {?}
-         */
-        () => {
-            this.listeners.forEach((/**
-             * @param {?} handler
-             * @param {?} name
-             * @return {?}
-             */
-            (handler, name) => {
-                this.document.addEventListener(name, (/** @type {?} */ (handler)));
-            }));
-        }));
+        this.ngZone.runOutsideAngular(() => {
+            this.listeners.forEach((handler, name) => {
+                this.document.addEventListener(name, handler);
+            });
+        });
     }
-    /**
-     * @private
-     * @return {?}
-     */
     clearListeners() {
-        this.listeners.forEach((/**
-         * @param {?} handler
-         * @param {?} name
-         * @return {?}
-         */
-        (handler, name) => {
-            this.document.removeEventListener(name, (/** @type {?} */ (handler)));
-        }));
+        this.listeners.forEach((handler, name) => {
+            this.document.removeEventListener(name, handler);
+        });
         this.listeners.clear();
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.handleMouseDown$.complete();
         this.documentMouseUp$.complete();
@@ -112,64 +65,16 @@ class NzResizableService {
 NzResizableService.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 NzResizableService.ctorParameters = () => [
     { type: NgZone },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
-if (false) {
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableService.prototype.document;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableService.prototype.listeners;
-    /** @type {?} */
-    NzResizableService.prototype.handleMouseDown$;
-    /** @type {?} */
-    NzResizableService.prototype.documentMouseUp$;
-    /** @type {?} */
-    NzResizableService.prototype.documentMouseMove$;
-    /** @type {?} */
-    NzResizableService.prototype.mouseEntered$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableService.prototype.ngZone;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: resizable.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @record
- */
-function NzResizeEvent() { }
-if (false) {
-    /** @type {?|undefined} */
-    NzResizeEvent.prototype.width;
-    /** @type {?|undefined} */
-    NzResizeEvent.prototype.height;
-    /** @type {?|undefined} */
-    NzResizeEvent.prototype.col;
-    /** @type {?|undefined} */
-    NzResizeEvent.prototype.mouseEvent;
-}
 class NzResizableDirective {
-    /**
-     * @param {?} elementRef
-     * @param {?} renderer
-     * @param {?} nzResizableService
-     * @param {?} platform
-     * @param {?} ngZone
-     */
     constructor(elementRef, renderer, nzResizableService, platform, ngZone) {
         this.elementRef = elementRef;
         this.renderer = renderer;
@@ -184,6 +89,7 @@ class NzResizableDirective {
         this.nzMinColumn = -1;
         this.nzLockAspectRatio = false;
         this.nzPreview = false;
+        this.nzDisabled = false;
         this.nzResize = new EventEmitter();
         this.nzResizeEnd = new EventEmitter();
         this.nzResizeStart = new EventEmitter();
@@ -192,11 +98,10 @@ class NzResizableDirective {
         this.ghostElement = null;
         this.sizeCache = null;
         this.destroy$ = new Subject();
-        this.nzResizableService.handleMouseDown$.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @param {?} event
-         * @return {?}
-         */
-        event => {
+        this.nzResizableService.handleMouseDown$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+            if (this.nzDisabled) {
+                return;
+            }
             this.resizing = true;
             this.nzResizableService.startResizing(event.mouseEvent);
             this.currentHandleEvent = event;
@@ -205,80 +110,45 @@ class NzResizableDirective {
                 mouseEvent: event.mouseEvent
             });
             this.elRect = this.el.getBoundingClientRect();
-        }));
-        this.nzResizableService.documentMouseUp$.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @param {?} event
-         * @return {?}
-         */
-        event => {
+        });
+        this.nzResizableService.documentMouseUp$.pipe(takeUntil(this.destroy$)).subscribe(event => {
             if (this.resizing) {
                 this.resizing = false;
                 this.nzResizableService.documentMouseUp$.next();
                 this.endResize(event);
             }
-        }));
-        this.nzResizableService.documentMouseMove$.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @param {?} event
-         * @return {?}
-         */
-        event => {
+        });
+        this.nzResizableService.documentMouseMove$.pipe(takeUntil(this.destroy$)).subscribe(event => {
             if (this.resizing) {
                 this.resize(event);
             }
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     onMouseenter() {
         this.nzResizableService.mouseEntered$.next(true);
     }
-    /**
-     * @return {?}
-     */
     onMouseleave() {
         this.nzResizableService.mouseEntered$.next(false);
     }
-    /**
-     * @return {?}
-     */
     setPosition() {
-        /** @type {?} */
         const position = getComputedStyle(this.el).position;
         if (position === 'static' || !position) {
             this.renderer.setStyle(this.el, 'position', 'relative');
         }
     }
-    /**
-     * @param {?} width
-     * @param {?} height
-     * @param {?} ratio
-     * @return {?}
-     */
     calcSize(width, height, ratio) {
-        /** @type {?} */
         let newWidth;
-        /** @type {?} */
         let newHeight;
-        /** @type {?} */
         let maxWidth;
-        /** @type {?} */
         let maxHeight;
-        /** @type {?} */
         let col = 0;
-        /** @type {?} */
         let spanWidth = 0;
-        /** @type {?} */
         let minWidth = this.nzMinWidth;
-        /** @type {?} */
         let boundWidth = Infinity;
-        /** @type {?} */
         let boundHeight = Infinity;
         if (this.nzBounds === 'parent') {
-            /** @type {?} */
             const parent = this.renderer.parentNode(this.el);
             if (parent instanceof HTMLElement) {
-                /** @type {?} */
                 const parentRect = parent.getBoundingClientRect();
                 boundWidth = parentRect.width;
                 boundHeight = parentRect.height;
@@ -291,20 +161,19 @@ class NzResizableDirective {
             }
         }
         else if (this.nzBounds && this.nzBounds.nativeElement && this.nzBounds.nativeElement instanceof HTMLElement) {
-            /** @type {?} */
             const boundsRect = this.nzBounds.nativeElement.getBoundingClientRect();
             boundWidth = boundsRect.width;
             boundHeight = boundsRect.height;
         }
-        maxWidth = ensureInBounds((/** @type {?} */ (this.nzMaxWidth)), boundWidth);
-        maxHeight = ensureInBounds((/** @type {?} */ (this.nzMaxHeight)), boundHeight);
+        maxWidth = ensureInBounds(this.nzMaxWidth, boundWidth);
+        maxHeight = ensureInBounds(this.nzMaxHeight, boundHeight);
         if (this.nzGridColumnCount !== -1) {
             spanWidth = maxWidth / this.nzGridColumnCount;
             minWidth = this.nzMinColumn !== -1 ? spanWidth * this.nzMinColumn : minWidth;
             maxWidth = this.nzMaxColumn !== -1 ? spanWidth * this.nzMaxColumn : maxWidth;
         }
         if (ratio !== -1) {
-            if (/(left|right)/i.test((/** @type {?} */ (this.currentHandleEvent)).direction)) {
+            if (/(left|right)/i.test(this.currentHandleEvent.direction)) {
                 newWidth = Math.min(Math.max(width, minWidth), maxWidth);
                 newHeight = Math.min(Math.max(newWidth / ratio, this.nzMinHeight), maxHeight);
                 if (newHeight >= maxHeight || newHeight <= this.nzMinHeight) {
@@ -333,11 +202,8 @@ class NzResizableDirective {
             height: newHeight
         };
     }
-    /**
-     * @return {?}
-     */
     setCursor() {
-        switch ((/** @type {?} */ (this.currentHandleEvent)).direction) {
+        switch (this.currentHandleEvent.direction) {
             case 'left':
             case 'right':
                 this.renderer.setStyle(document.body, 'cursor', 'ew-resize');
@@ -357,24 +223,14 @@ class NzResizableDirective {
         }
         this.renderer.setStyle(document.body, 'user-select', 'none');
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
     resize(event) {
-        /** @type {?} */
         const elRect = this.elRect;
-        /** @type {?} */
         const resizeEvent = getEventWithPoint(event);
-        /** @type {?} */
-        const handleEvent = getEventWithPoint((/** @type {?} */ (this.currentHandleEvent)).mouseEvent);
-        /** @type {?} */
+        const handleEvent = getEventWithPoint(this.currentHandleEvent.mouseEvent);
         let width = elRect.width;
-        /** @type {?} */
         let height = elRect.height;
-        /** @type {?} */
         const ratio = this.nzLockAspectRatio ? width / height : -1;
-        switch ((/** @type {?} */ (this.currentHandleEvent)).direction) {
+        switch (this.currentHandleEvent.direction) {
             case 'bottomRight':
                 width = resizeEvent.clientX - elRect.left;
                 height = resizeEvent.clientY - elRect.top;
@@ -403,54 +259,35 @@ class NzResizableDirective {
             case 'left':
                 width = elRect.width + handleEvent.clientX - resizeEvent.clientX;
         }
-        /** @type {?} */
         const size = this.calcSize(width, height, ratio);
         this.sizeCache = Object.assign({}, size);
-        this.ngZone.run((/**
-         * @return {?}
-         */
-        () => {
+        this.ngZone.run(() => {
             this.nzResize.emit(Object.assign(Object.assign({}, size), { mouseEvent: event }));
-        }));
+        });
         if (this.nzPreview) {
             this.previewResize(size);
         }
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
     endResize(event) {
         this.renderer.setStyle(document.body, 'cursor', '');
         this.renderer.setStyle(document.body, 'user-select', '');
         this.removeGhostElement();
-        /** @type {?} */
         const size = this.sizeCache
             ? Object.assign({}, this.sizeCache) : {
             width: this.elRect.width,
             height: this.elRect.height
         };
-        this.ngZone.run((/**
-         * @return {?}
-         */
-        () => {
+        this.ngZone.run(() => {
             this.nzResizeEnd.emit(Object.assign(Object.assign({}, size), { mouseEvent: event }));
-        }));
+        });
         this.sizeCache = null;
         this.currentHandleEvent = null;
     }
-    /**
-     * @param {?} __0
-     * @return {?}
-     */
     previewResize({ width, height }) {
         this.createGhostElement();
         this.renderer.setStyle(this.ghostElement, 'width', `${width}px`);
         this.renderer.setStyle(this.ghostElement, 'height', `${height}px`);
     }
-    /**
-     * @return {?}
-     */
     createGhostElement() {
         if (!this.ghostElement) {
             this.ghostElement = this.renderer.createElement('div');
@@ -458,26 +295,17 @@ class NzResizableDirective {
         }
         this.renderer.appendChild(this.el, this.ghostElement);
     }
-    /**
-     * @return {?}
-     */
     removeGhostElement() {
         if (this.ghostElement) {
             this.renderer.removeChild(this.el, this.ghostElement);
         }
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
         if (this.platform.isBrowser) {
             this.el = this.elementRef.nativeElement;
             this.setPosition();
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.ghostElement = null;
         this.sizeCache = null;
@@ -493,12 +321,12 @@ NzResizableDirective.decorators = [
                 host: {
                     '[class.nz-resizable]': 'true',
                     '[class.nz-resizable-resizing]': 'resizing',
+                    '[class.nz-resizable-disabled]': 'nzDisabled',
                     '(mouseenter)': 'onMouseenter()',
                     '(mouseleave)': 'onMouseleave()'
                 }
             },] }
 ];
-/** @nocollapse */
 NzResizableDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: Renderer2 },
@@ -517,6 +345,7 @@ NzResizableDirective.propDecorators = {
     nzMinColumn: [{ type: Input }],
     nzLockAspectRatio: [{ type: Input }],
     nzPreview: [{ type: Input }],
+    nzDisabled: [{ type: Input }],
     nzResize: [{ type: Output }],
     nzResizeEnd: [{ type: Output }],
     nzResizeStart: [{ type: Output }]
@@ -529,122 +358,22 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzResizableDirective.prototype, "nzPreview", void 0);
-if (false) {
-    /** @type {?} */
-    NzResizableDirective.ngAcceptInputType_nzLockAspectRatio;
-    /** @type {?} */
-    NzResizableDirective.ngAcceptInputType_nzPreview;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzBounds;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzMaxHeight;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzMaxWidth;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzMinHeight;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzMinWidth;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzGridColumnCount;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzMaxColumn;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzMinColumn;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzLockAspectRatio;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzPreview;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzResize;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzResizeEnd;
-    /** @type {?} */
-    NzResizableDirective.prototype.nzResizeStart;
-    /** @type {?} */
-    NzResizableDirective.prototype.resizing;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableDirective.prototype.elRect;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableDirective.prototype.currentHandleEvent;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableDirective.prototype.ghostElement;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableDirective.prototype.el;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableDirective.prototype.sizeCache;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableDirective.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableDirective.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableDirective.prototype.renderer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableDirective.prototype.nzResizableService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableDirective.prototype.platform;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizableDirective.prototype.ngZone;
-}
+__decorate([
+    InputBoolean(),
+    __metadata("design:type", Boolean)
+], NzResizableDirective.prototype, "nzDisabled", void 0);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: resize-handle.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzResizeHandleMouseDownEvent {
-    /**
-     * @param {?} direction
-     * @param {?} mouseEvent
-     */
     constructor(direction, mouseEvent) {
         this.direction = direction;
         this.mouseEvent = mouseEvent;
     }
 }
-if (false) {
-    /** @type {?} */
-    NzResizeHandleMouseDownEvent.prototype.direction;
-    /** @type {?} */
-    NzResizeHandleMouseDownEvent.prototype.mouseEvent;
-}
 class NzResizeHandleComponent {
-    /**
-     * @param {?} nzResizableService
-     * @param {?} cdr
-     */
     constructor(nzResizableService, cdr) {
         this.nzResizableService = nzResizableService;
         this.cdr = cdr;
@@ -653,29 +382,15 @@ class NzResizeHandleComponent {
         this.entered = false;
         this.destroy$ = new Subject();
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
-        this.nzResizableService.mouseEntered$.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @param {?} entered
-         * @return {?}
-         */
-        entered => {
+        this.nzResizableService.mouseEntered$.pipe(takeUntil(this.destroy$)).subscribe(entered => {
             this.entered = entered;
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
     onMousedown(event) {
         this.nzResizableService.handleMouseDown$.next(new NzResizeHandleMouseDownEvent(this.nzDirection, event));
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -701,9 +416,8 @@ NzResizeHandleComponent.decorators = [
                     '(mousedown)': 'onMousedown($event)',
                     '(touchstart)': 'onMousedown($event)'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzResizeHandleComponent.ctorParameters = () => [
     { type: NzResizableService },
     { type: ChangeDetectorRef }
@@ -712,36 +426,11 @@ NzResizeHandleComponent.propDecorators = {
     nzDirection: [{ type: Input }],
     nzMouseDown: [{ type: Output }]
 };
-if (false) {
-    /** @type {?} */
-    NzResizeHandleComponent.prototype.nzDirection;
-    /** @type {?} */
-    NzResizeHandleComponent.prototype.nzMouseDown;
-    /** @type {?} */
-    NzResizeHandleComponent.prototype.entered;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizeHandleComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizeHandleComponent.prototype.nzResizableService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzResizeHandleComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: resize-handles.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const DEFAULT_RESIZE_DIRECTION = [
     'bottomRight',
     'topRight',
@@ -757,10 +446,6 @@ class NzResizeHandlesComponent {
         this.nzDirections = DEFAULT_RESIZE_DIRECTION;
         this.directions = new Set(this.nzDirections);
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         if (changes.nzDirections) {
             this.directions = new Set(changes.nzDirections.currentValue);
@@ -773,24 +458,16 @@ NzResizeHandlesComponent.decorators = [
                 exportAs: 'nzResizeHandles',
                 template: ` <nz-resize-handle *ngFor="let dir of directions" [nzDirection]="dir"></nz-resize-handle> `,
                 changeDetection: ChangeDetectionStrategy.OnPush
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzResizeHandlesComponent.ctorParameters = () => [];
 NzResizeHandlesComponent.propDecorators = {
     nzDirections: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzResizeHandlesComponent.prototype.nzDirections;
-    /** @type {?} */
-    NzResizeHandlesComponent.prototype.directions;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: resizable.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzResizableModule {
 }
@@ -803,15 +480,12 @@ NzResizableModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-resizable.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { DEFAULT_RESIZE_DIRECTION, NzResizableDirective, NzResizableModule, NzResizableService, NzResizeHandleComponent, NzResizeHandleMouseDownEvent, NzResizeHandlesComponent, getEventWithPoint };

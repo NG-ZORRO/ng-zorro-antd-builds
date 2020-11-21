@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/keycodes'), require('@angular/cdk/overlay'), require('@angular/cdk/platform'), require('@angular/cdk/portal'), require('@angular/core'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/button'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/menu'), require('ng-zorro-antd/core/animation')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/dropdown', ['exports', '@angular/cdk/keycodes', '@angular/cdk/overlay', '@angular/cdk/platform', '@angular/cdk/portal', '@angular/core', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/forms', 'ng-zorro-antd/button', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/menu', 'ng-zorro-antd/core/animation'], factory) :
-    (global = global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].dropdown = {}), global.ng.cdk.keycodes, global.ng.cdk.overlay, global.ng.cdk.platform, global.ng.cdk.portal, global.ng.core, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.forms, global['ng-zorro-antd'].button, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].menu, global['ng-zorro-antd'].core.animation));
-}(this, (function (exports, keycodes, overlay, platform, portal, core, overlay$1, util, rxjs, operators, common, forms, button, noAnimation, outlet, icon, menu, animation) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/keycodes'), require('@angular/cdk/overlay'), require('@angular/cdk/platform'), require('@angular/cdk/portal'), require('@angular/core'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/button'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/menu'), require('ng-zorro-antd/core/animation')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/dropdown', ['exports', '@angular/cdk/keycodes', '@angular/cdk/overlay', '@angular/cdk/platform', '@angular/cdk/portal', '@angular/core', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/forms', 'ng-zorro-antd/button', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/menu', 'ng-zorro-antd/core/animation'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].dropdown = {}), global.ng.cdk.keycodes, global.ng.cdk.overlay, global.ng.cdk.platform, global.ng.cdk.portal, global.ng.core, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.forms, global['ng-zorro-antd'].button, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].menu, global['ng-zorro-antd'].core.animation));
+}(this, (function (exports, keycodes, i1, platform, portal, i0, logger, overlay, util, rxjs, operators, common, forms, button, noAnimation, outlet, icon, menu, animation) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -19,35 +19,36 @@
     PERFORMANCE OF THIS SOFTWARE.
     ***************************************************************************** */
     /* global Reflect, Promise */
-
-    var extendStatics = function(d, b) {
+    var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b)
+                if (Object.prototype.hasOwnProperty.call(b, p))
+                    d[p] = b[p]; };
         return extendStatics(d, b);
     };
-
     function __extends(d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     }
-
-    var __assign = function() {
+    var __assign = function () {
         __assign = Object.assign || function __assign(t) {
             for (var s, i = 1, n = arguments.length; i < n; i++) {
                 s = arguments[i];
-                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+                for (var p in s)
+                    if (Object.prototype.hasOwnProperty.call(s, p))
+                        t[p] = s[p];
             }
             return t;
         };
         return __assign.apply(this, arguments);
     };
-
     function __rest(s, e) {
         var t = {};
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-            t[p] = s[p];
+        for (var p in s)
+            if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+                t[p] = s[p];
         if (s != null && typeof Object.getOwnPropertySymbols === "function")
             for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
                 if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
@@ -55,166 +56,247 @@
             }
         return t;
     }
-
     function __decorate(decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
+            r = Reflect.decorate(decorators, target, key, desc);
+        else
+            for (var i = decorators.length - 1; i >= 0; i--)
+                if (d = decorators[i])
+                    r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     }
-
     function __param(paramIndex, decorator) {
-        return function (target, key) { decorator(target, key, paramIndex); }
+        return function (target, key) { decorator(target, key, paramIndex); };
     }
-
     function __metadata(metadataKey, metadataValue) {
-        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
+            return Reflect.metadata(metadataKey, metadataValue);
     }
-
     function __awaiter(thisArg, _arguments, P, generator) {
         function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
         return new (P || (P = Promise))(function (resolve, reject) {
-            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function fulfilled(value) { try {
+                step(generator.next(value));
+            }
+            catch (e) {
+                reject(e);
+            } }
+            function rejected(value) { try {
+                step(generator["throw"](value));
+            }
+            catch (e) {
+                reject(e);
+            } }
             function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
             step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
     }
-
     function __generator(thisArg, body) {
-        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+        var _ = { label: 0, sent: function () { if (t[0] & 1)
+                throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
         function verb(n) { return function (v) { return step([n, v]); }; }
         function step(op) {
-            if (f) throw new TypeError("Generator is already executing.");
-            while (_) try {
-                if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-                if (y = 0, t) op = [op[0] & 2, t.value];
-                switch (op[0]) {
-                    case 0: case 1: t = op; break;
-                    case 4: _.label++; return { value: op[1], done: false };
-                    case 5: _.label++; y = op[1]; op = [0]; continue;
-                    case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                    default:
-                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                        if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                        if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                        if (t[2]) _.ops.pop();
-                        _.trys.pop(); continue;
+            if (f)
+                throw new TypeError("Generator is already executing.");
+            while (_)
+                try {
+                    if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done)
+                        return t;
+                    if (y = 0, t)
+                        op = [op[0] & 2, t.value];
+                    switch (op[0]) {
+                        case 0:
+                        case 1:
+                            t = op;
+                            break;
+                        case 4:
+                            _.label++;
+                            return { value: op[1], done: false };
+                        case 5:
+                            _.label++;
+                            y = op[1];
+                            op = [0];
+                            continue;
+                        case 7:
+                            op = _.ops.pop();
+                            _.trys.pop();
+                            continue;
+                        default:
+                            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+                                _ = 0;
+                                continue;
+                            }
+                            if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) {
+                                _.label = op[1];
+                                break;
+                            }
+                            if (op[0] === 6 && _.label < t[1]) {
+                                _.label = t[1];
+                                t = op;
+                                break;
+                            }
+                            if (t && _.label < t[2]) {
+                                _.label = t[2];
+                                _.ops.push(op);
+                                break;
+                            }
+                            if (t[2])
+                                _.ops.pop();
+                            _.trys.pop();
+                            continue;
+                    }
+                    op = body.call(thisArg, _);
                 }
-                op = body.call(thisArg, _);
-            } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-            if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+                catch (e) {
+                    op = [6, e];
+                    y = 0;
+                }
+                finally {
+                    f = t = 0;
+                }
+            if (op[0] & 5)
+                throw op[1];
+            return { value: op[0] ? op[1] : void 0, done: true };
         }
     }
-
-    function __createBinding(o, m, k, k2) {
-        if (k2 === undefined) k2 = k;
+    var __createBinding = Object.create ? (function (o, m, k, k2) {
+        if (k2 === undefined)
+            k2 = k;
+        Object.defineProperty(o, k2, { enumerable: true, get: function () { return m[k]; } });
+    }) : (function (o, m, k, k2) {
+        if (k2 === undefined)
+            k2 = k;
         o[k2] = m[k];
+    });
+    function __exportStar(m, o) {
+        for (var p in m)
+            if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p))
+                __createBinding(o, m, p);
     }
-
-    function __exportStar(m, exports) {
-        for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) exports[p] = m[p];
-    }
-
     function __values(o) {
         var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-        if (m) return m.call(o);
-        if (o && typeof o.length === "number") return {
-            next: function () {
-                if (o && i >= o.length) o = void 0;
-                return { value: o && o[i++], done: !o };
-            }
-        };
+        if (m)
+            return m.call(o);
+        if (o && typeof o.length === "number")
+            return {
+                next: function () {
+                    if (o && i >= o.length)
+                        o = void 0;
+                    return { value: o && o[i++], done: !o };
+                }
+            };
         throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
     }
-
     function __read(o, n) {
         var m = typeof Symbol === "function" && o[Symbol.iterator];
-        if (!m) return o;
+        if (!m)
+            return o;
         var i = m.call(o), r, ar = [], e;
         try {
-            while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+            while ((n === void 0 || n-- > 0) && !(r = i.next()).done)
+                ar.push(r.value);
         }
-        catch (error) { e = { error: error }; }
+        catch (error) {
+            e = { error: error };
+        }
         finally {
             try {
-                if (r && !r.done && (m = i["return"])) m.call(i);
+                if (r && !r.done && (m = i["return"]))
+                    m.call(i);
             }
-            finally { if (e) throw e.error; }
+            finally {
+                if (e)
+                    throw e.error;
+            }
         }
         return ar;
     }
-
     function __spread() {
         for (var ar = [], i = 0; i < arguments.length; i++)
             ar = ar.concat(__read(arguments[i]));
         return ar;
     }
-
     function __spreadArrays() {
-        for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+        for (var s = 0, i = 0, il = arguments.length; i < il; i++)
+            s += arguments[i].length;
         for (var r = Array(s), k = 0, i = 0; i < il; i++)
             for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
                 r[k] = a[j];
         return r;
-    };
-
+    }
+    ;
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
     }
-
     function __asyncGenerator(thisArg, _arguments, generator) {
-        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+        if (!Symbol.asyncIterator)
+            throw new TypeError("Symbol.asyncIterator is not defined.");
         var g = generator.apply(thisArg, _arguments || []), i, q = [];
         return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
-        function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
-        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+        function verb(n) { if (g[n])
+            i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+        function resume(n, v) { try {
+            step(g[n](v));
+        }
+        catch (e) {
+            settle(q[0][3], e);
+        } }
         function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
         function fulfill(value) { resume("next", value); }
         function reject(value) { resume("throw", value); }
-        function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+        function settle(f, v) { if (f(v), q.shift(), q.length)
+            resume(q[0][0], q[0][1]); }
     }
-
     function __asyncDelegator(o) {
         var i, p;
         return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
         function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
     }
-
     function __asyncValues(o) {
-        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+        if (!Symbol.asyncIterator)
+            throw new TypeError("Symbol.asyncIterator is not defined.");
         var m = o[Symbol.asyncIterator], i;
         return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
         function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-        function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+        function settle(resolve, reject, d, v) { Promise.resolve(v).then(function (v) { resolve({ value: v, done: d }); }, reject); }
     }
-
     function __makeTemplateObject(cooked, raw) {
-        if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+        if (Object.defineProperty) {
+            Object.defineProperty(cooked, "raw", { value: raw });
+        }
+        else {
+            cooked.raw = raw;
+        }
         return cooked;
+    }
+    ;
+    var __setModuleDefault = Object.create ? (function (o, v) {
+        Object.defineProperty(o, "default", { enumerable: true, value: v });
+    }) : function (o, v) {
+        o["default"] = v;
     };
-
     function __importStar(mod) {
-        if (mod && mod.__esModule) return mod;
+        if (mod && mod.__esModule)
+            return mod;
         var result = {};
-        if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-        result.default = mod;
+        if (mod != null)
+            for (var k in mod)
+                if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k))
+                    __createBinding(result, mod, k);
+        __setModuleDefault(result, mod);
         return result;
     }
-
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-
     function __classPrivateFieldGet(receiver, privateMap) {
         if (!privateMap.has(receiver)) {
             throw new TypeError("attempted to get private field on non-instance");
         }
         return privateMap.get(receiver);
     }
-
     function __classPrivateFieldSet(receiver, privateMap, value) {
         if (!privateMap.has(receiver)) {
             throw new TypeError("attempted to set private field on non-instance");
@@ -223,13 +305,7 @@
         return value;
     }
 
-    /**
-     * @fileoverview added by tsickle
-     * Generated from: dropdown.directive.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
-    /** @type {?} */
-    var listOfPositions = [overlay$1.POSITION_MAP.bottomLeft, overlay$1.POSITION_MAP.bottomRight, overlay$1.POSITION_MAP.topRight, overlay$1.POSITION_MAP.topLeft];
+    var listOfPositions = [overlay.POSITION_MAP.bottomLeft, overlay.POSITION_MAP.bottomRight, overlay.POSITION_MAP.topRight, overlay.POSITION_MAP.topLeft];
     var NzDropDownDirective = /** @class */ (function () {
         function NzDropDownDirective(elementRef, overlay, renderer, viewContainerRef, platform) {
             this.elementRef = elementRef;
@@ -250,6 +326,10 @@
             this.nzDropdownMenu = null;
             this.nzTrigger = 'hover';
             this.nzMatchWidthElement = null;
+            /**
+             * @deprecated Not supported.
+             * @breaking-change 11.0.0
+             */
             this.nzBackdrop = true;
             this.nzClickHide = true;
             this.nzDisabled = false;
@@ -257,72 +337,28 @@
             this.nzOverlayClassName = '';
             this.nzOverlayStyle = {};
             this.nzPlacement = 'bottomLeft';
-            this.nzVisibleChange = new core.EventEmitter();
+            this.nzVisibleChange = new i0.EventEmitter();
         }
-        /**
-         * @template T
-         * @param {?} key
-         * @param {?} value
-         * @return {?}
-         */
-        NzDropDownDirective.prototype.setDropdownMenuValue = /**
-         * @template T
-         * @param {?} key
-         * @param {?} value
-         * @return {?}
-         */
-        function (key, value) {
+        NzDropDownDirective.prototype.setDropdownMenuValue = function (key, value) {
             if (this.nzDropdownMenu) {
                 this.nzDropdownMenu.setValue(key, value);
             }
         };
-        /**
-         * @return {?}
-         */
-        NzDropDownDirective.prototype.ngOnInit = /**
-         * @return {?}
-         */
-        function () { };
-        /**
-         * @return {?}
-         */
-        NzDropDownDirective.prototype.ngAfterViewInit = /**
-         * @return {?}
-         */
-        function () {
+        NzDropDownDirective.prototype.ngOnInit = function () { };
+        NzDropDownDirective.prototype.ngAfterViewInit = function () {
             var _this = this;
             if (this.nzDropdownMenu) {
-                /** @type {?} */
                 var nativeElement_1 = this.elementRef.nativeElement;
-                /**
-                 * host mouse state *
-                 * @type {?}
-                 */
+                /** host mouse state **/
                 var hostMouseState$ = rxjs.merge(rxjs.fromEvent(nativeElement_1, 'mouseenter').pipe(operators.mapTo(true)), rxjs.fromEvent(nativeElement_1, 'mouseleave').pipe(operators.mapTo(false)));
-                /**
-                 * menu mouse state *
-                 * @type {?}
-                 */
+                /** menu mouse state **/
                 var menuMouseState$ = this.nzDropdownMenu.mouseState$;
-                /**
-                 * merged mouse state *
-                 * @type {?}
-                 */
+                /** merged mouse state **/
                 var mergedMouseState$_1 = rxjs.merge(menuMouseState$, hostMouseState$);
-                /**
-                 * host click state *
-                 * @type {?}
-                 */
+                /** host click state **/
                 var hostClickState$_1 = rxjs.fromEvent(nativeElement_1, 'click').pipe(operators.mapTo(true));
-                /**
-                 * visible state switch by nzTrigger *
-                 * @type {?}
-                 */
-                var visibleStateByTrigger$ = this.nzTrigger$.pipe(operators.switchMap((/**
-                 * @param {?} trigger
-                 * @return {?}
-                 */
-                function (trigger) {
+                /** visible state switch by nzTrigger **/
+                var visibleStateByTrigger$ = this.nzTrigger$.pipe(operators.switchMap(function (trigger) {
                     if (trigger === 'hover') {
                         return mergedMouseState$_1;
                     }
@@ -332,39 +368,17 @@
                     else {
                         return rxjs.EMPTY;
                     }
-                })));
-                /** @type {?} */
-                var descendantMenuItemClick$ = this.nzDropdownMenu.descendantMenuItemClick$.pipe(operators.filter((/**
-                 * @return {?}
-                 */
-                function () { return _this.nzClickHide; })), operators.mapTo(false));
-                /** @type {?} */
-                var domTriggerVisible$ = rxjs.merge(visibleStateByTrigger$, descendantMenuItemClick$, this.overlayClose$).pipe(operators.filter((/**
-                 * @return {?}
-                 */
-                function () { return !_this.nzDisabled; })));
-                /** @type {?} */
+                }));
+                var descendantMenuItemClick$ = this.nzDropdownMenu.descendantMenuItemClick$.pipe(operators.filter(function () { return _this.nzClickHide; }), operators.mapTo(false));
+                var domTriggerVisible$ = rxjs.merge(visibleStateByTrigger$, descendantMenuItemClick$, this.overlayClose$).pipe(operators.filter(function () { return !_this.nzDisabled; }));
                 var visible$ = rxjs.merge(this.inputVisible$, domTriggerVisible$);
                 rxjs.combineLatest([visible$, this.nzDropdownMenu.isChildSubMenuOpen$])
-                    .pipe(operators.map((/**
-                 * @param {?} __0
-                 * @return {?}
-                 */
-                function (_a) {
+                    .pipe(operators.map(function (_a) {
                     var _b = __read(_a, 2), visible = _b[0], sub = _b[1];
                     return visible || sub;
-                })), operators.auditTime(150), operators.distinctUntilChanged(), operators.filter((/**
-                 * @return {?}
-                 */
-                function () { return _this.platform.isBrowser; })), operators.takeUntil(this.destroy$))
-                    .subscribe((/**
-                 * @param {?} visible
-                 * @return {?}
-                 */
-                function (visible) {
-                    /** @type {?} */
+                }), operators.auditTime(150), operators.distinctUntilChanged(), operators.filter(function () { return _this.platform.isBrowser; }), operators.takeUntil(this.destroy$))
+                    .subscribe(function (visible) {
                     var element = _this.nzMatchWidthElement ? _this.nzMatchWidthElement.nativeElement : nativeElement_1;
-                    /** @type {?} */
                     var triggerWidth = element.getBoundingClientRect().width;
                     if (_this.nzVisible !== visible) {
                         _this.nzVisibleChange.emit(visible);
@@ -382,28 +396,20 @@
                                 backdropClass: _this.nzBackdrop ? undefined : 'nz-overlay-transparent-backdrop',
                                 scrollStrategy: _this.overlay.scrollStrategies.reposition()
                             });
-                            rxjs.merge(_this.overlayRef.backdropClick(), _this.overlayRef.detachments(), _this.overlayRef.keydownEvents().pipe(operators.filter((/**
-                             * @param {?} e
-                             * @return {?}
-                             */
-                            function (e) { return e.keyCode === keycodes.ESCAPE && !keycodes.hasModifierKey(e); }))))
+                            rxjs.merge(_this.overlayRef.backdropClick(), _this.overlayRef.detachments(), _this.overlayRef.keydownEvents().pipe(operators.filter(function (e) { return e.keyCode === keycodes.ESCAPE && !keycodes.hasModifierKey(e); })))
                                 .pipe(operators.mapTo(false), operators.takeUntil(_this.destroy$))
                                 .subscribe(_this.overlayClose$);
                         }
                         else {
-                            /**
-                             * update overlay config *
-                             * @type {?}
-                             */
+                            /** update overlay config **/
                             var overlayConfig = _this.overlayRef.getConfig();
                             overlayConfig.minWidth = triggerWidth;
-                            overlayConfig.hasBackdrop = _this.nzTrigger === 'click';
                         }
                         /** open dropdown with animation **/
-                        _this.positionStrategy.withPositions(__spread([overlay$1.POSITION_MAP[_this.nzPlacement]], listOfPositions));
+                        _this.positionStrategy.withPositions(__spread([overlay.POSITION_MAP[_this.nzPlacement]], listOfPositions));
                         /** reset portal if needed **/
-                        if (!_this.portal || _this.portal.templateRef !== (/** @type {?} */ (_this.nzDropdownMenu)).templateRef) {
-                            _this.portal = new portal.TemplatePortal((/** @type {?} */ (_this.nzDropdownMenu)).templateRef, _this.viewContainerRef);
+                        if (!_this.portal || _this.portal.templateRef !== _this.nzDropdownMenu.templateRef) {
+                            _this.portal = new portal.TemplatePortal(_this.nzDropdownMenu.templateRef, _this.viewContainerRef);
                         }
                         _this.overlayRef.attach(_this.portal);
                     }
@@ -413,16 +419,10 @@
                             _this.overlayRef.detach();
                         }
                     }
-                }));
+                });
             }
         };
-        /**
-         * @return {?}
-         */
-        NzDropDownDirective.prototype.ngOnDestroy = /**
-         * @return {?}
-         */
-        function () {
+        NzDropDownDirective.prototype.ngOnDestroy = function () {
             this.destroy$.next();
             this.destroy$.complete();
             if (this.overlayRef) {
@@ -430,16 +430,8 @@
                 this.overlayRef = null;
             }
         };
-        /**
-         * @param {?} changes
-         * @return {?}
-         */
-        NzDropDownDirective.prototype.ngOnChanges = /**
-         * @param {?} changes
-         * @return {?}
-         */
-        function (changes) {
-            var nzVisible = changes.nzVisible, nzDisabled = changes.nzDisabled, nzOverlayClassName = changes.nzOverlayClassName, nzOverlayStyle = changes.nzOverlayStyle, nzTrigger = changes.nzTrigger;
+        NzDropDownDirective.prototype.ngOnChanges = function (changes) {
+            var nzVisible = changes.nzVisible, nzDisabled = changes.nzDisabled, nzOverlayClassName = changes.nzOverlayClassName, nzOverlayStyle = changes.nzOverlayStyle, nzTrigger = changes.nzTrigger, nzBackdrop = changes.nzBackdrop;
             if (nzTrigger) {
                 this.nzTrigger$.next(this.nzTrigger);
             }
@@ -447,7 +439,6 @@
                 this.inputVisible$.next(this.nzVisible);
             }
             if (nzDisabled) {
-                /** @type {?} */
                 var nativeElement = this.elementRef.nativeElement;
                 if (this.nzDisabled) {
                     this.renderer.setAttribute(nativeElement, 'disabled', '');
@@ -463,182 +454,92 @@
             if (nzOverlayStyle) {
                 this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
             }
+            if (nzBackdrop) {
+                logger.warnDeprecation('`nzBackdrop` in dropdown component will be removed in 11.0.0.');
+            }
         };
-        NzDropDownDirective.decorators = [
-            { type: core.Directive, args: [{
-                        selector: '[nz-dropdown]',
-                        exportAs: 'nzDropdown',
-                        host: {
-                            '[class.ant-dropdown-trigger]': 'true'
-                        }
-                    },] }
-        ];
-        /** @nocollapse */
-        NzDropDownDirective.ctorParameters = function () { return [
-            { type: core.ElementRef },
-            { type: overlay.Overlay },
-            { type: core.Renderer2 },
-            { type: core.ViewContainerRef },
-            { type: platform.Platform }
-        ]; };
-        NzDropDownDirective.propDecorators = {
-            nzDropdownMenu: [{ type: core.Input }],
-            nzTrigger: [{ type: core.Input }],
-            nzMatchWidthElement: [{ type: core.Input }],
-            nzBackdrop: [{ type: core.Input }],
-            nzClickHide: [{ type: core.Input }],
-            nzDisabled: [{ type: core.Input }],
-            nzVisible: [{ type: core.Input }],
-            nzOverlayClassName: [{ type: core.Input }],
-            nzOverlayStyle: [{ type: core.Input }],
-            nzPlacement: [{ type: core.Input }],
-            nzVisibleChange: [{ type: core.Output }]
-        };
-        __decorate([
-            util.InputBoolean(),
-            __metadata("design:type", Object)
-        ], NzDropDownDirective.prototype, "nzBackdrop", void 0);
-        __decorate([
-            util.InputBoolean(),
-            __metadata("design:type", Object)
-        ], NzDropDownDirective.prototype, "nzClickHide", void 0);
-        __decorate([
-            util.InputBoolean(),
-            __metadata("design:type", Object)
-        ], NzDropDownDirective.prototype, "nzDisabled", void 0);
-        __decorate([
-            util.InputBoolean(),
-            __metadata("design:type", Object)
-        ], NzDropDownDirective.prototype, "nzVisible", void 0);
         return NzDropDownDirective;
     }());
-    if (false) {
-        /** @type {?} */
-        NzDropDownDirective.ngAcceptInputType_nzBackdrop;
-        /** @type {?} */
-        NzDropDownDirective.ngAcceptInputType_nzClickHide;
-        /** @type {?} */
-        NzDropDownDirective.ngAcceptInputType_nzDisabled;
-        /** @type {?} */
-        NzDropDownDirective.ngAcceptInputType_nzVisible;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropDownDirective.prototype.portal;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropDownDirective.prototype.overlayRef;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropDownDirective.prototype.destroy$;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropDownDirective.prototype.positionStrategy;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropDownDirective.prototype.inputVisible$;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropDownDirective.prototype.nzTrigger$;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropDownDirective.prototype.overlayClose$;
-        /** @type {?} */
-        NzDropDownDirective.prototype.nzDropdownMenu;
-        /** @type {?} */
-        NzDropDownDirective.prototype.nzTrigger;
-        /** @type {?} */
-        NzDropDownDirective.prototype.nzMatchWidthElement;
-        /** @type {?} */
-        NzDropDownDirective.prototype.nzBackdrop;
-        /** @type {?} */
-        NzDropDownDirective.prototype.nzClickHide;
-        /** @type {?} */
-        NzDropDownDirective.prototype.nzDisabled;
-        /** @type {?} */
-        NzDropDownDirective.prototype.nzVisible;
-        /** @type {?} */
-        NzDropDownDirective.prototype.nzOverlayClassName;
-        /** @type {?} */
-        NzDropDownDirective.prototype.nzOverlayStyle;
-        /** @type {?} */
-        NzDropDownDirective.prototype.nzPlacement;
-        /** @type {?} */
-        NzDropDownDirective.prototype.nzVisibleChange;
-        /** @type {?} */
-        NzDropDownDirective.prototype.elementRef;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropDownDirective.prototype.overlay;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropDownDirective.prototype.renderer;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropDownDirective.prototype.viewContainerRef;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropDownDirective.prototype.platform;
-    }
+    NzDropDownDirective.decorators = [
+        { type: i0.Directive, args: [{
+                    selector: '[nz-dropdown]',
+                    exportAs: 'nzDropdown',
+                    host: {
+                        '[class.ant-dropdown-trigger]': 'true'
+                    }
+                },] }
+    ];
+    NzDropDownDirective.ctorParameters = function () { return [
+        { type: i0.ElementRef },
+        { type: i1.Overlay },
+        { type: i0.Renderer2 },
+        { type: i0.ViewContainerRef },
+        { type: platform.Platform }
+    ]; };
+    NzDropDownDirective.propDecorators = {
+        nzDropdownMenu: [{ type: i0.Input }],
+        nzTrigger: [{ type: i0.Input }],
+        nzMatchWidthElement: [{ type: i0.Input }],
+        nzBackdrop: [{ type: i0.Input }],
+        nzClickHide: [{ type: i0.Input }],
+        nzDisabled: [{ type: i0.Input }],
+        nzVisible: [{ type: i0.Input }],
+        nzOverlayClassName: [{ type: i0.Input }],
+        nzOverlayStyle: [{ type: i0.Input }],
+        nzPlacement: [{ type: i0.Input }],
+        nzVisibleChange: [{ type: i0.Output }]
+    };
+    __decorate([
+        util.InputBoolean(),
+        __metadata("design:type", Object)
+    ], NzDropDownDirective.prototype, "nzBackdrop", void 0);
+    __decorate([
+        util.InputBoolean(),
+        __metadata("design:type", Object)
+    ], NzDropDownDirective.prototype, "nzClickHide", void 0);
+    __decorate([
+        util.InputBoolean(),
+        __metadata("design:type", Object)
+    ], NzDropDownDirective.prototype, "nzDisabled", void 0);
+    __decorate([
+        util.InputBoolean(),
+        __metadata("design:type", Object)
+    ], NzDropDownDirective.prototype, "nzVisible", void 0);
 
     /**
-     * @fileoverview added by tsickle
-     * Generated from: context-menu.service.module.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzContextMenuServiceModule = /** @class */ (function () {
         function NzContextMenuServiceModule() {
         }
-        NzContextMenuServiceModule.decorators = [
-            { type: core.NgModule }
-        ];
         return NzContextMenuServiceModule;
     }());
+    NzContextMenuServiceModule.decorators = [
+        { type: i0.NgModule }
+    ];
 
     /**
-     * @fileoverview added by tsickle
-     * Generated from: dropdown-a.directive.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzDropDownADirective = /** @class */ (function () {
         function NzDropDownADirective() {
         }
-        NzDropDownADirective.decorators = [
-            { type: core.Directive, args: [{
-                        selector: 'a[nz-dropdown]',
-                        host: {
-                            '[class.ant-dropdown-link]': 'true'
-                        }
-                    },] }
-        ];
         return NzDropDownADirective;
     }());
+    NzDropDownADirective.decorators = [
+        { type: i0.Directive, args: [{
+                    selector: 'a[nz-dropdown]',
+                    host: {
+                        '[class.ant-dropdown-link]': 'true'
+                    }
+                },] }
+    ];
 
     /**
-     * @fileoverview added by tsickle
-     * Generated from: dropdown-button.directive.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzDropdownButtonDirective = /** @class */ (function () {
         function NzDropdownButtonDirective(renderer, nzButtonGroupComponent, elementRef) {
@@ -646,54 +547,28 @@
             this.nzButtonGroupComponent = nzButtonGroupComponent;
             this.elementRef = elementRef;
         }
-        /**
-         * @return {?}
-         */
-        NzDropdownButtonDirective.prototype.ngAfterViewInit = /**
-         * @return {?}
-         */
-        function () {
-            /** @type {?} */
+        NzDropdownButtonDirective.prototype.ngAfterViewInit = function () {
             var parentElement = this.renderer.parentNode(this.elementRef.nativeElement);
             if (this.nzButtonGroupComponent && parentElement) {
                 this.renderer.addClass(parentElement, 'ant-dropdown-button');
             }
         };
-        NzDropdownButtonDirective.decorators = [
-            { type: core.Directive, args: [{
-                        selector: '[nz-button][nz-dropdown]'
-                    },] }
-        ];
-        /** @nocollapse */
-        NzDropdownButtonDirective.ctorParameters = function () { return [
-            { type: core.Renderer2 },
-            { type: button.NzButtonGroupComponent, decorators: [{ type: core.Host }, { type: core.Optional }] },
-            { type: core.ElementRef }
-        ]; };
         return NzDropdownButtonDirective;
     }());
-    if (false) {
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropdownButtonDirective.prototype.renderer;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropdownButtonDirective.prototype.nzButtonGroupComponent;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropdownButtonDirective.prototype.elementRef;
-    }
+    NzDropdownButtonDirective.decorators = [
+        { type: i0.Directive, args: [{
+                    selector: '[nz-button][nz-dropdown]'
+                },] }
+    ];
+    NzDropdownButtonDirective.ctorParameters = function () { return [
+        { type: i0.Renderer2 },
+        { type: button.NzButtonGroupComponent, decorators: [{ type: i0.Host }, { type: i0.Optional }] },
+        { type: i0.ElementRef }
+    ]; };
 
     /**
-     * @fileoverview added by tsickle
-     * Generated from: dropdown-menu.component.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzDropdownMenuComponent = /** @class */ (function () {
         function NzDropdownMenuComponent(cdr, elementRef, renderer, viewContainerRef, nzMenuService, noAnimation) {
@@ -709,153 +584,88 @@
             this.nzOverlayClassName = '';
             this.nzOverlayStyle = {};
         }
-        /**
-         * @param {?} visible
-         * @return {?}
-         */
-        NzDropdownMenuComponent.prototype.setMouseState = /**
-         * @param {?} visible
-         * @return {?}
-         */
-        function (visible) {
+        NzDropdownMenuComponent.prototype.setMouseState = function (visible) {
             this.mouseState$.next(visible);
         };
-        /**
-         * @template T
-         * @param {?} key
-         * @param {?} value
-         * @return {?}
-         */
-        NzDropdownMenuComponent.prototype.setValue = /**
-         * @template T
-         * @param {?} key
-         * @param {?} value
-         * @return {?}
-         */
-        function (key, value) {
+        NzDropdownMenuComponent.prototype.setValue = function (key, value) {
             this[key] = value;
             this.cdr.markForCheck();
         };
-        /**
-         * @return {?}
-         */
-        NzDropdownMenuComponent.prototype.ngAfterContentInit = /**
-         * @return {?}
-         */
-        function () {
+        NzDropdownMenuComponent.prototype.ngAfterContentInit = function () {
             this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
-        };
-        NzDropdownMenuComponent.decorators = [
-            { type: core.Component, args: [{
-                        selector: "nz-dropdown-menu",
-                        exportAs: "nzDropdownMenu",
-                        animations: [animation.slideMotion],
-                        providers: [
-                            menu.MenuService,
-                            /** menu is inside dropdown-menu component **/
-                            {
-                                provide: menu.NzIsMenuInsideDropDownToken,
-                                useValue: true
-                            }
-                        ],
-                        template: "\n    <ng-template>\n      <div\n        class=\"ant-dropdown\"\n        [ngClass]=\"nzOverlayClassName\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@slideMotion]=\"'enter'\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        (mouseenter)=\"setMouseState(true)\"\n        (mouseleave)=\"setMouseState(false)\"\n      >\n        <ng-content></ng-content>\n      </div>\n    </ng-template>\n  ",
-                        preserveWhitespaces: false,
-                        encapsulation: core.ViewEncapsulation.None,
-                        changeDetection: core.ChangeDetectionStrategy.OnPush
-                    }] }
-        ];
-        /** @nocollapse */
-        NzDropdownMenuComponent.ctorParameters = function () { return [
-            { type: core.ChangeDetectorRef },
-            { type: core.ElementRef },
-            { type: core.Renderer2 },
-            { type: core.ViewContainerRef },
-            { type: menu.MenuService },
-            { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] }
-        ]; };
-        NzDropdownMenuComponent.propDecorators = {
-            templateRef: [{ type: core.ViewChild, args: [core.TemplateRef, { static: true },] }]
         };
         return NzDropdownMenuComponent;
     }());
-    if (false) {
-        /** @type {?} */
-        NzDropdownMenuComponent.prototype.mouseState$;
-        /** @type {?} */
-        NzDropdownMenuComponent.prototype.isChildSubMenuOpen$;
-        /** @type {?} */
-        NzDropdownMenuComponent.prototype.descendantMenuItemClick$;
-        /** @type {?} */
-        NzDropdownMenuComponent.prototype.nzOverlayClassName;
-        /** @type {?} */
-        NzDropdownMenuComponent.prototype.nzOverlayStyle;
-        /** @type {?} */
-        NzDropdownMenuComponent.prototype.templateRef;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropdownMenuComponent.prototype.cdr;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropdownMenuComponent.prototype.elementRef;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzDropdownMenuComponent.prototype.renderer;
-        /** @type {?} */
-        NzDropdownMenuComponent.prototype.viewContainerRef;
-        /** @type {?} */
-        NzDropdownMenuComponent.prototype.nzMenuService;
-        /** @type {?} */
-        NzDropdownMenuComponent.prototype.noAnimation;
-    }
+    NzDropdownMenuComponent.decorators = [
+        { type: i0.Component, args: [{
+                    selector: "nz-dropdown-menu",
+                    exportAs: "nzDropdownMenu",
+                    animations: [animation.slideMotion],
+                    providers: [
+                        menu.MenuService,
+                        /** menu is inside dropdown-menu component **/
+                        {
+                            provide: menu.NzIsMenuInsideDropDownToken,
+                            useValue: true
+                        }
+                    ],
+                    template: "\n    <ng-template>\n      <div\n        class=\"ant-dropdown\"\n        [ngClass]=\"nzOverlayClassName\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@slideMotion]=\"'enter'\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        (mouseenter)=\"setMouseState(true)\"\n        (mouseleave)=\"setMouseState(false)\"\n      >\n        <ng-content></ng-content>\n      </div>\n    </ng-template>\n  ",
+                    preserveWhitespaces: false,
+                    encapsulation: i0.ViewEncapsulation.None,
+                    changeDetection: i0.ChangeDetectionStrategy.OnPush
+                },] }
+    ];
+    NzDropdownMenuComponent.ctorParameters = function () { return [
+        { type: i0.ChangeDetectorRef },
+        { type: i0.ElementRef },
+        { type: i0.Renderer2 },
+        { type: i0.ViewContainerRef },
+        { type: menu.MenuService },
+        { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: i0.Host }, { type: i0.Optional }] }
+    ]; };
+    NzDropdownMenuComponent.propDecorators = {
+        templateRef: [{ type: i0.ViewChild, args: [i0.TemplateRef, { static: true },] }]
+    };
 
     /**
-     * @fileoverview added by tsickle
-     * Generated from: dropdown.module.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzDropDownModule = /** @class */ (function () {
         function NzDropDownModule() {
         }
-        NzDropDownModule.decorators = [
-            { type: core.NgModule, args: [{
-                        imports: [
-                            common.CommonModule,
-                            overlay.OverlayModule,
-                            forms.FormsModule,
-                            button.NzButtonModule,
-                            menu.NzMenuModule,
-                            icon.NzIconModule,
-                            noAnimation.NzNoAnimationModule,
-                            platform.PlatformModule,
-                            overlay$1.NzOverlayModule,
-                            NzContextMenuServiceModule,
-                            outlet.NzOutletModule
-                        ],
-                        entryComponents: [NzDropdownMenuComponent],
-                        declarations: [NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective],
-                        exports: [menu.NzMenuModule, NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective]
-                    },] }
-        ];
         return NzDropDownModule;
     }());
+    NzDropDownModule.decorators = [
+        { type: i0.NgModule, args: [{
+                    imports: [
+                        common.CommonModule,
+                        i1.OverlayModule,
+                        forms.FormsModule,
+                        button.NzButtonModule,
+                        menu.NzMenuModule,
+                        icon.NzIconModule,
+                        noAnimation.NzNoAnimationModule,
+                        platform.PlatformModule,
+                        overlay.NzOverlayModule,
+                        NzContextMenuServiceModule,
+                        outlet.NzOutletModule
+                    ],
+                    entryComponents: [NzDropdownMenuComponent],
+                    declarations: [NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective],
+                    exports: [menu.NzMenuModule, NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective]
+                },] }
+    ];
 
     /**
-     * @fileoverview added by tsickle
-     * Generated from: context-menu.service.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
-    /** @type {?} */
     var listOfPositions$1 = [
-        new overlay.ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'top' }),
-        new overlay.ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' }),
-        new overlay.ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'end', overlayY: 'bottom' }),
-        new overlay.ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'end', overlayY: 'top' })
+        new i1.ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'top' }),
+        new i1.ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' }),
+        new i1.ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'end', overlayY: 'bottom' }),
+        new i1.ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'end', overlayY: 'top' })
     ];
     var NzContextMenuService = /** @class */ (function () {
         function NzContextMenuService(overlay) {
@@ -863,24 +673,13 @@
             this.overlayRef = null;
             this.closeSubscription = rxjs.Subscription.EMPTY;
         }
-        /**
-         * @param {?} $event
-         * @param {?} nzDropdownMenuComponent
-         * @return {?}
-         */
-        NzContextMenuService.prototype.create = /**
-         * @param {?} $event
-         * @param {?} nzDropdownMenuComponent
-         * @return {?}
-         */
-        function ($event, nzDropdownMenuComponent) {
+        NzContextMenuService.prototype.create = function ($event, nzDropdownMenuComponent) {
             var _this = this;
             this.close(true);
             var x = $event.x, y = $event.y;
             if ($event instanceof MouseEvent) {
                 $event.preventDefault();
             }
-            /** @type {?} */
             var positionStrategy = this.overlay
                 .position()
                 .flexibleConnectedTo({ x: x, y: y })
@@ -891,33 +690,14 @@
                 disposeOnNavigation: true,
                 scrollStrategy: this.overlay.scrollStrategies.close()
             });
-            this.closeSubscription = rxjs.merge(nzDropdownMenuComponent.descendantMenuItemClick$, rxjs.fromEvent(document, 'click').pipe(operators.filter((/**
-             * @param {?} event
-             * @return {?}
-             */
-            function (event) { return !!_this.overlayRef && !_this.overlayRef.overlayElement.contains((/** @type {?} */ (event.target))); })), 
+            this.closeSubscription = rxjs.merge(nzDropdownMenuComponent.descendantMenuItemClick$, rxjs.fromEvent(document, 'click').pipe(operators.filter(function (event) { return !!_this.overlayRef && !_this.overlayRef.overlayElement.contains(event.target); }), 
             /** handle firefox contextmenu event **/
-            operators.filter((/**
-             * @param {?} event
-             * @return {?}
-             */
-            function (event) { return event.button !== 2; })), operators.take(1))).subscribe((/**
-             * @return {?}
-             */
-            function () {
+            operators.filter(function (event) { return event.button !== 2; }), operators.take(1))).subscribe(function () {
                 _this.close();
-            }));
+            });
             this.overlayRef.attach(new portal.TemplatePortal(nzDropdownMenuComponent.templateRef, nzDropdownMenuComponent.viewContainerRef));
         };
-        /**
-         * @param {?=} clear
-         * @return {?}
-         */
-        NzContextMenuService.prototype.close = /**
-         * @param {?=} clear
-         * @return {?}
-         */
-        function (clear) {
+        NzContextMenuService.prototype.close = function (clear) {
             if (clear === void 0) { clear = false; }
             if (this.overlayRef) {
                 this.overlayRef.detach();
@@ -928,35 +708,26 @@
                 this.closeSubscription.unsubscribe();
             }
         };
-        NzContextMenuService.decorators = [
-            { type: core.Injectable, args: [{
-                        providedIn: NzContextMenuServiceModule
-                    },] }
-        ];
-        /** @nocollapse */
-        NzContextMenuService.ctorParameters = function () { return [
-            { type: overlay.Overlay }
-        ]; };
-        /** @nocollapse */ NzContextMenuService.ɵprov = core.ɵɵdefineInjectable({ factory: function NzContextMenuService_Factory() { return new NzContextMenuService(core.ɵɵinject(overlay.Overlay)); }, token: NzContextMenuService, providedIn: NzContextMenuServiceModule });
         return NzContextMenuService;
     }());
-    if (false) {
-        /**
-         * @type {?}
-         * @private
-         */
-        NzContextMenuService.prototype.overlayRef;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzContextMenuService.prototype.closeSubscription;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzContextMenuService.prototype.overlay;
-    }
+    NzContextMenuService.ɵprov = i0.ɵɵdefineInjectable({ factory: function NzContextMenuService_Factory() { return new NzContextMenuService(i0.ɵɵinject(i1.Overlay)); }, token: NzContextMenuService, providedIn: NzContextMenuServiceModule });
+    NzContextMenuService.decorators = [
+        { type: i0.Injectable, args: [{
+                    providedIn: NzContextMenuServiceModule
+                },] }
+    ];
+    NzContextMenuService.ctorParameters = function () { return [
+        { type: i1.Overlay }
+    ]; };
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
+
+    /**
+     * Generated bundle index. Do not edit.
+     */
 
     exports.NzContextMenuService = NzContextMenuService;
     exports.NzContextMenuServiceModule = NzContextMenuServiceModule;

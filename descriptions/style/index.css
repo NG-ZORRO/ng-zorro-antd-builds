@@ -2,12 +2,65 @@
 /* stylelint-disable no-duplicate-selectors */
 /* stylelint-disable */
 /* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
-.ant-descriptions-title {
+.ant-modal,
+.ant-image-preview {
+  pointer-events: none;
+}
+.ant-modal.zoom-enter,
+.ant-modal.zoom-appear,
+.ant-image-preview.zoom-enter,
+.ant-image-preview.zoom-appear {
+  transform: none;
+  opacity: 0;
+  animation-duration: 0.3s;
+  user-select: none;
+}
+.ant-modal-mask,
+.ant-image-preview-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  filter: alpha(opacity=50);
+}
+.ant-modal-mask-hidden,
+.ant-image-preview-mask-hidden {
+  display: none;
+}
+.ant-modal-wrap,
+.ant-image-preview-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  outline: 0;
+  -webkit-overflow-scrolling: touch;
+}
+.ant-descriptions-header {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
+}
+.ant-descriptions-title {
+  flex: auto;
+  overflow: hidden;
   color: rgba(0, 0, 0, 0.85);
   font-weight: bold;
   font-size: 16px;
   line-height: 1.5715;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.ant-descriptions-extra {
+  margin-left: auto;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
 }
 .ant-descriptions-view {
   width: 100%;
@@ -30,15 +83,16 @@
   font-weight: normal;
   font-size: 14px;
   line-height: 1.5715;
+  text-align: start;
 }
 .ant-descriptions-item-label::after {
+  content: ':';
   position: relative;
   top: -0.5px;
   margin: 0 8px 0 2px;
-  content: ' ';
 }
-.ant-descriptions-item-colon::after {
-  content: ':';
+.ant-descriptions-item-label.ant-descriptions-item-no-colon::after {
+  content: ' ';
 }
 .ant-descriptions-item-no-label::after {
   margin: 0;
@@ -46,15 +100,24 @@
 }
 .ant-descriptions-item-content {
   display: table-cell;
-  color: rgba(0, 0, 0, 0.65);
+  flex: 1;
+  color: rgba(0, 0, 0, 0.85);
   font-size: 14px;
   line-height: 1.5715;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .ant-descriptions-item {
   padding-bottom: 0;
+  vertical-align: top;
 }
-.ant-descriptions-item > span {
-  display: inline-block;
+.ant-descriptions-item-container {
+  display: flex;
+}
+.ant-descriptions-item-container .ant-descriptions-item-label,
+.ant-descriptions-item-container .ant-descriptions-item-content {
+  display: inline-flex;
+  align-items: baseline;
 }
 .ant-descriptions-middle .ant-descriptions-row > th,
 .ant-descriptions-middle .ant-descriptions-row > td {

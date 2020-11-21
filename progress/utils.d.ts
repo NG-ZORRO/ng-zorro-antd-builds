@@ -7,8 +7,8 @@ export declare const sortGradient: (gradients: NzProgressGradientProgress) => {
     key: number;
     value: string;
 }[];
-export declare const handleCircleGradient: (strokeColor: NzProgressGradientProgress) => {
+export declare const handleCircleGradient: (strokeColor: NzProgressGradientProgress) => Array<{
     offset: string;
     color: string;
-}[];
+}>;
 export declare const handleLinearGradient: (strokeColor: NzProgressColorGradient) => string;

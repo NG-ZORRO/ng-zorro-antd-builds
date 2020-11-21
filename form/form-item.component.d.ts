@@ -7,10 +7,6 @@ export declare type NzFormControlStatusType = 'success' | 'error' | 'warning' | 
 /** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
 export declare class NzFormItemComponent implements OnDestroy, OnDestroy {
     private cdr;
-    /**
-     * @deprecated 10.0.0. 'nzFlex' is deprecated and going to be removed in 10.0.0.
-     */
-    set nzFlex(_: boolean);
     status: NzFormControlStatusType;
     hasFeedback: boolean;
     withHelpClass: boolean;

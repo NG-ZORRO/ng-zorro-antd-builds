@@ -81,7 +81,7 @@ describe('icon migration', () => {
       export class MyComp {
       }`);
             yield runMigration();
-            expect(warnOutput).toContain('index.ts@5:14 - Found deprecated css selector "i.anticon" component. ' +
+            expect(warnOutput).toContain('/index.ts@5:14 - Found deprecated css selector "i.anticon" component. ' +
                 'Use "i[nz-icon]" to instead please.');
         }));
     });

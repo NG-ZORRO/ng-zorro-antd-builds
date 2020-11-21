@@ -20,6 +20,7 @@ export declare class NzResizableDirective implements AfterViewInit, OnDestroy {
     private ngZone;
     static ngAcceptInputType_nzLockAspectRatio: BooleanInput;
     static ngAcceptInputType_nzPreview: BooleanInput;
+    static ngAcceptInputType_nzDisabled: BooleanInput;
     nzBounds: 'window' | 'parent' | ElementRef<HTMLElement>;
     nzMaxHeight?: number;
     nzMaxWidth?: number;
@@ -30,6 +31,7 @@ export declare class NzResizableDirective implements AfterViewInit, OnDestroy {
     nzMinColumn: number;
     nzLockAspectRatio: boolean;
     nzPreview: boolean;
+    nzDisabled: boolean;
     readonly nzResize: EventEmitter<NzResizeEvent>;
     readonly nzResizeEnd: EventEmitter<NzResizeEvent>;
     readonly nzResizeStart: EventEmitter<NzResizeEvent>;

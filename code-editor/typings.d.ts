@@ -2,8 +2,6 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { InjectionToken } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
 import { editor } from 'monaco-editor';
 import IStandAloneEditorConstructionOptions = editor.IStandaloneEditorConstructionOptions;
 import IDiffEditorConstructionOptions = editor.IDiffEditorConstructionOptions;
@@ -16,13 +14,3 @@ export declare enum NzCodeEditorLoadingStatus {
     LOADING = "loading",
     LOADED = "LOADED"
 }
-export interface NzCodeEditorConfig {
-    assetsRoot?: string | SafeUrl;
-    defaultEditorOption?: JoinedEditorOptions;
-    useStaticLoading?: boolean;
-    onLoad?(): void;
-    onFirstEditorInit?(): void;
-    onInit?(): void;
-}
-export declare const NZ_CODE_EDITOR_CONFIG: InjectionToken<NzCodeEditorConfig>;
-export declare function NZ_CODE_EDITOR_CONFIG_FACTORY(): NzCodeEditorConfig;

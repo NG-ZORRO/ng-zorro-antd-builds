@@ -2,9 +2,8 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { Directive, ElementRef, Renderer2, Input, NgModule } from '@angular/core';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: transition-patch.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 /**
  * hack the bug
@@ -12,19 +11,12 @@ import { Directive, ElementRef, Renderer2, Input, NgModule } from '@angular/core
  * https://github.com/angular/angular/issues/34718
  */
 class NzTransitionPatchDirective {
-    /**
-     * @param {?} elementRef
-     * @param {?} renderer
-     */
     constructor(elementRef, renderer) {
         this.elementRef = elementRef;
         this.renderer = renderer;
         this.hidden = null;
         this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', '');
     }
-    /**
-     * @return {?}
-     */
     setHiddenAttribute() {
         if (this.hidden === true) {
             this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', '');
@@ -36,25 +28,18 @@ class NzTransitionPatchDirective {
             this.renderer.setAttribute(this.elementRef.nativeElement, 'hidden', this.hidden);
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnChanges() {
         this.setHiddenAttribute();
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
         this.setHiddenAttribute();
     }
 }
 NzTransitionPatchDirective.decorators = [
     { type: Directive, args: [{
-                selector: '[nz-button],nz-button-group,[nz-icon],[nz-menu-item],[nz-submenu],nz-select-top-control,nz-select-placeholder'
+                selector: '[nz-button], nz-button-group, [nz-icon], [nz-menu-item], [nz-submenu], nz-select-top-control, nz-select-placeholder, nz-input-group'
             },] }
 ];
-/** @nocollapse */
 NzTransitionPatchDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: Renderer2 }
@@ -62,25 +47,10 @@ NzTransitionPatchDirective.ctorParameters = () => [
 NzTransitionPatchDirective.propDecorators = {
     hidden: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzTransitionPatchDirective.prototype.hidden;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTransitionPatchDirective.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTransitionPatchDirective.prototype.renderer;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: transition-patch.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzTransitionPatchModule {
 }
@@ -93,15 +63,12 @@ NzTransitionPatchModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-core-transition-patch.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzTransitionPatchDirective as ɵNzTransitionPatchDirective, NzTransitionPatchModule as ɵNzTransitionPatchModule };

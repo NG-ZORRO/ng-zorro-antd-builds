@@ -10,9 +10,8 @@ import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: page-header-cells.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPageHeaderTitleDirective {
 }
@@ -98,55 +97,33 @@ NzPageHeaderAvatarDirective.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: page-header.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
+const NZ_CONFIG_MODULE_NAME = 'pageHeader';
 class NzPageHeaderComponent {
-    /**
-     * @param {?} location
-     * @param {?} nzConfigService
-     * @param {?} elementRef
-     * @param {?} nzResizeObserver
-     * @param {?} cdr
-     */
     constructor(location, nzConfigService, elementRef, nzResizeObserver, cdr) {
         this.location = location;
         this.nzConfigService = nzConfigService;
         this.elementRef = elementRef;
         this.nzResizeObserver = nzResizeObserver;
         this.cdr = cdr;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzBackIcon = null;
         this.nzGhost = true;
         this.nzBack = new EventEmitter();
         this.compact = false;
         this.destroy$ = new Subject();
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
         this.nzResizeObserver
             .observe(this.elementRef)
-            .pipe(map((/**
-         * @param {?} __0
-         * @return {?}
-         */
-        ([entry]) => entry.contentRect.width)), takeUntil(this.destroy$))
-            .subscribe((/**
-         * @param {?} width
-         * @return {?}
-         */
-        (width) => {
+            .pipe(map(([entry]) => entry.contentRect.width), takeUntil(this.destroy$))
+            .subscribe((width) => {
             this.compact = width < 768;
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     onBack() {
         if (this.nzBack.observers.length) {
             this.nzBack.emit();
@@ -158,9 +135,6 @@ class NzPageHeaderComponent {
             this.location.back();
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -213,9 +187,8 @@ NzPageHeaderComponent.decorators = [
                     '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb',
                     '[class.ant-page-header-compact]': 'compact'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzPageHeaderComponent.ctorParameters = () => [
     { type: Location, decorators: [{ type: Optional }] },
     { type: NzConfigService },
@@ -233,58 +206,14 @@ NzPageHeaderComponent.propDecorators = {
     nzPageHeaderBreadcrumb: [{ type: ContentChild, args: [NzPageHeaderBreadcrumbDirective, { static: false },] }]
 };
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", Boolean)
 ], NzPageHeaderComponent.prototype, "nzGhost", void 0);
-if (false) {
-    /** @type {?} */
-    NzPageHeaderComponent.prototype.nzBackIcon;
-    /** @type {?} */
-    NzPageHeaderComponent.prototype.nzTitle;
-    /** @type {?} */
-    NzPageHeaderComponent.prototype.nzSubtitle;
-    /** @type {?} */
-    NzPageHeaderComponent.prototype.nzGhost;
-    /** @type {?} */
-    NzPageHeaderComponent.prototype.nzBack;
-    /** @type {?} */
-    NzPageHeaderComponent.prototype.nzPageHeaderFooter;
-    /** @type {?} */
-    NzPageHeaderComponent.prototype.nzPageHeaderBreadcrumb;
-    /** @type {?} */
-    NzPageHeaderComponent.prototype.compact;
-    /** @type {?} */
-    NzPageHeaderComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzPageHeaderComponent.prototype.location;
-    /** @type {?} */
-    NzPageHeaderComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzPageHeaderComponent.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzPageHeaderComponent.prototype.nzResizeObserver;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzPageHeaderComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: page-header.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const NzPageHeaderCells = [
     NzPageHeaderTitleDirective,
     NzPageHeaderSubtitleDirective,
@@ -306,15 +235,12 @@ NzPageHeaderModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-page-header.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzPageHeaderAvatarDirective, NzPageHeaderBreadcrumbDirective, NzPageHeaderComponent, NzPageHeaderContentDirective, NzPageHeaderExtraDirective, NzPageHeaderFooterDirective, NzPageHeaderModule, NzPageHeaderSubtitleDirective, NzPageHeaderTagDirective, NzPageHeaderTitleDirective };

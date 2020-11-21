@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ruleUpgradeData = void 0;
 const data_1 = require("./data");
 /** Upgrade data that will be used for the NG-ZORRO ng-update schematic. */
 exports.ruleUpgradeData = {

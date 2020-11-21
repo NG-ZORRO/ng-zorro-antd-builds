@@ -3,11 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { NzProgressCirclePath, NzProgressFormatter, NzProgressGapPositionType, NzProgressStatusType, NzProgressStepItem, NzProgressStrokeColorType, NzProgressStrokeLinecapType, NzProgressTypeType } from './typings';
 export declare class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
     nzConfigService: NzConfigService;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzSuccessPercent: NumberInput;
     static ngAcceptInputType_nzPercent: NumberInput;
     static ngAcceptInputType_nzStrokeWidth: NumberInput;
@@ -26,7 +27,7 @@ export declare class NzProgressComponent implements OnChanges, OnInit, OnDestroy
     nzType: NzProgressTypeType;
     nzGapPosition: NzProgressGapPositionType;
     nzStrokeLinecap: NzProgressStrokeLinecapType;
-    nzSteps?: number;
+    nzSteps: number;
     steps: NzProgressStepItem[];
     /** Gradient style when `nzType` is `line`. */
     lineGradient: string | null;

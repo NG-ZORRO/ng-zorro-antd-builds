@@ -11,9 +11,8 @@ import { NzBreakpointEnum, gridResponsiveMap, NzBreakpointService } from 'ng-zor
 import { startWith, takeUntil, switchMap, auditTime, tap } from 'rxjs/operators';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: descriptions-item.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDescriptionsItemComponent {
     constructor() {
@@ -21,15 +20,9 @@ class NzDescriptionsItemComponent {
         this.nzTitle = '';
         this.inputChange$ = new Subject();
     }
-    /**
-     * @return {?}
-     */
     ngOnChanges() {
         this.inputChange$.next();
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.inputChange$.complete();
     }
@@ -46,7 +39,7 @@ NzDescriptionsItemComponent.decorators = [
   `,
                 exportAs: 'nzDescriptionsItem',
                 preserveWhitespaces: false
-            }] }
+            },] }
 ];
 NzDescriptionsItemComponent.propDecorators = {
     content: [{ type: ViewChild, args: [TemplateRef, { static: true },] }],
@@ -57,27 +50,12 @@ __decorate([
     InputNumber(),
     __metadata("design:type", Object)
 ], NzDescriptionsItemComponent.prototype, "nzSpan", void 0);
-if (false) {
-    /** @type {?} */
-    NzDescriptionsItemComponent.ngAcceptInputType_nzSpan;
-    /** @type {?} */
-    NzDescriptionsItemComponent.prototype.content;
-    /** @type {?} */
-    NzDescriptionsItemComponent.prototype.nzSpan;
-    /** @type {?} */
-    NzDescriptionsItemComponent.prototype.nzTitle;
-    /** @type {?} */
-    NzDescriptionsItemComponent.prototype.inputChange$;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: descriptions.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'descriptions';
-/** @type {?} */
+const NZ_CONFIG_MODULE_NAME = 'descriptions';
 const defaultColumnMap = {
     xxl: 3,
     xl: 3,
@@ -87,15 +65,11 @@ const defaultColumnMap = {
     xs: 1
 };
 class NzDescriptionsComponent {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} cdr
-     * @param {?} breakpointService
-     */
     constructor(nzConfigService, cdr, breakpointService) {
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
         this.breakpointService = breakpointService;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzBordered = false;
         this.nzLayout = 'horizontal';
         this.nzColumn = defaultColumnMap;
@@ -107,81 +81,43 @@ class NzDescriptionsComponent {
         this.breakpoint = NzBreakpointEnum.md;
         this.destroy$ = new Subject();
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         if (changes.nzColumn) {
             this.prepareMatrix();
         }
     }
-    /**
-     * @return {?}
-     */
     ngAfterContentInit() {
-        /** @type {?} */
         const contentChange$ = this.items.changes.pipe(startWith(this.items), takeUntil(this.destroy$));
-        merge(contentChange$, contentChange$.pipe(switchMap((/**
-         * @return {?}
-         */
-        () => merge(...this.items.map((/**
-         * @param {?} i
-         * @return {?}
-         */
-        i => i.inputChange$))).pipe(auditTime(16))))), this.breakpointService.subscribe(gridResponsiveMap).pipe(tap((/**
-         * @param {?} bp
-         * @return {?}
-         */
-        bp => (this.breakpoint = bp)))))
+        merge(contentChange$, contentChange$.pipe(switchMap(() => merge(...this.items.map(i => i.inputChange$)).pipe(auditTime(16)))), this.breakpointService.subscribe(gridResponsiveMap).pipe(tap(bp => (this.breakpoint = bp))))
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => {
+            .subscribe(() => {
             this.prepareMatrix();
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
     }
     /**
      * Prepare the render matrix according to description items' spans.
-     * @private
-     * @return {?}
      */
     prepareMatrix() {
         if (!this.items) {
             return;
         }
-        /** @type {?} */
         let currentRow = [];
-        /** @type {?} */
         let width = 0;
-        /** @type {?} */
         const column = (this.realColumn = this.getColumn());
-        /** @type {?} */
         const items = this.items.toArray();
-        /** @type {?} */
         const length = items.length;
-        /** @type {?} */
         const matrix = [];
-        /** @type {?} */
-        const flushRow = (/**
-         * @return {?}
-         */
-        () => {
+        const flushRow = () => {
             matrix.push(currentRow);
             currentRow = [];
             width = 0;
-        });
+        };
         for (let i = 0; i < length; i++) {
-            /** @type {?} */
             const item = items[i];
             const { nzTitle: title, content, nzSpan: span } = item;
             width += span;
@@ -205,10 +141,6 @@ class NzDescriptionsComponent {
         }
         this.itemMatrix = matrix;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     getColumn() {
         if (typeof this.nzColumn !== 'number') {
             return this.nzColumn[this.breakpoint];
@@ -224,8 +156,13 @@ NzDescriptionsComponent.decorators = [
                 exportAs: 'nzDescriptions',
                 preserveWhitespaces: false,
                 template: `
-    <div *ngIf="nzTitle" class="ant-descriptions-title">
-      <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+    <div *ngIf="nzTitle || nzExtra" class="ant-descriptions-header">
+      <div *ngIf="nzTitle" class="ant-descriptions-title">
+        <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+      </div>
+      <div *ngIf="nzExtra" class="ant-descriptions-extra">
+        <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+      </div>
     </div>
     <div class="ant-descriptions-view">
       <table>
@@ -319,9 +256,8 @@ NzDescriptionsComponent.decorators = [
                     '[class.ant-descriptions-middle]': 'nzSize === "middle"',
                     '[class.ant-descriptions-small]': 'nzSize === "small"'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzDescriptionsComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ChangeDetectorRef },
@@ -334,75 +270,31 @@ NzDescriptionsComponent.propDecorators = {
     nzColumn: [{ type: Input }],
     nzSize: [{ type: Input }],
     nzTitle: [{ type: Input }],
+    nzExtra: [{ type: Input }],
     nzColon: [{ type: Input }]
 };
 __decorate([
-    InputBoolean(), WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    InputBoolean(),
+    WithConfig(),
     __metadata("design:type", Boolean)
 ], NzDescriptionsComponent.prototype, "nzBordered", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", Object)
 ], NzDescriptionsComponent.prototype, "nzColumn", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", String)
 ], NzDescriptionsComponent.prototype, "nzSize", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzDescriptionsComponent.prototype, "nzColon", void 0);
-if (false) {
-    /** @type {?} */
-    NzDescriptionsComponent.ngAcceptInputType_nzBordered;
-    /** @type {?} */
-    NzDescriptionsComponent.ngAcceptInputType_nzColon;
-    /** @type {?} */
-    NzDescriptionsComponent.prototype.items;
-    /** @type {?} */
-    NzDescriptionsComponent.prototype.nzBordered;
-    /** @type {?} */
-    NzDescriptionsComponent.prototype.nzLayout;
-    /** @type {?} */
-    NzDescriptionsComponent.prototype.nzColumn;
-    /** @type {?} */
-    NzDescriptionsComponent.prototype.nzSize;
-    /** @type {?} */
-    NzDescriptionsComponent.prototype.nzTitle;
-    /** @type {?} */
-    NzDescriptionsComponent.prototype.nzColon;
-    /** @type {?} */
-    NzDescriptionsComponent.prototype.itemMatrix;
-    /** @type {?} */
-    NzDescriptionsComponent.prototype.realColumn;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDescriptionsComponent.prototype.breakpoint;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDescriptionsComponent.prototype.destroy$;
-    /** @type {?} */
-    NzDescriptionsComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDescriptionsComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzDescriptionsComponent.prototype.breakpointService;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: descriptions.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDescriptionsModule {
 }
@@ -415,37 +307,17 @@ NzDescriptionsModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: typings.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @record
- */
-function NzDescriptionsItemRenderProps() { }
-if (false) {
-    /** @type {?} */
-    NzDescriptionsItemRenderProps.prototype.title;
-    /** @type {?} */
-    NzDescriptionsItemRenderProps.prototype.span;
-    /** @type {?} */
-    NzDescriptionsItemRenderProps.prototype.content;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-descriptions.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzDescriptionsComponent, NzDescriptionsItemComponent, NzDescriptionsModule };

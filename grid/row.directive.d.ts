@@ -17,10 +17,6 @@ export declare class NzRowDirective implements OnInit, OnChanges, AfterViewInit,
     ngZone: NgZone;
     platform: Platform;
     private breakpointService;
-    /**
-     * @deprecated don't need nzType="flex" after 9.0
-     */
-    nzType: 'flex' | null;
     nzAlign: NzAlign | null;
     nzJustify: NzJustify | null;
     nzGutter: number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null;

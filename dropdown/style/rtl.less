@@ -16,7 +16,23 @@
   }
 
   &-menu {
+    &&-rtl {
+      direction: rtl;
+      text-align: right;
+    }
+
+    &-item-group-title {
+      .@{dropdown-prefix-cls}-rtl & {
+        direction: rtl;
+        text-align: right;
+      }
+    }
+
     &-submenu-popup {
+      &.@{dropdown-prefix-cls}-menu-submenu-rtl {
+        transform-origin: 100% 0;
+      }
+
       ul,
       li {
         .@{dropdown-prefix-cls}-rtl & {

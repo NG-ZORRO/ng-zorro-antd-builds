@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.addRequiredModules = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
 const config_1 = require("@schematics/angular/utility/config");
 const ng_ast_utils_1 = require("@schematics/angular/utility/ng-ast-utils");

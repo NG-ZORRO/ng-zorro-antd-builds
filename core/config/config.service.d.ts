@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
 import { NzConfig, NzConfigKey } from './config';
 export declare class NzConfigService {
@@ -17,4 +18,4 @@ export declare class NzConfigService {
  * This decorator is used to decorate properties. If a property is decorated, it would try to load default value from
  * config.
  */
-export declare function WithConfig<T>(componentName: NzConfigKey): (target: any, propName: any, originalDescriptor?: TypedPropertyDescriptor<T> | undefined) => any;
+export declare function WithConfig<T>(): (target: NzSafeAny, propName: NzSafeAny, originalDescriptor?: TypedPropertyDescriptor<T> | undefined) => NzSafeAny;

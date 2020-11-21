@@ -6,15 +6,13 @@ import { OnChanges, SimpleChanges } from '@angular/core';
 import { NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkeletonButtonShape, NzSkeletonButtonSize, NzSkeletonInputSize } from './skeleton.type';
 export declare class NzSkeletonElementDirective {
     nzActive: boolean;
-    nzType: 'button' | 'input' | 'avatar';
+    nzType: 'button' | 'input' | 'avatar' | 'image';
 }
 export declare class NzSkeletonElementButtonComponent {
     nzShape: NzSkeletonButtonShape;
     nzSize: NzSkeletonButtonSize;
 }
 export declare class NzSkeletonElementAvatarComponent implements OnChanges {
-    static ngAcceptInputType_nzShape: NzSkeletonAvatarShape | undefined | null;
-    static ngAcceptInputType_AvatarSize: NzSkeletonAvatarSize | undefined | null;
     nzShape: NzSkeletonAvatarShape;
     nzSize: NzSkeletonAvatarSize;
     styleMap: {};
@@ -22,4 +20,6 @@ export declare class NzSkeletonElementAvatarComponent implements OnChanges {
 }
 export declare class NzSkeletonElementInputComponent {
     nzSize: NzSkeletonInputSize;
+}
+export declare class NzSkeletonElementImageComponent {
 }

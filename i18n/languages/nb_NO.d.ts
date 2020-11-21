@@ -4,79 +4,6 @@
  */
 declare const _default: {
     locale: string;
-    DatePicker: {
-        lang: {
-            placeholder: string;
-            rangePlaceholder: string[];
-            locale: string;
-            today: string;
-            now: string;
-            backToToday: string;
-            ok: string;
-            clear: string;
-            month: string;
-            year: string;
-            timeSelect: string;
-            dateSelect: string;
-            monthSelect: string;
-            yearSelect: string;
-            decadeSelect: string;
-            yearFormat: string;
-            dateFormat: string;
-            dayFormat: string;
-            dateTimeFormat: string;
-            monthBeforeYear: boolean;
-            previousMonth: string;
-            nextMonth: string;
-            previousYear: string;
-            nextYear: string;
-            previousDecade: string;
-            nextDecade: string;
-            previousCentury: string;
-            nextCentury: string;
-        };
-        timePickerLocale: {
-            placeholder: string;
-        };
-    };
-    TimePicker: {
-        placeholder: string;
-    };
-    Calendar: {
-        lang: {
-            placeholder: string;
-            rangePlaceholder: string[];
-            locale: string;
-            today: string;
-            now: string;
-            backToToday: string;
-            ok: string;
-            clear: string;
-            month: string;
-            year: string;
-            timeSelect: string;
-            dateSelect: string;
-            monthSelect: string;
-            yearSelect: string;
-            decadeSelect: string;
-            yearFormat: string;
-            dateFormat: string;
-            dayFormat: string;
-            dateTimeFormat: string;
-            monthBeforeYear: boolean;
-            previousMonth: string;
-            nextMonth: string;
-            previousYear: string;
-            nextYear: string;
-            previousDecade: string;
-            nextDecade: string;
-            previousCentury: string;
-            nextCentury: string;
-        };
-        timePickerLocale: {
-            placeholder: string;
-        };
-    };
     Pagination: {
         items_per_page: string;
         jump_to: string;
@@ -88,12 +15,115 @@ declare const _default: {
         prev_3: string;
         next_3: string;
     };
+    DatePicker: {
+        lang: {
+            placeholder: string;
+            yearPlaceholder: string;
+            quarterPlaceholder: string;
+            monthPlaceholder: string;
+            weekPlaceholder: string;
+            rangePlaceholder: string[];
+            rangeYearPlaceholder: string[];
+            rangeMonthPlaceholder: string[];
+            rangeWeekPlaceholder: string[];
+            locale: string;
+            today: string;
+            now: string;
+            backToToday: string;
+            ok: string;
+            clear: string;
+            month: string;
+            year: string;
+            timeSelect: string;
+            dateSelect: string;
+            weekSelect: string;
+            monthSelect: string;
+            yearSelect: string;
+            decadeSelect: string;
+            yearFormat: string;
+            dateFormat: string;
+            dayFormat: string;
+            dateTimeFormat: string;
+            monthBeforeYear: boolean;
+            previousMonth: string;
+            nextMonth: string;
+            previousYear: string;
+            nextYear: string;
+            previousDecade: string;
+            nextDecade: string;
+            previousCentury: string;
+            nextCentury: string;
+        };
+        timePickerLocale: {
+            placeholder: string;
+            rangePlaceholder: string[];
+        };
+    };
+    TimePicker: {
+        placeholder: string;
+        rangePlaceholder: string[];
+    };
+    Calendar: {
+        lang: {
+            placeholder: string;
+            yearPlaceholder: string;
+            quarterPlaceholder: string;
+            monthPlaceholder: string;
+            weekPlaceholder: string;
+            rangePlaceholder: string[];
+            rangeYearPlaceholder: string[];
+            rangeMonthPlaceholder: string[];
+            rangeWeekPlaceholder: string[];
+            locale: string;
+            today: string;
+            now: string;
+            backToToday: string;
+            ok: string;
+            clear: string;
+            month: string;
+            year: string;
+            timeSelect: string;
+            dateSelect: string;
+            weekSelect: string;
+            monthSelect: string;
+            yearSelect: string;
+            decadeSelect: string;
+            yearFormat: string;
+            dateFormat: string;
+            dayFormat: string;
+            dateTimeFormat: string;
+            monthBeforeYear: boolean;
+            previousMonth: string;
+            nextMonth: string;
+            previousYear: string;
+            nextYear: string;
+            previousDecade: string;
+            nextDecade: string;
+            previousCentury: string;
+            nextCentury: string;
+        };
+        timePickerLocale: {
+            placeholder: string;
+            rangePlaceholder: string[];
+        };
+    };
+    global: {
+        placeholder: string;
+    };
     Table: {
         filterTitle: string;
         filterConfirm: string;
         filterReset: string;
+        filterEmptyText: string;
         selectAll: string;
         selectInvert: string;
+        selectionAll: string;
+        sortTitle: string;
+        expand: string;
+        collapse: string;
+        triggerDesc: string;
+        triggerAsc: string;
+        cancelSort: string;
     };
     Modal: {
         okText: string;
@@ -105,9 +135,16 @@ declare const _default: {
         cancelText: string;
     };
     Transfer: {
+        titles: string[];
         searchPlaceholder: string;
         itemUnit: string;
         itemsUnit: string;
+        remove: string;
+        selectCurrent: string;
+        removeCurrent: string;
+        selectAll: string;
+        removeAll: string;
+        selectInvert: string;
     };
     Upload: {
         uploading: string;
@@ -118,6 +155,18 @@ declare const _default: {
     };
     Empty: {
         description: string;
+    };
+    Icon: {
+        icon: string;
+    };
+    Text: {
+        edit: string;
+        copy: string;
+        copied: string;
+        expand: string;
+    };
+    PageHeader: {
+        back: string;
     };
 };
 export default _default;

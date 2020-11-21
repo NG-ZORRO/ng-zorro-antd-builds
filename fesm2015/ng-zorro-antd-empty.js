@@ -1,5 +1,5 @@
-import { TemplatePortal, PortalInjector, ComponentPortal, PortalModule } from '@angular/cdk/portal';
-import { InjectionToken, TemplateRef, Type, Component, ChangeDetectionStrategy, ViewEncapsulation, ViewContainerRef, ChangeDetectorRef, Injector, Input, NgModule } from '@angular/core';
+import { TemplatePortal, ComponentPortal, PortalModule } from '@angular/cdk/portal';
+import { InjectionToken, TemplateRef, Type, Injector, Component, ChangeDetectionStrategy, ViewEncapsulation, ViewContainerRef, ChangeDetectorRef, Input, NgModule } from '@angular/core';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -8,21 +8,14 @@ import { CommonModule } from '@angular/common';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: config.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const NZ_EMPTY_COMPONENT_NAME = new InjectionToken('nz-empty-component-name');
 
 /**
- * @fileoverview added by tsickle
- * Generated from: embed-empty.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
- * @param {?} componentName
- * @return {?}
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 function getEmptySize(componentName) {
     switch (componentName) {
@@ -39,12 +32,6 @@ function getEmptySize(componentName) {
     }
 }
 class NzEmbedEmptyComponent {
-    /**
-     * @param {?} configService
-     * @param {?} viewContainerRef
-     * @param {?} cdr
-     * @param {?} injector
-     */
     constructor(configService, viewContainerRef, cdr, injector) {
         this.configService = configService;
         this.viewContainerRef = viewContainerRef;
@@ -54,10 +41,6 @@ class NzEmbedEmptyComponent {
         this.size = '';
         this.destroy$ = new Subject();
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         if (changes.nzComponentName) {
             this.size = getEmptySize(changes.nzComponentName.currentValue);
@@ -67,40 +50,28 @@ class NzEmbedEmptyComponent {
             this.renderEmpty();
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.subscribeDefaultEmptyContentChange();
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     renderEmpty() {
-        /** @type {?} */
         const content = this.content;
         if (typeof content === 'string') {
             this.contentType = 'string';
         }
         else if (content instanceof TemplateRef) {
-            /** @type {?} */
-            const context = (/** @type {?} */ ({ $implicit: this.nzComponentName }));
+            const context = { $implicit: this.nzComponentName };
             this.contentType = 'template';
             this.contentPortal = new TemplatePortal(content, this.viewContainerRef, context);
         }
         else if (content instanceof Type) {
-            /** @type {?} */
-            const context = new WeakMap([[NZ_EMPTY_COMPONENT_NAME, this.nzComponentName]]);
-            /** @type {?} */
-            const injector = new PortalInjector(this.injector, context);
+            const injector = Injector.create({
+                parent: this.injector,
+                providers: [{ provide: NZ_EMPTY_COMPONENT_NAME, useValue: this.nzComponentName }]
+            });
             this.contentType = 'component';
             this.contentPortal = new ComponentPortal(content, this.viewContainerRef, injector);
         }
@@ -110,26 +81,15 @@ class NzEmbedEmptyComponent {
         }
         this.cdr.detectChanges();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     subscribeDefaultEmptyContentChange() {
         this.configService
             .getConfigChangeEventForComponent('empty')
             .pipe(startWith(true), takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => {
+            .subscribe(() => {
             this.content = this.specificContent || this.getUserDefaultEmptyContent();
             this.renderEmpty();
-        }));
+        });
     }
-    /**
-     * @private
-     * @return {?}
-     */
     getUserDefaultEmptyContent() {
         return (this.configService.getConfigForComponent('empty') || {}).nzDefaultEmptyContent;
     }
@@ -153,9 +113,8 @@ NzEmbedEmptyComponent.decorators = [
       </ng-container>
     </ng-container>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzEmbedEmptyComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ViewContainerRef },
@@ -166,58 +125,13 @@ NzEmbedEmptyComponent.propDecorators = {
     nzComponentName: [{ type: Input }],
     specificContent: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzEmbedEmptyComponent.prototype.nzComponentName;
-    /** @type {?} */
-    NzEmbedEmptyComponent.prototype.specificContent;
-    /** @type {?} */
-    NzEmbedEmptyComponent.prototype.content;
-    /** @type {?} */
-    NzEmbedEmptyComponent.prototype.contentType;
-    /** @type {?} */
-    NzEmbedEmptyComponent.prototype.contentPortal;
-    /** @type {?} */
-    NzEmbedEmptyComponent.prototype.size;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzEmbedEmptyComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzEmbedEmptyComponent.prototype.configService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzEmbedEmptyComponent.prototype.viewContainerRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzEmbedEmptyComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzEmbedEmptyComponent.prototype.injector;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: empty.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NzEmptyDefaultImages = (/** @type {?} */ (['default', 'simple']));
+const NzEmptyDefaultImages = ['default', 'simple'];
 class NzEmptyComponent {
-    /**
-     * @param {?} i18n
-     * @param {?} cdr
-     */
     constructor(i18n, cdr) {
         this.i18n = i18n;
         this.cdr = cdr;
@@ -226,42 +140,23 @@ class NzEmptyComponent {
         this.isImageBuildIn = true;
         this.destroy$ = new Subject();
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzNotFoundContent, nzNotFoundImage } = changes;
         if (nzNotFoundContent) {
-            /** @type {?} */
             const content = nzNotFoundContent.currentValue;
             this.isContentString = typeof content === 'string';
         }
         if (nzNotFoundImage) {
-            /** @type {?} */
             const image = nzNotFoundImage.currentValue || 'default';
-            this.isImageBuildIn = NzEmptyDefaultImages.findIndex((/**
-             * @param {?} i
-             * @return {?}
-             */
-            i => i === image)) > -1;
+            this.isImageBuildIn = NzEmptyDefaultImages.findIndex(i => i === image) > -1;
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
-        this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.locale = this.i18n.getLocaleData('Empty');
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -297,9 +192,8 @@ NzEmptyComponent.decorators = [
                 host: {
                     class: 'ant-empty'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzEmptyComponent.ctorParameters = () => [
     { type: NzI18nService },
     { type: ChangeDetectorRef }
@@ -309,40 +203,10 @@ NzEmptyComponent.propDecorators = {
     nzNotFoundContent: [{ type: Input }],
     nzNotFoundFooter: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzEmptyComponent.prototype.nzNotFoundImage;
-    /** @type {?} */
-    NzEmptyComponent.prototype.nzNotFoundContent;
-    /** @type {?} */
-    NzEmptyComponent.prototype.nzNotFoundFooter;
-    /** @type {?} */
-    NzEmptyComponent.prototype.isContentString;
-    /** @type {?} */
-    NzEmptyComponent.prototype.isImageBuildIn;
-    /** @type {?} */
-    NzEmptyComponent.prototype.locale;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzEmptyComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzEmptyComponent.prototype.i18n;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzEmptyComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: partial/default.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzEmptyDefaultComponent {
 }
@@ -386,13 +250,12 @@ NzEmptyDefaultComponent.decorators = [
       </g>
     </svg>
   `
-            }] }
+            },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: partial/simple.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzEmptySimpleComponent {
 }
@@ -416,13 +279,12 @@ NzEmptySimpleComponent.decorators = [
       </g>
     </svg>
   `
-            }] }
+            },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: empty.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzEmptyModule {
 }
@@ -435,15 +297,12 @@ NzEmptyModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-empty.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NZ_EMPTY_COMPONENT_NAME, NzEmbedEmptyComponent, NzEmptyComponent, NzEmptyDefaultComponent, NzEmptyModule, NzEmptySimpleComponent };

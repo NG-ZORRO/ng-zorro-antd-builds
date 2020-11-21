@@ -1,121 +1,77 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/platform'), require('@angular/core'), require('@angular/platform-browser/animations')) :
     typeof define === 'function' && define.amd ? define('ng-zorro-antd/core/wave', ['exports', '@angular/cdk/platform', '@angular/core', '@angular/platform-browser/animations'], factory) :
-    (global = global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].core = global['ng-zorro-antd'].core || {}, global['ng-zorro-antd'].core.wave = {}), global.ng.cdk.platform, global.ng.core, global.ng.platformBrowser.animations));
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].core = global['ng-zorro-antd'].core || {}, global['ng-zorro-antd'].core.wave = {}), global.ng.cdk.platform, global.ng.core, global.ng.platformBrowser.animations));
 }(this, (function (exports, platform, core, animations) { 'use strict';
 
     /**
-     * @fileoverview added by tsickle
-     * Generated from: nz-wave-renderer.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzWaveRenderer = /** @class */ (function () {
-        function NzWaveRenderer(triggerElement, ngZone, insertExtraNode) {
+        function NzWaveRenderer(triggerElement, ngZone, insertExtraNode, platformId) {
             var _this = this;
             this.triggerElement = triggerElement;
             this.ngZone = ngZone;
             this.insertExtraNode = insertExtraNode;
+            this.platformId = platformId;
             this.waveTransitionDuration = 400;
             this.styleForPseudo = null;
             this.extraNode = null;
             this.lastTime = 0;
-            this.platform = new platform.Platform();
-            this.onClick = (/**
-             * @param {?} event
-             * @return {?}
-             */
-            function (event) {
+            this.onClick = function (event) {
                 if (!_this.triggerElement ||
                     !_this.triggerElement.getAttribute ||
                     _this.triggerElement.getAttribute('disabled') ||
-                    ((/** @type {?} */ (event.target))).tagName === 'INPUT' ||
+                    event.target.tagName === 'INPUT' ||
                     _this.triggerElement.className.indexOf('disabled') >= 0) {
                     return;
                 }
                 _this.fadeOutWave();
-            });
+            };
+            this.platform = new platform.Platform(this.platformId);
             this.clickHandler = this.onClick.bind(this);
             this.bindTriggerEvent();
         }
         Object.defineProperty(NzWaveRenderer.prototype, "waveAttributeName", {
-            get: /**
-             * @return {?}
-             */
-            function () {
+            get: function () {
                 return this.insertExtraNode ? 'ant-click-animating' : 'ant-click-animating-without-extra-node';
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
-        /**
-         * @return {?}
-         */
-        NzWaveRenderer.prototype.bindTriggerEvent = /**
-         * @return {?}
-         */
-        function () {
+        NzWaveRenderer.prototype.bindTriggerEvent = function () {
             var _this = this;
             if (this.platform.isBrowser) {
-                this.ngZone.runOutsideAngular((/**
-                 * @return {?}
-                 */
-                function () {
+                this.ngZone.runOutsideAngular(function () {
                     _this.removeTriggerEvent();
                     if (_this.triggerElement) {
                         _this.triggerElement.addEventListener('click', _this.clickHandler, true);
                     }
-                }));
+                });
             }
         };
-        /**
-         * @return {?}
-         */
-        NzWaveRenderer.prototype.removeTriggerEvent = /**
-         * @return {?}
-         */
-        function () {
+        NzWaveRenderer.prototype.removeTriggerEvent = function () {
             if (this.triggerElement) {
                 this.triggerElement.removeEventListener('click', this.clickHandler, true);
             }
         };
-        /**
-         * @return {?}
-         */
-        NzWaveRenderer.prototype.removeStyleAndExtraNode = /**
-         * @return {?}
-         */
-        function () {
+        NzWaveRenderer.prototype.removeStyleAndExtraNode = function () {
             if (this.styleForPseudo && document.body.contains(this.styleForPseudo)) {
                 document.body.removeChild(this.styleForPseudo);
                 this.styleForPseudo = null;
             }
             if (this.insertExtraNode && this.triggerElement.contains(this.extraNode)) {
-                this.triggerElement.removeChild((/** @type {?} */ (this.extraNode)));
+                this.triggerElement.removeChild(this.extraNode);
             }
         };
-        /**
-         * @return {?}
-         */
-        NzWaveRenderer.prototype.destroy = /**
-         * @return {?}
-         */
-        function () {
+        NzWaveRenderer.prototype.destroy = function () {
             this.removeTriggerEvent();
             this.removeStyleAndExtraNode();
         };
-        /**
-         * @private
-         * @return {?}
-         */
-        NzWaveRenderer.prototype.fadeOutWave = /**
-         * @private
-         * @return {?}
-         */
-        function () {
+        NzWaveRenderer.prototype.fadeOutWave = function () {
             var _this = this;
-            /** @type {?} */
             var node = this.triggerElement;
-            /** @type {?} */
             var waveColor = this.getWaveColor(node);
             node.setAttribute(this.waveAttributeName, 'true');
             if (Date.now() < this.lastTime + this.waveTransitionDuration) {
@@ -136,25 +92,12 @@
                 node.appendChild(this.extraNode);
             }
             this.lastTime = Date.now();
-            this.runTimeoutOutsideZone((/**
-             * @return {?}
-             */
-            function () {
+            this.runTimeoutOutsideZone(function () {
                 node.removeAttribute(_this.waveAttributeName);
                 _this.removeStyleAndExtraNode();
-            }), this.waveTransitionDuration);
+            }, this.waveTransitionDuration);
         };
-        /**
-         * @private
-         * @param {?} color
-         * @return {?}
-         */
-        NzWaveRenderer.prototype.isValidColor = /**
-         * @private
-         * @param {?} color
-         * @return {?}
-         */
-        function (color) {
+        NzWaveRenderer.prototype.isValidColor = function (color) {
             return (!!color &&
                 color !== '#ffffff' &&
                 color !== 'rgb(255, 255, 255)' &&
@@ -162,174 +105,65 @@
                 !/rgba\(\d*, \d*, \d*, 0\)/.test(color) &&
                 color !== 'transparent');
         };
-        /**
-         * @private
-         * @param {?} color
-         * @return {?}
-         */
-        NzWaveRenderer.prototype.isNotGrey = /**
-         * @private
-         * @param {?} color
-         * @return {?}
-         */
-        function (color) {
-            /** @type {?} */
+        NzWaveRenderer.prototype.isNotGrey = function (color) {
             var match = color.match(/rgba?\((\d*), (\d*), (\d*)(, [\.\d]*)?\)/);
             if (match && match[1] && match[2] && match[3]) {
                 return !(match[1] === match[2] && match[2] === match[3]);
             }
             return true;
         };
-        /**
-         * @private
-         * @param {?} node
-         * @return {?}
-         */
-        NzWaveRenderer.prototype.getWaveColor = /**
-         * @private
-         * @param {?} node
-         * @return {?}
-         */
-        function (node) {
-            /** @type {?} */
+        NzWaveRenderer.prototype.getWaveColor = function (node) {
             var nodeStyle = getComputedStyle(node);
             return (nodeStyle.getPropertyValue('border-top-color') || // Firefox Compatible
                 nodeStyle.getPropertyValue('border-color') ||
                 nodeStyle.getPropertyValue('background-color'));
         };
-        /**
-         * @private
-         * @param {?} fn
-         * @param {?} delay
-         * @return {?}
-         */
-        NzWaveRenderer.prototype.runTimeoutOutsideZone = /**
-         * @private
-         * @param {?} fn
-         * @param {?} delay
-         * @return {?}
-         */
-        function (fn, delay) {
-            this.ngZone.runOutsideAngular((/**
-             * @return {?}
-             */
-            function () { return setTimeout(fn, delay); }));
+        NzWaveRenderer.prototype.runTimeoutOutsideZone = function (fn, delay) {
+            this.ngZone.runOutsideAngular(function () { return setTimeout(fn, delay); });
         };
         return NzWaveRenderer;
     }());
-    if (false) {
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveRenderer.prototype.waveTransitionDuration;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveRenderer.prototype.styleForPseudo;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveRenderer.prototype.extraNode;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveRenderer.prototype.lastTime;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveRenderer.prototype.platform;
-        /** @type {?} */
-        NzWaveRenderer.prototype.clickHandler;
-        /** @type {?} */
-        NzWaveRenderer.prototype.onClick;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveRenderer.prototype.triggerElement;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveRenderer.prototype.ngZone;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveRenderer.prototype.insertExtraNode;
-    }
 
     /**
-     * @fileoverview added by tsickle
-     * Generated from: nz-wave.directive.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
-    /**
-     * @record
-     */
-    function NzWaveConfig() { }
-    if (false) {
-        /** @type {?|undefined} */
-        NzWaveConfig.prototype.disabled;
-    }
-    /** @type {?} */
     var NZ_WAVE_GLOBAL_DEFAULT_CONFIG = {
         disabled: false
     };
-    /** @type {?} */
     var NZ_WAVE_GLOBAL_CONFIG = new core.InjectionToken('nz-wave-global-options', {
         providedIn: 'root',
         factory: NZ_WAVE_GLOBAL_CONFIG_FACTORY
     });
-    /**
-     * @return {?}
-     */
     function NZ_WAVE_GLOBAL_CONFIG_FACTORY() {
         return NZ_WAVE_GLOBAL_DEFAULT_CONFIG;
     }
     var NzWaveDirective = /** @class */ (function () {
-        function NzWaveDirective(ngZone, elementRef, config, animationType) {
+        function NzWaveDirective(ngZone, elementRef, config, animationType, platformId) {
             this.ngZone = ngZone;
             this.elementRef = elementRef;
             this.config = config;
             this.animationType = animationType;
+            this.platformId = platformId;
             this.nzWaveExtraNode = false;
             this.waveDisabled = false;
             this.waveDisabled = this.isConfigDisabled();
         }
         Object.defineProperty(NzWaveDirective.prototype, "disabled", {
-            get: /**
-             * @return {?}
-             */
-            function () {
+            get: function () {
                 return this.waveDisabled;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(NzWaveDirective.prototype, "rendererRef", {
-            get: /**
-             * @return {?}
-             */
-            function () {
+            get: function () {
                 return this.waveRenderer;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
-        /**
-         * @return {?}
-         */
-        NzWaveDirective.prototype.isConfigDisabled = /**
-         * @return {?}
-         */
-        function () {
-            /** @type {?} */
+        NzWaveDirective.prototype.isConfigDisabled = function () {
             var disabled = false;
             if (this.config && typeof this.config.disabled === 'boolean') {
                 disabled = this.config.disabled;
@@ -339,133 +173,77 @@
             }
             return disabled;
         };
-        /**
-         * @return {?}
-         */
-        NzWaveDirective.prototype.ngOnDestroy = /**
-         * @return {?}
-         */
-        function () {
+        NzWaveDirective.prototype.ngOnDestroy = function () {
             if (this.waveRenderer) {
                 this.waveRenderer.destroy();
             }
         };
-        /**
-         * @return {?}
-         */
-        NzWaveDirective.prototype.ngOnInit = /**
-         * @return {?}
-         */
-        function () {
+        NzWaveDirective.prototype.ngOnInit = function () {
             this.renderWaveIfEnabled();
         };
-        /**
-         * @return {?}
-         */
-        NzWaveDirective.prototype.renderWaveIfEnabled = /**
-         * @return {?}
-         */
-        function () {
+        NzWaveDirective.prototype.renderWaveIfEnabled = function () {
             if (!this.waveDisabled && this.elementRef.nativeElement) {
-                this.waveRenderer = new NzWaveRenderer(this.elementRef.nativeElement, this.ngZone, this.nzWaveExtraNode);
+                this.waveRenderer = new NzWaveRenderer(this.elementRef.nativeElement, this.ngZone, this.nzWaveExtraNode, this.platformId);
             }
         };
-        /**
-         * @return {?}
-         */
-        NzWaveDirective.prototype.disable = /**
-         * @return {?}
-         */
-        function () {
+        NzWaveDirective.prototype.disable = function () {
             this.waveDisabled = true;
             if (this.waveRenderer) {
                 this.waveRenderer.removeTriggerEvent();
                 this.waveRenderer.removeStyleAndExtraNode();
             }
         };
-        /**
-         * @return {?}
-         */
-        NzWaveDirective.prototype.enable = /**
-         * @return {?}
-         */
-        function () {
+        NzWaveDirective.prototype.enable = function () {
             // config priority
             this.waveDisabled = this.isConfigDisabled() || false;
             if (this.waveRenderer) {
                 this.waveRenderer.bindTriggerEvent();
             }
         };
-        NzWaveDirective.decorators = [
-            { type: core.Directive, args: [{
-                        selector: '[nz-wave],button[nz-button]:not([nzType="link"])',
-                        exportAs: 'nzWave'
-                    },] }
-        ];
-        /** @nocollapse */
-        NzWaveDirective.ctorParameters = function () { return [
-            { type: core.NgZone },
-            { type: core.ElementRef },
-            { type: undefined, decorators: [{ type: core.Optional }, { type: core.Inject, args: [NZ_WAVE_GLOBAL_CONFIG,] }] },
-            { type: String, decorators: [{ type: core.Optional }, { type: core.Inject, args: [animations.ANIMATION_MODULE_TYPE,] }] }
-        ]; };
-        NzWaveDirective.propDecorators = {
-            nzWaveExtraNode: [{ type: core.Input }]
-        };
         return NzWaveDirective;
     }());
-    if (false) {
-        /** @type {?} */
-        NzWaveDirective.prototype.nzWaveExtraNode;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveDirective.prototype.waveRenderer;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveDirective.prototype.waveDisabled;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveDirective.prototype.ngZone;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveDirective.prototype.elementRef;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveDirective.prototype.config;
-        /**
-         * @type {?}
-         * @private
-         */
-        NzWaveDirective.prototype.animationType;
-    }
+    NzWaveDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: '[nz-wave],button[nz-button]:not([nzType="link"]):not([nzType="text"])',
+                    exportAs: 'nzWave'
+                },] }
+    ];
+    NzWaveDirective.ctorParameters = function () { return [
+        { type: core.NgZone },
+        { type: core.ElementRef },
+        { type: undefined, decorators: [{ type: core.Optional }, { type: core.Inject, args: [NZ_WAVE_GLOBAL_CONFIG,] }] },
+        { type: String, decorators: [{ type: core.Optional }, { type: core.Inject, args: [animations.ANIMATION_MODULE_TYPE,] }] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] }
+    ]; };
+    NzWaveDirective.propDecorators = {
+        nzWaveExtraNode: [{ type: core.Input }]
+    };
 
     /**
-     * @fileoverview added by tsickle
-     * Generated from: nz-wave.module.ts
-     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzWaveModule = /** @class */ (function () {
         function NzWaveModule() {
         }
-        NzWaveModule.decorators = [
-            { type: core.NgModule, args: [{
-                        imports: [platform.PlatformModule],
-                        exports: [NzWaveDirective],
-                        declarations: [NzWaveDirective]
-                    },] }
-        ];
         return NzWaveModule;
     }());
+    NzWaveModule.decorators = [
+        { type: core.NgModule, args: [{
+                    imports: [platform.PlatformModule],
+                    exports: [NzWaveDirective],
+                    declarations: [NzWaveDirective]
+                },] }
+    ];
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
+
+    /**
+     * Generated bundle index. Do not edit.
+     */
 
     exports.NZ_WAVE_GLOBAL_CONFIG = NZ_WAVE_GLOBAL_CONFIG;
     exports.NZ_WAVE_GLOBAL_CONFIG_FACTORY = NZ_WAVE_GLOBAL_CONFIG_FACTORY;

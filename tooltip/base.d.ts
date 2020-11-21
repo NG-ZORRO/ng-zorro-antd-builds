@@ -7,6 +7,9 @@ import { AfterViewInit, ChangeDetectorRef, ComponentFactory, ComponentFactoryRes
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NgClassInterface, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
+export interface PropertyMapping {
+    [key: string]: [string, () => unknown];
+}
 export declare type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, AfterViewInit {
     elementRef: ElementRef;
@@ -14,40 +17,19 @@ export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDes
     protected resolver: ComponentFactoryResolver;
     protected renderer: Renderer2;
     protected noAnimation?: NzNoAnimationDirective | undefined;
-    directiveNameTitle?: NzTSType | null;
-    specificTitle?: NzTSType | null;
-    directiveNameContent?: NzTSType | null;
-    specificContent?: NzTSType | null;
-    specificTrigger?: NzTooltipTrigger;
-    specificPlacement?: string;
-    specificOrigin?: ElementRef<HTMLElement>;
-    specificVisible?: boolean;
-    specificVisibleChange: EventEmitter<boolean>;
-    /**
-     * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-     * Please use a more specific API. Like `nzTooltipTitle`.
-     */
-    nzTitle?: NzTSType | null;
-    /**
-     * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-     * Please use a more specific API. Like `nzPopoverContent`.
-     */
-    nzContent?: NzTSType | null;
-    /**
-     * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-     * Please use a more specific API. Like `nzTooltipTrigger`.
-     */
-    nzTrigger: NzTooltipTrigger;
-    /**
-     * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-     * Please use a more specific API. Like `nzTooltipPlacement`.
-     */
-    nzPlacement: string;
-    nzMouseEnterDelay: number;
-    nzMouseLeaveDelay: number;
-    nzOverlayClassName?: string;
-    nzOverlayStyle?: NgStyleInterface;
-    nzVisible?: boolean;
+    directiveTitle?: NzTSType | null;
+    directiveContent?: NzTSType | null;
+    title?: NzTSType | null;
+    content?: NzTSType | null;
+    trigger?: NzTooltipTrigger;
+    placement?: string | string[];
+    origin?: ElementRef<HTMLElement>;
+    visible?: boolean;
+    mouseEnterDelay?: number;
+    mouseLeaveDelay?: number;
+    overlayClassName?: string;
+    overlayStyle?: NgStyleInterface;
+    visibleChange: EventEmitter<boolean>;
     /**
      * For create tooltip dynamically. This should be override for each different component.
      */
@@ -55,20 +37,22 @@ export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDes
     /**
      * This true title that would be used in other parts on this component.
      */
-    protected get title(): NzTSType | null;
-    protected get content(): NzTSType | null;
-    protected get placement(): string;
-    protected get trigger(): NzTooltipTrigger;
-    protected get isVisible(): boolean;
-    visible: boolean;
-    protected needProxyProperties: string[];
-    readonly nzVisibleChange: EventEmitter<boolean>;
+    protected get _title(): NzTSType | null;
+    protected get _content(): NzTSType | null;
+    protected get _trigger(): NzTooltipTrigger;
+    protected get _placement(): string[];
+    protected get _visible(): boolean;
+    protected get _mouseEnterDelay(): number;
+    protected get _mouseLeaveDelay(): number;
+    protected get _overlayClassName(): string | null;
+    protected get _overlayStyle(): NgStyleInterface | null;
+    private internalVisible;
+    protected getProxyPropertyMap(): PropertyMapping;
     component?: NzTooltipBaseComponent;
     protected readonly destroy$: Subject<void>;
     protected readonly triggerDisposables: Array<() => void>;
     private delayTimer?;
     constructor(elementRef: ElementRef, hostView: ViewContainerRef, resolver: ComponentFactoryResolver, renderer: Renderer2, noAnimation?: NzNoAnimationDirective | undefined);
-    warnDeprecationByChanges(changes: SimpleChanges): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
@@ -83,10 +67,9 @@ export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDes
      */
     protected createComponent(): void;
     protected registerTriggers(): void;
-    /**
-     * Sync changed properties to the component and trigger change detection in that component.
-     */
-    protected updateChangedProperties(propertiesOrChanges: string[] | SimpleChanges): void;
+    private updatePropertiesByChanges;
+    private updatePropertiesByKeys;
+    private initProperties;
     private updateComponentValue;
     private delayEnterLeave;
     private removeTriggerListeners;
@@ -97,23 +80,22 @@ export declare abstract class NzTooltipBaseComponent implements OnDestroy {
     noAnimation?: NzNoAnimationDirective | undefined;
     static ngAcceptInputType_nzVisible: BooleanInput;
     overlay: CdkConnectedOverlay;
-    nzVisibleChange: Subject<boolean>;
     nzTitle: NzTSType | null;
     nzContent: NzTSType | null;
     nzOverlayClassName: string;
     nzOverlayStyle: NgStyleInterface;
     nzMouseEnterDelay?: number;
     nzMouseLeaveDelay?: number;
+    nzVisibleChange: Subject<boolean>;
     set nzVisible(value: boolean);
     get nzVisible(): boolean;
     _visible: boolean;
     set nzTrigger(value: NzTooltipTrigger);
     get nzTrigger(): NzTooltipTrigger;
     protected _trigger: NzTooltipTrigger;
-    set nzPlacement(value: string);
-    get nzPlacement(): string;
-    origin?: CdkOverlayOrigin;
+    set nzPlacement(value: string[]);
     preferredPlacement: string;
+    origin: CdkOverlayOrigin;
     _classMap: NgClassInterface;
     _hasBackdrop: boolean;
     _prefix: string;
@@ -128,8 +110,9 @@ export declare abstract class NzTooltipBaseComponent implements OnDestroy {
      */
     updatePosition(): void;
     onPositionChange(position: ConnectedOverlayPositionChange): void;
-    setClassMap(): void;
+    updateStyles(): void;
     setOverlayOrigin(origin: CdkOverlayOrigin): void;
+    onClickOutside(event: MouseEvent): void;
     /**
      * Hide the component while the content is empty.
      */

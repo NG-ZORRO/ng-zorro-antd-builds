@@ -115,6 +115,8 @@ declare const _default: {
         filterTitle: string;
         filterConfirm: string;
         filterReset: string;
+        filterEmptyText: string;
+        emptyText: string;
         selectAll: string;
         selectInvert: string;
         selectionAll: string;
@@ -139,6 +141,12 @@ declare const _default: {
         searchPlaceholder: string;
         itemUnit: string;
         itemsUnit: string;
+        remove: string;
+        selectCurrent: string;
+        removeCurrent: string;
+        selectAll: string;
+        removeAll: string;
+        selectInvert: string;
     };
     Upload: {
         uploading: string;
@@ -161,55 +169,6 @@ declare const _default: {
     };
     PageHeader: {
         back: string;
-    };
-    Form: {
-        defaultValidateMessages: {
-            default: string;
-            required: string;
-            enum: string;
-            whitespace: string;
-            date: {
-                format: string;
-                parse: string;
-                invalid: string;
-            };
-            types: {
-                string: string;
-                method: string;
-                array: string;
-                object: string;
-                number: string;
-                date: string;
-                boolean: string;
-                integer: string;
-                float: string;
-                regexp: string;
-                email: string;
-                url: string;
-                hex: string;
-            };
-            string: {
-                len: string;
-                min: string;
-                max: string;
-                range: string;
-            };
-            number: {
-                len: string;
-                min: string;
-                max: string;
-                range: string;
-            };
-            array: {
-                len: string;
-                min: string;
-                max: string;
-                range: string;
-            };
-            pattern: {
-                mismatch: string;
-            };
-        };
     };
 };
 export default _default;

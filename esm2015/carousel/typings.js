@@ -1,63 +1,7 @@
 /**
- * @fileoverview added by tsickle
- * Generated from: typings.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { InjectionToken } from '@angular/core';
-/**
- * @record
- */
-export function NzCarouselComponentAsSource() { }
-if (false) {
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.carouselContents;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.el;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.nzTransitionSpeed;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.vertical;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.slickListEl;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.slickTrackEl;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.activeIndex;
-}
-/**
- * @record
- */
-export function NzCarouselStrategyRegistryItem() { }
-if (false) {
-    /** @type {?} */
-    NzCarouselStrategyRegistryItem.prototype.name;
-    /** @type {?} */
-    NzCarouselStrategyRegistryItem.prototype.strategy;
-}
-/** @type {?} */
 export const NZ_CAROUSEL_CUSTOM_STRATEGIES = new InjectionToken('nz-carousel-custom-strategies');
-/**
- * @record
- */
-export function PointerVector() { }
-if (false) {
-    /** @type {?} */
-    PointerVector.prototype.x;
-    /** @type {?} */
-    PointerVector.prototype.y;
-}
-/**
- * @record
- */
-export function FromToInterface() { }
-if (false) {
-    /** @type {?} */
-    FromToInterface.prototype.from;
-    /** @type {?} */
-    FromToInterface.prototype.to;
-}
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHlwaW5ncy5qcyIsInNvdXJjZVJvb3QiOiJuZzovL25nLXpvcnJvLWFudGQvY2Fyb3VzZWwvIiwic291cmNlcyI6WyJ0eXBpbmdzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQUtBLE9BQU8sRUFBRSxjQUFjLEVBQWEsTUFBTSxlQUFlLENBQUM7Ozs7QUFPMUQsaURBUUM7OztJQVBDLHVEQUF3RDs7SUFDeEQseUNBQWdCOztJQUNoQix3REFBMEI7O0lBQzFCLCtDQUFrQjs7SUFDbEIsa0RBQXlCOztJQUN6QixtREFBMEI7O0lBQzFCLGtEQUFvQjs7Ozs7QUFHdEIsb0RBR0M7OztJQUZDLDhDQUFhOztJQUNiLGtEQUFpQzs7O0FBR25DLE1BQU0sT0FBTyw2QkFBNkIsR0FBRyxJQUFJLGNBQWMsQ0FBbUMsK0JBQStCLENBQUM7Ozs7QUFFbEksbUNBR0M7OztJQUZDLDBCQUFVOztJQUNWLDBCQUFVOzs7OztBQUdaLHFDQUdDOzs7SUFGQywrQkFBYTs7SUFDYiw2QkFBVyIsInNvdXJjZXNDb250ZW50IjpbIi8qKlxuICogVXNlIG9mIHRoaXMgc291cmNlIGNvZGUgaXMgZ292ZXJuZWQgYnkgYW4gTUlULXN0eWxlIGxpY2Vuc2UgdGhhdCBjYW4gYmVcbiAqIGZvdW5kIGluIHRoZSBMSUNFTlNFIGZpbGUgYXQgaHR0cHM6Ly9naXRodWIuY29tL05HLVpPUlJPL25nLXpvcnJvLWFudGQvYmxvYi9tYXN0ZXIvTElDRU5TRVxuICovXG5cbmltcG9ydCB7IEluamVjdGlvblRva2VuLCBRdWVyeUxpc3QgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcbmltcG9ydCB7IE56Q2Fyb3VzZWxDb250ZW50RGlyZWN0aXZlIH0gZnJvbSAnLi9jYXJvdXNlbC1jb250ZW50LmRpcmVjdGl2ZSc7XG5pbXBvcnQgeyBOekNhcm91c2VsQmFzZVN0cmF0ZWd5IH0gZnJvbSAnLi9zdHJhdGVnaWVzL2Jhc2Utc3RyYXRlZ3knO1xuXG5leHBvcnQgdHlwZSBOekNhcm91c2VsRWZmZWN0cyA9ICdmYWRlJyB8ICdzY3JvbGx4JyB8IHN0cmluZztcbmV4cG9ydCB0eXBlIE56Q2Fyb3VzZWxEb3RQb3NpdGlvbiA9ICd0b3AnIHwgJ2JvdHRvbScgfCAnbGVmdCcgfCAncmlnaHQnIHwgc3RyaW5nO1xuXG5leHBvcnQgaW50ZXJmYWNlIE56Q2Fyb3VzZWxDb21wb25lbnRBc1NvdXJjZSB7XG4gIGNhcm91c2VsQ29udGVudHM6IFF1ZXJ5TGlzdDxOekNhcm91c2VsQ29udGVudERpcmVjdGl2ZT47XG4gIGVsOiBIVE1MRWxlbWVudDtcbiAgbnpUcmFuc2l0aW9uU3BlZWQ6IG51bWJlcjtcbiAgdmVydGljYWw6IGJvb2xlYW47XG4gIHNsaWNrTGlzdEVsOiBIVE1MRWxlbWVudDtcbiAgc2xpY2tUcmFja0VsOiBIVE1MRWxlbWVudDtcbiAgYWN0aXZlSW5kZXg6IG51bWJlcjtcbn1cblxuZXhwb3J0IGludGVyZmFjZSBOekNhcm91c2VsU3RyYXRlZ3lSZWdpc3RyeUl0ZW0ge1xuICBuYW1lOiBzdHJpbmc7XG4gIHN0cmF0ZWd5OiBOekNhcm91c2VsQmFzZVN0cmF0ZWd5O1xufVxuXG5leHBvcnQgY29uc3QgTlpfQ0FST1VTRUxfQ1VTVE9NX1NUUkFURUdJRVMgPSBuZXcgSW5qZWN0aW9uVG9rZW48TnpDYXJvdXNlbFN0cmF0ZWd5UmVnaXN0cnlJdGVtW10+KCduei1jYXJvdXNlbC1jdXN0b20tc3RyYXRlZ2llcycpO1xuXG5leHBvcnQgaW50ZXJmYWNlIFBvaW50ZXJWZWN0b3Ige1xuICB4OiBudW1iZXI7XG4gIHk6IG51bWJlcjtcbn1cblxuZXhwb3J0IGludGVyZmFjZSBGcm9tVG9JbnRlcmZhY2Uge1xuICBmcm9tOiBudW1iZXI7XG4gIHRvOiBudW1iZXI7XG59XG4iXX0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidHlwaW5ncy5qcyIsInNvdXJjZVJvb3QiOiIvaG9tZS92c3RzL3dvcmsvMS9zL2NvbXBvbmVudHMvY2Fyb3VzZWwvIiwic291cmNlcyI6WyJ0eXBpbmdzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOzs7R0FHRztBQUVILE9BQU8sRUFBRSxjQUFjLEVBQWEsTUFBTSxlQUFlLENBQUM7QUFzQjFELE1BQU0sQ0FBQyxNQUFNLDZCQUE2QixHQUFHLElBQUksY0FBYyxDQUFtQywrQkFBK0IsQ0FBQyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBVc2Ugb2YgdGhpcyBzb3VyY2UgY29kZSBpcyBnb3Zlcm5lZCBieSBhbiBNSVQtc3R5bGUgbGljZW5zZSB0aGF0IGNhbiBiZVxuICogZm91bmQgaW4gdGhlIExJQ0VOU0UgZmlsZSBhdCBodHRwczovL2dpdGh1Yi5jb20vTkctWk9SUk8vbmctem9ycm8tYW50ZC9ibG9iL21hc3Rlci9MSUNFTlNFXG4gKi9cblxuaW1wb3J0IHsgSW5qZWN0aW9uVG9rZW4sIFF1ZXJ5TGlzdCB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgTnpDYXJvdXNlbENvbnRlbnREaXJlY3RpdmUgfSBmcm9tICcuL2Nhcm91c2VsLWNvbnRlbnQuZGlyZWN0aXZlJztcbmltcG9ydCB7IE56Q2Fyb3VzZWxCYXNlU3RyYXRlZ3kgfSBmcm9tICcuL3N0cmF0ZWdpZXMvYmFzZS1zdHJhdGVneSc7XG5cbmV4cG9ydCB0eXBlIE56Q2Fyb3VzZWxFZmZlY3RzID0gJ2ZhZGUnIHwgJ3Njcm9sbHgnIHwgc3RyaW5nO1xuZXhwb3J0IHR5cGUgTnpDYXJvdXNlbERvdFBvc2l0aW9uID0gJ3RvcCcgfCAnYm90dG9tJyB8ICdsZWZ0JyB8ICdyaWdodCcgfCBzdHJpbmc7XG5cbmV4cG9ydCBpbnRlcmZhY2UgTnpDYXJvdXNlbENvbXBvbmVudEFzU291cmNlIHtcbiAgY2Fyb3VzZWxDb250ZW50czogUXVlcnlMaXN0PE56Q2Fyb3VzZWxDb250ZW50RGlyZWN0aXZlPjtcbiAgZWw6IEhUTUxFbGVtZW50O1xuICBuelRyYW5zaXRpb25TcGVlZDogbnVtYmVyO1xuICB2ZXJ0aWNhbDogYm9vbGVhbjtcbiAgc2xpY2tMaXN0RWw6IEhUTUxFbGVtZW50O1xuICBzbGlja1RyYWNrRWw6IEhUTUxFbGVtZW50O1xuICBhY3RpdmVJbmRleDogbnVtYmVyO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIE56Q2Fyb3VzZWxTdHJhdGVneVJlZ2lzdHJ5SXRlbSB7XG4gIG5hbWU6IHN0cmluZztcbiAgc3RyYXRlZ3k6IE56Q2Fyb3VzZWxCYXNlU3RyYXRlZ3k7XG59XG5cbmV4cG9ydCBjb25zdCBOWl9DQVJPVVNFTF9DVVNUT01fU1RSQVRFR0lFUyA9IG5ldyBJbmplY3Rpb25Ub2tlbjxOekNhcm91c2VsU3RyYXRlZ3lSZWdpc3RyeUl0ZW1bXT4oJ256LWNhcm91c2VsLWN1c3RvbS1zdHJhdGVnaWVzJyk7XG5cbmV4cG9ydCBpbnRlcmZhY2UgUG9pbnRlclZlY3RvciB7XG4gIHg6IG51bWJlcjtcbiAgeTogbnVtYmVyO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIEZyb21Ub0ludGVyZmFjZSB7XG4gIGZyb206IG51bWJlcjtcbiAgdG86IG51bWJlcjtcbn1cbiJdfQ==

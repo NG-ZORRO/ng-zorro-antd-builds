@@ -27,6 +27,10 @@ export declare class NzDropDownDirective implements AfterViewInit, OnDestroy, On
     nzDropdownMenu: NzDropdownMenuComponent | null;
     nzTrigger: 'click' | 'hover';
     nzMatchWidthElement: ElementRef | null;
+    /**
+     * @deprecated Not supported.
+     * @breaking-change 11.0.0
+     */
     nzBackdrop: boolean;
     nzClickHide: boolean;
     nzDisabled: boolean;

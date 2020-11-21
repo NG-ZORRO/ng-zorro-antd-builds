@@ -12,6 +12,7 @@ export declare class NzCascaderOptionComponent {
     highlightText: string;
     nzLabelProperty: string;
     columnIndex: number;
+    expandIcon: string | TemplateRef<void>;
     constructor(cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2);
     get optionLabel(): string;
     markForCheck(): void;

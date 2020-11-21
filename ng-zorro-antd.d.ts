@@ -1,4 +1,4 @@
 /**
  * Generated bundle index. Do not edit.
  */
-export * from './ng-zorro-antd.module';
+export * from './public_api';

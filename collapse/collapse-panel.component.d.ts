@@ -3,13 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { ChangeDetectorRef, EventEmitter, OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { NzCollapseComponent } from './collapse.component';
 export declare class NzCollapsePanelComponent implements OnInit, OnDestroy {
     nzConfigService: NzConfigService;
     private cdr;
     private nzCollapseComponent;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzActive: BooleanInput;
     static ngAcceptInputType_nzDisabled: BooleanInput;
     static ngAcceptInputType_nzShowArrow: BooleanInput;

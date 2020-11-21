@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FormTemplateRule = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
 const elements_1 = require("../../../utils/ng-update/elements");
 class FormTemplateRule extends schematics_1.Migration {

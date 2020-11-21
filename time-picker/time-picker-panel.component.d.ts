@@ -7,7 +7,6 @@ import { ControlValueAccessor } from '@angular/forms';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { TimeHolder } from './time-holder';
-import { NzTimeValueAccessorDirective } from './time-value-accessor.directive';
 export declare type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
 export declare class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
     private cdr;
@@ -46,7 +45,6 @@ export declare class NzTimePickerPanelComponent implements ControlValueAccessor,
         index: number;
         value: string;
     }>;
-    nzTimeValueAccessorDirective?: NzTimeValueAccessorDirective;
     hourListElement?: DebugElement;
     minuteListElement?: DebugElement;
     secondListElement?: DebugElement;
@@ -75,7 +73,6 @@ export declare class NzTimePickerPanelComponent implements ControlValueAccessor,
     get nzMinuteStep(): number;
     set nzSecondStep(value: number);
     get nzSecondStep(): number;
-    selectInputRange(): void;
     buildHours(): void;
     buildMinutes(): void;
     buildSeconds(): void;
@@ -106,6 +103,7 @@ export declare class NzTimePickerPanelComponent implements ControlValueAccessor,
     protected touched(): void;
     timeDisabled(value: Date): boolean;
     onClickNow(): void;
+    onClickOk(): void;
     isSelectedHour(hour: {
         index: number;
         disabled: boolean;

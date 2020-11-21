@@ -15,63 +15,36 @@ import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: popconfirm.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPopconfirmDirective extends NzTooltipBaseDirective {
-    /**
-     * @param {?} elementRef
-     * @param {?} hostView
-     * @param {?} resolver
-     * @param {?} renderer
-     * @param {?=} noAnimation
-     */
     constructor(elementRef, hostView, resolver, renderer, noAnimation) {
         super(elementRef, hostView, resolver, renderer, noAnimation);
+        this.trigger = 'click';
+        this.placement = 'top';
         this.nzCondition = false;
-        /**
-         * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-         * Please use a more specific API. Like `nzTooltipTrigger`.
-         */
-        this.nzTrigger = 'click';
+        this.nzPopconfirmShowArrow = true;
         // tslint:disable-next-line:no-output-rename
-        this.specificVisibleChange = new EventEmitter();
+        this.visibleChange = new EventEmitter();
         this.nzOnCancel = new EventEmitter();
         this.nzOnConfirm = new EventEmitter();
         this.componentFactory = this.resolver.resolveComponentFactory(NzPopconfirmComponent);
-        this.needProxyProperties = [
-            'nzOverlayClassName',
-            'nzOverlayStyle',
-            'nzMouseEnterDelay',
-            'nzMouseLeaveDelay',
-            'nzVisible',
-            'nzOkText',
-            'nzOkType',
-            'nzCancelText',
-            'nzCondition',
-            'nzIcon'
-        ];
+    }
+    getProxyPropertyMap() {
+        return Object.assign({ nzOkText: ['nzOkText', () => this.nzOkText], nzOkType: ['nzOkType', () => this.nzOkType], nzCancelText: ['nzCancelText', () => this.nzCancelText], nzCondition: ['nzCondition', () => this.nzCondition], nzIcon: ['nzIcon', () => this.nzIcon], nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', () => this.nzPopconfirmShowArrow] }, super.getProxyPropertyMap());
     }
     /**
      * @override
-     * @protected
-     * @return {?}
      */
     createComponent() {
         super.createComponent();
-        ((/** @type {?} */ (this.component))).nzOnCancel.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        this.component.nzOnCancel.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.nzOnCancel.emit();
-        }));
-        ((/** @type {?} */ (this.component))).nzOnConfirm.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        });
+        this.component.nzOnConfirm.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.nzOnConfirm.emit();
-        }));
+        });
     }
 }
 NzPopconfirmDirective.decorators = [
@@ -83,7 +56,6 @@ NzPopconfirmDirective.decorators = [
                 }
             },] }
 ];
-/** @nocollapse */
 NzPopconfirmDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: ViewContainerRef },
@@ -92,19 +64,23 @@ NzPopconfirmDirective.ctorParameters = () => [
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 NzPopconfirmDirective.propDecorators = {
-    specificTitle: [{ type: Input, args: ['nzPopconfirmTitle',] }],
-    directiveNameTitle: [{ type: Input, args: ['nz-popconfirm',] }],
-    specificTrigger: [{ type: Input, args: ['nzPopconfirmTrigger',] }],
-    specificPlacement: [{ type: Input, args: ['nzPopconfirmPlacement',] }],
-    specificOrigin: [{ type: Input, args: ['nzPopconfirmOrigin',] }],
+    title: [{ type: Input, args: ['nzPopconfirmTitle',] }],
+    directiveTitle: [{ type: Input, args: ['nz-popconfirm',] }],
+    trigger: [{ type: Input, args: ['nzPopconfirmTrigger',] }],
+    placement: [{ type: Input, args: ['nzPopconfirmPlacement',] }],
+    origin: [{ type: Input, args: ['nzPopconfirmOrigin',] }],
+    mouseEnterDelay: [{ type: Input, args: ['nzPopconfirmMouseEnterDelay',] }],
+    mouseLeaveDelay: [{ type: Input, args: ['nzPopconfirmMouseLeaveDelay',] }],
+    overlayClassName: [{ type: Input, args: ['nzPopconfirmOverlayClassName',] }],
+    overlayStyle: [{ type: Input, args: ['nzPopconfirmOverlayStyle',] }],
+    visible: [{ type: Input, args: ['nzPopconfirmVisible',] }],
     nzOkText: [{ type: Input }],
     nzOkType: [{ type: Input }],
     nzCancelText: [{ type: Input }],
     nzIcon: [{ type: Input }],
     nzCondition: [{ type: Input }],
-    nzTrigger: [{ type: Input }],
-    specificVisible: [{ type: Input, args: ['nzPopconfirmVisible',] }],
-    specificVisibleChange: [{ type: Output, args: ['nzPopconfirmVisibleChange',] }],
+    nzPopconfirmShowArrow: [{ type: Input }],
+    visibleChange: [{ type: Output, args: ['nzPopconfirmVisibleChange',] }],
     nzOnCancel: [{ type: Output }],
     nzOnConfirm: [{ type: Output }]
 };
@@ -112,73 +88,22 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzPopconfirmDirective.prototype, "nzCondition", void 0);
-if (false) {
-    /** @type {?} */
-    NzPopconfirmDirective.ngAcceptInputType_nzCondition;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.specificTitle;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.directiveNameTitle;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.specificTrigger;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.specificPlacement;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.specificOrigin;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.nzOkText;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.nzOkType;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.nzCancelText;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.nzIcon;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.nzCondition;
-    /**
-     * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-     * Please use a more specific API. Like `nzTooltipTrigger`.
-     * @type {?}
-     */
-    NzPopconfirmDirective.prototype.nzTrigger;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.specificVisible;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.specificVisibleChange;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.nzOnCancel;
-    /** @type {?} */
-    NzPopconfirmDirective.prototype.nzOnConfirm;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzPopconfirmDirective.prototype.componentFactory;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzPopconfirmDirective.prototype.needProxyProperties;
-}
+__decorate([
+    InputBoolean(),
+    __metadata("design:type", Boolean)
+], NzPopconfirmDirective.prototype, "nzPopconfirmShowArrow", void 0);
 class NzPopconfirmComponent extends NzToolTipComponent {
-    /**
-     * @param {?} cdr
-     * @param {?=} noAnimation
-     */
     constructor(cdr, noAnimation) {
         super(cdr, noAnimation);
         this.noAnimation = noAnimation;
         this.nzCondition = false;
+        this.nzPopconfirmShowArrow = true;
         this.nzOkType = 'primary';
         this.nzOnCancel = new Subject();
         this.nzOnConfirm = new Subject();
         this._trigger = 'click';
-        this._prefix = 'ant-popover-placement';
-        this._hasBackdrop = true;
+        this._prefix = 'ant-popover';
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         super.ngOnDestroy();
         this.nzOnCancel.complete();
@@ -186,7 +111,6 @@ class NzPopconfirmComponent extends NzToolTipComponent {
     }
     /**
      * @override
-     * @return {?}
      */
     show() {
         if (!this.nzCondition) {
@@ -196,16 +120,10 @@ class NzPopconfirmComponent extends NzToolTipComponent {
             this.onConfirm();
         }
     }
-    /**
-     * @return {?}
-     */
     onCancel() {
         this.nzOnCancel.next();
         super.hide();
     }
-    /**
-     * @return {?}
-     */
     onConfirm() {
         this.nzOnConfirm.next();
         super.hide();
@@ -225,12 +143,12 @@ NzPopconfirmComponent.decorators = [
       cdkConnectedOverlay
       nzConnectedOverlay
       [cdkConnectedOverlayOrigin]="origin"
-      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
-      (backdropClick)="hide()"
+      (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
+      [cdkConnectedOverlayPush]="true"
     >
       <div
         class="ant-popover"
@@ -241,7 +159,7 @@ NzPopconfirmComponent.decorators = [
         [@zoomBigMotion]="'active'"
       >
         <div class="ant-popover-content">
-          <div class="ant-popover-arrow"></div>
+          <div class="ant-popover-arrow" *ngIf="nzPopconfirmShowArrow"></div>
           <div class="ant-popover-inner">
             <div>
               <div class="ant-popover-inner-content">
@@ -270,45 +188,16 @@ NzPopconfirmComponent.decorators = [
       </div>
     </ng-template>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzPopconfirmComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
-if (false) {
-    /** @type {?} */
-    NzPopconfirmComponent.prototype.nzCancelText;
-    /** @type {?} */
-    NzPopconfirmComponent.prototype.nzCondition;
-    /** @type {?} */
-    NzPopconfirmComponent.prototype.nzIcon;
-    /** @type {?} */
-    NzPopconfirmComponent.prototype.nzOkText;
-    /** @type {?} */
-    NzPopconfirmComponent.prototype.nzOkType;
-    /** @type {?} */
-    NzPopconfirmComponent.prototype.nzOnCancel;
-    /** @type {?} */
-    NzPopconfirmComponent.prototype.nzOnConfirm;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzPopconfirmComponent.prototype._trigger;
-    /** @type {?} */
-    NzPopconfirmComponent.prototype._prefix;
-    /** @type {?} */
-    NzPopconfirmComponent.prototype._hasBackdrop;
-    /** @type {?} */
-    NzPopconfirmComponent.prototype.noAnimation;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: popconfirm.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPopconfirmModule {
 }
@@ -332,15 +221,12 @@ NzPopconfirmModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-popconfirm.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzPopconfirmComponent, NzPopconfirmDirective, NzPopconfirmModule };

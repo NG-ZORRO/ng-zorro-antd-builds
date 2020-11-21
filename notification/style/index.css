@@ -2,11 +2,51 @@
 /* stylelint-disable no-duplicate-selectors */
 /* stylelint-disable */
 /* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+.ant-modal,
+.ant-image-preview {
+  pointer-events: none;
+}
+.ant-modal.zoom-enter,
+.ant-modal.zoom-appear,
+.ant-image-preview.zoom-enter,
+.ant-image-preview.zoom-appear {
+  transform: none;
+  opacity: 0;
+  animation-duration: 0.3s;
+  user-select: none;
+}
+.ant-modal-mask,
+.ant-image-preview-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  filter: alpha(opacity=50);
+}
+.ant-modal-mask-hidden,
+.ant-image-preview-mask-hidden {
+  display: none;
+}
+.ant-modal-wrap,
+.ant-image-preview-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  outline: 0;
+  -webkit-overflow-scrolling: touch;
+}
 .ant-notification {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: rgba(0, 0, 0, 0.65);
+  color: rgba(0, 0, 0, 0.85);
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5715;
@@ -14,8 +54,6 @@
   font-feature-settings: 'tnum';
   position: fixed;
   z-index: 1010;
-  width: 384px;
-  max-width: calc(100vw - 32px);
   margin-right: 24px;
 }
 .ant-notification-topLeft,
@@ -36,11 +74,22 @@
 .ant-notification-hook-holder,
 .ant-notification-notice {
   position: relative;
+  width: 384px;
+  max-width: calc(100vw - 24px * 2);
   margin-bottom: 16px;
+  margin-left: auto;
   overflow: hidden;
+  word-wrap: break-word;
   background: #fff;
   border-radius: 2px;
   box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+.ant-notification-topLeft .ant-notification-hook-holder,
+.ant-notification-topLeft .ant-notification-notice,
+.ant-notification-bottomLeft .ant-notification-hook-holder,
+.ant-notification-bottomLeft .ant-notification-notice {
+  margin-right: auto;
+  margin-left: 0;
 }
 .ant-notification-hook-holder > .ant-notification-notice {
   margin-bottom: 0;
@@ -51,7 +100,6 @@
   line-height: 1.5715;
 }
 .ant-notification-notice-message {
-  display: inline-block;
   margin-bottom: 8px;
   color: rgba(0, 0, 0, 0.85);
   font-size: 16px;
@@ -179,4 +227,30 @@
     padding-bottom: 0;
     opacity: 0;
   }
+}
+.ant-notification-rtl {
+  direction: rtl;
+}
+.ant-notification-rtl .ant-notification-notice-closable .ant-notification-notice-message {
+  padding-right: 0;
+  padding-left: 24px;
+}
+.ant-notification-rtl .ant-notification-notice-with-icon .ant-notification-notice-message {
+  margin-right: 48px;
+  margin-left: 0;
+}
+.ant-notification-rtl .ant-notification-notice-with-icon .ant-notification-notice-description {
+  margin-right: 48px;
+  margin-left: 0;
+}
+.ant-notification-rtl .ant-notification-notice-icon {
+  margin-right: 4px;
+  margin-left: 0;
+}
+.ant-notification-rtl .ant-notification-notice-close {
+  right: auto;
+  left: 22px;
+}
+.ant-notification-rtl .ant-notification-notice-btn {
+  float: left;
 }

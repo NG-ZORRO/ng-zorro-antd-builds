@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectorRef, QueryList, Renderer2 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NzCarouselContentDirective } from '../carousel-content.directive';
@@ -9,6 +10,7 @@ import { FromToInterface, NzCarouselComponentAsSource, PointerVector } from '../
 export declare abstract class NzCarouselBaseStrategy {
     protected cdr: ChangeDetectorRef;
     protected renderer: Renderer2;
+    protected platform: Platform;
     protected carouselComponent: NzCarouselComponentAsSource | null;
     protected contents: NzCarouselContentDirective[];
     protected slickListEl: HTMLElement;
@@ -19,7 +21,7 @@ export declare abstract class NzCarouselBaseStrategy {
     protected get maxIndex(): number;
     protected get firstEl(): HTMLElement;
     protected get lastEl(): HTMLElement;
-    constructor(carouselComponent: NzCarouselComponentAsSource, cdr: ChangeDetectorRef, renderer: Renderer2);
+    constructor(carouselComponent: NzCarouselComponentAsSource, cdr: ChangeDetectorRef, renderer: Renderer2, platform: Platform);
     /**
      * Initialize dragging sequences.
      * @param contents

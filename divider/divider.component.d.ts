@@ -6,8 +6,10 @@ import { TemplateRef } from '@angular/core';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 export declare class NzDividerComponent {
     static ngAcceptInputType_nzDashed: BooleanInput;
+    static ngAcceptInputType_nzPlain: BooleanInput;
     nzText?: string | TemplateRef<void>;
     nzType: 'horizontal' | 'vertical';
     nzOrientation: 'left' | 'right' | 'center';
     nzDashed: boolean;
+    nzPlain: boolean;
 }

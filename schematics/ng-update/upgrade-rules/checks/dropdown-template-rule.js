@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DropdownTemplateRule = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
 const elements_1 = require("../../../utils/ng-update/elements");
 class DropdownTemplateRule extends schematics_1.Migration {

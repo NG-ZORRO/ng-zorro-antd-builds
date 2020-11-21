@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.outputNames = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
 exports.outputNames = {
-    [schematics_1.TargetVersion.V7]: [],
     [schematics_1.TargetVersion.V9]: [
         {
             pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/4601',
@@ -10,8 +10,48 @@ exports.outputNames = {
                 {
                     replace: 'nzOnSearchNode',
                     replaceWith: 'nzSearchValueChange',
-                    whitelist: {
+                    limitedTo: {
                         elements: ['nz-tree']
+                    }
+                }
+            ]
+        }
+    ],
+    [schematics_1.TargetVersion.V10]: [
+        {
+            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5792',
+            changes: [
+                {
+                    replace: 'nzSortChange',
+                    replaceWith: 'nzSortOrderChange',
+                    limitedTo: {
+                        elements: ['thead', 'th']
+                    }
+                }
+            ]
+        },
+        {
+            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5817',
+            changes: [
+                {
+                    replace: 'nzVisibleChange',
+                    replaceWith: 'nzTooltipVisibleChange',
+                    limitedTo: {
+                        attributes: ['nz-tooltip']
+                    }
+                },
+                {
+                    replace: 'nzVisibleChange',
+                    replaceWith: 'nzPopoverVisibleChange',
+                    limitedTo: {
+                        attributes: ['nz-popover']
+                    }
+                },
+                {
+                    replace: 'nzVisibleChange',
+                    replaceWith: 'nzPopconfirmVisibleChange',
+                    limitedTo: {
+                        attributes: ['nz-popconfirm']
                     }
                 }
             ]

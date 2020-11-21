@@ -10,8 +10,4 @@ export interface NzDateConfig {
 }
 export declare const NZ_DATE_CONFIG: InjectionToken<NzDateConfig>;
 export declare const NZ_DATE_CONFIG_DEFAULT: NzDateConfig;
-/**
- * @deprecated Will be removed in 10.0.0, please update to date-fns v2 format
- */
-export declare const NZ_DATE_FNS_COMPATIBLE: InjectionToken<boolean>;
 export declare function mergeDateConfig(config: NzDateConfig): NzDateConfig;

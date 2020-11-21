@@ -1,6 +1,94 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.inputNames = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
+const tooltipPrefix = [
+    {
+        pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
+        changes: [
+            {
+                replace: 'nzTitle',
+                replaceWith: 'nzPopconfirmTitle',
+                limitedTo: {
+                    attributes: ['nz-popconfirm']
+                }
+            },
+            {
+                replace: 'nzTrigger',
+                replaceWith: 'nzPopconfirmTrigger',
+                limitedTo: {
+                    attributes: ['nz-popconfirm']
+                }
+            },
+            {
+                replace: 'nzPlacement',
+                replaceWith: 'nzPopconfirmPlacement',
+                limitedTo: {
+                    attributes: ['nz-popconfirm']
+                }
+            }
+        ]
+    },
+    {
+        pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
+        changes: [
+            {
+                replace: 'nzTitle',
+                replaceWith: 'nzTooltipTitle',
+                limitedTo: {
+                    attributes: ['nz-tooltip']
+                }
+            },
+            {
+                replace: 'nzTrigger',
+                replaceWith: 'nzTooltipTrigger',
+                limitedTo: {
+                    attributes: ['nz-tooltip']
+                }
+            },
+            {
+                replace: 'nzPlacement',
+                replaceWith: 'nzTooltipPlacement',
+                limitedTo: {
+                    attributes: ['nz-tooltip']
+                }
+            }
+        ]
+    },
+    {
+        pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
+        changes: [
+            {
+                replace: 'nzTitle',
+                replaceWith: 'nzPopoverTitle',
+                limitedTo: {
+                    attributes: ['nz-popover']
+                }
+            },
+            {
+                replace: 'nzTrigger',
+                replaceWith: 'nzPopoverTrigger',
+                limitedTo: {
+                    attributes: ['nz-popover']
+                }
+            },
+            {
+                replace: 'nzPlacement',
+                replaceWith: 'nzPopoverPlacement',
+                limitedTo: {
+                    attributes: ['nz-popover']
+                }
+            },
+            {
+                replace: 'nzContent',
+                replaceWith: 'nzPopoverContent',
+                limitedTo: {
+                    attributes: ['nz-popover']
+                }
+            }
+        ]
+    }
+];
 exports.inputNames = {
     [schematics_1.TargetVersion.V7]: [
         {
@@ -9,127 +97,199 @@ exports.inputNames = {
                 {
                     replace: 'nzSuffix',
                     replaceWith: 'nzAddOnAfter',
-                    whitelist: {
+                    limitedTo: {
                         attributes: ['nzSearch']
                     }
                 }
             ]
         }
     ],
+    [schematics_1.TargetVersion.V10]: [
+        ...tooltipPrefix,
+        {
+            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5817',
+            changes: [
+                {
+                    replace: 'nzVisible',
+                    replaceWith: 'nzTooltipVisible',
+                    limitedTo: {
+                        attributes: ['nz-tooltip']
+                    }
+                },
+                {
+                    replace: 'nzVisible',
+                    replaceWith: 'nzPopoverVisible',
+                    limitedTo: {
+                        attributes: ['nz-popover']
+                    }
+                },
+                {
+                    replace: 'nzVisible',
+                    replaceWith: 'nzPopconfirmVisible',
+                    limitedTo: {
+                        attributes: ['nz-popconfirm']
+                    }
+                },
+                {
+                    replace: 'nzOverlayStyle',
+                    replaceWith: 'nzTooltipOverlayStyle',
+                    limitedTo: {
+                        attributes: ['nz-tooltip']
+                    }
+                },
+                {
+                    replace: 'nzOverlayStyle',
+                    replaceWith: 'nzPopoverOverlayStyle',
+                    limitedTo: {
+                        attributes: ['nz-popover']
+                    }
+                },
+                {
+                    replace: 'nzOverlayStyle',
+                    replaceWith: 'nzPopconfirmOverlayStyle',
+                    limitedTo: {
+                        attributes: ['nz-popconfirm']
+                    }
+                },
+                {
+                    replace: 'nzOverlayClassName',
+                    replaceWith: 'nzTooltipOverlayClassName',
+                    limitedTo: {
+                        attributes: ['nz-tooltip']
+                    }
+                },
+                {
+                    replace: 'nzOverlayClassName',
+                    replaceWith: 'nzPopoverOverlayClassName',
+                    limitedTo: {
+                        attributes: ['nz-popover']
+                    }
+                },
+                {
+                    replace: 'nzOverlayClassName',
+                    replaceWith: 'nzPopconfirmOverlayClassName',
+                    limitedTo: {
+                        attributes: ['nz-popconfirm']
+                    }
+                },
+                {
+                    replace: 'nzMouseLeaveDelay',
+                    replaceWith: 'nzTooltipMouseLeaveDelay',
+                    limitedTo: {
+                        attributes: ['nz-tooltip']
+                    }
+                },
+                {
+                    replace: 'nzMouseLeaveDelay',
+                    replaceWith: 'nzPopoverMouseLeaveDelay',
+                    limitedTo: {
+                        attributes: ['nz-popover']
+                    }
+                },
+                {
+                    replace: 'nzMouseLeaveDelay',
+                    replaceWith: 'nzPopconfirmMouseLeaveDelay',
+                    limitedTo: {
+                        attributes: ['nz-popconfirm']
+                    }
+                },
+                {
+                    replace: 'nzMouseEnterDelay',
+                    replaceWith: 'nzTooltipMouseEnterDelay',
+                    limitedTo: {
+                        attributes: ['nz-tooltip']
+                    }
+                },
+                {
+                    replace: 'nzMouseEnterDelay',
+                    replaceWith: 'nzPopoverMouseEnterDelay',
+                    limitedTo: {
+                        attributes: ['nz-popover']
+                    }
+                },
+                {
+                    replace: 'nzMouseEnterDelay',
+                    replaceWith: 'nzPopconfirmMouseEnterDelay',
+                    limitedTo: {
+                        attributes: ['nz-popconfirm']
+                    }
+                }
+            ]
+        },
+        {
+            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5776',
+            changes: [
+                {
+                    replace: 'nzTarget',
+                    replaceWith: 'nzContainer',
+                    limitedTo: {
+                        elements: ['nz-anchor']
+                    }
+                }
+            ]
+        },
+        {
+            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5792',
+            changes: [
+                {
+                    replace: 'nzSort',
+                    replaceWith: 'nzSortOrder',
+                    limitedTo: {
+                        elements: ['th']
+                    }
+                }
+            ]
+        },
+        {
+            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5793',
+            changes: [
+                {
+                    replace: 'nzClassName',
+                    replaceWith: 'ngClass',
+                    limitedTo: {
+                        elements: ['nz-date-picker', 'nz-week-picker', 'nz-month-picker', 'nz-year-picker', 'nz-range-picker']
+                    }
+                },
+                {
+                    replace: 'nzStyle',
+                    replaceWith: 'ngStyle',
+                    limitedTo: {
+                        elements: ['nz-date-picker', 'nz-week-picker', 'nz-month-picker', 'nz-year-picker', 'nz-range-picker']
+                    }
+                }
+            ]
+        }
+    ],
     [schematics_1.TargetVersion.V9]: [
-        {
-            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
-            changes: [
-                {
-                    replace: 'nzTitle',
-                    replaceWith: 'nzPopconfirmTitle',
-                    whitelist: {
-                        attributes: ['nz-popconfirm']
-                    }
-                },
-                {
-                    replace: 'nzTrigger',
-                    replaceWith: 'nzPopconfirmTrigger',
-                    whitelist: {
-                        attributes: ['nz-popconfirm']
-                    }
-                },
-                {
-                    replace: 'nzPlacement',
-                    replaceWith: 'nzPopconfirmPlacement',
-                    whitelist: {
-                        attributes: ['nz-popconfirm']
-                    }
-                }
-            ]
-        },
-        {
-            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
-            changes: [
-                {
-                    replace: 'nzTitle',
-                    replaceWith: 'nzTooltipTitle',
-                    whitelist: {
-                        attributes: ['nz-tooltip']
-                    }
-                },
-                {
-                    replace: 'nzTrigger',
-                    replaceWith: 'nzTooltipTrigger',
-                    whitelist: {
-                        attributes: ['nz-tooltip']
-                    }
-                },
-                {
-                    replace: 'nzPlacement',
-                    replaceWith: 'nzTooltipPlacement',
-                    whitelist: {
-                        attributes: ['nz-tooltip']
-                    }
-                }
-            ]
-        },
-        {
-            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
-            changes: [
-                {
-                    replace: 'nzTitle',
-                    replaceWith: 'nzPopoverTitle',
-                    whitelist: {
-                        attributes: ['nz-popover']
-                    }
-                },
-                {
-                    replace: 'nzTrigger',
-                    replaceWith: 'nzPopoverTrigger',
-                    whitelist: {
-                        attributes: ['nz-popover']
-                    }
-                },
-                {
-                    replace: 'nzPlacement',
-                    replaceWith: 'nzPopoverPlacement',
-                    whitelist: {
-                        attributes: ['nz-popover']
-                    }
-                },
-                {
-                    replace: 'nzContent',
-                    replaceWith: 'nzPopoverContent',
-                    whitelist: {
-                        attributes: ['nz-popover']
-                    }
-                }
-            ]
-        },
+        ...tooltipPrefix,
         {
             pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/4601',
             changes: [
                 {
                     replace: 'nzDefaultExpandAll',
                     replaceWith: 'nzExpandAll',
-                    whitelist: {
+                    limitedTo: {
                         elements: ['nz-tree', 'nz-tree-node']
                     }
                 },
                 {
                     replace: 'nzDefaultExpandedKeys',
                     replaceWith: 'nzExpandedKeys',
-                    whitelist: {
+                    limitedTo: {
                         elements: ['nz-tree', 'nz-tree-select']
                     }
                 },
                 {
                     replace: 'nzDefaultSelectedKeys',
                     replaceWith: 'nzSelectedKeys',
-                    whitelist: {
+                    limitedTo: {
                         elements: ['nz-tree']
                     }
                 },
                 {
                     replace: 'nzDefaultCheckedKeys',
                     replaceWith: 'nzCheckedKeys',
-                    whitelist: {
+                    limitedTo: {
                         elements: ['nz-tree']
                     }
                 }
@@ -141,7 +301,7 @@ exports.inputNames = {
                 {
                     replace: 'type',
                     replaceWith: 'nzType',
-                    whitelist: {
+                    limitedTo: {
                         attributes: ['nz-icon']
                     }
                 }
@@ -153,7 +313,7 @@ exports.inputNames = {
                 {
                     replace: 'iconfont',
                     replaceWith: 'nzIconfont',
-                    whitelist: {
+                    limitedTo: {
                         attributes: ['nz-icon']
                     }
                 }
@@ -165,7 +325,7 @@ exports.inputNames = {
                 {
                     replace: 'spin',
                     replaceWith: 'nzSpin',
-                    whitelist: {
+                    limitedTo: {
                         attributes: ['nz-icon']
                     }
                 }
@@ -177,7 +337,7 @@ exports.inputNames = {
                 {
                     replace: 'theme',
                     replaceWith: 'nzTheme',
-                    whitelist: {
+                    limitedTo: {
                         attributes: ['nz-icon']
                     }
                 }
@@ -189,7 +349,7 @@ exports.inputNames = {
                 {
                     replace: 'twoToneColor',
                     replaceWith: 'nzTwoToneColor',
-                    whitelist: {
+                    limitedTo: {
                         attributes: ['nz-icon']
                     }
                 }

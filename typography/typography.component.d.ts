@@ -4,9 +4,9 @@
  */
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, ChangeDetectorRef, ElementRef, EmbeddedViewRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzTextCopyComponent } from './text-copy.component';
 import { NzTextEditComponent } from './text-edit.component';
@@ -19,6 +19,7 @@ export declare class NzTypographyComponent implements OnInit, AfterViewInit, OnD
     private platform;
     private i18n;
     private resizeService;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzCopyable: BooleanInput;
     static ngAcceptInputType_nzEditable: BooleanInput;
     static ngAcceptInputType_nzDisabled: BooleanInput;
@@ -30,9 +31,13 @@ export declare class NzTypographyComponent implements OnInit, AfterViewInit, OnD
     nzDisabled: boolean;
     nzExpandable: boolean;
     nzEllipsis: boolean;
+    nzCopyTooltips?: [NzTSType, NzTSType] | null;
+    nzCopyIcons: [NzTSType, NzTSType];
+    nzEditTooltip?: null | NzTSType;
+    nzEditIcon: NzTSType;
     nzContent?: string;
     nzEllipsisRows: number;
-    nzType: 'secondary' | 'warning' | 'danger' | undefined;
+    nzType: 'secondary' | 'warning' | 'danger' | 'success' | undefined;
     nzCopyText: string | undefined;
     nzSuffix: string | undefined;
     readonly nzContentChange: EventEmitter<string>;
@@ -57,6 +62,7 @@ export declare class NzTypographyComponent implements OnInit, AfterViewInit, OnD
     ellipsisStr: string;
     get hasEllipsisObservers(): boolean;
     get canCssEllipsis(): boolean;
+    get hasOperationsWithEllipsis(): boolean;
     private viewInit;
     private rfaId;
     private destroy$;

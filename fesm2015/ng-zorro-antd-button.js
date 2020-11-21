@@ -10,24 +10,17 @@ import { ɵNzTransitionPatchModule } from 'ng-zorro-antd/core/transition-patch';
 import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: button.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'button';
+const NZ_CONFIG_MODULE_NAME = 'button';
 class NzButtonComponent {
-    /**
-     * @param {?} elementRef
-     * @param {?} cdr
-     * @param {?} renderer
-     * @param {?} nzConfigService
-     */
     constructor(elementRef, cdr, renderer, nzConfigService) {
         this.elementRef = elementRef;
         this.cdr = cdr;
         this.renderer = renderer;
         this.nzConfigService = nzConfigService;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzBlock = false;
         this.nzGhost = false;
         this.nzSearch = false;
@@ -41,110 +34,46 @@ class NzButtonComponent {
         this.destroy$ = new Subject();
         this.loading$ = new Subject();
         this.nzConfigService
-            .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+            .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => {
+            .subscribe(() => {
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    haltDisabledEvents(event) {
-        if (this.disabled) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-        }
-    }
-    /**
-     * @param {?} nodes
-     * @param {?} renderer
-     * @return {?}
-     */
     insertSpan(nodes, renderer) {
-        nodes.forEach((/**
-         * @param {?} node
-         * @return {?}
-         */
-        node => {
+        nodes.forEach(node => {
             if (node.nodeName === '#text') {
-                /** @type {?} */
                 const span = renderer.createElement('span');
-                /** @type {?} */
                 const parent = renderer.parentNode(node);
                 renderer.insertBefore(parent, span, node);
                 renderer.appendChild(span, node);
             }
-        }));
+        });
     }
-    /**
-     * @param {?} element
-     * @param {?} renderer
-     * @return {?}
-     */
     assertIconOnly(element, renderer) {
-        /** @type {?} */
         const listOfNode = Array.from(element.childNodes);
-        /** @type {?} */
-        const iconCount = listOfNode.filter((/**
-         * @param {?} node
-         * @return {?}
-         */
-        node => node.nodeName === 'I')).length;
-        /** @type {?} */
-        const noText = listOfNode.every((/**
-         * @param {?} node
-         * @return {?}
-         */
-        node => node.nodeName !== '#text'));
-        /** @type {?} */
-        const noSpan = listOfNode.every((/**
-         * @param {?} node
-         * @return {?}
-         */
-        node => node.nodeName !== 'SPAN'));
-        /** @type {?} */
+        const iconCount = listOfNode.filter(node => node.nodeName === 'I').length;
+        const noText = listOfNode.every(node => node.nodeName !== '#text');
+        const noSpan = listOfNode.every(node => node.nodeName !== 'SPAN');
         const isIconOnly = noSpan && noText && iconCount >= 1;
         if (isIconOnly) {
             renderer.addClass(element, 'ant-btn-icon-only');
         }
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzLoading } = changes;
         if (nzLoading) {
             this.loading$.next(this.nzLoading);
         }
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
         this.assertIconOnly(this.elementRef.nativeElement, this.renderer);
         this.insertSpan(this.elementRef.nativeElement.childNodes, this.renderer);
     }
-    /**
-     * @return {?}
-     */
     ngAfterContentInit() {
         this.loading$
-            .pipe(startWith(this.nzLoading), filter((/**
-         * @return {?}
-         */
-        () => !!this.nzIconDirectiveElement)), takeUntil(this.destroy$))
-            .subscribe((/**
-         * @param {?} loading
-         * @return {?}
-         */
-        loading => {
-            /** @type {?} */
+            .pipe(startWith(this.nzLoading), filter(() => !!this.nzIconDirectiveElement), takeUntil(this.destroy$))
+            .subscribe(loading => {
             const nativeElement = this.nzIconDirectiveElement.nativeElement;
             if (loading) {
                 this.renderer.setStyle(nativeElement, 'display', 'none');
@@ -152,11 +81,8 @@ class NzButtonComponent {
             else {
                 this.renderer.removeStyle(nativeElement, 'display');
             }
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -178,6 +104,7 @@ NzButtonComponent.decorators = [
                     '[class.ant-btn-primary]': `nzType === 'primary'`,
                     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
                     '[class.ant-btn-link]': `nzType === 'link'`,
+                    '[class.ant-btn-text]': `nzType === 'text'`,
                     '[class.ant-btn-danger]': `nzType === 'danger'`,
                     '[class.ant-btn-circle]': `nzShape === 'circle'`,
                     '[class.ant-btn-round]': `nzShape === 'round'`,
@@ -189,12 +116,10 @@ NzButtonComponent.decorators = [
                     '[class.ant-btn-block]': `nzBlock`,
                     '[class.ant-input-search-button]': `nzSearch`,
                     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
-                    '[attr.disabled]': 'disabled || null',
-                    '(click)': 'haltDisabledEvents($event)'
+                    '[attr.disabled]': 'disabled || null'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzButtonComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: ChangeDetectorRef },
@@ -239,77 +164,13 @@ __decorate([
     __metadata("design:type", Boolean)
 ], NzButtonComponent.prototype, "disabled", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", String)
 ], NzButtonComponent.prototype, "nzSize", void 0);
-if (false) {
-    /** @type {?} */
-    NzButtonComponent.ngAcceptInputType_nzBlock;
-    /** @type {?} */
-    NzButtonComponent.ngAcceptInputType_nzGhost;
-    /** @type {?} */
-    NzButtonComponent.ngAcceptInputType_nzSearch;
-    /** @type {?} */
-    NzButtonComponent.ngAcceptInputType_nzLoading;
-    /** @type {?} */
-    NzButtonComponent.ngAcceptInputType_nzDanger;
-    /** @type {?} */
-    NzButtonComponent.ngAcceptInputType_disabled;
-    /** @type {?} */
-    NzButtonComponent.prototype.nzIconDirectiveElement;
-    /** @type {?} */
-    NzButtonComponent.prototype.nzBlock;
-    /** @type {?} */
-    NzButtonComponent.prototype.nzGhost;
-    /** @type {?} */
-    NzButtonComponent.prototype.nzSearch;
-    /** @type {?} */
-    NzButtonComponent.prototype.nzLoading;
-    /** @type {?} */
-    NzButtonComponent.prototype.nzDanger;
-    /** @type {?} */
-    NzButtonComponent.prototype.disabled;
-    /** @type {?} */
-    NzButtonComponent.prototype.tabIndex;
-    /** @type {?} */
-    NzButtonComponent.prototype.nzType;
-    /** @type {?} */
-    NzButtonComponent.prototype.nzShape;
-    /** @type {?} */
-    NzButtonComponent.prototype.nzSize;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzButtonComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzButtonComponent.prototype.loading$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzButtonComponent.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzButtonComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzButtonComponent.prototype.renderer;
-    /** @type {?} */
-    NzButtonComponent.prototype.nzConfigService;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: button-group.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzButtonGroupComponent {
     constructor() {
@@ -329,20 +190,15 @@ NzButtonGroupComponent.decorators = [
                 },
                 preserveWhitespaces: false,
                 template: ` <ng-content></ng-content> `
-            }] }
+            },] }
 ];
 NzButtonGroupComponent.propDecorators = {
     nzSize: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzButtonGroupComponent.prototype.nzSize;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: button.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzButtonModule {
 }
@@ -355,15 +211,12 @@ NzButtonModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-button.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzButtonComponent, NzButtonGroupComponent, NzButtonModule };

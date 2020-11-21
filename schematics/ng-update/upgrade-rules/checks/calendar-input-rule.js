@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CalendarTemplateRule = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
 class CalendarTemplateRule extends schematics_1.Migration {
     constructor() {

@@ -5,7 +5,7 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzTreeBase, NzTreeBaseService, NzTreeNode, NzTreeNodeKey, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -16,6 +16,7 @@ export declare class NzTreeComponent extends NzTreeBase implements OnInit, OnDes
     nzConfigService: NzConfigService;
     private cdr;
     noAnimation?: NzNoAnimationDirective | undefined;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzShowIcon: BooleanInput;
     static ngAcceptInputType_nzHideUnMatched: BooleanInput;
     static ngAcceptInputType_nzBlockNode: BooleanInput;
@@ -57,7 +58,7 @@ export declare class NzTreeComponent extends NzTreeBase implements OnInit, OnDes
     nzExpandedKeys: NzTreeNodeKey[];
     nzSelectedKeys: NzTreeNodeKey[];
     nzCheckedKeys: NzTreeNodeKey[];
-    nzSearchValue?: string;
+    nzSearchValue: string;
     nzSearchFunc?: (node: NzTreeNodeOptions) => boolean;
     nzTreeTemplateChild: TemplateRef<{
         $implicit: NzTreeNode;

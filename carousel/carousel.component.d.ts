@@ -4,7 +4,7 @@
  */
 import { Platform } from '@angular/cdk/platform';
 import { AfterContentInit, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, QueryList, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { NzCarouselContentDirective } from './carousel-content.directive';
@@ -18,6 +18,7 @@ export declare class NzCarouselComponent implements AfterContentInit, AfterViewI
     private readonly resizeService;
     private readonly nzDragService;
     private customStrategies;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzEnableSwipe: BooleanInput;
     static ngAcceptInputType_nzDots: BooleanInput;
     static ngAcceptInputType_nzAutoPlay: BooleanInput;
@@ -69,5 +70,5 @@ export declare class NzCarouselComponent implements AfterContentInit, AfterViewI
      * Drag carousel.
      */
     pointerDown: (event: TouchEvent | MouseEvent) => void;
-    private syncStrategy;
+    layout(): void;
 }

@@ -1,26 +1,21 @@
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-export { toArray, arraysEqual, shallowCopyArray } from './array';
-export { isNotNil, isNil, shallowEqual, isInteger, isEmpty, filterNotEmptyNode, isNonEmptyString, isTemplateRef, isComponent } from './check';
-export { toBoolean, toNumber, toCssPixel, valueFunctionProp, InputBoolean, InputCssPixel, InputNumber } from './convert';
-export { silentEvent, getElementOffset, isTouchEvent, getEventPosition } from './dom';
-export { getRegExp, getMentions } from './getMentions';
-export { padStart, padEnd, getRepeatedElement } from './string';
-export { isPromise } from './is-promise';
-export { getPercent, getPrecision, ensureNumberInRange } from './number';
-export { scrollIntoView } from './scroll-into-view-if-needed';
-export { getCaretCoordinates, createDebugEle, properties } from './textarea-caret-position';
-export { isStyleSupport, getStyleAsText } from './style';
-export { pxToNumber, measure } from './text-measure';
-export { measureScrollbar } from './measure-scrollbar';
-export { ensureInBounds } from './ensure-in-bounds';
-export { inNextTick } from './tick';
-export { wrapIntoObservable } from './observable';
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL25nLXpvcnJvLWFudGQvY29yZS91dGlsLyIsInNvdXJjZXMiOlsicHVibGljLWFwaS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFLQSx1REFBYyxTQUFTLENBQUM7QUFDeEIsb0lBQWMsU0FBUyxDQUFDO0FBQ3hCLDZHQUFjLFdBQVcsQ0FBQztBQUMxQiw4RUFBYyxPQUFPLENBQUM7QUFDdEIsdUNBQWMsZUFBZSxDQUFDO0FBQzlCLHFEQUFjLFVBQVUsQ0FBQztBQUN6QiwwQkFBYyxjQUFjLENBQUM7QUFDN0IsOERBQWMsVUFBVSxDQUFDO0FBQ3pCLCtCQUFjLDhCQUE4QixDQUFDO0FBQzdDLGdFQUFjLDJCQUEyQixDQUFDO0FBQzFDLCtDQUFjLFNBQVMsQ0FBQztBQUN4QixvQ0FBYyxnQkFBZ0IsQ0FBQztBQUMvQixpQ0FBYyxxQkFBcUIsQ0FBQztBQUNwQywrQkFBYyxvQkFBb0IsQ0FBQztBQUNuQywyQkFBYyxRQUFRLENBQUM7QUFDdkIsbUNBQWMsY0FBYyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBVc2Ugb2YgdGhpcyBzb3VyY2UgY29kZSBpcyBnb3Zlcm5lZCBieSBhbiBNSVQtc3R5bGUgbGljZW5zZSB0aGF0IGNhbiBiZVxuICogZm91bmQgaW4gdGhlIExJQ0VOU0UgZmlsZSBhdCBodHRwczovL2dpdGh1Yi5jb20vTkctWk9SUk8vbmctem9ycm8tYW50ZC9ibG9iL21hc3Rlci9MSUNFTlNFXG4gKi9cblxuZXhwb3J0ICogZnJvbSAnLi9hcnJheSc7XG5leHBvcnQgKiBmcm9tICcuL2NoZWNrJztcbmV4cG9ydCAqIGZyb20gJy4vY29udmVydCc7XG5leHBvcnQgKiBmcm9tICcuL2RvbSc7XG5leHBvcnQgKiBmcm9tICcuL2dldE1lbnRpb25zJztcbmV4cG9ydCAqIGZyb20gJy4vc3RyaW5nJztcbmV4cG9ydCAqIGZyb20gJy4vaXMtcHJvbWlzZSc7XG5leHBvcnQgKiBmcm9tICcuL251bWJlcic7XG5leHBvcnQgKiBmcm9tICcuL3Njcm9sbC1pbnRvLXZpZXctaWYtbmVlZGVkJztcbmV4cG9ydCAqIGZyb20gJy4vdGV4dGFyZWEtY2FyZXQtcG9zaXRpb24nO1xuZXhwb3J0ICogZnJvbSAnLi9zdHlsZSc7XG5leHBvcnQgKiBmcm9tICcuL3RleHQtbWVhc3VyZSc7XG5leHBvcnQgKiBmcm9tICcuL21lYXN1cmUtc2Nyb2xsYmFyJztcbmV4cG9ydCAqIGZyb20gJy4vZW5zdXJlLWluLWJvdW5kcyc7XG5leHBvcnQgKiBmcm9tICcuL3RpY2snO1xuZXhwb3J0ICogZnJvbSAnLi9vYnNlcnZhYmxlJztcbiJdfQ==
+export * from './array';
+export * from './check';
+export * from './convert';
+export * from './dom';
+export * from './getMentions';
+export * from './string';
+export * from './is-promise';
+export * from './number';
+export * from './scroll-into-view-if-needed';
+export * from './textarea-caret-position';
+export * from './style';
+export * from './text-measure';
+export * from './measure-scrollbar';
+export * from './ensure-in-bounds';
+export * from './tick';
+export * from './observable';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIvaG9tZS92c3RzL3dvcmsvMS9zL2NvbXBvbmVudHMvY29yZS91dGlsLyIsInNvdXJjZXMiOlsicHVibGljLWFwaS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7O0dBR0c7QUFFSCxjQUFjLFNBQVMsQ0FBQztBQUN4QixjQUFjLFNBQVMsQ0FBQztBQUN4QixjQUFjLFdBQVcsQ0FBQztBQUMxQixjQUFjLE9BQU8sQ0FBQztBQUN0QixjQUFjLGVBQWUsQ0FBQztBQUM5QixjQUFjLFVBQVUsQ0FBQztBQUN6QixjQUFjLGNBQWMsQ0FBQztBQUM3QixjQUFjLFVBQVUsQ0FBQztBQUN6QixjQUFjLDhCQUE4QixDQUFDO0FBQzdDLGNBQWMsMkJBQTJCLENBQUM7QUFDMUMsY0FBYyxTQUFTLENBQUM7QUFDeEIsY0FBYyxnQkFBZ0IsQ0FBQztBQUMvQixjQUFjLHFCQUFxQixDQUFDO0FBQ3BDLGNBQWMsb0JBQW9CLENBQUM7QUFDbkMsY0FBYyxRQUFRLENBQUM7QUFDdkIsY0FBYyxjQUFjLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiAqIFVzZSBvZiB0aGlzIHNvdXJjZSBjb2RlIGlzIGdvdmVybmVkIGJ5IGFuIE1JVC1zdHlsZSBsaWNlbnNlIHRoYXQgY2FuIGJlXG4gKiBmb3VuZCBpbiB0aGUgTElDRU5TRSBmaWxlIGF0IGh0dHBzOi8vZ2l0aHViLmNvbS9ORy1aT1JSTy9uZy16b3Jyby1hbnRkL2Jsb2IvbWFzdGVyL0xJQ0VOU0VcbiAqL1xuXG5leHBvcnQgKiBmcm9tICcuL2FycmF5JztcbmV4cG9ydCAqIGZyb20gJy4vY2hlY2snO1xuZXhwb3J0ICogZnJvbSAnLi9jb252ZXJ0JztcbmV4cG9ydCAqIGZyb20gJy4vZG9tJztcbmV4cG9ydCAqIGZyb20gJy4vZ2V0TWVudGlvbnMnO1xuZXhwb3J0ICogZnJvbSAnLi9zdHJpbmcnO1xuZXhwb3J0ICogZnJvbSAnLi9pcy1wcm9taXNlJztcbmV4cG9ydCAqIGZyb20gJy4vbnVtYmVyJztcbmV4cG9ydCAqIGZyb20gJy4vc2Nyb2xsLWludG8tdmlldy1pZi1uZWVkZWQnO1xuZXhwb3J0ICogZnJvbSAnLi90ZXh0YXJlYS1jYXJldC1wb3NpdGlvbic7XG5leHBvcnQgKiBmcm9tICcuL3N0eWxlJztcbmV4cG9ydCAqIGZyb20gJy4vdGV4dC1tZWFzdXJlJztcbmV4cG9ydCAqIGZyb20gJy4vbWVhc3VyZS1zY3JvbGxiYXInO1xuZXhwb3J0ICogZnJvbSAnLi9lbnN1cmUtaW4tYm91bmRzJztcbmV4cG9ydCAqIGZyb20gJy4vdGljayc7XG5leHBvcnQgKiBmcm9tICcuL29ic2VydmFibGUnO1xuIl19

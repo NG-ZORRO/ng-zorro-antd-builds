@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SchematicsTestNGConfig = exports.SchematicsTestTsConfig = void 0;
 exports.SchematicsTestTsConfig = {
     compilerOptions: {
         experimentalDecorators: true,

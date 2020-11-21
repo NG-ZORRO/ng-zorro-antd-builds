@@ -1,63 +1,28 @@
-/**
- * @fileoverview added by tsickle
- * Generated from: request-animation.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 // tslint:disable: typedef no-invalid-this
-/** @type {?} */
 const availablePrefixes = ['moz', 'ms', 'webkit'];
-/**
- * @return {?}
- */
 function requestAnimationFramePolyfill() {
-    /** @type {?} */
     let lastTime = 0;
-    return (/**
-     * @param {?} callback
-     * @return {?}
-     */
-    function (callback) {
-        /** @type {?} */
+    return function (callback) {
         const currTime = new Date().getTime();
-        /** @type {?} */
         const timeToCall = Math.max(0, 16 - (currTime - lastTime));
-        /** @type {?} */
-        const id = setTimeout((/**
-         * @return {?}
-         */
-        () => {
+        const id = setTimeout(() => {
             callback(currTime + timeToCall);
-        }), timeToCall);
+        }, timeToCall);
         lastTime = currTime + timeToCall;
         return id;
-    });
+    };
 }
-/**
- * @return {?}
- */
 function getRequestAnimationFrame() {
     if (typeof window === 'undefined') {
-        return (/**
-         * @return {?}
-         */
-        () => 0);
+        return () => 0;
     }
     if (window.requestAnimationFrame) {
         // https://github.com/vuejs/vue/issues/4465
         return window.requestAnimationFrame.bind(window);
     }
-    /** @type {?} */
-    const prefix = availablePrefixes.filter((/**
-     * @param {?} key
-     * @return {?}
-     */
-    key => `${key}RequestAnimationFrame` in window))[0];
-    return prefix ? ((/** @type {?} */ (window)))[`${prefix}RequestAnimationFrame`] : requestAnimationFramePolyfill();
+    const prefix = availablePrefixes.filter(key => `${key}RequestAnimationFrame` in window)[0];
+    return prefix ? window[`${prefix}RequestAnimationFrame`] : requestAnimationFramePolyfill();
 }
-/**
- * @param {?} id
- * @return {?}
- */
 function cancelRequestAnimationFrame(id) {
     if (typeof window === 'undefined') {
         return null;
@@ -65,31 +30,22 @@ function cancelRequestAnimationFrame(id) {
     if (window.cancelAnimationFrame) {
         return window.cancelAnimationFrame(id);
     }
-    /** @type {?} */
-    const prefix = availablePrefixes.filter((/**
-     * @param {?} key
-     * @return {?}
-     */
-    key => `${key}CancelAnimationFrame` in window || `${key}CancelRequestAnimationFrame` in window))[0];
+    const prefix = availablePrefixes.filter(key => `${key}CancelAnimationFrame` in window || `${key}CancelRequestAnimationFrame` in window)[0];
     return prefix
-        ? (((/** @type {?} */ (window)))[`${prefix}CancelAnimationFrame`] || ((/** @type {?} */ (window)))[`${prefix}CancelRequestAnimationFrame`])
+        ? (window[`${prefix}CancelAnimationFrame`] || window[`${prefix}CancelRequestAnimationFrame`])
             // @ts-ignore
             .call(this, id)
         : clearTimeout(id);
 }
-/** @type {?} */
 const reqAnimFrame = getRequestAnimationFrame();
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-core-polyfill.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { cancelRequestAnimationFrame, reqAnimFrame };

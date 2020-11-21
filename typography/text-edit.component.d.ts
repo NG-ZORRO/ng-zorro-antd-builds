@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { NzTSType } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzAutosizeDirective } from 'ng-zorro-antd/input';
 export declare class NzTextEditComponent implements OnInit, OnDestroy {
@@ -13,6 +14,8 @@ export declare class NzTextEditComponent implements OnInit, OnDestroy {
     locale: NzTextI18nInterface;
     private destroy$;
     text?: string;
+    icon: NzTSType;
+    tooltip?: null | NzTSType;
     readonly startEditing: EventEmitter<void>;
     readonly endEditing: EventEmitter<string>;
     textarea: ElementRef<HTMLTextAreaElement>;

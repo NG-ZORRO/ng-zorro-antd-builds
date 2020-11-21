@@ -29,14 +29,12 @@ export declare class NzSelectTopControlComponent implements OnChanges {
     readonly inputValueChange: EventEmitter<string>;
     readonly animationEnd: EventEmitter<void>;
     readonly deleteItem: EventEmitter<NzSelectItemInterface>;
-    readonly openChange: EventEmitter<boolean>;
     nzSelectSearchComponent: NzSelectSearchComponent;
     listOfSlicedItem: NzSelectTopControlItemType[];
     isShowPlaceholder: boolean;
     isShowSingleLabel: boolean;
     isComposing: boolean;
     inputValue: string | null;
-    onHostClick(): void;
     onHostKeydown(e: KeyboardEvent): void;
     updateTemplateVariable(): void;
     isComposingChange(isComposing: boolean): void;

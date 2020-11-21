@@ -1,28 +1,14 @@
 import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: animation-consts.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class AnimationDuration {
 }
 AnimationDuration.SLOW = '0.3s'; // Modal
-// Modal
 AnimationDuration.BASE = '0.2s';
 AnimationDuration.FAST = '0.1s'; // Tooltip
-if (false) {
-    /** @type {?} */
-    AnimationDuration.SLOW;
-    /** @type {?} */
-    AnimationDuration.BASE;
-    /** @type {?} */
-    AnimationDuration.FAST;
-}
 class AnimationCurves {
 }
 AnimationCurves.EASE_BASE_OUT = 'cubic-bezier(0.7, 0.3, 0.1, 1)';
@@ -39,43 +25,11 @@ AnimationCurves.EASE_IN_OUT_CIRC = 'cubic-bezier(0.78, 0.14, 0.15, 0.86)';
 AnimationCurves.EASE_OUT_QUINT = 'cubic-bezier(0.23, 1, 0.32, 1)';
 AnimationCurves.EASE_IN_QUINT = 'cubic-bezier(0.755, 0.05, 0.855, 0.06)';
 AnimationCurves.EASE_IN_OUT_QUINT = 'cubic-bezier(0.86, 0, 0.07, 1)';
-if (false) {
-    /** @type {?} */
-    AnimationCurves.EASE_BASE_OUT;
-    /** @type {?} */
-    AnimationCurves.EASE_BASE_IN;
-    /** @type {?} */
-    AnimationCurves.EASE_OUT;
-    /** @type {?} */
-    AnimationCurves.EASE_IN;
-    /** @type {?} */
-    AnimationCurves.EASE_IN_OUT;
-    /** @type {?} */
-    AnimationCurves.EASE_OUT_BACK;
-    /** @type {?} */
-    AnimationCurves.EASE_IN_BACK;
-    /** @type {?} */
-    AnimationCurves.EASE_IN_OUT_BACK;
-    /** @type {?} */
-    AnimationCurves.EASE_OUT_CIRC;
-    /** @type {?} */
-    AnimationCurves.EASE_IN_CIRC;
-    /** @type {?} */
-    AnimationCurves.EASE_IN_OUT_CIRC;
-    /** @type {?} */
-    AnimationCurves.EASE_OUT_QUINT;
-    /** @type {?} */
-    AnimationCurves.EASE_IN_QUINT;
-    /** @type {?} */
-    AnimationCurves.EASE_IN_OUT_QUINT;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: collapse.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const collapseMotion = trigger('collapseMotion', [
     state('expanded', style({ height: '*' })),
     state('collapsed', style({ height: 0, overflow: 'hidden' })),
@@ -85,7 +39,6 @@ const collapseMotion = trigger('collapseMotion', [
     transition('collapsed => expanded', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`)),
     transition('hidden => expanded', animate(`150ms ${AnimationCurves.EASE_IN_OUT}`))
 ]);
-/** @type {?} */
 const treeCollapseMotion = trigger('treeCollapseMotion', [
     transition('* => *', [
         query('nz-tree-node:leave', [style({ overflow: 'hidden' }), stagger(0, [animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: 0 }))])], {
@@ -101,22 +54,18 @@ const treeCollapseMotion = trigger('treeCollapseMotion', [
 ]);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: fade.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const fadeMotion = trigger('fadeMotion', [
     transition(':enter', [style({ opacity: 0 }), animate(`${AnimationDuration.BASE}`, style({ opacity: 1 }))]),
     transition(':leave', [style({ opacity: 1 }), animate(`${AnimationDuration.BASE}`, style({ opacity: 0 }))])
 ]);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: help.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const helpMotion = trigger('helpMotion', [
     transition(':enter', [
         style({
@@ -141,11 +90,9 @@ const helpMotion = trigger('helpMotion', [
 ]);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: move.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const moveUpMotion = trigger('moveUpMotion', [
     transition('* => enter', [
         style({
@@ -174,11 +121,9 @@ const moveUpMotion = trigger('moveUpMotion', [
 ]);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: notification.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const notificationMotion = trigger('notificationMotion', [
     state('enterRight', style({ opacity: 1, transform: 'translateX(0)' })),
     transition('* => enterRight', [style({ opacity: 0, transform: 'translateX(5%)' }), animate('100ms linear')]),
@@ -200,15 +145,11 @@ const notificationMotion = trigger('notificationMotion', [
 ]);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: slide.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const ANIMATION_TRANSITION_IN = `${AnimationDuration.BASE} ${AnimationCurves.EASE_OUT_QUINT}`;
-/** @type {?} */
 const ANIMATION_TRANSITION_OUT = `${AnimationDuration.BASE} ${AnimationCurves.EASE_IN_QUINT}`;
-/** @type {?} */
 const slideMotion = trigger('slideMotion', [
     state('void', style({
         opacity: 0,
@@ -221,7 +162,6 @@ const slideMotion = trigger('slideMotion', [
     transition('void => *', [animate(ANIMATION_TRANSITION_IN)]),
     transition('* => void', [animate(ANIMATION_TRANSITION_OUT)])
 ]);
-/** @type {?} */
 const slideAlertMotion = trigger('slideAlertMotion', [
     transition(':leave', [
         style({ opacity: 1, transform: 'scaleY(1)', transformOrigin: '0% 0%' }),
@@ -234,11 +174,9 @@ const slideAlertMotion = trigger('slideAlertMotion', [
 ]);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: zoom.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const zoomMotion = trigger('zoomMotion', [
     transition(':enter', [
         style({ opacity: 0, transform: 'scale(0.2)' }),
@@ -255,7 +193,6 @@ const zoomMotion = trigger('zoomMotion', [
         }))
     ])
 ]);
-/** @type {?} */
 const zoomBigMotion = trigger('zoomBigMotion', [
     transition('void => active', [
         style({ opacity: 0, transform: 'scale(0.8)' }),
@@ -272,7 +209,6 @@ const zoomBigMotion = trigger('zoomBigMotion', [
         }))
     ])
 ]);
-/** @type {?} */
 const zoomBadgeMotion = trigger('zoomBadgeMotion', [
     transition(':enter', [
         style({ opacity: 0, transform: 'scale(0) translate(50%, -50%)' }),
@@ -291,15 +227,12 @@ const zoomBadgeMotion = trigger('zoomBadgeMotion', [
 ]);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-core-animation.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { AnimationCurves, AnimationDuration, collapseMotion, fadeMotion, helpMotion, moveUpMotion, notificationMotion, slideAlertMotion, slideMotion, treeCollapseMotion, zoomBadgeMotion, zoomBigMotion, zoomMotion };

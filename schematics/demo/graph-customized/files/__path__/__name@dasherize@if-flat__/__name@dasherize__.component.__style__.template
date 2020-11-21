@@ -1,0 +1,19 @@
+
+      nz-radio-group {
+        float: right;
+      }
+
+      button {
+        margin-right: 12px;
+      }
+
+      nz-graph {
+        height: 400px;
+      }
+
+      .custom-node {
+        height: 100%;
+        min-height: 100px;
+        display: block;
+      }
+    

@@ -1,16 +1,11 @@
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-export { NzTreeNode } from './nz-tree-base-node';
-export {} from './nz-tree-base.definitions';
-export { NzTreeBaseService } from './nz-tree-base.service';
-export { NzTreeHigherOrderServiceToken } from './nz-tree-service.resolver';
-export { NzTreeBase } from './nz-tree-base';
-export { isCheckDisabled, isInArray, getPosition, getKey, flattenTreeData } from './nz-tree-base-util';
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL25nLXpvcnJvLWFudGQvY29yZS90cmVlLyIsInNvdXJjZXMiOlsicHVibGljLWFwaS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7QUFLQSwyQkFBYyxxQkFBcUIsQ0FBQztBQUNwQyxlQUFjLDRCQUE0QixDQUFDO0FBQzNDLGtDQUFjLHdCQUF3QixDQUFDO0FBQ3ZDLDhDQUFjLDRCQUE0QixDQUFDO0FBQzNDLDJCQUFjLGdCQUFnQixDQUFDO0FBQy9CLGlGQUFjLHFCQUFxQixDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBVc2Ugb2YgdGhpcyBzb3VyY2UgY29kZSBpcyBnb3Zlcm5lZCBieSBhbiBNSVQtc3R5bGUgbGljZW5zZSB0aGF0IGNhbiBiZVxuICogZm91bmQgaW4gdGhlIExJQ0VOU0UgZmlsZSBhdCBodHRwczovL2dpdGh1Yi5jb20vTkctWk9SUk8vbmctem9ycm8tYW50ZC9ibG9iL21hc3Rlci9MSUNFTlNFXG4gKi9cblxuZXhwb3J0ICogZnJvbSAnLi9uei10cmVlLWJhc2Utbm9kZSc7XG5leHBvcnQgKiBmcm9tICcuL256LXRyZWUtYmFzZS5kZWZpbml0aW9ucyc7XG5leHBvcnQgKiBmcm9tICcuL256LXRyZWUtYmFzZS5zZXJ2aWNlJztcbmV4cG9ydCAqIGZyb20gJy4vbnotdHJlZS1zZXJ2aWNlLnJlc29sdmVyJztcbmV4cG9ydCAqIGZyb20gJy4vbnotdHJlZS1iYXNlJztcbmV4cG9ydCAqIGZyb20gJy4vbnotdHJlZS1iYXNlLXV0aWwnO1xuIl19
+export * from './nz-tree-base-node';
+export * from './nz-tree-base.definitions';
+export * from './nz-tree-base.service';
+export * from './nz-tree-service.resolver';
+export * from './nz-tree-base';
+export * from './nz-tree-base-util';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIvaG9tZS92c3RzL3dvcmsvMS9zL2NvbXBvbmVudHMvY29yZS90cmVlLyIsInNvdXJjZXMiOlsicHVibGljLWFwaS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7O0dBR0c7QUFFSCxjQUFjLHFCQUFxQixDQUFDO0FBQ3BDLGNBQWMsNEJBQTRCLENBQUM7QUFDM0MsY0FBYyx3QkFBd0IsQ0FBQztBQUN2QyxjQUFjLDRCQUE0QixDQUFDO0FBQzNDLGNBQWMsZ0JBQWdCLENBQUM7QUFDL0IsY0FBYyxxQkFBcUIsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIi8qKlxuICogVXNlIG9mIHRoaXMgc291cmNlIGNvZGUgaXMgZ292ZXJuZWQgYnkgYW4gTUlULXN0eWxlIGxpY2Vuc2UgdGhhdCBjYW4gYmVcbiAqIGZvdW5kIGluIHRoZSBMSUNFTlNFIGZpbGUgYXQgaHR0cHM6Ly9naXRodWIuY29tL05HLVpPUlJPL25nLXpvcnJvLWFudGQvYmxvYi9tYXN0ZXIvTElDRU5TRVxuICovXG5cbmV4cG9ydCAqIGZyb20gJy4vbnotdHJlZS1iYXNlLW5vZGUnO1xuZXhwb3J0ICogZnJvbSAnLi9uei10cmVlLWJhc2UuZGVmaW5pdGlvbnMnO1xuZXhwb3J0ICogZnJvbSAnLi9uei10cmVlLWJhc2Uuc2VydmljZSc7XG5leHBvcnQgKiBmcm9tICcuL256LXRyZWUtc2VydmljZS5yZXNvbHZlcic7XG5leHBvcnQgKiBmcm9tICcuL256LXRyZWUtYmFzZSc7XG5leHBvcnQgKiBmcm9tICcuL256LXRyZWUtYmFzZS11dGlsJztcbiJdfQ==

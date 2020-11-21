@@ -4,7 +4,7 @@
  */
 import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectorRef, EventEmitter, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 export declare class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
@@ -14,13 +14,16 @@ export declare class NzBackTopComponent implements OnInit, OnDestroy, OnChanges 
     private platform;
     private cd;
     private zone;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzVisibilityHeight: NumberInput;
+    static ngAcceptInputType_nzDuration: NumberInput;
     private scrollListenerDestroy$;
     private target;
     visible: boolean;
     nzTemplate?: TemplateRef<void>;
     nzVisibilityHeight: number;
     nzTarget?: string | HTMLElement;
+    nzDuration: number;
     readonly nzClick: EventEmitter<boolean>;
     constructor(doc: NzSafeAny, nzConfigService: NzConfigService, scrollSrv: NzScrollService, platform: Platform, cd: ChangeDetectorRef, zone: NgZone);
     ngOnInit(): void;

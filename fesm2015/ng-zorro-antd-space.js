@@ -6,32 +6,20 @@ import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: space-item.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const spaceSize = {
     small: 8,
     middle: 16,
     large: 24
 };
 class NzSpaceItemComponent {
-    /**
-     * @param {?} renderer
-     * @param {?} elementRef
-     */
     constructor(renderer, elementRef) {
         this.renderer = renderer;
         this.elementRef = elementRef;
     }
-    /**
-     * @param {?} direction
-     * @param {?} size
-     * @return {?}
-     */
     setDirectionAndSize(direction, size) {
-        /** @type {?} */
         const marginSize = typeof size === 'string' ? spaceSize[size] : size;
         if (direction === 'horizontal') {
             this.renderer.removeStyle(this.elementRef.nativeElement, 'margin-bottom');
@@ -42,9 +30,6 @@ class NzSpaceItemComponent {
             this.renderer.setStyle(this.elementRef.nativeElement, 'margin-bottom', `${marginSize}px`);
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() { }
 }
 NzSpaceItemComponent.decorators = [
@@ -55,129 +40,83 @@ NzSpaceItemComponent.decorators = [
                 host: {
                     class: 'ant-space-item'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzSpaceItemComponent.ctorParameters = () => [
     { type: Renderer2 },
     { type: ElementRef }
 ];
-if (false) {
-    /**
-     * @type {?}
-     * @private
-     */
-    NzSpaceItemComponent.prototype.renderer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzSpaceItemComponent.prototype.elementRef;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: space.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'space';
+const NZ_CONFIG_MODULE_NAME = 'space';
 class NzSpaceComponent {
-    /**
-     * @param {?} nzConfigService
-     */
     constructor(nzConfigService) {
         this.nzConfigService = nzConfigService;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzDirection = 'horizontal';
         this.nzSize = 'small';
         this.destroy$ = new Subject();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     updateSpaceItems() {
         if (this.nzSpaceItemComponents) {
-            this.nzSpaceItemComponents.forEach((/**
-             * @param {?} item
-             * @return {?}
-             */
-            item => {
+            this.nzSpaceItemComponents.forEach(item => {
                 item.setDirectionAndSize(this.nzDirection, this.nzSize);
-            }));
+            });
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnChanges() {
         this.updateSpaceItems();
+        this.mergedAlign = this.nzAlign === undefined && this.nzDirection === 'horizontal' ? 'center' : this.nzAlign;
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
-        this.nzSpaceItemComponents.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        this.nzSpaceItemComponents.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
             this.updateSpaceItems();
-        }));
+        });
     }
 }
 NzSpaceComponent.decorators = [
     { type: Component, args: [{
-                selector: 'nz-space',
+                selector: 'nz-space, [nz-space]',
                 exportAs: 'NzSpace',
                 changeDetection: ChangeDetectionStrategy.OnPush,
-                template: ` <ng-content></ng-content> `,
+                template: `
+    <ng-content></ng-content>
+  `,
                 host: {
                     class: 'ant-space',
                     '[class.ant-space-horizontal]': 'nzDirection === "horizontal"',
-                    '[class.ant-space-vertical]': 'nzDirection === "vertical"'
+                    '[class.ant-space-vertical]': 'nzDirection === "vertical"',
+                    '[class.ant-space-align-start]': 'mergedAlign === "start"',
+                    '[class.ant-space-align-end]': 'mergedAlign === "end"',
+                    '[class.ant-space-align-center]': 'mergedAlign === "center"',
+                    '[class.ant-space-align-baseline]': 'mergedAlign === "baseline"'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzSpaceComponent.ctorParameters = () => [
     { type: NzConfigService }
 ];
 NzSpaceComponent.propDecorators = {
     nzDirection: [{ type: Input }],
+    nzAlign: [{ type: Input }],
     nzSize: [{ type: Input }],
     nzSpaceItemComponents: [{ type: ContentChildren, args: [NzSpaceItemComponent,] }]
 };
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", Object)
 ], NzSpaceComponent.prototype, "nzSize", void 0);
-if (false) {
-    /** @type {?} */
-    NzSpaceComponent.prototype.nzDirection;
-    /** @type {?} */
-    NzSpaceComponent.prototype.nzSize;
-    /** @type {?} */
-    NzSpaceComponent.prototype.nzSpaceItemComponents;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzSpaceComponent.prototype.destroy$;
-    /** @type {?} */
-    NzSpaceComponent.prototype.nzConfigService;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: space.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzSpaceModule {
 }
@@ -190,15 +129,17 @@ NzSpaceModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-space.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+/**
+ * Generated bundle index. Do not edit.
  */
 
 export { NzSpaceComponent, NzSpaceItemComponent, NzSpaceModule };

@@ -4,7 +4,7 @@
  */
 import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, TemplateRef } from '@angular/core';
 import { Location } from '@angular/common';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { Subject } from 'rxjs';
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
@@ -14,6 +14,7 @@ export declare class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
     private elementRef;
     private nzResizeObserver;
     private cdr;
+    readonly _nzModuleName: NzConfigKey;
     nzBackIcon: string | TemplateRef<void> | null;
     nzTitle?: string | TemplateRef<void>;
     nzSubtitle?: string | TemplateRef<void>;

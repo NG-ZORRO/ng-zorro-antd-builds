@@ -9,9 +9,5 @@ export declare function isNil(value: unknown): value is null | undefined;
  * Examine if two objects are shallowly equaled.
  */
 export declare function shallowEqual(objA?: IndexableObject, objB?: IndexableObject): boolean;
-export declare function isInteger(value: string | number): boolean;
-export declare function isEmpty(element: HTMLElement): boolean;
-export declare function filterNotEmptyNode(node: Node): Node | null;
 export declare function isNonEmptyString(value: NzSafeAny): boolean;
 export declare function isTemplateRef(value: NzSafeAny): boolean;
-export declare function isComponent(value: NzSafeAny): boolean;

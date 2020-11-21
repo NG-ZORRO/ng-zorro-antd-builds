@@ -66,53 +66,6 @@ export interface NzTimePickerI18nInterface {
     rangePlaceholder?: string[];
 }
 export declare type ValidateMessage = string | (() => string);
-export interface NzFormValidateMessages {
-    default?: ValidateMessage;
-    required?: ValidateMessage;
-    enum?: ValidateMessage;
-    whitespace?: ValidateMessage;
-    date?: {
-        format?: ValidateMessage;
-        parse?: ValidateMessage;
-        invalid?: ValidateMessage;
-    };
-    types?: {
-        string?: ValidateMessage;
-        method?: ValidateMessage;
-        array?: ValidateMessage;
-        object?: ValidateMessage;
-        number?: ValidateMessage;
-        date?: ValidateMessage;
-        boolean?: ValidateMessage;
-        integer?: ValidateMessage;
-        float?: ValidateMessage;
-        regexp?: ValidateMessage;
-        email?: ValidateMessage;
-        url?: ValidateMessage;
-        hex?: ValidateMessage;
-    };
-    string?: {
-        len?: ValidateMessage;
-        min?: ValidateMessage;
-        max?: ValidateMessage;
-        range?: ValidateMessage;
-    };
-    number?: {
-        len?: ValidateMessage;
-        min?: ValidateMessage;
-        max?: ValidateMessage;
-        range?: ValidateMessage;
-    };
-    array?: {
-        len?: ValidateMessage;
-        min?: ValidateMessage;
-        max?: ValidateMessage;
-        range?: ValidateMessage;
-    };
-    pattern?: {
-        mismatch?: ValidateMessage;
-    };
-}
 export declare type NzCascaderI18nInterface = NzGlobalI18nInterface;
 export interface NzTableI18nInterface {
     filterTitle?: string;
@@ -173,8 +126,5 @@ export interface NzI18nInterface {
     Upload: NzUploadI18nInterface;
     Empty: NzEmptyI18nInterface;
     Text?: NzTextI18nInterface;
-    Form?: {
-        defaultValidateMessages?: NzFormValidateMessages;
-    };
 }
 export declare type DateLocale = Locale;

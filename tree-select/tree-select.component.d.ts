@@ -2,10 +2,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { FocusMonitor } from '@angular/cdk/a11y';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { ChangeDetectorRef, ElementRef, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzFormatEmitEvent, NzTreeBase, NzTreeBaseService, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -19,7 +20,9 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     private renderer;
     private cdr;
     private elementRef;
+    private focusMonitor;
     noAnimation?: NzNoAnimationDirective | undefined;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzAllowClear: BooleanInput;
     static ngAcceptInputType_nzShowExpand: BooleanInput;
     static ngAcceptInputType_nzShowLine: BooleanInput;
@@ -46,6 +49,10 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     nzMultiple: boolean;
     nzDefaultExpandAll: boolean;
     nzCheckStrictly: boolean;
+    nzVirtualItemSize: number;
+    nzVirtualMaxBufferPx: number;
+    nzVirtualMinBufferPx: number;
+    nzVirtualHeight: string | null;
     nzExpandedIcon?: TemplateRef<{
         $implicit: NzTreeNode;
         origin: NzTreeNodeOptions;
@@ -91,9 +98,11 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     isComposing: boolean;
     isDestroy: boolean;
     isNotFound: boolean;
+    focused: boolean;
     inputValue: string;
     dropDownPosition: 'top' | 'center' | 'bottom';
     selectionChangeSubscription: Subscription;
+    focusChangeSubscription: Subscription;
     selectedNodes: NzTreeNode[];
     expandedKeys: string[];
     value: string[];
@@ -101,14 +110,16 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     onTouched: OnTouchedType;
     get placeHolderDisplay(): string;
     get isMultiple(): boolean;
-    constructor(nzTreeService: NzTreeSelectService, nzConfigService: NzConfigService, renderer: Renderer2, cdr: ChangeDetectorRef, elementRef: ElementRef, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(nzTreeService: NzTreeSelectService, nzConfigService: NzConfigService, renderer: Renderer2, cdr: ChangeDetectorRef, elementRef: ElementRef, focusMonitor: FocusMonitor, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnInit(): void;
     ngOnDestroy(): void;
+    isComposingChange(isComposing: boolean): void;
     setDisabledState(isDisabled: boolean): void;
     ngOnChanges(changes: SimpleChanges): void;
     writeValue(value: string[] | string): void;
     registerOnChange(fn: (_: string[] | string | null) => void): void;
     registerOnTouched(fn: () => void): void;
+    onKeydown(event: KeyboardEvent): void;
     trigger(): void;
     openDropdown(): void;
     closeDropDown(): void;
@@ -122,6 +133,7 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     updatePosition(): void;
     onPositionChange(position: ConnectedOverlayPositionChange): void;
     onClearSelection(): void;
+    onClickOutside(event: MouseEvent): void;
     setSearchValues($event: NzFormatEmitEvent): void;
     updateCdkConnectedOverlayStatus(): void;
     trackValue(_index: number, option: NzTreeNode): string;

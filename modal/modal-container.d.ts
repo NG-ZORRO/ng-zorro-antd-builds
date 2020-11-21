@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { AnimationEvent } from '@angular/animations';
-import { ConfigurableFocusTrapFactory } from '@angular/cdk/a11y';
+import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, ComponentRef, ElementRef, EmbeddedViewRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
@@ -13,9 +13,9 @@ import { Subject } from 'rxjs';
 import { NzModalRef } from './modal-ref';
 import { ModalOptions } from './modal-types';
 export declare function throwNzModalContentAlreadyAttachedError(): never;
-export declare class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
+export declare class BaseModalContainerComponent extends BasePortalOutlet implements OnDestroy {
     protected elementRef: ElementRef;
-    protected focusTrapFactory: ConfigurableFocusTrapFactory;
+    protected focusTrapFactory: FocusTrapFactory;
     cdr: ChangeDetectorRef;
     protected render: Renderer2;
     protected overlayRef: OverlayRef;
@@ -39,7 +39,7 @@ export declare class BaseModalContainer extends BasePortalOutlet implements OnDe
     protected destroy$: Subject<unknown>;
     get showMask(): boolean;
     get maskClosable(): boolean;
-    constructor(elementRef: ElementRef, focusTrapFactory: ConfigurableFocusTrapFactory, cdr: ChangeDetectorRef, render: Renderer2, overlayRef: OverlayRef, nzConfigService: NzConfigService, config: ModalOptions, document?: NzSafeAny, animationType?: string | undefined);
+    constructor(elementRef: ElementRef, focusTrapFactory: FocusTrapFactory, cdr: ChangeDetectorRef, render: Renderer2, overlayRef: OverlayRef, nzConfigService: NzConfigService, config: ModalOptions, document?: NzSafeAny, animationType?: string | undefined);
     onContainerClick(e: MouseEvent): void;
     onMousedown(): void;
     onMouseup(): void;
@@ -59,18 +59,13 @@ export declare class BaseModalContainer extends BasePortalOutlet implements OnDe
     private setMaskExitAnimationClass;
     private cleanAnimationClass;
     bindBackdropStyle(): void;
+    private setContainer;
+    private resetContainer;
     /**
      * Set the container element.
      * @deprecated Not supported.
-     * @breaking-change 10.0.0
+     * @breaking-change 11.0.0
      */
-    private setContainer;
-    /**
-     * Reset the container element.
-     * @deprecated Not supported.
-     * @breaking-change 10.0.0
-     */
-    private resetContainer;
     private getContainer;
     updateMaskClassname(): void;
     onAnimationDone(event: AnimationEvent): void;

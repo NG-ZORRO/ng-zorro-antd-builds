@@ -15,8 +15,6 @@ export declare class DateRangePopupComponent implements OnInit, OnChanges, OnDes
     isRange: boolean;
     showWeek: boolean;
     locale: NzCalendarI18nInterface | undefined;
-    format: string;
-    placeholder: string | string[];
     disabledDate?: DisabledDateFn;
     disabledTime?: DisabledTimeFn;
     showToday: boolean;
@@ -33,6 +31,7 @@ export declare class DateRangePopupComponent implements OnInit, OnChanges, OnDes
     endPanelMode: NzDateMode | NzDateMode[];
     timeOptions: SupportTimeOptions | SupportTimeOptions[] | null;
     hoverValue: SingleValue[];
+    checkedPartArr: boolean[];
     destroy$: Subject<unknown>;
     get hasTimePicker(): boolean;
     get hasFooter(): boolean;
@@ -40,14 +39,16 @@ export declare class DateRangePopupComponent implements OnInit, OnChanges, OnDes
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
-    initActiveDate(): void;
+    updateActiveDate(): void;
+    init(): void;
     onClickOk(): void;
     onClickToday(value: CandyDate): void;
-    onDayHover(value: CandyDate): void;
+    onCellHover(value: CandyDate): void;
     onPanelModeChange(mode: NzDateMode, partType?: RangePartType): void;
     onActiveDateChange(value: CandyDate, partType: RangePartType): void;
     onSelectTime(value: CandyDate, partType?: RangePartType): void;
     changeValueFromSelect(value: CandyDate, emitValue?: boolean): void;
+    reversedPart(part: RangePartType): RangePartType;
     getPanelMode(panelMode: NzDateMode | NzDateMode[], partType?: RangePartType): NzDateMode;
     getValue(partType?: RangePartType): CandyDate;
     getActiveDate(partType?: RangePartType): CandyDate;

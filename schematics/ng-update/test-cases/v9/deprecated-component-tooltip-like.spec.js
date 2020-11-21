@@ -67,11 +67,11 @@ describe('tooltip-like migration', () => {
       export class MyComp {
       }`);
             yield runMigration();
-            expect(warnOutput).toContain('index.ts@5:11 - Found deprecated "<nz-tooltip>" ' +
+            expect(warnOutput).toContain('/index.ts@5:11 - Found deprecated "<nz-tooltip>" ' +
                 'component. Use "[nz-tooltip]" to instead please.');
-            expect(warnOutput).toContain('index.ts@6:11 - Found deprecated "<nz-popover>" ' +
+            expect(warnOutput).toContain('/index.ts@6:11 - Found deprecated "<nz-popover>" ' +
                 'component. Use "[nz-popover]" to instead please.');
-            expect(warnOutput).toContain('index.ts@7:11 - Found deprecated "<nz-popconfirm>" ' +
+            expect(warnOutput).toContain('/index.ts@7:11 - Found deprecated "<nz-popconfirm>" ' +
                 'component. Use "[nz-popconfirm]" to instead please.');
         }));
         it('should  properly report invalid deprecated component in HTML', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -88,11 +88,11 @@ describe('tooltip-like migration', () => {
       <nz-popconfirm nzTitle="title"></nz-popconfirm>
       `);
             yield runMigration();
-            expect(warnOutput).toContain('sub_dir/tmpl.html@2:7 - Found deprecated "<nz-tooltip>" ' +
+            expect(warnOutput).toContain('/sub_dir/tmpl.html@2:7 - Found deprecated "<nz-tooltip>" ' +
                 'component. Use "[nz-tooltip]" to instead please.');
-            expect(warnOutput).toContain('sub_dir/tmpl.html@3:7 - Found deprecated "<nz-popover>" ' +
+            expect(warnOutput).toContain('/sub_dir/tmpl.html@3:7 - Found deprecated "<nz-popover>" ' +
                 'component. Use "[nz-popover]" to instead please.');
-            expect(warnOutput).toContain('sub_dir/tmpl.html@4:7 - Found deprecated "<nz-popconfirm>" ' +
+            expect(warnOutput).toContain('/sub_dir/tmpl.html@4:7 - Found deprecated "<nz-popconfirm>" ' +
                 'component. Use "[nz-popconfirm]" to instead please.');
         }));
     });

@@ -3,15 +3,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { DateHelperService } from 'ng-zorro-antd/i18n';
 export declare class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     nzConfigService: NzConfigService;
     private element;
     private renderer;
-    cdr: ChangeDetectorRef;
+    private cdr;
+    private dateHelper;
+    private platform;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzUse12Hours: BooleanInput;
     static ngAcceptInputType_nzHideDisabledOptions: BooleanInput;
     static ngAcceptInputType_nzAllowEmpty: BooleanInput;
@@ -21,7 +26,9 @@ export declare class NzTimePickerComponent implements ControlValueAccessor, OnIn
     private _onTouched?;
     isInit: boolean;
     focused: boolean;
+    inputValue: string;
     value: Date | null;
+    preValue: Date | null;
     origin: CdkOverlayOrigin;
     inputSize?: number;
     overlayPositions: ConnectionPositionPair[];
@@ -47,17 +54,25 @@ export declare class NzTimePickerComponent implements ControlValueAccessor, OnIn
     nzAllowEmpty: boolean;
     nzDisabled: boolean;
     nzAutoFocus: boolean;
-    setValue(value: Date | null): void;
+    emitValue(value: Date | null): void;
+    setValue(value: Date | null, syncPreValue?: boolean): void;
     open(): void;
     close(): void;
     updateAutoFocus(): void;
     onClickClearBtn(event: MouseEvent): void;
+    onClickOutside(event: MouseEvent): void;
     onFocus(value: boolean): void;
     focus(): void;
     blur(): void;
-    constructor(nzConfigService: NzConfigService, element: ElementRef, renderer: Renderer2, cdr: ChangeDetectorRef);
+    onKeyupEsc(): void;
+    onKeyupEnter(): void;
+    onInputChange(str: string): void;
+    onPanelValueChange(value: Date): void;
+    setCurrentValueAndClose(): void;
+    constructor(nzConfigService: NzConfigService, element: ElementRef, renderer: Renderer2, cdr: ChangeDetectorRef, dateHelper: DateHelperService, platform: Platform);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
+    parseTimeString(str: string): void;
     ngAfterViewInit(): void;
     writeValue(time: Date | null | undefined): void;
     registerOnChange(fn: (time: Date | null) => void): void;

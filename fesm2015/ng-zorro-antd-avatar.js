@@ -2,30 +2,25 @@ import { __decorate, __metadata } from 'tslib';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, ChangeDetectorRef, Input, Output, ViewChild, NgModule } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { InputNumber } from 'ng-zorro-antd/core/util';
 import { CommonModule } from '@angular/common';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: avatar.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'avatar';
+const NZ_CONFIG_MODULE_NAME = 'avatar';
 class NzAvatarComponent {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} elementRef
-     * @param {?} cdr
-     * @param {?} platform
-     */
     constructor(nzConfigService, elementRef, cdr, platform) {
         this.nzConfigService = nzConfigService;
         this.elementRef = elementRef;
         this.cdr = cdr;
         this.platform = platform;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzShape = 'circle';
         this.nzSize = 'default';
+        this.nzGap = 4;
         this.nzError = new EventEmitter();
         this.hasText = false;
         this.hasSrc = true;
@@ -35,10 +30,6 @@ class NzAvatarComponent {
         this.customSize = null;
         this.el = this.elementRef.nativeElement;
     }
-    /**
-     * @param {?} $event
-     * @return {?}
-     */
     imgError($event) {
         this.nzError.emit($event);
         if (!$event.defaultPrevented) {
@@ -56,9 +47,6 @@ class NzAvatarComponent {
             this.notifyCalc();
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnChanges() {
         this.hasText = !this.nzSrc && !!this.nzText;
         this.hasIcon = !this.nzSrc && !!this.nzIcon;
@@ -66,20 +54,14 @@ class NzAvatarComponent {
         this.setSizeStyle();
         this.notifyCalc();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     calcStringSize() {
         if (!this.hasText) {
             return;
         }
-        /** @type {?} */
-        const childrenWidth = (/** @type {?} */ (this.textEl)).nativeElement.offsetWidth;
-        /** @type {?} */
+        const childrenWidth = this.textEl.nativeElement.offsetWidth;
         const avatarWidth = this.el.getBoundingClientRect().width;
-        /** @type {?} */
-        const scale = avatarWidth - 8 < childrenWidth ? (avatarWidth - 8) / childrenWidth : 1;
+        const offset = this.nzGap * 2 < avatarWidth ? this.nzGap * 2 : 8;
+        const scale = avatarWidth - offset < childrenWidth ? (avatarWidth - offset) / childrenWidth : 1;
         this.textStyles = {
             transform: `scale(${scale}) translateX(-50%)`
         };
@@ -90,25 +72,14 @@ class NzAvatarComponent {
         }
         this.cdr.detectChanges();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     notifyCalc() {
         // If use ngAfterViewChecked, always demands more computations, so......
         if (this.platform.isBrowser) {
-            setTimeout((/**
-             * @return {?}
-             */
-            () => {
+            setTimeout(() => {
                 this.calcStringSize();
-            }));
+            });
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     setSizeStyle() {
         if (typeof this.nzSize === 'number') {
             this.customSize = `${this.nzSize}px`;
@@ -145,9 +116,8 @@ NzAvatarComponent.decorators = [
                 preserveWhitespaces: false,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 encapsulation: ViewEncapsulation.None
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzAvatarComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ElementRef },
@@ -157,6 +127,7 @@ NzAvatarComponent.ctorParameters = () => [
 NzAvatarComponent.propDecorators = {
     nzShape: [{ type: Input }],
     nzSize: [{ type: Input }],
+    nzGap: [{ type: Input }],
     nzText: [{ type: Input }],
     nzSrc: [{ type: Input }],
     nzSrcSet: [{ type: Input }],
@@ -166,94 +137,61 @@ NzAvatarComponent.propDecorators = {
     textEl: [{ type: ViewChild, args: ['textEl', { static: false },] }]
 };
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", String)
 ], NzAvatarComponent.prototype, "nzShape", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", Object)
 ], NzAvatarComponent.prototype, "nzSize", void 0);
-if (false) {
-    /** @type {?} */
-    NzAvatarComponent.prototype.nzShape;
-    /** @type {?} */
-    NzAvatarComponent.prototype.nzSize;
-    /** @type {?} */
-    NzAvatarComponent.prototype.nzText;
-    /** @type {?} */
-    NzAvatarComponent.prototype.nzSrc;
-    /** @type {?} */
-    NzAvatarComponent.prototype.nzSrcSet;
-    /** @type {?} */
-    NzAvatarComponent.prototype.nzAlt;
-    /** @type {?} */
-    NzAvatarComponent.prototype.nzIcon;
-    /** @type {?} */
-    NzAvatarComponent.prototype.nzError;
-    /** @type {?} */
-    NzAvatarComponent.prototype.hasText;
-    /** @type {?} */
-    NzAvatarComponent.prototype.hasSrc;
-    /** @type {?} */
-    NzAvatarComponent.prototype.hasIcon;
-    /** @type {?} */
-    NzAvatarComponent.prototype.textStyles;
-    /** @type {?} */
-    NzAvatarComponent.prototype.classMap;
-    /** @type {?} */
-    NzAvatarComponent.prototype.customSize;
-    /** @type {?} */
-    NzAvatarComponent.prototype.textEl;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAvatarComponent.prototype.el;
-    /** @type {?} */
-    NzAvatarComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAvatarComponent.prototype.elementRef;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAvatarComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAvatarComponent.prototype.platform;
-}
+__decorate([
+    WithConfig(),
+    InputNumber(),
+    __metadata("design:type", Object)
+], NzAvatarComponent.prototype, "nzGap", void 0);
 
 /**
- * @fileoverview added by tsickle
- * Generated from: avatar.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+class NzAvatarGroupComponent {
+}
+NzAvatarGroupComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'nz-avatar-group',
+                exportAs: 'nzAvatarGroup',
+                template: `
+    <ng-content></ng-content>
+  `,
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                host: {
+                    class: 'ant-avatar-group'
+                }
+            },] }
+];
+
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzAvatarModule {
 }
 NzAvatarModule.decorators = [
     { type: NgModule, args: [{
-                declarations: [NzAvatarComponent],
-                exports: [NzAvatarComponent],
+                declarations: [NzAvatarComponent, NzAvatarGroupComponent],
+                exports: [NzAvatarComponent, NzAvatarGroupComponent],
                 imports: [CommonModule, NzIconModule, PlatformModule]
             },] }
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-avatar.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
-export { NzAvatarComponent, NzAvatarModule };
+export { NzAvatarComponent, NzAvatarModule, NzAvatarGroupComponent as ɵa };
 //# sourceMappingURL=ng-zorro-antd-avatar.js.map

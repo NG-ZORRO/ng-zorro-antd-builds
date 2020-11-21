@@ -17,10 +17,6 @@ export declare class NzThSelectionComponent implements OnChanges {
     nzShowCheckbox: boolean;
     nzShowRowSelection: boolean;
     readonly nzCheckedChange: EventEmitter<boolean>;
-    readonly nzSortChangeWithKey: EventEmitter<{
-        key: string;
-        value: import("../table.types").NzTableSortOrder;
-    }>;
     private isNzShowExpandChanged;
     private isNzShowCheckboxChanged;
     onCheckedChange(checked: boolean): void;

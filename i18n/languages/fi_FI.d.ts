@@ -121,5 +121,11 @@ declare const _default: {
     Empty: {
         description: string;
     };
+    Text: {
+        edit: string;
+        copy: string;
+        copied: string;
+        expand: string;
+    };
 };
 export default _default;

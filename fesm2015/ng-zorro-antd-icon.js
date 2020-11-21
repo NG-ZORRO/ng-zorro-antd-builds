@@ -1,5 +1,5 @@
 import { PlatformModule } from '@angular/cdk/platform';
-import { InjectionToken, Injectable, RendererFactory2, Optional, Inject, ɵɵdefineInjectable, ɵɵinject, Self, Directive, ElementRef, Renderer2, Input, NgModule } from '@angular/core';
+import { InjectionToken, ɵɵdefineInjectable, ɵɵinject, RendererFactory2, Injectable, Optional, Inject, Self, Directive, ElementRef, Renderer2, Input, NgModule } from '@angular/core';
 import { __decorate, __metadata } from 'tslib';
 import { IconService, IconDirective } from '@ant-design/icons-angular';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -9,14 +9,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { Subject } from 'rxjs';
-import { BarsOutline, CalendarOutline, CaretUpFill, CaretUpOutline, CaretDownFill, CaretDownOutline, CheckCircleFill, CheckCircleOutline, CheckOutline, ClockCircleOutline, CloseCircleOutline, CloseCircleFill, CloseOutline, CopyOutline, DoubleLeftOutline, DoubleRightOutline, DownOutline, EditOutline, EllipsisOutline, ExclamationCircleFill, ExclamationCircleOutline, EyeOutline, FileFill, FileOutline, FilterFill, InfoCircleFill, InfoCircleOutline, LeftOutline, LoadingOutline, PaperClipOutline, QuestionCircleOutline, RightOutline, StarFill, SearchOutline, UploadOutline, UpOutline, SwapRightOutline } from '@ant-design/icons-angular/icons';
+import { BarsOutline, CalendarOutline, CaretUpFill, CaretUpOutline, CaretDownFill, CaretDownOutline, CheckCircleFill, CheckCircleOutline, CheckOutline, ClockCircleOutline, CloseCircleOutline, CloseCircleFill, CloseOutline, CopyOutline, DoubleLeftOutline, DoubleRightOutline, DownOutline, EditOutline, EllipsisOutline, ExclamationCircleFill, ExclamationCircleOutline, EyeOutline, FileFill, FileOutline, FilterFill, InfoCircleFill, InfoCircleOutline, LeftOutline, LoadingOutline, PaperClipOutline, QuestionCircleOutline, RightOutline, StarFill, SearchOutline, UploadOutline, VerticalAlignTopOutline, UpOutline, SwapRightOutline } from '@ant-design/icons-angular/icons';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: icons.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const NZ_ICONS_USED_BY_ZORRO = [
     BarsOutline,
     CalendarOutline,
@@ -54,41 +52,22 @@ const NZ_ICONS_USED_BY_ZORRO = [
     SearchOutline,
     StarFill,
     UploadOutline,
+    VerticalAlignTopOutline,
     UpOutline,
     SwapRightOutline
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: icon.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @record
- */
-function NzIconfontOption() { }
-if (false) {
-    /** @type {?} */
-    NzIconfontOption.prototype.scriptUrl;
-}
-/** @type {?} */
 const NZ_ICONS = new InjectionToken('nz_icons');
-/** @type {?} */
 const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default_twotone_color');
-/** @type {?} */
 const DEFAULT_TWOTONE_COLOR = '#1890ff';
 /**
  * It should be a global singleton, otherwise registered icons could not be found.
  */
 class NzIconService extends IconService {
-    /**
-     * @param {?} rendererFactory
-     * @param {?} sanitizer
-     * @param {?} nzConfigService
-     * @param {?} handler
-     * @param {?} _document
-     * @param {?=} icons
-     */
     constructor(rendererFactory, sanitizer, nzConfigService, handler, _document, icons) {
         super(rendererFactory, handler, _document, sanitizer);
         this.nzConfigService = nzConfigService;
@@ -99,10 +78,6 @@ class NzIconService extends IconService {
         this.configDefaultTwotoneColor();
         this.configDefaultTheme();
     }
-    /**
-     * @param {?} svg
-     * @return {?}
-     */
     normalizeSvgElement(svg) {
         if (!svg.getAttribute('viewBox')) {
             this._renderer.setAttribute(svg, 'viewBox', '0 0 1024 1024');
@@ -115,14 +90,9 @@ class NzIconService extends IconService {
             this._renderer.setAttribute(svg, 'fill', 'currentColor');
         }
     }
-    /**
-     * @param {?} opt
-     * @return {?}
-     */
     fetchFromIconfont(opt) {
         const { scriptUrl } = opt;
         if (this._document && !this.iconfontCache.has(scriptUrl)) {
-            /** @type {?} */
             const script = this._renderer.createElement('script');
             this._renderer.setAttribute(script, 'src', scriptUrl);
             this._renderer.setAttribute(script, 'data-namespace', scriptUrl.replace(/^(https?|http):/g, ''));
@@ -130,46 +100,23 @@ class NzIconService extends IconService {
             this.iconfontCache.add(scriptUrl);
         }
     }
-    /**
-     * @param {?} type
-     * @return {?}
-     */
     createIconfontIcon(type) {
         return this._createSVGElementFromString(`<svg><use xlink:href="${type}"></svg>`);
     }
-    /**
-     * @private
-     * @return {?}
-     */
     onConfigChange() {
-        this.nzConfigService.getConfigChangeEventForComponent('icon').subscribe((/**
-         * @return {?}
-         */
-        () => {
+        this.nzConfigService.getConfigChangeEventForComponent('icon').subscribe(() => {
             this.configDefaultTwotoneColor();
             this.configDefaultTheme();
             this.configUpdated$.next();
-        }));
+        });
     }
-    /**
-     * @private
-     * @return {?}
-     */
     configDefaultTheme() {
-        /** @type {?} */
         const iconConfig = this.getConfig();
         this.defaultTheme = iconConfig.nzTheme || 'outline';
     }
-    /**
-     * @private
-     * @return {?}
-     */
     configDefaultTwotoneColor() {
-        /** @type {?} */
         const iconConfig = this.getConfig();
-        /** @type {?} */
         const defaultTwotoneColor = iconConfig.nzTwotoneColor || DEFAULT_TWOTONE_COLOR;
-        /** @type {?} */
         let primaryColor = DEFAULT_TWOTONE_COLOR;
         if (defaultTwotoneColor) {
             if (defaultTwotoneColor.startsWith('#')) {
@@ -181,20 +128,16 @@ class NzIconService extends IconService {
         }
         this.twoToneColor = { primaryColor };
     }
-    /**
-     * @private
-     * @return {?}
-     */
     getConfig() {
         return this.nzConfigService.getConfigForComponent('icon') || {};
     }
 }
+NzIconService.ɵprov = ɵɵdefineInjectable({ factory: function NzIconService_Factory() { return new NzIconService(ɵɵinject(RendererFactory2), ɵɵinject(DomSanitizer), ɵɵinject(NzConfigService), ɵɵinject(HttpBackend, 8), ɵɵinject(DOCUMENT, 8), ɵɵinject(NZ_ICONS, 8)); }, token: NzIconService, providedIn: "root" });
 NzIconService.decorators = [
     { type: Injectable, args: [{
                 providedIn: 'root'
             },] }
 ];
-/** @nocollapse */
 NzIconService.ctorParameters = () => [
     { type: RendererFactory2 },
     { type: DomSanitizer },
@@ -203,83 +146,34 @@ NzIconService.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [DOCUMENT,] }] },
     { type: Array, decorators: [{ type: Optional }, { type: Inject, args: [NZ_ICONS,] }] }
 ];
-/** @nocollapse */ NzIconService.ɵprov = ɵɵdefineInjectable({ factory: function NzIconService_Factory() { return new NzIconService(ɵɵinject(RendererFactory2), ɵɵinject(DomSanitizer), ɵɵinject(NzConfigService), ɵɵinject(HttpBackend, 8), ɵɵinject(DOCUMENT, 8), ɵɵinject(NZ_ICONS, 8)); }, token: NzIconService, providedIn: "root" });
-if (false) {
-    /** @type {?} */
-    NzIconService.prototype.configUpdated$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzIconService.prototype.iconfontCache;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzIconService.prototype.nzConfigService;
-}
-/** @type {?} */
 const NZ_ICONS_PATCH = new InjectionToken('nz_icons_patch');
 class NzIconPatchService {
-    /**
-     * @param {?} extraIcons
-     * @param {?} rootIconService
-     */
     constructor(extraIcons, rootIconService) {
         this.extraIcons = extraIcons;
         this.rootIconService = rootIconService;
         this.patched = false;
     }
-    /**
-     * @return {?}
-     */
     doPatch() {
         if (this.patched) {
             return;
         }
-        this.extraIcons.forEach((/**
-         * @param {?} iconDefinition
-         * @return {?}
-         */
-        iconDefinition => this.rootIconService.addIcon(iconDefinition)));
+        this.extraIcons.forEach(iconDefinition => this.rootIconService.addIcon(iconDefinition));
         this.patched = true;
     }
 }
 NzIconPatchService.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 NzIconPatchService.ctorParameters = () => [
     { type: Array, decorators: [{ type: Self }, { type: Inject, args: [NZ_ICONS_PATCH,] }] },
     { type: NzIconService }
 ];
-if (false) {
-    /** @type {?} */
-    NzIconPatchService.prototype.patched;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzIconPatchService.prototype.extraIcons;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzIconPatchService.prototype.rootIconService;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: icon.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzIconDirective extends IconDirective {
-    /**
-     * @param {?} elementRef
-     * @param {?} iconService
-     * @param {?} renderer
-     * @param {?} iconPatch
-     */
     constructor(elementRef, iconService, renderer, iconPatch) {
         super(iconService, elementRef, renderer);
         this.iconService = iconService;
@@ -292,79 +186,48 @@ class NzIconDirective extends IconDirective {
         }
         this.el = elementRef.nativeElement;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzSpin(value) {
         this.spin = value;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzType(value) {
         this.type = value;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzTheme(value) {
         this.theme = value;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzTwotoneColor(value) {
         this.twoToneColor = value;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzIconfont(value) {
         this.iconfont = value;
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzType, nzTwotoneColor, nzSpin, nzTheme, nzRotate } = changes;
         if (nzType || nzTwotoneColor || nzSpin || nzTheme) {
             this.changeIcon2();
         }
         else if (nzRotate) {
-            this.handleRotate((/** @type {?} */ (this.el.firstChild)));
+            this.handleRotate(this.el.firstChild);
         }
         else {
             this._setSVGElement(this.iconService.createIconfontIcon(`#${this.iconfont}`));
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
         this.renderer.setAttribute(this.el, 'class', `anticon ${this.el.className}`.trim());
     }
     /**
      * If custom content is provided, try to normalize SVG elements.
-     * @return {?}
      */
     ngAfterContentChecked() {
         if (!this.type) {
-            /** @type {?} */
             const children = this.el.children;
-            /** @type {?} */
             let length = children.length;
             if (!this.type && children.length) {
                 while (length--) {
-                    /** @type {?} */
                     const child = children[length];
                     if (child.tagName.toLowerCase() === 'svg') {
-                        this.iconService.normalizeSvgElement((/** @type {?} */ (child)));
+                        this.iconService.normalizeSvgElement(child);
                     }
                 }
             }
@@ -372,28 +235,17 @@ class NzIconDirective extends IconDirective {
     }
     /**
      * Replacement of `changeIcon` for more modifications.
-     * @private
-     * @return {?}
      */
     changeIcon2() {
         this.setClassName();
-        this._changeIcon().then((/**
-         * @param {?} svgOrRemove
-         * @return {?}
-         */
-        svgOrRemove => {
+        this._changeIcon().then(svgOrRemove => {
             if (svgOrRemove) {
                 this.setSVGData(svgOrRemove);
                 this.handleSpin(svgOrRemove);
                 this.handleRotate(svgOrRemove);
             }
-        }));
+        });
     }
-    /**
-     * @private
-     * @param {?} svg
-     * @return {?}
-     */
     handleSpin(svg) {
         if (this.spin || this.type === 'loading') {
             this.renderer.addClass(svg, 'anticon-spin');
@@ -402,11 +254,6 @@ class NzIconDirective extends IconDirective {
             this.renderer.removeClass(svg, 'anticon-spin');
         }
     }
-    /**
-     * @private
-     * @param {?} svg
-     * @return {?}
-     */
     handleRotate(svg) {
         if (this.nzRotate) {
             this.renderer.setAttribute(svg, 'style', `transform: rotate(${this.nzRotate}deg)`);
@@ -415,10 +262,6 @@ class NzIconDirective extends IconDirective {
             this.renderer.removeAttribute(svg, 'style');
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     setClassName() {
         if (this.cacheClassName) {
             this.renderer.removeClass(this.el, this.cacheClassName);
@@ -426,13 +269,8 @@ class NzIconDirective extends IconDirective {
         this.cacheClassName = `anticon-${this.type}`;
         this.renderer.addClass(this.el, this.cacheClassName);
     }
-    /**
-     * @private
-     * @param {?} svg
-     * @return {?}
-     */
     setSVGData(svg) {
-        this.renderer.setAttribute(svg, 'data-icon', (/** @type {?} */ (this.type)));
+        this.renderer.setAttribute(svg, 'data-icon', this.type);
         this.renderer.setAttribute(svg, 'aria-hidden', 'true');
     }
 }
@@ -445,7 +283,6 @@ NzIconDirective.decorators = [
                 }
             },] }
 ];
-/** @nocollapse */
 NzIconDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: NzIconService },
@@ -465,44 +302,12 @@ __decorate([
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], NzIconDirective.prototype, "nzSpin", null);
-if (false) {
-    /** @type {?} */
-    NzIconDirective.prototype.cacheClassName;
-    /** @type {?} */
-    NzIconDirective.prototype.nzRotate;
-    /** @type {?} */
-    NzIconDirective.prototype.hostClass;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzIconDirective.prototype.el;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzIconDirective.prototype.iconfont;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzIconDirective.prototype.spin;
-    /** @type {?} */
-    NzIconDirective.prototype.iconService;
-    /** @type {?} */
-    NzIconDirective.prototype.renderer;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: icon.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzIconModule {
-    /**
-     * @param {?} icons
-     * @return {?}
-     */
     static forRoot(icons) {
         return {
             ngModule: NzIconModule,
@@ -514,10 +319,6 @@ class NzIconModule {
             ]
         };
     }
-    /**
-     * @param {?} icons
-     * @return {?}
-     */
     static forChild(icons) {
         return {
             ngModule: NzIconModule,
@@ -540,15 +341,12 @@ NzIconModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-icon.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { DEFAULT_TWOTONE_COLOR, NZ_ICONS, NZ_ICONS_PATCH, NZ_ICON_DEFAULT_TWOTONE_COLOR, NzIconDirective, NzIconModule, NzIconPatchService, NzIconService };

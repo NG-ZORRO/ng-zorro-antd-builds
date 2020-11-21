@@ -6,42 +6,24 @@ import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-no-animation.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const DISABLED_CLASSNAME = 'nz-animate-disabled';
 class NzNoAnimationDirective {
-    /**
-     * @param {?} element
-     * @param {?} renderer
-     * @param {?} animationType
-     */
     constructor(element, renderer, animationType) {
         this.element = element;
         this.renderer = renderer;
         this.animationType = animationType;
         this.nzNoAnimation = false;
     }
-    /**
-     * @return {?}
-     */
     ngOnChanges() {
         this.updateClass();
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
         this.updateClass();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     updateClass() {
-        /** @type {?} */
         const element = coerceElement(this.element);
         if (!element) {
             return;
@@ -60,7 +42,6 @@ NzNoAnimationDirective.decorators = [
                 exportAs: 'nzNoAnimation'
             },] }
 ];
-/** @nocollapse */
 NzNoAnimationDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: Renderer2 },
@@ -73,32 +54,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzNoAnimationDirective.prototype, "nzNoAnimation", void 0);
-if (false) {
-    /** @type {?} */
-    NzNoAnimationDirective.ngAcceptInputType_nzNoAnimation;
-    /** @type {?} */
-    NzNoAnimationDirective.prototype.nzNoAnimation;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzNoAnimationDirective.prototype.element;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzNoAnimationDirective.prototype.renderer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzNoAnimationDirective.prototype.animationType;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: nz-no-animation.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzNoAnimationModule {
 }
@@ -111,15 +70,12 @@ NzNoAnimationModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-core-no-animation.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzNoAnimationDirective, NzNoAnimationModule };

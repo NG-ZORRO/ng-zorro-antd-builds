@@ -20,8 +20,3 @@ export interface NzMessageData {
     onClose?: Subject<boolean>;
 }
 export declare type NzMessageRef = Pick<Required<NzMessageData>, 'onClose' | 'messageId'>;
-/**
- * @deprecated use `NzMessageRef` instead
- * @breaking-change 10.0.0
- */
-export declare type NzMessageDataFilled = NzMessageRef;

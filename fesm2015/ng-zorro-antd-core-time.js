@@ -22,46 +22,37 @@ import setYear from 'date-fns/setYear';
 import startOfMonth from 'date-fns/startOfMonth';
 import startOfWeek from 'date-fns/startOfWeek';
 import { warn } from 'ng-zorro-antd/core/logger';
+import { getLocaleDayPeriods, FormStyle, TranslationWidth } from '@angular/common';
+import { isNotNil } from 'ng-zorro-antd/core/util';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: candy-date.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @param {?} rangeValue
- * @return {?}
- */
-function sortRangeValue(rangeValue) {
-    if (Array.isArray(rangeValue)) {
-        const [start, end] = rangeValue;
-        return start && end && start.isAfterSecond(end) ? [end, start] : [start, end];
-    }
-    return rangeValue;
+function wrongSortOrder(rangeValue) {
+    const [start, end] = rangeValue;
+    return !!start && !!end && end.isBeforeDay(start);
 }
-/**
- * @param {?} value
- * @return {?}
- */
-function normalizeRangeValue(value) {
-    const [start, end] = value || [];
-    /** @type {?} */
-    const newStart = start || new CandyDate();
-    /** @type {?} */
-    const newEnd = (end === null || end === void 0 ? void 0 : end.isSameMonth(newStart)) ? end.addMonths(1) : end || newStart.addMonths(1);
+function normalizeRangeValue(value, allowSameInTwoPanel, type = 'month') {
+    const [start, end] = value;
+    let newStart = start || new CandyDate();
+    let newEnd = end || new CandyDate();
+    if (start && !end) {
+        newStart = start;
+        newEnd = start.add(1, type);
+    }
+    else if (!start && end) {
+        newStart = end.add(-1, type);
+        newEnd = end;
+    }
+    if (newEnd.isSame(newStart, type) && !allowSameInTwoPanel) {
+        newEnd = newStart.add(1, type);
+    }
     return [newStart, newEnd];
 }
-/**
- * @param {?} value
- * @return {?}
- */
 function cloneDate(value) {
     if (Array.isArray(value)) {
-        return value.map((/**
-         * @param {?} v
-         * @return {?}
-         */
-        v => (v instanceof CandyDate ? v.clone() : null)));
+        return value.map(v => (v instanceof CandyDate ? v.clone() : null));
     }
     else {
         return value instanceof CandyDate ? value.clone() : null;
@@ -75,9 +66,6 @@ function cloneDate(value) {
  */
 class CandyDate {
     // locale: string; // Custom specified locale ID
-    /**
-     * @param {?=} date
-     */
     constructor(date) {
         if (date) {
             if (date instanceof Date) {
@@ -95,159 +83,95 @@ class CandyDate {
             this.nativeDate = new Date();
         }
     }
-    // getLocale(): string {
-    //   return this.locale;
-    // }
-    // setLocale(locale: string): CandyDate {
-    //   this.locale = locale;
-    //   return this;
-    // }
-    /**
-     * @param {?=} options
-     * @return {?}
-     */
     calendarStart(options) {
         return new CandyDate(startOfWeek(startOfMonth(this.nativeDate), options));
     }
     // ---------------------------------------------------------------------
     // | Native shortcuts
     // -----------------------------------------------------------------------------\
-    /**
-     * @return {?}
-     */
     getYear() {
         return this.nativeDate.getFullYear();
     }
-    /**
-     * @return {?}
-     */
     getMonth() {
         return this.nativeDate.getMonth();
     }
-    /**
-     * @return {?}
-     */
     getDay() {
         return this.nativeDate.getDay();
     }
-    /**
-     * @return {?}
-     */
     getTime() {
         return this.nativeDate.getTime();
     }
-    /**
-     * @return {?}
-     */
     getDate() {
         return this.nativeDate.getDate();
     }
-    /**
-     * @return {?}
-     */
     getHours() {
         return this.nativeDate.getHours();
     }
-    /**
-     * @return {?}
-     */
     getMinutes() {
         return this.nativeDate.getMinutes();
     }
-    /**
-     * @return {?}
-     */
     getSeconds() {
         return this.nativeDate.getSeconds();
     }
-    /**
-     * @return {?}
-     */
     getMilliseconds() {
         return this.nativeDate.getMilliseconds();
     }
     // ---------------------------------------------------------------------
     // | New implementing APIs
     // ---------------------------------------------------------------------
-    /**
-     * @return {?}
-     */
     clone() {
         return new CandyDate(new Date(this.nativeDate));
     }
-    /**
-     * @param {?} hour
-     * @param {?} minute
-     * @param {?} second
-     * @return {?}
-     */
     setHms(hour, minute, second) {
         return new CandyDate(this.nativeDate.setHours(hour, minute, second));
     }
-    /**
-     * @param {?} year
-     * @return {?}
-     */
     setYear(year) {
         return new CandyDate(setYear(this.nativeDate, year));
     }
-    /**
-     * @param {?} amount
-     * @return {?}
-     */
     addYears(amount) {
         return new CandyDate(addYears(this.nativeDate, amount));
     }
     // NOTE: month starts from 0
     // NOTE: Don't use the native API for month manipulation as it not restrict the date when it overflows, eg. (new Date('2018-7-31')).setMonth(1) will be date of 2018-3-03 instead of 2018-2-28
-    /**
-     * @param {?} month
-     * @return {?}
-     */
     setMonth(month) {
         return new CandyDate(setMonth(this.nativeDate, month));
     }
-    /**
-     * @param {?} amount
-     * @return {?}
-     */
     addMonths(amount) {
         return new CandyDate(addMonths(this.nativeDate, amount));
     }
-    /**
-     * @param {?} day
-     * @param {?=} options
-     * @return {?}
-     */
     setDay(day, options) {
         return new CandyDate(setDay(this.nativeDate, day, options));
     }
-    /**
-     * @param {?} amount
-     * @return {?}
-     */
     setDate(amount) {
-        /** @type {?} */
         const date = new Date(this.nativeDate);
         date.setDate(amount);
         return new CandyDate(date);
     }
-    /**
-     * @param {?} amount
-     * @return {?}
-     */
     addDays(amount) {
         return this.setDate(this.getDate() + amount);
     }
-    /**
-     * @param {?} date
-     * @param {?=} grain
-     * @return {?}
-     */
+    add(amount, mode) {
+        switch (mode) {
+            case 'decade':
+                return this.addYears(amount * 10);
+                break;
+            case 'year':
+                return this.addYears(amount);
+                break;
+            case 'month':
+                return this.addMonths(amount);
+                break;
+            default:
+                return this.addMonths(amount);
+                break;
+        }
+    }
     isSame(date, grain = 'day') {
-        /** @type {?} */
         let fn;
         switch (grain) {
+            case 'decade':
+                fn = (pre, next) => Math.abs(pre.getFullYear() - next.getFullYear()) < 11;
+                break;
             case 'year':
                 fn = isSameYear;
                 break;
@@ -272,59 +196,28 @@ class CandyDate {
         }
         return fn(this.nativeDate, this.toNativeDate(date));
     }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     isSameYear(date) {
         return this.isSame(date, 'year');
     }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     isSameMonth(date) {
         return this.isSame(date, 'month');
     }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     isSameDay(date) {
         return this.isSame(date, 'day');
     }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     isSameHour(date) {
         return this.isSame(date, 'hour');
     }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     isSameMinute(date) {
         return this.isSame(date, 'minute');
     }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     isSameSecond(date) {
         return this.isSame(date, 'second');
     }
-    /**
-     * @param {?} date
-     * @param {?=} grain
-     * @param {?=} isBefore
-     * @return {?}
-     */
-    compare(date, grain = 'day', isBefore = true) {
+    isBefore(date, grain = 'day') {
         if (date === null) {
             return false;
         }
-        /** @type {?} */
         let fn;
         switch (grain) {
             case 'year':
@@ -349,142 +242,39 @@ class CandyDate {
                 fn = differenceInCalendarDays;
                 break;
         }
-        return isBefore ? fn(this.nativeDate, this.toNativeDate(date)) < 0 : fn(this.nativeDate, this.toNativeDate(date)) > 0;
+        return fn(this.nativeDate, this.toNativeDate(date)) < 0;
     }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     isBeforeYear(date) {
-        return this.compare(date, 'year');
+        return this.isBefore(date, 'year');
     }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     isBeforeMonth(date) {
-        return this.compare(date, 'month');
+        return this.isBefore(date, 'month');
     }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
     isBeforeDay(date) {
-        return this.compare(date, 'day');
-    }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
-    isBeforeHour(date) {
-        return this.compare(date, 'hour');
-    }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
-    isBeforeMinute(date) {
-        return this.compare(date, 'minute');
-    }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
-    isBeforeSecond(date) {
-        return this.compare(date, 'second');
-    }
-    // TODO: isBefore
-    /**
-     * @param {?} date
-     * @return {?}
-     */
-    isAfterYear(date) {
-        return this.compare(date, 'year', false);
-    }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
-    isAfterMonth(date) {
-        return this.compare(date, 'month', false);
-    }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
-    isAfterDay(date) {
-        return this.compare(date, 'day', false);
-    }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
-    isAfterHour(date) {
-        return this.compare(date, 'hour', false);
-    }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
-    isAfterMinute(date) {
-        return this.compare(date, 'minute', false);
-    }
-    /**
-     * @param {?} date
-     * @return {?}
-     */
-    isAfterSecond(date) {
-        return this.compare(date, 'second', false);
+        return this.isBefore(date, 'day');
     }
     // Equal to today accurate to "day"
-    /**
-     * @return {?}
-     */
     isToday() {
         return isToday(this.nativeDate);
     }
-    /**
-     * @return {?}
-     */
     isValid() {
         return isValid(this.nativeDate);
     }
-    /**
-     * @return {?}
-     */
     isFirstDayOfMonth() {
         return isFirstDayOfMonth(this.nativeDate);
     }
-    /**
-     * @return {?}
-     */
     isLastDayOfMonth() {
         return isLastDayOfMonth(this.nativeDate);
     }
-    /**
-     * @private
-     * @param {?} date
-     * @return {?}
-     */
     toNativeDate(date) {
         return date instanceof CandyDate ? date.nativeDate : date;
     }
 }
-if (false) {
-    /** @type {?} */
-    CandyDate.prototype.nativeDate;
-}
 
-/**
- * @fileoverview added by tsickle
- * Generated from: time.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
 const timeUnits = [
     ['Y', 1000 * 60 * 60 * 24 * 365],
     ['M', 1000 * 60 * 60 * 24 * 30],
@@ -496,16 +286,131 @@ const timeUnits = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+class NgTimeParser {
+    constructor(format, localeId) {
+        this.format = format;
+        this.localeId = localeId;
+        this.regex = null;
+        this.matchMap = {
+            hour: null,
+            minute: null,
+            second: null,
+            periodNarrow: null,
+            periodWide: null,
+            periodAbbreviated: null
+        };
+        this.genRegexp();
+    }
+    toDate(str) {
+        const result = this.getTimeResult(str);
+        const time = new Date();
+        if (isNotNil(result === null || result === void 0 ? void 0 : result.hour)) {
+            time.setHours(result.hour);
+        }
+        if (isNotNil(result === null || result === void 0 ? void 0 : result.minute)) {
+            time.setMinutes(result.minute);
+        }
+        if (isNotNil(result === null || result === void 0 ? void 0 : result.second)) {
+            time.setSeconds(result.second);
+        }
+        if ((result === null || result === void 0 ? void 0 : result.period) === 1 && time.getHours() < 12) {
+            time.setHours(time.getHours() + 12);
+        }
+        return time;
+    }
+    getTimeResult(str) {
+        const match = this.regex.exec(str);
+        let period = null;
+        if (match) {
+            if (isNotNil(this.matchMap.periodNarrow)) {
+                period = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Narrow).indexOf(match[this.matchMap.periodNarrow + 1]);
+            }
+            if (isNotNil(this.matchMap.periodWide)) {
+                period = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Wide).indexOf(match[this.matchMap.periodWide + 1]);
+            }
+            if (isNotNil(this.matchMap.periodAbbreviated)) {
+                period = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Abbreviated).indexOf(match[this.matchMap.periodAbbreviated + 1]);
+            }
+            return {
+                hour: isNotNil(this.matchMap.hour) ? Number.parseInt(match[this.matchMap.hour + 1], 10) : null,
+                minute: isNotNil(this.matchMap.minute) ? Number.parseInt(match[this.matchMap.minute + 1], 10) : null,
+                second: isNotNil(this.matchMap.second) ? Number.parseInt(match[this.matchMap.second + 1], 10) : null,
+                period
+            };
+        }
+        else {
+            return null;
+        }
+    }
+    genRegexp() {
+        let regexStr = this.format.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$&');
+        const hourRegex = /h{1,2}/i;
+        const minuteRegex = /m{1,2}/;
+        const secondRegex = /s{1,2}/;
+        const periodNarrow = /aaaaa/;
+        const periodWide = /aaaa/;
+        const periodAbbreviated = /a{1,3}/;
+        const hourMatch = hourRegex.exec(this.format);
+        const minuteMatch = minuteRegex.exec(this.format);
+        const secondMatch = secondRegex.exec(this.format);
+        const periodNarrowMatch = periodNarrow.exec(this.format);
+        let periodWideMatch = null;
+        let periodAbbreviatedMatch = null;
+        if (!periodNarrowMatch) {
+            periodWideMatch = periodWide.exec(this.format);
+        }
+        if (!periodWideMatch && !periodNarrowMatch) {
+            periodAbbreviatedMatch = periodAbbreviated.exec(this.format);
+        }
+        const matchs = [hourMatch, minuteMatch, secondMatch, periodNarrowMatch, periodWideMatch, periodAbbreviatedMatch]
+            .filter(m => !!m)
+            .sort((a, b) => a.index - b.index);
+        matchs.forEach((match, index) => {
+            switch (match) {
+                case hourMatch:
+                    this.matchMap.hour = index;
+                    regexStr = regexStr.replace(hourRegex, '(\\d{1,2})');
+                    break;
+                case minuteMatch:
+                    this.matchMap.minute = index;
+                    regexStr = regexStr.replace(minuteRegex, '(\\d{1,2})');
+                    break;
+                case secondMatch:
+                    this.matchMap.second = index;
+                    regexStr = regexStr.replace(secondRegex, '(\\d{1,2})');
+                    break;
+                case periodNarrowMatch:
+                    this.matchMap.periodNarrow = index;
+                    const periodsNarrow = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Narrow).join('|');
+                    regexStr = regexStr.replace(periodNarrow, `(${periodsNarrow})`);
+                    break;
+                case periodWideMatch:
+                    this.matchMap.periodWide = index;
+                    const periodsWide = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Wide).join('|');
+                    regexStr = regexStr.replace(periodWide, `(${periodsWide})`);
+                    break;
+                case periodAbbreviatedMatch:
+                    this.matchMap.periodAbbreviated = index;
+                    const periodsAbbreviated = getLocaleDayPeriods(this.localeId, FormStyle.Format, TranslationWidth.Abbreviated).join('|');
+                    regexStr = regexStr.replace(periodAbbreviated, `(${periodsAbbreviated})`);
+                    break;
+            }
+        });
+        this.regex = new RegExp(regexStr);
+    }
+}
+
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-core-time.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
-export { CandyDate, cloneDate, normalizeRangeValue, sortRangeValue, timeUnits };
+export { CandyDate, cloneDate, normalizeRangeValue, timeUnits, wrongSortOrder, NgTimeParser as ɵNgTimeParser };
 //# sourceMappingURL=ng-zorro-antd-core-time.js.map

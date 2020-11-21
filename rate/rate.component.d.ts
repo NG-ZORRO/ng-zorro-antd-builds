@@ -4,12 +4,13 @@
  */
 import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
 export declare class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
     nzConfigService: NzConfigService;
     private renderer;
     private cdr;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzAllowClear: BooleanInput;
     static ngAcceptInputType_nzAllowHalf: BooleanInput;
     static ngAcceptInputType_nzDisabled: BooleanInput;
@@ -20,7 +21,7 @@ export declare class NzRateComponent implements OnInit, OnDestroy, ControlValueA
     nzAllowHalf: boolean;
     nzDisabled: boolean;
     nzAutoFocus: boolean;
-    nzCharacter?: TemplateRef<void>;
+    nzCharacter: TemplateRef<void>;
     nzCount: number;
     nzTooltips: string[];
     readonly nzOnBlur: EventEmitter<FocusEvent>;

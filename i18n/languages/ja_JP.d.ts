@@ -93,8 +93,16 @@ declare const _default: {
         filterTitle: string;
         filterConfirm: string;
         filterReset: string;
+        filterEmptyText: string;
         selectAll: string;
         selectInvert: string;
+        selectionAll: string;
+        sortTitle: string;
+        expand: string;
+        collapse: string;
+        triggerDesc: string;
+        triggerAsc: string;
+        cancelSort: string;
     };
     Modal: {
         okText: string;

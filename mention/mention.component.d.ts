@@ -50,7 +50,7 @@ export declare class NzMentionComponent implements OnDestroy, OnInit, OnChanges 
     private overlayRef;
     private portal?;
     private positionStrategy;
-    private overlayBackdropClickSubscription;
+    private overlayOutsideClickSubscription;
     private get triggerNativeElement();
     constructor(ngDocument: NzSafeAny, cdr: ChangeDetectorRef, overlay: Overlay, viewContainerRef: ViewContainerRef, nzMentionService: NzMentionService);
     ngOnInit(): void;
@@ -71,7 +71,7 @@ export declare class NzMentionComponent implements OnDestroy, OnInit, OnChanges 
     private canOpen;
     private resetCursorMention;
     private updatePositions;
-    private subscribeOverlayBackdropClick;
+    private subscribeOverlayOutsideClick;
     private attachOverlay;
     private getOverlayConfig;
     private getOverlayPosition;

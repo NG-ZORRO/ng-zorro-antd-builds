@@ -6,18 +6,18 @@ import { Overlay } from '@angular/cdk/overlay';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
-export declare class DrawerBuilderForService<R> {
+export declare class DrawerBuilderForService<T, R> {
     private overlay;
     private options;
     private drawerRef;
     private overlayRef;
     private unsubscribe$;
     constructor(overlay: Overlay, options: NzDrawerOptions);
-    getInstance(): NzDrawerRef<R>;
+    getInstance(): NzDrawerRef<T, R>;
     updateOptions(options: NzDrawerOptionsOfComponent): void;
 }
 export declare class NzDrawerService {
     private overlay;
     constructor(overlay: Overlay);
-    create<T = NzSafeAny, D = undefined, R = NzSafeAny>(options: NzDrawerOptions<T, D extends undefined ? {} : D>): NzDrawerRef<R>;
+    create<T = NzSafeAny, D = undefined, R = NzSafeAny>(options: NzDrawerOptions<T, D extends undefined ? {} : D>): NzDrawerRef<T, R>;
 }

@@ -10,20 +10,15 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: alert.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'alert';
+const NZ_CONFIG_MODULE_NAME = 'alert';
 class NzAlertComponent {
-    /**
-     * @param {?} nzConfigService
-     * @param {?} cdr
-     */
     constructor(nzConfigService, cdr) {
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzCloseText = null;
         this.nzIconType = null;
         this.nzMessage = null;
@@ -41,33 +36,20 @@ class NzAlertComponent {
         this.isShowIconSet = false;
         this.destroy$ = new Subject();
         this.nzConfigService
-            .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+            .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => {
+            .subscribe(() => {
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     closeAlert() {
         this.closed = true;
     }
-    /**
-     * @return {?}
-     */
     onFadeAnimationDone() {
         if (this.closed) {
             this.nzOnClose.emit(true);
         }
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzShowIcon, nzDescription, nzType, nzBanner } = changes;
         if (nzShowIcon) {
@@ -102,9 +84,6 @@ class NzAlertComponent {
             }
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
@@ -155,9 +134,8 @@ NzAlertComponent.decorators = [
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 encapsulation: ViewEncapsulation.None,
                 preserveWhitespaces: false
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzAlertComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ChangeDetectorRef }
@@ -175,11 +153,13 @@ NzAlertComponent.propDecorators = {
     nzOnClose: [{ type: Output }]
 };
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzAlertComponent.prototype, "nzCloseable", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzAlertComponent.prototype, "nzShowIcon", void 0);
 __decorate([
@@ -190,69 +170,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzAlertComponent.prototype, "nzNoAnimation", void 0);
-if (false) {
-    /** @type {?} */
-    NzAlertComponent.ngAcceptInputType_nzCloseable;
-    /** @type {?} */
-    NzAlertComponent.ngAcceptInputType_nzShowIcon;
-    /** @type {?} */
-    NzAlertComponent.ngAcceptInputType_nzBanner;
-    /** @type {?} */
-    NzAlertComponent.ngAcceptInputType_nzNoAnimation;
-    /** @type {?} */
-    NzAlertComponent.prototype.nzCloseText;
-    /** @type {?} */
-    NzAlertComponent.prototype.nzIconType;
-    /** @type {?} */
-    NzAlertComponent.prototype.nzMessage;
-    /** @type {?} */
-    NzAlertComponent.prototype.nzDescription;
-    /** @type {?} */
-    NzAlertComponent.prototype.nzType;
-    /** @type {?} */
-    NzAlertComponent.prototype.nzCloseable;
-    /** @type {?} */
-    NzAlertComponent.prototype.nzShowIcon;
-    /** @type {?} */
-    NzAlertComponent.prototype.nzBanner;
-    /** @type {?} */
-    NzAlertComponent.prototype.nzNoAnimation;
-    /** @type {?} */
-    NzAlertComponent.prototype.nzOnClose;
-    /** @type {?} */
-    NzAlertComponent.prototype.closed;
-    /** @type {?} */
-    NzAlertComponent.prototype.iconTheme;
-    /** @type {?} */
-    NzAlertComponent.prototype.inferredIconType;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAlertComponent.prototype.isTypeSet;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAlertComponent.prototype.isShowIconSet;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAlertComponent.prototype.destroy$;
-    /** @type {?} */
-    NzAlertComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzAlertComponent.prototype.cdr;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: alert.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzAlertModule {
 }
@@ -265,15 +186,12 @@ NzAlertModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-alert.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzAlertComponent, NzAlertModule };

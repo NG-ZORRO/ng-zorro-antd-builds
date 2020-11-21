@@ -4,7 +4,7 @@
  */
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, ChangeDetectorRef, EventEmitter, NgZone, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzAnchorLinkComponent } from './anchor-link.component';
@@ -16,6 +16,7 @@ export declare class NzAnchorComponent implements OnDestroy, AfterViewInit, OnCh
     private platform;
     private zone;
     private renderer;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzAffix: BooleanInput;
     static ngAcceptInputType_nzShowInkInFixed: BooleanInput;
     static ngAcceptInputType_nzBounds: NumberInput;
@@ -26,7 +27,6 @@ export declare class NzAnchorComponent implements OnDestroy, AfterViewInit, OnCh
     nzBounds: number;
     nzOffsetTop?: number;
     nzContainer?: string | HTMLElement;
-    nzTarget: string | HTMLElement;
     readonly nzClick: EventEmitter<string>;
     readonly nzScroll: EventEmitter<NzAnchorLinkComponent>;
     visible: boolean;

@@ -10,25 +10,16 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: carousel-content.directive.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCarouselContentDirective {
-    /**
-     * @param {?} elementRef
-     * @param {?} renderer
-     */
     constructor(elementRef, renderer) {
         this.renderer = renderer;
         this._active = false;
         this.el = elementRef.nativeElement;
         this.renderer.addClass(elementRef.nativeElement, 'slick-slide');
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set isActive(value) {
         this._active = value;
         if (this.isActive) {
@@ -38,9 +29,6 @@ class NzCarouselContentDirective {
             this.renderer.removeClass(this.el, 'slick-active');
         }
     }
-    /**
-     * @return {?}
-     */
     get isActive() {
         return this._active;
     }
@@ -51,241 +39,114 @@ NzCarouselContentDirective.decorators = [
                 exportAs: 'nzCarouselContent'
             },] }
 ];
-/** @nocollapse */
 NzCarouselContentDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: Renderer2 }
 ];
-if (false) {
-    /** @type {?} */
-    NzCarouselContentDirective.prototype.el;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselContentDirective.prototype._active;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselContentDirective.prototype.renderer;
-}
 
-/**
- * @fileoverview added by tsickle
- * Generated from: strategies/base-strategy.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @abstract
- */
 class NzCarouselBaseStrategy {
-    /**
-     * @param {?} carouselComponent
-     * @param {?} cdr
-     * @param {?} renderer
-     */
-    constructor(carouselComponent, cdr, renderer) {
+    constructor(carouselComponent, cdr, renderer, platform) {
         this.cdr = cdr;
         this.renderer = renderer;
+        this.platform = platform;
         this.carouselComponent = carouselComponent;
     }
-    /**
-     * @protected
-     * @return {?}
-     */
     get maxIndex() {
         return this.length - 1;
     }
-    /**
-     * @protected
-     * @return {?}
-     */
     get firstEl() {
         return this.contents[0].el;
     }
-    /**
-     * @protected
-     * @return {?}
-     */
     get lastEl() {
         return this.contents[this.maxIndex].el;
     }
     /**
      * Initialize dragging sequences.
-     * @param {?} contents
-     * @return {?}
+     * @param contents
      */
     withCarouselContents(contents) {
-        // TODO: carousel and its contents should be separated.
-        /** @type {?} */
-        const carousel = (/** @type {?} */ (this.carouselComponent));
-        /** @type {?} */
-        const rect = carousel.el.getBoundingClientRect();
+        const carousel = this.carouselComponent;
         this.slickListEl = carousel.slickListEl;
         this.slickTrackEl = carousel.slickTrackEl;
-        this.unitWidth = rect.width;
-        this.unitHeight = rect.height;
-        this.contents = contents ? contents.toArray() : [];
+        this.contents = (contents === null || contents === void 0 ? void 0 : contents.toArray()) || [];
         this.length = this.contents.length;
+        if (this.platform.isBrowser) {
+            const rect = carousel.el.getBoundingClientRect();
+            this.unitWidth = rect.width;
+            this.unitHeight = rect.height;
+        }
+        else {
+            // Since we cannot call getBoundingClientRect in server, we just hide all items except for the first one.
+            contents === null || contents === void 0 ? void 0 : contents.forEach((content, index) => {
+                if (index === 0) {
+                    this.renderer.setStyle(content.el, 'width', '100%');
+                }
+                else {
+                    this.renderer.setStyle(content.el, 'display', 'none');
+                }
+            });
+        }
     }
     /**
      * When user drag the carousel component.
-     * \@optional
-     * @param {?} _vector
-     * @return {?}
+     * @optional
      */
     dragging(_vector) { }
     /**
      * Destroy a scroll strategy.
-     * @return {?}
      */
     dispose() { }
-    /**
-     * @protected
-     * @param {?} f
-     * @param {?} t
-     * @return {?}
-     */
     getFromToInBoundary(f, t) {
-        /** @type {?} */
         const length = this.maxIndex + 1;
         return { from: (f + length) % length, to: (t + length) % length };
     }
 }
-if (false) {
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzCarouselBaseStrategy.prototype.carouselComponent;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzCarouselBaseStrategy.prototype.contents;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzCarouselBaseStrategy.prototype.slickListEl;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzCarouselBaseStrategy.prototype.slickTrackEl;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzCarouselBaseStrategy.prototype.length;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzCarouselBaseStrategy.prototype.unitWidth;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzCarouselBaseStrategy.prototype.unitHeight;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzCarouselBaseStrategy.prototype.cdr;
-    /**
-     * @type {?}
-     * @protected
-     */
-    NzCarouselBaseStrategy.prototype.renderer;
-    /**
-     * Trigger transition.
-     * @abstract
-     * @param {?} _f
-     * @param {?} _t
-     * @return {?}
-     */
-    NzCarouselBaseStrategy.prototype.switch = function (_f, _t) { };
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: strategies/opacity-strategy.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCarouselOpacityStrategy extends NzCarouselBaseStrategy {
-    /**
-     * @param {?} contents
-     * @return {?}
-     */
     withCarouselContents(contents) {
         super.withCarouselContents(contents);
         if (this.contents) {
             this.slickTrackEl.style.width = `${this.length * this.unitWidth}px`;
-            this.contents.forEach((/**
-             * @param {?} content
-             * @param {?} i
-             * @return {?}
-             */
-            (content, i) => {
-                this.renderer.setStyle(content.el, 'opacity', (/** @type {?} */ (this.carouselComponent)).activeIndex === i ? '1' : '0');
+            this.contents.forEach((content, i) => {
+                this.renderer.setStyle(content.el, 'opacity', this.carouselComponent.activeIndex === i ? '1' : '0');
                 this.renderer.setStyle(content.el, 'position', 'relative');
                 this.renderer.setStyle(content.el, 'width', `${this.unitWidth}px`);
                 this.renderer.setStyle(content.el, 'left', `${-this.unitWidth * i}px`);
                 this.renderer.setStyle(content.el, 'transition', ['opacity 500ms ease 0s', 'visibility 500ms ease 0s']);
-            }));
+            });
         }
     }
-    /**
-     * @param {?} _f
-     * @param {?} _t
-     * @return {?}
-     */
     switch(_f, _t) {
         const { to: t } = this.getFromToInBoundary(_f, _t);
-        /** @type {?} */
         const complete$ = new Subject();
-        this.contents.forEach((/**
-         * @param {?} content
-         * @param {?} i
-         * @return {?}
-         */
-        (content, i) => {
+        this.contents.forEach((content, i) => {
             this.renderer.setStyle(content.el, 'opacity', t === i ? '1' : '0');
-        }));
-        setTimeout((/**
-         * @return {?}
-         */
-        () => {
+        });
+        setTimeout(() => {
             complete$.next();
             complete$.complete();
-        }), (/** @type {?} */ (this.carouselComponent)).nzTransitionSpeed);
+        }, this.carouselComponent.nzTransitionSpeed);
         return complete$;
     }
-    /**
-     * @return {?}
-     */
     dispose() {
-        this.contents.forEach((/**
-         * @param {?} content
-         * @return {?}
-         */
-        (content) => {
+        this.contents.forEach((content) => {
             this.renderer.setStyle(content.el, 'transition', null);
-        }));
+        });
         super.dispose();
     }
 }
 
 /**
- * @fileoverview added by tsickle
- * Generated from: strategies/transform-strategy.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
     constructor() {
@@ -293,31 +154,19 @@ class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
         this.isDragging = false;
         this.isTransitioning = false;
     }
-    /**
-     * @private
-     * @return {?}
-     */
     get vertical() {
-        return (/** @type {?} */ (this.carouselComponent)).vertical;
+        return this.carouselComponent.vertical;
     }
-    /**
-     * @return {?}
-     */
     dispose() {
         super.dispose();
         this.renderer.setStyle(this.slickTrackEl, 'transform', null);
     }
-    /**
-     * @param {?} contents
-     * @return {?}
-     */
     withCarouselContents(contents) {
         super.withCarouselContents(contents);
-        /** @type {?} */
-        const carousel = (/** @type {?} */ (this.carouselComponent));
-        /** @type {?} */
+        const carousel = this.carouselComponent;
         const activeIndex = carousel.activeIndex;
-        if (this.contents.length) {
+        // We only do when we are in browser.
+        if (this.platform.isBrowser && this.contents.length) {
             this.renderer.setStyle(this.slickListEl, 'height', `${this.unitHeight}px`);
             if (this.vertical) {
                 this.renderer.setStyle(this.slickTrackEl, 'width', `${this.unitWidth}px`);
@@ -329,27 +178,17 @@ class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
                 this.renderer.setStyle(this.slickTrackEl, 'width', `${this.length * this.unitWidth}px`);
                 this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(${-activeIndex * this.unitWidth}px, 0, 0)`);
             }
-            this.contents.forEach((/**
-             * @param {?} content
-             * @return {?}
-             */
-            (content) => {
+            this.contents.forEach((content) => {
                 this.renderer.setStyle(content.el, 'position', 'relative');
                 this.renderer.setStyle(content.el, 'width', `${this.unitWidth}px`);
                 this.renderer.setStyle(content.el, 'height', `${this.unitHeight}px`);
-            }));
+            });
         }
     }
-    /**
-     * @param {?} _f
-     * @param {?} _t
-     * @return {?}
-     */
     switch(_f, _t) {
         const { to: t } = this.getFromToInBoundary(_f, _t);
-        /** @type {?} */
         const complete$ = new Subject();
-        this.renderer.setStyle(this.slickTrackEl, 'transition', `transform ${(/** @type {?} */ (this.carouselComponent)).nzTransitionSpeed}ms ease`);
+        this.renderer.setStyle(this.slickTrackEl, 'transition', `transform ${this.carouselComponent.nzTransitionSpeed}ms ease`);
         if (this.vertical) {
             this.verticalTransform(_f, _t);
         }
@@ -358,18 +197,11 @@ class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
         }
         this.isTransitioning = true;
         this.isDragging = false;
-        setTimeout((/**
-         * @return {?}
-         */
-        () => {
+        setTimeout(() => {
             this.renderer.setStyle(this.slickTrackEl, 'transition', null);
-            this.contents.forEach((/**
-             * @param {?} content
-             * @return {?}
-             */
-            (content) => {
+            this.contents.forEach((content) => {
                 this.renderer.setStyle(content.el, this.vertical ? 'top' : 'left', null);
-            }));
+            });
             if (this.vertical) {
                 this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(0, ${-t * this.unitHeight}px, 0)`);
             }
@@ -379,20 +211,15 @@ class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
             this.isTransitioning = false;
             complete$.next();
             complete$.complete();
-        }), (/** @type {?} */ (this.carouselComponent)).nzTransitionSpeed);
+        }, this.carouselComponent.nzTransitionSpeed);
         return complete$.asObservable();
     }
-    /**
-     * @param {?} _vector
-     * @return {?}
-     */
     dragging(_vector) {
         if (this.isTransitioning) {
             return;
         }
-        /** @type {?} */
-        const activeIndex = (/** @type {?} */ (this.carouselComponent)).activeIndex;
-        if ((/** @type {?} */ (this.carouselComponent)).vertical) {
+        const activeIndex = this.carouselComponent.activeIndex;
+        if (this.carouselComponent.vertical) {
             if (!this.isDragging && this.length > 2) {
                 if (activeIndex === this.maxIndex) {
                     this.prepareVerticalContext(true);
@@ -416,15 +243,8 @@ class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
         }
         this.isDragging = true;
     }
-    /**
-     * @private
-     * @param {?} _f
-     * @param {?} _t
-     * @return {?}
-     */
     verticalTransform(_f, _t) {
         const { from: f, to: t } = this.getFromToInBoundary(_f, _t);
-        /** @type {?} */
         const needToAdjust = this.length > 2 && _t !== t;
         if (needToAdjust) {
             this.prepareVerticalContext(t < f);
@@ -434,15 +254,8 @@ class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
             this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(0, ${-t * this.unitHeight}px, 0`);
         }
     }
-    /**
-     * @private
-     * @param {?} _f
-     * @param {?} _t
-     * @return {?}
-     */
     horizontalTransform(_f, _t) {
         const { from: f, to: t } = this.getFromToInBoundary(_f, _t);
-        /** @type {?} */
         const needToAdjust = this.length > 2 && _t !== t;
         if (needToAdjust) {
             this.prepareHorizontalContext(t < f);
@@ -452,11 +265,6 @@ class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
             this.renderer.setStyle(this.slickTrackEl, 'transform', `translate3d(${-t * this.unitWidth}px, 0, 0`);
         }
     }
-    /**
-     * @private
-     * @param {?} lastToFirst
-     * @return {?}
-     */
     prepareVerticalContext(lastToFirst) {
         if (lastToFirst) {
             this.renderer.setStyle(this.firstEl, 'top', `${this.length * this.unitHeight}px`);
@@ -467,11 +275,6 @@ class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
             this.renderer.setStyle(this.lastEl, 'top', `${-this.unitHeight * this.length}px`);
         }
     }
-    /**
-     * @private
-     * @param {?} lastToFirst
-     * @return {?}
-     */
     prepareHorizontalContext(lastToFirst) {
         if (lastToFirst) {
             this.renderer.setStyle(this.firstEl, 'left', `${this.length * this.unitWidth}px`);
@@ -483,95 +286,19 @@ class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
         }
     }
 }
-if (false) {
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselTransformStrategy.prototype.isDragging;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselTransformStrategy.prototype.isTransitioning;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: typings.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/**
- * @record
- */
-function NzCarouselComponentAsSource() { }
-if (false) {
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.carouselContents;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.el;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.nzTransitionSpeed;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.vertical;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.slickListEl;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.slickTrackEl;
-    /** @type {?} */
-    NzCarouselComponentAsSource.prototype.activeIndex;
-}
-/**
- * @record
- */
-function NzCarouselStrategyRegistryItem() { }
-if (false) {
-    /** @type {?} */
-    NzCarouselStrategyRegistryItem.prototype.name;
-    /** @type {?} */
-    NzCarouselStrategyRegistryItem.prototype.strategy;
-}
-/** @type {?} */
 const NZ_CAROUSEL_CUSTOM_STRATEGIES = new InjectionToken('nz-carousel-custom-strategies');
-/**
- * @record
- */
-function PointerVector() { }
-if (false) {
-    /** @type {?} */
-    PointerVector.prototype.x;
-    /** @type {?} */
-    PointerVector.prototype.y;
-}
-/**
- * @record
- */
-function FromToInterface() { }
-if (false) {
-    /** @type {?} */
-    FromToInterface.prototype.from;
-    /** @type {?} */
-    FromToInterface.prototype.to;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: carousel.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const NZ_CONFIG_COMPONENT_NAME = 'carousel';
+const NZ_CONFIG_MODULE_NAME = 'carousel';
 class NzCarouselComponent {
-    /**
-     * @param {?} elementRef
-     * @param {?} nzConfigService
-     * @param {?} renderer
-     * @param {?} cdr
-     * @param {?} platform
-     * @param {?} resizeService
-     * @param {?} nzDragService
-     * @param {?} customStrategies
-     */
     constructor(elementRef, nzConfigService, renderer, cdr, platform, resizeService, nzDragService, customStrategies) {
         this.nzConfigService = nzConfigService;
         this.renderer = renderer;
@@ -580,6 +307,7 @@ class NzCarouselComponent {
         this.resizeService = resizeService;
         this.nzDragService = nzDragService;
         this.customStrategies = customStrategies;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzEffect = 'scrollx';
         this.nzEnableSwipe = true;
         this.nzDots = true;
@@ -600,35 +328,20 @@ class NzCarouselComponent {
         /**
          * Drag carousel.
          */
-        this.pointerDown = (/**
-         * @param {?} event
-         * @return {?}
-         */
-        (event) => {
+        this.pointerDown = (event) => {
             if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
                 this.clearScheduledTransition();
                 this.gestureRect = this.slickListEl.getBoundingClientRect();
-                this.nzDragService.requestDraggingSequence(event).subscribe((/**
-                 * @param {?} delta
-                 * @return {?}
-                 */
-                delta => {
+                this.nzDragService.requestDraggingSequence(event).subscribe(delta => {
                     var _a;
                     this.pointerDelta = delta;
                     this.isDragging = true;
                     (_a = this.strategy) === null || _a === void 0 ? void 0 : _a.dragging(this.pointerDelta);
-                }), (/**
-                 * @return {?}
-                 */
-                () => { }), (/**
-                 * @return {?}
-                 */
-                () => {
+                }, () => { }, () => {
                     if (this.nzEnableSwipe && this.isDragging) {
-                        /** @type {?} */
                         const xDelta = this.pointerDelta ? this.pointerDelta.x : 0;
                         // Switch to another slide if delta is bigger than third of the width.
-                        if (Math.abs(xDelta) > (/** @type {?} */ (this.gestureRect)).width / 3) {
+                        if (Math.abs(xDelta) > this.gestureRect.width / 3) {
                             this.goTo(xDelta > 0 ? this.activeIndex - 1 : this.activeIndex + 1);
                         }
                         else {
@@ -638,17 +351,13 @@ class NzCarouselComponent {
                         this.pointerDelta = null;
                     }
                     this.isDragging = false;
-                }));
+                });
             }
-        });
+        };
         this.nzDotPosition = 'bottom';
         this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
         this.el = elementRef.nativeElement;
     }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
     set nzDotPosition(value) {
         this._dotPosition = value;
         if (value === 'left' || value === 'right') {
@@ -658,70 +367,46 @@ class NzCarouselComponent {
             this.vertical = false;
         }
     }
-    /**
-     * @return {?}
-     */
     get nzDotPosition() {
         return this._dotPosition;
     }
-    /**
-     * @return {?}
-     */
     ngAfterContentInit() {
         this.markContentActive(0);
     }
-    /**
-     * @return {?}
-     */
     ngAfterViewInit() {
-        if (!this.platform.isBrowser) {
-            return;
-        }
-        this.slickListEl = (/** @type {?} */ (this.slickList)).nativeElement;
-        this.slickTrackEl = (/** @type {?} */ (this.slickTrack)).nativeElement;
-        this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        this.slickListEl = this.slickList.nativeElement;
+        this.slickTrackEl = this.slickTrack.nativeElement;
+        this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.markContentActive(0);
-            this.syncStrategy();
-        }));
+            this.layout();
+        });
         this.resizeService
             .subscribe()
             .pipe(takeUntil(this.destroy$))
-            .subscribe((/**
-         * @return {?}
-         */
-        () => {
-            this.syncStrategy();
-        }));
+            .subscribe(() => {
+            this.layout();
+        });
         this.switchStrategy();
         this.markContentActive(0);
-        this.syncStrategy();
-        // If embedded in an entry component, it may do initial render at a inappropriate time.
+        this.layout();
+        // If embedded in an entry component, it may do initial render at an inappropriate time.
         // ngZone.onStable won't do this trick
-        Promise.resolve().then((/**
-         * @return {?}
-         */
-        () => {
-            this.syncStrategy();
-        }));
+        // TODO: need to change this.
+        Promise.resolve().then(() => {
+            this.layout();
+        });
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzEffect, nzDotPosition } = changes;
         if (nzEffect && !nzEffect.isFirstChange()) {
             this.switchStrategy();
             this.markContentActive(0);
-            this.syncStrategy();
+            this.layout();
         }
         if (nzDotPosition && !nzDotPosition.isFirstChange()) {
             this.switchStrategy();
             this.markContentActive(0);
-            this.syncStrategy();
+            this.layout();
         }
         if (!this.nzAutoPlay || !this.nzAutoPlaySpeed) {
             this.clearScheduledTransition();
@@ -730,9 +415,6 @@ class NzCarouselComponent {
             this.scheduleNextTransition();
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.clearScheduledTransition();
         if (this.strategy) {
@@ -741,10 +423,6 @@ class NzCarouselComponent {
         this.destroy$.next();
         this.destroy$.complete();
     }
-    /**
-     * @param {?} e
-     * @return {?}
-     */
     onKeyDown(e) {
         if (e.keyCode === LEFT_ARROW) {
             e.preventDefault();
@@ -755,117 +433,67 @@ class NzCarouselComponent {
             e.preventDefault();
         }
     }
-    /**
-     * @return {?}
-     */
     next() {
         this.goTo(this.activeIndex + 1);
     }
-    /**
-     * @return {?}
-     */
     pre() {
         this.goTo(this.activeIndex - 1);
     }
-    /**
-     * @param {?} index
-     * @return {?}
-     */
     goTo(index) {
         if (this.carouselContents && this.carouselContents.length && !this.isTransiting) {
-            /** @type {?} */
             const length = this.carouselContents.length;
-            /** @type {?} */
             const from = this.activeIndex;
-            /** @type {?} */
             const to = (index + length) % length;
             this.isTransiting = true;
             this.nzBeforeChange.emit({ from, to });
-            (/** @type {?} */ (this.strategy)).switch(this.activeIndex, index).subscribe((/**
-             * @return {?}
-             */
-            () => {
+            this.strategy.switch(this.activeIndex, index).subscribe(() => {
                 this.scheduleNextTransition();
                 this.nzAfterChange.emit(index);
                 this.isTransiting = false;
-            }));
+            });
             this.markContentActive(to);
             this.cdr.markForCheck();
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     switchStrategy() {
         if (this.strategy) {
             this.strategy.dispose();
         }
         // Load custom strategies first.
-        /** @type {?} */
-        const customStrategy = this.customStrategies ? this.customStrategies.find((/**
-         * @param {?} s
-         * @return {?}
-         */
-        s => s.name === this.nzEffect)) : null;
+        const customStrategy = this.customStrategies ? this.customStrategies.find(s => s.name === this.nzEffect) : null;
         if (customStrategy) {
-            this.strategy = new ((/** @type {?} */ (customStrategy.strategy)))(this, this.cdr, this.renderer);
+            this.strategy = new customStrategy.strategy(this, this.cdr, this.renderer, this.platform);
             return;
         }
         this.strategy =
             this.nzEffect === 'scrollx'
-                ? new NzCarouselTransformStrategy(this, this.cdr, this.renderer)
-                : new NzCarouselOpacityStrategy(this, this.cdr, this.renderer);
+                ? new NzCarouselTransformStrategy(this, this.cdr, this.renderer, this.platform)
+                : new NzCarouselOpacityStrategy(this, this.cdr, this.renderer, this.platform);
     }
-    /**
-     * @private
-     * @return {?}
-     */
     scheduleNextTransition() {
         this.clearScheduledTransition();
         if (this.nzAutoPlay && this.nzAutoPlaySpeed > 0 && this.platform.isBrowser) {
-            this.transitionInProgress = setTimeout((/**
-             * @return {?}
-             */
-            () => {
+            this.transitionInProgress = setTimeout(() => {
                 this.goTo(this.activeIndex + 1);
-            }), this.nzAutoPlaySpeed);
+            }, this.nzAutoPlaySpeed);
         }
     }
-    /**
-     * @private
-     * @return {?}
-     */
     clearScheduledTransition() {
         if (this.transitionInProgress) {
             clearTimeout(this.transitionInProgress);
             this.transitionInProgress = null;
         }
     }
-    /**
-     * @private
-     * @param {?} index
-     * @return {?}
-     */
     markContentActive(index) {
         this.activeIndex = index;
         if (this.carouselContents) {
-            this.carouselContents.forEach((/**
-             * @param {?} slide
-             * @param {?} i
-             * @return {?}
-             */
-            (slide, i) => {
+            this.carouselContents.forEach((slide, i) => {
                 slide.isActive = index === i;
-            }));
+            });
         }
         this.cdr.markForCheck();
     }
-    /**
-     * @private
-     * @return {?}
-     */
-    syncStrategy() {
+    layout() {
         if (this.strategy) {
             this.strategy.withCarouselContents(this.carouselContents);
         }
@@ -903,7 +531,7 @@ NzCarouselComponent.decorators = [
         [class.slick-dots-right]="nzDotPosition === 'right'"
       >
         <li *ngFor="let content of carouselContents; let i = index" [class.slick-active]="content.isActive" (click)="goTo(i)">
-          <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }"> </ng-template>
+          <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }"></ng-template>
         </li>
       </ul>
     </div>
@@ -915,9 +543,8 @@ NzCarouselComponent.decorators = [
                 host: {
                     '[class.ant-carousel-vertical]': 'vertical'
                 }
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzCarouselComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: NzConfigService },
@@ -944,23 +571,27 @@ NzCarouselComponent.propDecorators = {
     nzAfterChange: [{ type: Output }]
 };
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", String)
 ], NzCarouselComponent.prototype, "nzEffect", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzCarouselComponent.prototype, "nzEnableSwipe", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzCarouselComponent.prototype, "nzDots", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputBoolean(),
+    WithConfig(),
+    InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzCarouselComponent.prototype, "nzAutoPlay", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME), InputNumber(),
+    WithConfig(),
+    InputNumber(),
     __metadata("design:type", Number)
 ], NzCarouselComponent.prototype, "nzAutoPlaySpeed", void 0);
 __decorate([
@@ -968,132 +599,14 @@ __decorate([
     __metadata("design:type", Object)
 ], NzCarouselComponent.prototype, "nzTransitionSpeed", void 0);
 __decorate([
-    WithConfig(NZ_CONFIG_COMPONENT_NAME),
+    WithConfig(),
     __metadata("design:type", String),
     __metadata("design:paramtypes", [String])
 ], NzCarouselComponent.prototype, "nzDotPosition", null);
-if (false) {
-    /** @type {?} */
-    NzCarouselComponent.ngAcceptInputType_nzEnableSwipe;
-    /** @type {?} */
-    NzCarouselComponent.ngAcceptInputType_nzDots;
-    /** @type {?} */
-    NzCarouselComponent.ngAcceptInputType_nzAutoPlay;
-    /** @type {?} */
-    NzCarouselComponent.ngAcceptInputType_nzAutoPlaySpeed;
-    /** @type {?} */
-    NzCarouselComponent.ngAcceptInputType_nzTransitionSpeed;
-    /** @type {?} */
-    NzCarouselComponent.prototype.carouselContents;
-    /** @type {?} */
-    NzCarouselComponent.prototype.slickList;
-    /** @type {?} */
-    NzCarouselComponent.prototype.slickTrack;
-    /** @type {?} */
-    NzCarouselComponent.prototype.nzDotRender;
-    /** @type {?} */
-    NzCarouselComponent.prototype.nzEffect;
-    /** @type {?} */
-    NzCarouselComponent.prototype.nzEnableSwipe;
-    /** @type {?} */
-    NzCarouselComponent.prototype.nzDots;
-    /** @type {?} */
-    NzCarouselComponent.prototype.nzAutoPlay;
-    /** @type {?} */
-    NzCarouselComponent.prototype.nzAutoPlaySpeed;
-    /** @type {?} */
-    NzCarouselComponent.prototype.nzTransitionSpeed;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype._dotPosition;
-    /** @type {?} */
-    NzCarouselComponent.prototype.nzBeforeChange;
-    /** @type {?} */
-    NzCarouselComponent.prototype.nzAfterChange;
-    /** @type {?} */
-    NzCarouselComponent.prototype.activeIndex;
-    /** @type {?} */
-    NzCarouselComponent.prototype.el;
-    /** @type {?} */
-    NzCarouselComponent.prototype.slickListEl;
-    /** @type {?} */
-    NzCarouselComponent.prototype.slickTrackEl;
-    /** @type {?} */
-    NzCarouselComponent.prototype.strategy;
-    /** @type {?} */
-    NzCarouselComponent.prototype.vertical;
-    /** @type {?} */
-    NzCarouselComponent.prototype.transitionInProgress;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype.gestureRect;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype.pointerDelta;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype.isTransiting;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype.isDragging;
-    /**
-     * Drag carousel.
-     * @type {?}
-     */
-    NzCarouselComponent.prototype.pointerDown;
-    /** @type {?} */
-    NzCarouselComponent.prototype.nzConfigService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype.renderer;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype.platform;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype.resizeService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype.nzDragService;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzCarouselComponent.prototype.customStrategies;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: carousel.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCarouselModule {
 }
@@ -1106,15 +619,12 @@ NzCarouselModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-carousel.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NZ_CAROUSEL_CUSTOM_STRATEGIES, NzCarouselBaseStrategy, NzCarouselComponent, NzCarouselContentDirective, NzCarouselModule };

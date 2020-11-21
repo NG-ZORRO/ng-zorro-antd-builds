@@ -7,17 +7,13 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 /**
- * @fileoverview added by tsickle
- * Generated from: timeline.service.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class TimelineService {
     constructor() {
         this.check$ = new ReplaySubject(1);
     }
-    /**
-     * @return {?}
-     */
     markForCheck() {
         this.check$.next();
     }
@@ -25,34 +21,23 @@ class TimelineService {
 TimelineService.decorators = [
     { type: Injectable }
 ];
-if (false) {
-    /** @type {?} */
-    TimelineService.prototype.check$;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: timeline-item.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const TimelineTimeDefaultColors = (/** @type {?} */ (['red', 'blue', 'green', 'grey', 'gray']));
+const TimelineModes = ['left', 'alternate', 'right', 'custom'];
+const TimelinePositions = ['left', 'right'];
+const TimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey', 'gray'];
+
 /**
- * @param {?=} color
- * @return {?}
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 function isDefaultColor(color) {
-    return TimelineTimeDefaultColors.findIndex((/**
-     * @param {?} i
-     * @return {?}
-     */
-    i => i === color)) !== -1;
+    return TimelineTimeDefaultColors.findIndex(i => i === color) !== -1;
 }
 class NzTimelineItemComponent {
-    /**
-     * @param {?} cdr
-     * @param {?} timelineService
-     */
     constructor(cdr, timelineService) {
         this.cdr = cdr;
         this.timelineService = timelineService;
@@ -60,26 +45,15 @@ class NzTimelineItemComponent {
         this.isLast = false;
         this.borderColor = null;
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         this.timelineService.markForCheck();
         if (changes.nzColor) {
             this.updateCustomColor();
         }
     }
-    /**
-     * @return {?}
-     */
     detectChanges() {
         this.cdr.detectChanges();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     updateCustomColor() {
         this.borderColor = isDefaultColor(this.nzColor) ? null : this.nzColor;
     }
@@ -95,8 +69,8 @@ NzTimelineItemComponent.decorators = [
     <ng-template #template>
       <li
         class="ant-timeline-item"
-        [class.ant-timeline-item-right]="position === 'right'"
-        [class.ant-timeline-item-left]="position === 'left'"
+        [class.ant-timeline-item-right]="(nzPosition || position) === 'right'"
+        [class.ant-timeline-item-left]="(nzPosition || position) === 'left'"
         [class.ant-timeline-item-last]="isLast"
       >
         <div class="ant-timeline-item-tail"></div>
@@ -117,67 +91,33 @@ NzTimelineItemComponent.decorators = [
       </li>
     </ng-template>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzTimelineItemComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: TimelineService }
 ];
 NzTimelineItemComponent.propDecorators = {
     template: [{ type: ViewChild, args: ['template', { static: false },] }],
+    nzPosition: [{ type: Input }],
     nzColor: [{ type: Input }],
     nzDot: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzTimelineItemComponent.prototype.template;
-    /** @type {?} */
-    NzTimelineItemComponent.prototype.nzColor;
-    /** @type {?} */
-    NzTimelineItemComponent.prototype.nzDot;
-    /** @type {?} */
-    NzTimelineItemComponent.prototype.isLast;
-    /** @type {?} */
-    NzTimelineItemComponent.prototype.borderColor;
-    /** @type {?} */
-    NzTimelineItemComponent.prototype.position;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTimelineItemComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTimelineItemComponent.prototype.timelineService;
-}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: timeline.component.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-/** @type {?} */
-const TimelineModes = (/** @type {?} */ (['left', 'alternate', 'right']));
 class NzTimelineComponent {
-    /**
-     * @param {?} cdr
-     * @param {?} timelineService
-     */
     constructor(cdr, timelineService) {
         this.cdr = cdr;
         this.timelineService = timelineService;
+        this.nzMode = 'left';
         this.nzReverse = false;
         this.isPendingBoolean = false;
         this.timelineItems = [];
         this.destroy$ = new Subject();
     }
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
     ngOnChanges(changes) {
         const { nzMode, nzReverse, nzPending } = changes;
         if (simpleChangeActivated(nzMode) || simpleChangeActivated(nzReverse)) {
@@ -187,61 +127,29 @@ class NzTimelineComponent {
             this.isPendingBoolean = nzPending.currentValue === true;
         }
     }
-    /**
-     * @return {?}
-     */
     ngOnInit() {
-        this.timelineService.check$.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        this.timelineService.check$.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.cdr.markForCheck();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngAfterContentInit() {
         this.updateChildren();
-        this.listOfItems.changes.pipe(takeUntil(this.destroy$)).subscribe((/**
-         * @return {?}
-         */
-        () => {
+        this.listOfItems.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.updateChildren();
-        }));
+        });
     }
-    /**
-     * @return {?}
-     */
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();
     }
-    /**
-     * @private
-     * @return {?}
-     */
     updateChildren() {
         if (this.listOfItems && this.listOfItems.length) {
-            /** @type {?} */
             const length = this.listOfItems.length;
-            this.listOfItems.forEach((/**
-             * @param {?} item
-             * @param {?} index
-             * @return {?}
-             */
-            (item, index) => {
+            this.listOfItems.forEach((item, index) => {
                 item.isLast = !this.nzReverse ? index === length - 1 : index === 0;
-                item.position =
-                    this.nzMode === 'left' || !this.nzMode
-                        ? undefined
-                        : this.nzMode === 'right'
-                            ? 'right'
-                            : this.nzMode === 'alternate' && index % 2 === 0
-                                ? 'left'
-                                : 'right';
+                item.position = getInferredTimelineItemPosition(index, this.nzMode);
                 item.detectChanges();
-            }));
+            });
             this.timelineItems = this.nzReverse ? this.listOfItems.toArray().reverse() : this.listOfItems.toArray();
         }
         this.cdr.markForCheck();
@@ -259,17 +167,18 @@ NzTimelineComponent.decorators = [
     <ul
       class="ant-timeline"
       [class.ant-timeline-right]="nzMode === 'right'"
-      [class.ant-timeline-alternate]="nzMode === 'alternate'"
+      [class.ant-timeline-alternate]="nzMode === 'alternate' || nzMode === 'custom'"
       [class.ant-timeline-pending]="!!nzPending"
       [class.ant-timeline-reverse]="nzReverse"
     >
-      <!-- User inserted timeline dots. -->
+      <!-- pending dot (reversed) -->
       <ng-container *ngIf="nzReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
+      <!-- timeline items -->
       <ng-container *ngFor="let item of timelineItems">
         <ng-template [ngTemplateOutlet]="item.template"></ng-template>
       </ng-container>
       <ng-container *ngIf="!nzReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
-      <!-- Pending dot. -->
+      <!-- pending dot -->
     </ul>
     <ng-template #pendingTemplate>
       <li *ngIf="nzPending" class="ant-timeline-item ant-timeline-item-pending">
@@ -289,9 +198,8 @@ NzTimelineComponent.decorators = [
     <!-- Grasp items -->
     <ng-content></ng-content>
   `
-            }] }
+            },] }
 ];
-/** @nocollapse */
 NzTimelineComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: TimelineService }
@@ -303,49 +211,24 @@ NzTimelineComponent.propDecorators = {
     nzPendingDot: [{ type: Input }],
     nzReverse: [{ type: Input }]
 };
-if (false) {
-    /** @type {?} */
-    NzTimelineComponent.prototype.listOfItems;
-    /** @type {?} */
-    NzTimelineComponent.prototype.nzMode;
-    /** @type {?} */
-    NzTimelineComponent.prototype.nzPending;
-    /** @type {?} */
-    NzTimelineComponent.prototype.nzPendingDot;
-    /** @type {?} */
-    NzTimelineComponent.prototype.nzReverse;
-    /** @type {?} */
-    NzTimelineComponent.prototype.isPendingBoolean;
-    /** @type {?} */
-    NzTimelineComponent.prototype.timelineItems;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTimelineComponent.prototype.destroy$;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTimelineComponent.prototype.cdr;
-    /**
-     * @type {?}
-     * @private
-     */
-    NzTimelineComponent.prototype.timelineService;
-}
-/**
- * @param {?=} simpleChange
- * @return {?}
- */
 function simpleChangeActivated(simpleChange) {
     return !!(simpleChange && (simpleChange.previousValue !== simpleChange.currentValue || simpleChange.isFirstChange()));
 }
+function getInferredTimelineItemPosition(index, mode) {
+    return mode === 'custom'
+        ? undefined
+        : mode === 'left'
+            ? 'left'
+            : mode === 'right'
+                ? 'right'
+                : mode === 'alternate' && index % 2 === 0
+                    ? 'left'
+                    : 'right';
+}
 
 /**
- * @fileoverview added by tsickle
- * Generated from: timeline.module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzTimelineModule {
 }
@@ -358,15 +241,12 @@ NzTimelineModule.decorators = [
 ];
 
 /**
- * @fileoverview added by tsickle
- * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 /**
- * @fileoverview added by tsickle
- * Generated from: ng-zorro-antd-timeline.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { NzTimelineComponent, NzTimelineItemComponent, NzTimelineModule, TimelineService };

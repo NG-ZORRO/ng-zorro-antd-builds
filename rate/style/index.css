@@ -2,9 +2,49 @@
 /* stylelint-disable no-duplicate-selectors */
 /* stylelint-disable */
 /* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+.ant-modal,
+.ant-image-preview {
+  pointer-events: none;
+}
+.ant-modal.zoom-enter,
+.ant-modal.zoom-appear,
+.ant-image-preview.zoom-enter,
+.ant-image-preview.zoom-appear {
+  transform: none;
+  opacity: 0;
+  animation-duration: 0.3s;
+  user-select: none;
+}
+.ant-modal-mask,
+.ant-image-preview-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  filter: alpha(opacity=50);
+}
+.ant-modal-mask-hidden,
+.ant-image-preview-mask-hidden {
+  display: none;
+}
+.ant-modal-wrap,
+.ant-image-preview-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  outline: 0;
+  -webkit-overflow-scrolling: touch;
+}
 .ant-rate {
   box-sizing: border-box;
-  color: rgba(0, 0, 0, 0.65);
+  color: rgba(0, 0, 0, 0.85);
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5715;
@@ -27,8 +67,6 @@
 .ant-rate-star {
   position: relative;
   display: inline-block;
-  margin: 0;
-  padding: 0;
   color: inherit;
   cursor: pointer;
   transition: all 0.3s;
@@ -72,7 +110,7 @@
 }
 .ant-rate-text {
   display: inline-block;
-  margin-left: 8px;
+  margin: 0 8px;
   font-size: 14px;
 }
 .ant-rate-rtl {
@@ -86,22 +124,18 @@
   right: 0;
   left: auto;
 }
-.ant-rate-rtl .ant-rate-text {
-  margin-right: 8px;
-  margin-left: 0;
-}
 .ant-tooltip {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: rgba(0, 0, 0, 0.65);
+  color: rgba(0, 0, 0, 0.85);
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5715;
   list-style: none;
   font-feature-settings: 'tnum';
   position: absolute;
-  z-index: 1060;
+  z-index: 1070;
   display: block;
   max-width: 250px;
   visibility: visible;
@@ -150,7 +184,7 @@
   background: transparent;
   pointer-events: none;
 }
-.ant-tooltip-arrow::before {
+.ant-tooltip-arrow-content {
   position: absolute;
   top: 0;
   right: 0;
@@ -169,9 +203,9 @@
 .ant-tooltip-placement-topRight .ant-tooltip-arrow {
   bottom: -5.07106781px;
 }
-.ant-tooltip-placement-top .ant-tooltip-arrow::before,
-.ant-tooltip-placement-topLeft .ant-tooltip-arrow::before,
-.ant-tooltip-placement-topRight .ant-tooltip-arrow::before {
+.ant-tooltip-placement-top .ant-tooltip-arrow-content,
+.ant-tooltip-placement-topLeft .ant-tooltip-arrow-content,
+.ant-tooltip-placement-topRight .ant-tooltip-arrow-content {
   box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.07);
   transform: translateY(-6.53553391px) rotate(45deg);
 }
@@ -190,9 +224,9 @@
 .ant-tooltip-placement-rightBottom .ant-tooltip-arrow {
   left: -5.07106781px;
 }
-.ant-tooltip-placement-right .ant-tooltip-arrow::before,
-.ant-tooltip-placement-rightTop .ant-tooltip-arrow::before,
-.ant-tooltip-placement-rightBottom .ant-tooltip-arrow::before {
+.ant-tooltip-placement-right .ant-tooltip-arrow-content,
+.ant-tooltip-placement-rightTop .ant-tooltip-arrow-content,
+.ant-tooltip-placement-rightBottom .ant-tooltip-arrow-content {
   box-shadow: -3px 3px 7px rgba(0, 0, 0, 0.07);
   transform: translateX(6.53553391px) rotate(45deg);
 }
@@ -211,9 +245,9 @@
 .ant-tooltip-placement-leftBottom .ant-tooltip-arrow {
   right: -5.07106781px;
 }
-.ant-tooltip-placement-left .ant-tooltip-arrow::before,
-.ant-tooltip-placement-leftTop .ant-tooltip-arrow::before,
-.ant-tooltip-placement-leftBottom .ant-tooltip-arrow::before {
+.ant-tooltip-placement-left .ant-tooltip-arrow-content,
+.ant-tooltip-placement-leftTop .ant-tooltip-arrow-content,
+.ant-tooltip-placement-leftBottom .ant-tooltip-arrow-content {
   box-shadow: 3px -3px 7px rgba(0, 0, 0, 0.07);
   transform: translateX(-6.53553391px) rotate(45deg);
 }
@@ -232,9 +266,9 @@
 .ant-tooltip-placement-bottomRight .ant-tooltip-arrow {
   top: -5.07106781px;
 }
-.ant-tooltip-placement-bottom .ant-tooltip-arrow::before,
-.ant-tooltip-placement-bottomLeft .ant-tooltip-arrow::before,
-.ant-tooltip-placement-bottomRight .ant-tooltip-arrow::before {
+.ant-tooltip-placement-bottom .ant-tooltip-arrow-content,
+.ant-tooltip-placement-bottomLeft .ant-tooltip-arrow-content,
+.ant-tooltip-placement-bottomRight .ant-tooltip-arrow-content {
   box-shadow: -3px -3px 7px rgba(0, 0, 0, 0.07);
   transform: translateY(6.53553391px) rotate(45deg);
 }
@@ -247,6 +281,84 @@
 }
 .ant-tooltip-placement-bottomRight .ant-tooltip-arrow {
   right: 13px;
+}
+.ant-tooltip-pink .ant-tooltip-inner {
+  background-color: #eb2f96;
+}
+.ant-tooltip-pink .ant-tooltip-arrow-content {
+  background-color: #eb2f96;
+}
+.ant-tooltip-magenta .ant-tooltip-inner {
+  background-color: #eb2f96;
+}
+.ant-tooltip-magenta .ant-tooltip-arrow-content {
+  background-color: #eb2f96;
+}
+.ant-tooltip-red .ant-tooltip-inner {
+  background-color: #f5222d;
+}
+.ant-tooltip-red .ant-tooltip-arrow-content {
+  background-color: #f5222d;
+}
+.ant-tooltip-volcano .ant-tooltip-inner {
+  background-color: #fa541c;
+}
+.ant-tooltip-volcano .ant-tooltip-arrow-content {
+  background-color: #fa541c;
+}
+.ant-tooltip-orange .ant-tooltip-inner {
+  background-color: #fa8c16;
+}
+.ant-tooltip-orange .ant-tooltip-arrow-content {
+  background-color: #fa8c16;
+}
+.ant-tooltip-yellow .ant-tooltip-inner {
+  background-color: #fadb14;
+}
+.ant-tooltip-yellow .ant-tooltip-arrow-content {
+  background-color: #fadb14;
+}
+.ant-tooltip-gold .ant-tooltip-inner {
+  background-color: #faad14;
+}
+.ant-tooltip-gold .ant-tooltip-arrow-content {
+  background-color: #faad14;
+}
+.ant-tooltip-cyan .ant-tooltip-inner {
+  background-color: #13c2c2;
+}
+.ant-tooltip-cyan .ant-tooltip-arrow-content {
+  background-color: #13c2c2;
+}
+.ant-tooltip-lime .ant-tooltip-inner {
+  background-color: #a0d911;
+}
+.ant-tooltip-lime .ant-tooltip-arrow-content {
+  background-color: #a0d911;
+}
+.ant-tooltip-green .ant-tooltip-inner {
+  background-color: #52c41a;
+}
+.ant-tooltip-green .ant-tooltip-arrow-content {
+  background-color: #52c41a;
+}
+.ant-tooltip-blue .ant-tooltip-inner {
+  background-color: #1890ff;
+}
+.ant-tooltip-blue .ant-tooltip-arrow-content {
+  background-color: #1890ff;
+}
+.ant-tooltip-geekblue .ant-tooltip-inner {
+  background-color: #2f54eb;
+}
+.ant-tooltip-geekblue .ant-tooltip-arrow-content {
+  background-color: #2f54eb;
+}
+.ant-tooltip-purple .ant-tooltip-inner {
+  background-color: #722ed1;
+}
+.ant-tooltip-purple .ant-tooltip-arrow-content {
+  background-color: #722ed1;
 }
 .ant-tooltip-rtl {
   direction: rtl;

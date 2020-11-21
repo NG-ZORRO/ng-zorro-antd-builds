@@ -5,7 +5,7 @@
 import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overlay';
 import { ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, OnInit, QueryList, Renderer2, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
@@ -14,10 +14,11 @@ import { NzCascaderService } from './cascader.service';
 import { NzCascaderComponentAsSource, NzCascaderExpandTrigger, NzCascaderOption, NzCascaderSize, NzCascaderTriggerType, NzShowSearchOptions } from './typings';
 export declare class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
     cascaderService: NzCascaderService;
-    private i18nService;
     nzConfigService: NzConfigService;
     private cdr;
+    private i18nService;
     noAnimation?: NzNoAnimationDirective | undefined;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzShowInput: BooleanInput;
     static ngAcceptInputType_nzShowArrow: BooleanInput;
     static ngAcceptInputType_nzAllowClear: BooleanInput;
@@ -54,12 +55,14 @@ export declare class NzCascaderComponent implements NzCascaderComponentAsSource,
     nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[];
     nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
     nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
+    nzSuffixIcon: string | TemplateRef<void>;
+    nzExpandIcon: string | TemplateRef<void>;
     get nzOptions(): NzCascaderOption[] | null;
     set nzOptions(options: NzCascaderOption[] | null);
     readonly nzVisibleChange: EventEmitter<boolean>;
-    readonly nzSelectionChange: EventEmitter<import("./typings").CascaderOption[]>;
+    readonly nzSelectionChange: EventEmitter<NzCascaderOption[]>;
     readonly nzSelect: EventEmitter<{
-        option: import("./typings").CascaderOption;
+        option: NzCascaderOption;
         index: number;
     } | null>;
     readonly nzClear: EventEmitter<void>;
@@ -98,7 +101,7 @@ export declare class NzCascaderComponent implements NzCascaderComponentAsSource,
     get showPlaceholder(): boolean;
     get clearIconVisible(): boolean;
     get isLabelRenderTemplate(): boolean;
-    constructor(cascaderService: NzCascaderService, i18nService: NzI18nService, nzConfigService: NzConfigService, cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(cascaderService: NzCascaderService, nzConfigService: NzConfigService, cdr: ChangeDetectorRef, i18nService: NzI18nService, elementRef: ElementRef, renderer: Renderer2, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnInit(): void;
     ngOnDestroy(): void;
     registerOnChange(fn: () => {}): void;
@@ -120,6 +123,7 @@ export declare class NzCascaderComponent implements NzCascaderComponentAsSource,
     onOptionMouseEnter(option: NzCascaderOption, columnIndex: number, event: Event): void;
     onOptionMouseLeave(option: NzCascaderOption, _columnIndex: number, event: Event): void;
     onOptionClick(option: NzCascaderOption, columnIndex: number, event: Event): void;
+    onClickOutside(event: MouseEvent): void;
     private isActionTrigger;
     private onEnter;
     private moveUpOrDown;
