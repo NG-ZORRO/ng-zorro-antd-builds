@@ -1560,6 +1560,10 @@
 }
 .ant-btn > .ant-btn-loading-icon .anticon {
   padding-right: 8px;
+  animation: none;
+}
+.ant-btn > .ant-btn-loading-icon .anticon svg {
+  animation: loadingCircle 1s infinite linear;
 }
 .ant-btn > .ant-btn-loading-icon:only-child .anticon {
   padding-right: 0;

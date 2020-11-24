@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
@@ -11,6 +12,8 @@ export declare class NzPaginationComponent implements OnInit, OnDestroy, OnChang
     private i18n;
     private cdr;
     private breakpointService;
+    protected nzConfigService: NzConfigService;
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzDisabled: BooleanInput;
     static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
     static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
@@ -26,15 +29,15 @@ export declare class NzPaginationComponent implements OnInit, OnDestroy, OnChang
         $implicit: number;
         range: [number, number];
     }> | null;
+    nzItemRender: TemplateRef<PaginationItemRenderContext> | null;
     nzSize: 'default' | 'small';
     nzPageSizeOptions: number[];
-    nzItemRender: TemplateRef<PaginationItemRenderContext> | null;
-    nzDisabled: boolean;
     nzShowSizeChanger: boolean;
-    nzHideOnSinglePage: boolean;
     nzShowQuickJumper: boolean;
     nzSimple: boolean;
+    nzDisabled: boolean;
     nzResponsive: boolean;
+    nzHideOnSinglePage: boolean;
     nzTotal: number;
     nzPageIndex: number;
     nzPageSize: number;
@@ -48,7 +51,7 @@ export declare class NzPaginationComponent implements OnInit, OnDestroy, OnChang
     onPageSizeChange(size: number): void;
     onTotalChange(total: number): void;
     getLastIndex(total: number, pageSize: number): number;
-    constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, breakpointService: NzBreakpointService);
+    constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, breakpointService: NzBreakpointService, nzConfigService: NzConfigService);
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;

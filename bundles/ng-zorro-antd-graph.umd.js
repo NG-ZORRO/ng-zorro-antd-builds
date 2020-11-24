@@ -901,12 +901,12 @@
                     ]),
                     animations.group([
                         animations.query('.nz-graph-node-rect', [
-                            animations.animate('200ms ease-out', animations.style({
+                            animations.animate('150ms ease-out', animations.style({
                                 width: cur.width + "px",
                                 height: cur.height + "px"
                             }))
                         ]),
-                        animations.animate('200ms ease-out', animations.style({ transform: "translate(" + cur.x + "px, " + cur.y + "px)" }))
+                        animations.animate('150ms ease-out', animations.style({ transform: "translate(" + cur.x + "px, " + cur.y + "px)" }))
                     ])
                 ]);
             }
@@ -1094,7 +1094,7 @@
                     encapsulation: core.ViewEncapsulation.None,
                     selector: 'nz-graph-svg-container',
                     exportAs: 'nzGraphSvgContainer',
-                    template: "\n    <svg #container width=\"100%\" height=\"100%\">\n      <rect width=\"100%\" height=\"100%\" fill=\"transparent\" class=\"nz-graph-background\"></rect>\n      <g #zoom [attr.transform]=\"transformStyle\" class=\"nz-graph-zoom\">\n        <ng-content></ng-content>\n      </g>\n    </svg>\n  ",
+                    template: "\n    <svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" #container width=\"100%\" height=\"100%\">\n      <rect width=\"100%\" height=\"100%\" fill=\"transparent\" class=\"nz-graph-background\"></rect>\n      <g #zoom [attr.transform]=\"transformStyle\" class=\"nz-graph-zoom\">\n        <ng-content></ng-content>\n      </g>\n    </svg>\n  ",
                     host: {
                         '[class.nz-graph-svg-container]': 'true'
                     }
@@ -1155,7 +1155,6 @@
             this.renderInfo = { labelHeight: 0 };
             this.mapOfNodeAttr = {};
             this.mapOfEdgeAttr = {};
-            this.customNodeTemplate = null;
             this.typedNodes = nzTypeDefinition();
             this.layoutSetting = NZ_GRAPH_LAYOUT_SETTING;
             this.destroy$ = new rxjs.Subject();
@@ -1169,17 +1168,7 @@
             this.coreTransform = function (node) {
                 return "translate(0, " + node.labelHeight + ")";
             };
-            this.cdr.detach();
         }
-        Object.defineProperty(NzGraphComponent.prototype, "customNode", {
-            set: function (value) {
-                if (value) {
-                    this.customNodeTemplate = value;
-                }
-            },
-            enumerable: false,
-            configurable: true
-        });
         NzGraphComponent.prototype.ngOnInit = function () {
             if (this.dataSource !== this.nzGraphData) {
                 this._switchDataSource(this.nzGraphData);
@@ -1208,7 +1197,6 @@
         };
         NzGraphComponent.prototype.ngAfterViewInit = function () {
             this.autoFit();
-            this.cdr.detectChanges();
             this.drawMinimap(true);
         };
         NzGraphComponent.prototype.ngAfterContentChecked = function () {
@@ -1361,7 +1349,9 @@
             var _this = this;
             this.ngZone.onStable
                 .asObservable()
-                .pipe(operators.take(1))
+                .pipe(operators.take(1), operators.finalize(function () {
+                _this.cdr.detectChanges();
+            }))
                 .subscribe(function () {
                 var dataSource = _this.dataSource.dataSource;
                 _this.elementRef.nativeElement.querySelectorAll('[nz-graph-node]').forEach(function (nodeEle) {
@@ -1427,7 +1417,7 @@
                     encapsulation: core.ViewEncapsulation.None,
                     selector: 'nz-graph',
                     exportAs: 'nzGraph',
-                    template: "\n    <ng-content></ng-content>\n    <nz-graph-svg-container (transformEvent)=\"triggerTransform($event)\">\n      <svg:defs nz-graph-defs></svg:defs>\n      <ng-container [ngTemplateOutlet]=\"groupTemplate\" [ngTemplateOutletContext]=\"{ renderInfo: renderInfo, type: 'root' }\"></ng-container>\n    </nz-graph-svg-container>\n\n    <nz-graph-minimap *ngIf=\"nzShowMinimap\"></nz-graph-minimap>\n\n    <ng-template #groupTemplate let-renderInfo=\"renderInfo\" let-type=\"type\">\n      <svg:g [attr.transform]=\"type === 'sub' ? subGraphTransform(renderInfo) : null\">\n        <svg:g class=\"core\" [attr.transform]=\"coreTransform(renderInfo)\">\n          <svg:g class=\"nz-graph-edges\">\n            <svg:g class=\"nz-graph-edge\" *ngFor=\"let edge of renderInfo.edges; let index = index; trackBy: edgeTrackByFun\">\n              <svg:path\n                class=\"nz-graph-edge-line\"\n                nz-graph-edge\n                [attr.marker-end]=\"nzShowArrow ? 'url(#edge-end-arrow)' : null\"\n                [edge]=\"edge\"\n              ></svg:path>\n              <svg:text class=\"nz-graph-edge-text\" text-anchor=\"middle\" dy=\"20\" *ngIf=\"edge.label\">\n                <textPath [attr.href]=\"'#' + edge.v + '--' + edge.w\" startOffset=\"50%\">{{ edge.label }}</textPath>\n              </svg:text>\n            </svg:g>\n          </svg:g>\n\n          <svg:g class=\"nz-graph-nodes\">\n            <svg:g\n              class=\"nz-graph-node\"\n              [class.nz-graph-custom-node]=\"!!customNodeTemplate\"\n              [style.display]=\"node.type === 2 ? 'none' : null\"\n              *ngFor=\"let node of typedNodes(renderInfo.nodes); trackBy: nodeTrackByFun\"\n            >\n              <svg:g nz-graph-node [node]=\"node\" (nodeClick)=\"clickNode($event)\">\n                <svg:rect class=\"nz-graph-node-rect\"></svg:rect>\n                <foreignObject x=\"0\" y=\"0\" [attr.width]=\"node.width\" [attr.height]=\"node.height\">\n                  <xhtml:div class=\"nz-graph-node-wrapper\">\n                    <ng-container\n                      *ngIf=\"customNodeTemplate\"\n                      [ngTemplateOutlet]=\"customNodeTemplate\"\n                      [ngTemplateOutletContext]=\"{ $implicit: node, group: node.type === 0 }\"\n                    ></ng-container>\n                    <div class=\"node-content\" *ngIf=\"!customNodeTemplate\">\n                      <div class=\"title\">\n                        {{ node.name }}\n                        <i\n                          class=\"action-icon\"\n                          *ngIf=\"node.type === 0\"\n                          nz-icon\n                          [nzType]=\"node.expanded ? 'minus' : 'plus'\"\n                          nzTheme=\"outline\"\n                          (click)=\"toggleNode(node.name, node.expanded)\"\n                        ></i>\n                      </div>\n                      <div class=\"label\" *ngIf=\"!node.expanded\">{{ node.label }}</div>\n                    </div>\n                  </xhtml:div>\n                </foreignObject>\n              </svg:g>\n\n              <ng-container\n                *ngIf=\"node.expanded\"\n                [ngTemplateOutlet]=\"groupTemplate\"\n                [ngTemplateOutletContext]=\"{ renderInfo: node, type: 'sub' }\"\n              ></ng-container>\n            </svg:g>\n          </svg:g>\n        </svg:g>\n      </svg:g>\n    </ng-template>\n  ",
+                    template: "\n    <ng-content></ng-content>\n    <nz-graph-svg-container (transformEvent)=\"triggerTransform($event)\">\n      <svg:defs nz-graph-defs></svg:defs>\n      <ng-container [ngTemplateOutlet]=\"groupTemplate\" [ngTemplateOutletContext]=\"{ renderInfo: renderInfo, type: 'root' }\"></ng-container>\n    </nz-graph-svg-container>\n\n    <nz-graph-minimap *ngIf=\"nzShowMinimap\"></nz-graph-minimap>\n\n    <ng-template #groupTemplate let-renderInfo=\"renderInfo\" let-type=\"type\">\n      <svg:g [attr.transform]=\"type === 'sub' ? subGraphTransform(renderInfo) : null\">\n        <svg:g class=\"core\" [attr.transform]=\"coreTransform(renderInfo)\">\n          <svg:g class=\"nz-graph-edges\">\n            <svg:g class=\"nz-graph-edge\" *ngFor=\"let edge of renderInfo.edges; let index = index; trackBy: edgeTrackByFun\">\n              <svg:path\n                class=\"nz-graph-edge-line\"\n                nz-graph-edge\n                [attr.marker-end]=\"nzShowArrow ? 'url(#edge-end-arrow)' : null\"\n                [edge]=\"edge\"\n              ></svg:path>\n              <svg:text class=\"nz-graph-edge-text\" text-anchor=\"middle\" dy=\"20\" *ngIf=\"edge.label\">\n                <textPath [attr.href]=\"'#' + edge.v + '--' + edge.w\" startOffset=\"50%\">{{ edge.label }}</textPath>\n              </svg:text>\n            </svg:g>\n          </svg:g>\n\n          <svg:g class=\"nz-graph-nodes\">\n            <svg:g\n              class=\"nz-graph-node\"\n              [class.nz-graph-custom-node]=\"!!customGraphNodeTemplate\"\n              [style.display]=\"node.type === 2 ? 'none' : null\"\n              *ngFor=\"let node of typedNodes(renderInfo.nodes); trackBy: nodeTrackByFun\"\n            >\n              <svg:g nz-graph-node [node]=\"node\" (nodeClick)=\"clickNode($event)\">\n                <foreignObject class=\"nz-graph-node-rect\" x=\"0\" y=\"0\" [attr.width]=\"node.width\" [attr.height]=\"node.height\">\n                  <xhtml:div class=\"nz-graph-node-wrapper\">\n                    <ng-container\n                      *ngIf=\"customGraphNodeTemplate\"\n                      [ngTemplateOutlet]=\"customGraphNodeTemplate\"\n                      [ngTemplateOutletContext]=\"{ $implicit: node }\"\n                    ></ng-container>\n                    <div class=\"node-content\" *ngIf=\"!customGraphNodeTemplate\">\n                      <div class=\"title\">\n                        {{ node.name }}\n                        <i\n                          class=\"action-icon\"\n                          *ngIf=\"node.type === 0\"\n                          nz-icon\n                          [nzType]=\"node.expanded ? 'minus' : 'plus'\"\n                          nzTheme=\"outline\"\n                          (click)=\"toggleNode(node.name, node.expanded)\"\n                        ></i>\n                      </div>\n                      <div class=\"label\" *ngIf=\"!node.expanded\">{{ node.label }}</div>\n                    </div>\n                  </xhtml:div>\n                </foreignObject>\n              </svg:g>\n\n              <ng-container\n                *ngIf=\"node.expanded\"\n                [ngTemplateOutlet]=\"groupTemplate\"\n                [ngTemplateOutletContext]=\"{ renderInfo: node, type: 'sub' }\"\n              ></ng-container>\n            </svg:g>\n          </svg:g>\n        </svg:g>\n      </svg:g>\n    </ng-template>\n  ",
                     host: {
                         '[class.nz-graph]': 'true',
                         '[class.nz-graph-auto-fit]': 'nzAutoSize'
@@ -1443,7 +1433,7 @@
         graphNodes: [{ type: core.ViewChildren, args: [NzGraphNodeDirective,] }],
         svgContainerComponent: [{ type: core.ViewChild, args: [NzGraphSvgContainerComponent,] }],
         minimap: [{ type: core.ViewChild, args: [NzGraphMinimapComponent,] }],
-        customNode: [{ type: core.ContentChild, args: [NzCustomGraphNodeDirective, { static: false, read: core.TemplateRef },] }],
+        customGraphNodeTemplate: [{ type: core.ContentChild, args: [NzCustomGraphNodeDirective, { static: true, read: core.TemplateRef },] }],
         nzGraphData: [{ type: core.Input }],
         nzRankDirection: [{ type: core.Input }],
         nzGraphLayoutSettings: [{ type: core.Input }],

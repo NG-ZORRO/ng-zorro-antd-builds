@@ -1,5 +1,6 @@
 import { __decorate, __metadata } from 'tslib';
 import { EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef, Output, Input, Renderer2, ElementRef, ViewChild, NgModule } from '@angular/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { InputBoolean, InputNumber, toNumber } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzI18nModule } from 'ng-zorro-antd/i18n';
@@ -14,23 +15,26 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+const NZ_CONFIG_MODULE_NAME = 'pagination';
 class NzPaginationComponent {
-    constructor(i18n, cdr, breakpointService) {
+    constructor(i18n, cdr, breakpointService, nzConfigService) {
         this.i18n = i18n;
         this.cdr = cdr;
         this.breakpointService = breakpointService;
+        this.nzConfigService = nzConfigService;
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzPageSizeChange = new EventEmitter();
         this.nzPageIndexChange = new EventEmitter();
         this.nzShowTotal = null;
+        this.nzItemRender = null;
         this.nzSize = 'default';
         this.nzPageSizeOptions = [10, 20, 30, 40];
-        this.nzItemRender = null;
-        this.nzDisabled = false;
         this.nzShowSizeChanger = false;
-        this.nzHideOnSinglePage = false;
         this.nzShowQuickJumper = false;
         this.nzSimple = false;
+        this.nzDisabled = false;
         this.nzResponsive = false;
+        this.nzHideOnSinglePage = false;
         this.nzTotal = 0;
         this.nzPageIndex = 1;
         this.nzPageSize = 10;
@@ -161,25 +165,49 @@ NzPaginationComponent.decorators = [
 NzPaginationComponent.ctorParameters = () => [
     { type: NzI18nService },
     { type: ChangeDetectorRef },
-    { type: NzBreakpointService }
+    { type: NzBreakpointService },
+    { type: NzConfigService }
 ];
 NzPaginationComponent.propDecorators = {
     nzPageSizeChange: [{ type: Output }],
     nzPageIndexChange: [{ type: Output }],
     nzShowTotal: [{ type: Input }],
+    nzItemRender: [{ type: Input }],
     nzSize: [{ type: Input }],
     nzPageSizeOptions: [{ type: Input }],
-    nzItemRender: [{ type: Input }],
-    nzDisabled: [{ type: Input }],
     nzShowSizeChanger: [{ type: Input }],
-    nzHideOnSinglePage: [{ type: Input }],
     nzShowQuickJumper: [{ type: Input }],
     nzSimple: [{ type: Input }],
+    nzDisabled: [{ type: Input }],
     nzResponsive: [{ type: Input }],
+    nzHideOnSinglePage: [{ type: Input }],
     nzTotal: [{ type: Input }],
     nzPageIndex: [{ type: Input }],
     nzPageSize: [{ type: Input }]
 };
+__decorate([
+    WithConfig(),
+    __metadata("design:type", String)
+], NzPaginationComponent.prototype, "nzSize", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", Array)
+], NzPaginationComponent.prototype, "nzPageSizeOptions", void 0);
+__decorate([
+    WithConfig(),
+    InputBoolean(),
+    __metadata("design:type", Object)
+], NzPaginationComponent.prototype, "nzShowSizeChanger", void 0);
+__decorate([
+    WithConfig(),
+    InputBoolean(),
+    __metadata("design:type", Object)
+], NzPaginationComponent.prototype, "nzShowQuickJumper", void 0);
+__decorate([
+    WithConfig(),
+    InputBoolean(),
+    __metadata("design:type", Object)
+], NzPaginationComponent.prototype, "nzSimple", void 0);
 __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
@@ -187,23 +215,11 @@ __decorate([
 __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
-], NzPaginationComponent.prototype, "nzShowSizeChanger", void 0);
+], NzPaginationComponent.prototype, "nzResponsive", void 0);
 __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzPaginationComponent.prototype, "nzHideOnSinglePage", void 0);
-__decorate([
-    InputBoolean(),
-    __metadata("design:type", Object)
-], NzPaginationComponent.prototype, "nzShowQuickJumper", void 0);
-__decorate([
-    InputBoolean(),
-    __metadata("design:type", Object)
-], NzPaginationComponent.prototype, "nzSimple", void 0);
-__decorate([
-    InputBoolean(),
-    __metadata("design:type", Object)
-], NzPaginationComponent.prototype, "nzResponsive", void 0);
 __decorate([
     InputNumber(),
     __metadata("design:type", Object)

@@ -147,4 +147,5 @@ export declare class NzCascaderComponent implements NzCascaderComponentAsSource,
     private setDisplayLabel;
     private setDropdownStyles;
     private setLocale;
+    private scrollToActivatedOptions;
 }

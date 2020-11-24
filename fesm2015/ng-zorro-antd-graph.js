@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, merge, Subject, forkJoin } from 'rxjs';
-import { map, take, takeUntil, tap, finalize } from 'rxjs/operators';
+import { map, take, takeUntil, finalize, tap } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { Directive, Component, ElementRef, NgZone, Input, EventEmitter, Renderer2, Output, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, ViewChild, ViewChildren, ContentChild, TemplateRef, NgModule } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -618,12 +618,12 @@ class NzGraphNodeDirective {
                 ]),
                 group([
                     query('.nz-graph-node-rect', [
-                        animate('200ms ease-out', style({
+                        animate('150ms ease-out', style({
                             width: `${cur.width}px`,
                             height: `${cur.height}px`
                         }))
                     ]),
-                    animate('200ms ease-out', style({ transform: `translate(${cur.x}px, ${cur.y}px)` }))
+                    animate('150ms ease-out', style({ transform: `translate(${cur.x}px, ${cur.y}px)` }))
                 ])
             ]);
         }
@@ -805,7 +805,7 @@ NzGraphSvgContainerComponent.decorators = [
                 selector: 'nz-graph-svg-container',
                 exportAs: 'nzGraphSvgContainer',
                 template: `
-    <svg #container width="100%" height="100%">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" #container width="100%" height="100%">
       <rect width="100%" height="100%" fill="transparent" class="nz-graph-background"></rect>
       <g #zoom [attr.transform]="transformStyle" class="nz-graph-zoom">
         <ng-content></ng-content>
@@ -876,7 +876,6 @@ class NzGraphComponent {
         this.renderInfo = { labelHeight: 0 };
         this.mapOfNodeAttr = {};
         this.mapOfEdgeAttr = {};
-        this.customNodeTemplate = null;
         this.typedNodes = nzTypeDefinition();
         this.layoutSetting = NZ_GRAPH_LAYOUT_SETTING;
         this.destroy$ = new Subject();
@@ -890,12 +889,6 @@ class NzGraphComponent {
         this.coreTransform = (node) => {
             return `translate(0, ${node.labelHeight})`;
         };
-        this.cdr.detach();
-    }
-    set customNode(value) {
-        if (value) {
-            this.customNodeTemplate = value;
-        }
     }
     ngOnInit() {
         if (this.dataSource !== this.nzGraphData) {
@@ -925,7 +918,6 @@ class NzGraphComponent {
     }
     ngAfterViewInit() {
         this.autoFit();
-        this.cdr.detectChanges();
         this.drawMinimap(true);
     }
     ngAfterContentChecked() {
@@ -1073,7 +1065,9 @@ class NzGraphComponent {
     resizeNodes(renderInfo, options) {
         this.ngZone.onStable
             .asObservable()
-            .pipe(take(1))
+            .pipe(take(1), finalize(() => {
+            this.cdr.detectChanges();
+        }))
             .subscribe(() => {
             const dataSource = this.dataSource.dataSource;
             this.elementRef.nativeElement.querySelectorAll('[nz-graph-node]').forEach((nodeEle) => {
@@ -1164,20 +1158,19 @@ NzGraphComponent.decorators = [
           <svg:g class="nz-graph-nodes">
             <svg:g
               class="nz-graph-node"
-              [class.nz-graph-custom-node]="!!customNodeTemplate"
+              [class.nz-graph-custom-node]="!!customGraphNodeTemplate"
               [style.display]="node.type === 2 ? 'none' : null"
               *ngFor="let node of typedNodes(renderInfo.nodes); trackBy: nodeTrackByFun"
             >
               <svg:g nz-graph-node [node]="node" (nodeClick)="clickNode($event)">
-                <svg:rect class="nz-graph-node-rect"></svg:rect>
-                <foreignObject x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
+                <foreignObject class="nz-graph-node-rect" x="0" y="0" [attr.width]="node.width" [attr.height]="node.height">
                   <xhtml:div class="nz-graph-node-wrapper">
                     <ng-container
-                      *ngIf="customNodeTemplate"
-                      [ngTemplateOutlet]="customNodeTemplate"
-                      [ngTemplateOutletContext]="{ $implicit: node, group: node.type === 0 }"
+                      *ngIf="customGraphNodeTemplate"
+                      [ngTemplateOutlet]="customGraphNodeTemplate"
+                      [ngTemplateOutletContext]="{ $implicit: node }"
                     ></ng-container>
-                    <div class="node-content" *ngIf="!customNodeTemplate">
+                    <div class="node-content" *ngIf="!customGraphNodeTemplate">
                       <div class="title">
                         {{ node.name }}
                         <i
@@ -1221,7 +1214,7 @@ NzGraphComponent.propDecorators = {
     graphNodes: [{ type: ViewChildren, args: [NzGraphNodeDirective,] }],
     svgContainerComponent: [{ type: ViewChild, args: [NzGraphSvgContainerComponent,] }],
     minimap: [{ type: ViewChild, args: [NzGraphMinimapComponent,] }],
-    customNode: [{ type: ContentChild, args: [NzCustomGraphNodeDirective, { static: false, read: TemplateRef },] }],
+    customGraphNodeTemplate: [{ type: ContentChild, args: [NzCustomGraphNodeDirective, { static: true, read: TemplateRef },] }],
     nzGraphData: [{ type: Input }],
     nzRankDirection: [{ type: Input }],
     nzGraphLayoutSettings: [{ type: Input }],

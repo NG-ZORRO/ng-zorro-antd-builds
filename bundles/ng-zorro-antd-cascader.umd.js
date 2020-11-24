@@ -332,6 +332,7 @@
             this.nzLabelProperty = 'label';
             this.expandIcon = 'right';
             renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
+            this.nativeElement = elementRef.nativeElement;
         }
         Object.defineProperty(NzCascaderOptionComponent.prototype, "optionLabel", {
             get: function () {
@@ -846,16 +847,16 @@
         });
         Object.defineProperty(NzCascaderComponent.prototype, "menuCls", {
             get: function () {
-                var _a;
-                return _a = {}, _a["" + this.nzMenuClassName] = !!this.nzMenuClassName, _a;
+                var _b;
+                return _b = {}, _b["" + this.nzMenuClassName] = !!this.nzMenuClassName, _b;
             },
             enumerable: false,
             configurable: true
         });
         Object.defineProperty(NzCascaderComponent.prototype, "menuColumnCls", {
             get: function () {
-                var _a;
-                return _a = {}, _a["" + this.nzColumnClassName] = !!this.nzColumnClassName, _a;
+                var _b;
+                return _b = {}, _b["" + this.nzColumnClassName] = !!this.nzColumnClassName, _b;
             },
             enumerable: false,
             configurable: true
@@ -987,6 +988,7 @@
             }
             if (visible) {
                 this.cascaderService.syncOptions();
+                this.scrollToActivatedOptions();
             }
             this.menuVisible = visible;
             this.nzVisibleChange.emit(visible);
@@ -1270,6 +1272,19 @@
         NzCascaderComponent.prototype.setLocale = function () {
             this.locale = this.i18nService.getLocaleData('global');
             this.cdr.markForCheck();
+        };
+        NzCascaderComponent.prototype.scrollToActivatedOptions = function () {
+            var _this = this;
+            // scroll only until option menu view is ready
+            Promise.resolve().then(function () {
+                _this.cascaderItems
+                    .toArray()
+                    .filter(function (e) { return e.activated; })
+                    .forEach(function (e) {
+                    var _a;
+                    (_a = e.nativeElement) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ block: 'start', inline: 'nearest' });
+                });
+            });
         };
         return NzCascaderComponent;
     }());

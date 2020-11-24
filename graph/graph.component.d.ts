@@ -21,9 +21,9 @@ export declare class NzGraphComponent implements OnInit, OnChanges, AfterViewIni
     graphNodes: QueryList<NzGraphNodeDirective>;
     svgContainerComponent: NzGraphSvgContainerComponent;
     minimap: NzGraphMinimapComponent | undefined;
-    set customNode(value: TemplateRef<{
+    customGraphNodeTemplate?: TemplateRef<{
         $implicit: NzGraphNode | NzGraphGroupNode;
-    }>);
+    }>;
     /**
      * Provides a stream containing the latest data array to render.
      * Data source can be an observable of NzGraphData, or a NzGraphData to render.
@@ -46,9 +46,6 @@ export declare class NzGraphComponent implements OnInit, OnChanges, AfterViewIni
     mapOfEdgeAttr: {
         [key: string]: NzGraphEdgeDef;
     };
-    customNodeTemplate: TemplateRef<{
-        $implicit: NzGraphGroupNode | NzGraphNode;
-    }> | null;
     readonly typedNodes: (item: unknown) => (NzGraphGroupNode | NzGraphNode)[];
     private dataSource?;
     private layoutSetting;

@@ -349,6 +349,7 @@
             _this.componentInstance = null;
             _this.nzOnViewInit = new i0.EventEmitter();
             _this.nzOnClose = new i0.EventEmitter();
+            _this.nzVisibleChange = new i0.EventEmitter();
             _this.destroy$ = new rxjs.Subject();
             _this.placementChanging = false;
             _this.placementChangeTimeoutId = -1;
@@ -501,6 +502,7 @@
         NzDrawerComponent.prototype.close = function (result) {
             var _this = this;
             this.isOpen = false;
+            this.nzVisibleChange.emit(false);
             this.updateOverlayStyle();
             this.overlayKeyboardDispatcher.remove(this.overlayRef);
             this.changeDetectorRef.detectChanges();
@@ -516,6 +518,7 @@
             var _this = this;
             this.attachOverlay();
             this.isOpen = true;
+            this.nzVisibleChange.emit(true);
             this.overlayKeyboardDispatcher.add(this.overlayRef);
             this.updateOverlayStyle();
             this.updateBodyOverflow();
@@ -670,6 +673,7 @@
         nzVisible: [{ type: i0.Input }],
         nzOnViewInit: [{ type: i0.Output }],
         nzOnClose: [{ type: i0.Output }],
+        nzVisibleChange: [{ type: i0.Output }],
         drawerTemplate: [{ type: i0.ViewChild, args: ['drawerTemplate', { static: true },] }],
         bodyPortalOutlet: [{ type: i0.ViewChild, args: [portal.CdkPortalOutlet, { static: false },] }]
     };

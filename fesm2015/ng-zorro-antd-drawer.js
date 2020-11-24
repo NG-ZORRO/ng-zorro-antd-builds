@@ -57,6 +57,7 @@ class NzDrawerComponent extends NzDrawerRef {
         this.componentInstance = null;
         this.nzOnViewInit = new EventEmitter();
         this.nzOnClose = new EventEmitter();
+        this.nzVisibleChange = new EventEmitter();
         this.destroy$ = new Subject();
         this.placementChanging = false;
         this.placementChangeTimeoutId = -1;
@@ -173,6 +174,7 @@ class NzDrawerComponent extends NzDrawerRef {
     }
     close(result) {
         this.isOpen = false;
+        this.nzVisibleChange.emit(false);
         this.updateOverlayStyle();
         this.overlayKeyboardDispatcher.remove(this.overlayRef);
         this.changeDetectorRef.detectChanges();
@@ -187,6 +189,7 @@ class NzDrawerComponent extends NzDrawerRef {
     open() {
         this.attachOverlay();
         this.isOpen = true;
+        this.nzVisibleChange.emit(true);
         this.overlayKeyboardDispatcher.add(this.overlayRef);
         this.updateOverlayStyle();
         this.updateBodyOverflow();
@@ -389,6 +392,7 @@ NzDrawerComponent.propDecorators = {
     nzVisible: [{ type: Input }],
     nzOnViewInit: [{ type: Output }],
     nzOnClose: [{ type: Output }],
+    nzVisibleChange: [{ type: Output }],
     drawerTemplate: [{ type: ViewChild, args: ['drawerTemplate', { static: true },] }],
     bodyPortalOutlet: [{ type: ViewChild, args: [CdkPortalOutlet, { static: false },] }]
 };

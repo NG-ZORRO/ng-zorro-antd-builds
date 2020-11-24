@@ -56,9 +56,10 @@ export declare class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeA
     get nzVisible(): boolean;
     readonly nzOnViewInit: EventEmitter<void>;
     readonly nzOnClose: EventEmitter<MouseEvent>;
+    readonly nzVisibleChange: EventEmitter<boolean>;
     drawerTemplate: TemplateRef<void>;
     bodyPortalOutlet?: CdkPortalOutlet;
-    destroy$: Subject<void>;
+    private destroy$;
     previouslyFocusedElement?: HTMLElement;
     placementChanging: boolean;
     placementChangeTimeoutId: number;

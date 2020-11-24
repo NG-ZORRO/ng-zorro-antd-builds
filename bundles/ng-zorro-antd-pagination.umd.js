@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/select')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/pagination', ['exports', '@angular/core', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/forms', 'ng-zorro-antd/icon', 'ng-zorro-antd/select'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].pagination = {}), global.ng.core, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.forms, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].select));
-}(this, (function (exports, core, services, util, i18n, rxjs, operators, common, forms, icon, select) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/select')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/pagination', ['exports', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/forms', 'ng-zorro-antd/icon', 'ng-zorro-antd/select'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].pagination = {}), global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.forms, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].select));
+}(this, (function (exports, core, config, services, util, i18n, rxjs, operators, common, forms, icon, select) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -309,23 +309,26 @@
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
+    var NZ_CONFIG_MODULE_NAME = 'pagination';
     var NzPaginationComponent = /** @class */ (function () {
-        function NzPaginationComponent(i18n, cdr, breakpointService) {
+        function NzPaginationComponent(i18n, cdr, breakpointService, nzConfigService) {
             this.i18n = i18n;
             this.cdr = cdr;
             this.breakpointService = breakpointService;
+            this.nzConfigService = nzConfigService;
+            this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzPageSizeChange = new core.EventEmitter();
             this.nzPageIndexChange = new core.EventEmitter();
             this.nzShowTotal = null;
+            this.nzItemRender = null;
             this.nzSize = 'default';
             this.nzPageSizeOptions = [10, 20, 30, 40];
-            this.nzItemRender = null;
-            this.nzDisabled = false;
             this.nzShowSizeChanger = false;
-            this.nzHideOnSinglePage = false;
             this.nzShowQuickJumper = false;
             this.nzSimple = false;
+            this.nzDisabled = false;
             this.nzResponsive = false;
+            this.nzHideOnSinglePage = false;
             this.nzTotal = 0;
             this.nzPageIndex = 1;
             this.nzPageSize = 10;
@@ -427,25 +430,49 @@
     NzPaginationComponent.ctorParameters = function () { return [
         { type: i18n.NzI18nService },
         { type: core.ChangeDetectorRef },
-        { type: services.NzBreakpointService }
+        { type: services.NzBreakpointService },
+        { type: config.NzConfigService }
     ]; };
     NzPaginationComponent.propDecorators = {
         nzPageSizeChange: [{ type: core.Output }],
         nzPageIndexChange: [{ type: core.Output }],
         nzShowTotal: [{ type: core.Input }],
+        nzItemRender: [{ type: core.Input }],
         nzSize: [{ type: core.Input }],
         nzPageSizeOptions: [{ type: core.Input }],
-        nzItemRender: [{ type: core.Input }],
-        nzDisabled: [{ type: core.Input }],
         nzShowSizeChanger: [{ type: core.Input }],
-        nzHideOnSinglePage: [{ type: core.Input }],
         nzShowQuickJumper: [{ type: core.Input }],
         nzSimple: [{ type: core.Input }],
+        nzDisabled: [{ type: core.Input }],
         nzResponsive: [{ type: core.Input }],
+        nzHideOnSinglePage: [{ type: core.Input }],
         nzTotal: [{ type: core.Input }],
         nzPageIndex: [{ type: core.Input }],
         nzPageSize: [{ type: core.Input }]
     };
+    __decorate([
+        config.WithConfig(),
+        __metadata("design:type", String)
+    ], NzPaginationComponent.prototype, "nzSize", void 0);
+    __decorate([
+        config.WithConfig(),
+        __metadata("design:type", Array)
+    ], NzPaginationComponent.prototype, "nzPageSizeOptions", void 0);
+    __decorate([
+        config.WithConfig(),
+        util.InputBoolean(),
+        __metadata("design:type", Object)
+    ], NzPaginationComponent.prototype, "nzShowSizeChanger", void 0);
+    __decorate([
+        config.WithConfig(),
+        util.InputBoolean(),
+        __metadata("design:type", Object)
+    ], NzPaginationComponent.prototype, "nzShowQuickJumper", void 0);
+    __decorate([
+        config.WithConfig(),
+        util.InputBoolean(),
+        __metadata("design:type", Object)
+    ], NzPaginationComponent.prototype, "nzSimple", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Object)
@@ -453,23 +480,11 @@
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Object)
-    ], NzPaginationComponent.prototype, "nzShowSizeChanger", void 0);
+    ], NzPaginationComponent.prototype, "nzResponsive", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Object)
     ], NzPaginationComponent.prototype, "nzHideOnSinglePage", void 0);
-    __decorate([
-        util.InputBoolean(),
-        __metadata("design:type", Object)
-    ], NzPaginationComponent.prototype, "nzShowQuickJumper", void 0);
-    __decorate([
-        util.InputBoolean(),
-        __metadata("design:type", Object)
-    ], NzPaginationComponent.prototype, "nzSimple", void 0);
-    __decorate([
-        util.InputBoolean(),
-        __metadata("design:type", Object)
-    ], NzPaginationComponent.prototype, "nzResponsive", void 0);
     __decorate([
         util.InputNumber(),
         __metadata("design:type", Object)
