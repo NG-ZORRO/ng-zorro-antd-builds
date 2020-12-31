@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, ElementRef, EventEmitter, OnDestroy, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
 import { NzButtonType } from 'ng-zorro-antd/button';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -50,7 +51,7 @@ export declare class NzPopconfirmComponent extends NzToolTipComponent implements
     readonly nzOnConfirm: Subject<void>;
     protected _trigger: NzTooltipTrigger;
     _prefix: string;
-    constructor(cdr: ChangeDetectorRef, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(cdr: ChangeDetectorRef, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnDestroy(): void;
     /**
      * @override

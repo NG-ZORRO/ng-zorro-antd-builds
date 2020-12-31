@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/platform'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('@angular/common'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/avatar', ['exports', '@angular/cdk/platform', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', '@angular/common', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].avatar = {}), global.ng.cdk.platform, global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.ng.common, global['ng-zorro-antd'].icon));
-}(this, (function (exports, platform, core, config, util, common, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/platform'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('@angular/cdk/bidi'), require('@angular/common'), require('ng-zorro-antd/icon')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/avatar', ['exports', '@angular/cdk/platform', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', '@angular/cdk/bidi', '@angular/common', 'ng-zorro-antd/icon'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].avatar = {}), global.ng.cdk.platform, global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.ng.cdk.bidi, global.ng.common, global['ng-zorro-antd'].icon));
+}(this, (function (exports, platform, core, config, util, bidi, common, icon) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -328,6 +328,8 @@
             this.classMap = {};
             this.customSize = null;
             this.el = this.elementRef.nativeElement;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-avatar');
         }
         NzAvatarComponent.prototype.imgError = function ($event) {
             this.nzError.emit($event);
@@ -397,7 +399,6 @@
                     exportAs: 'nzAvatar',
                     template: "\n    <i nz-icon *ngIf=\"nzIcon && hasIcon\" [nzType]=\"nzIcon\"></i>\n    <img *ngIf=\"nzSrc && hasSrc\" [src]=\"nzSrc\" [attr.srcset]=\"nzSrcSet\" [attr.alt]=\"nzAlt\" (error)=\"imgError($event)\" />\n    <span class=\"ant-avatar-string\" #textEl [ngStyle]=\"textStyles\" *ngIf=\"nzText && hasText\">{{ nzText }}</span>\n  ",
                     host: {
-                        '[class.ant-avatar]': 'true',
                         '[class.ant-avatar-lg]': "nzSize === 'large'",
                         '[class.ant-avatar-sm]': "nzSize === 'small'",
                         '[class.ant-avatar-square]': "nzShape === 'square'",
@@ -481,7 +482,7 @@
         { type: core.NgModule, args: [{
                     declarations: [NzAvatarComponent, NzAvatarGroupComponent],
                     exports: [NzAvatarComponent, NzAvatarGroupComponent],
-                    imports: [common.CommonModule, icon.NzIconModule, platform.PlatformModule]
+                    imports: [bidi.BidiModule, common.CommonModule, icon.NzIconModule, platform.PlatformModule]
                 },] }
     ];
 

@@ -2,7 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ChangeDetectorRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { ChangeDetectorRef, ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { BooleanInput, NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzRadioService } from './radio.service';
@@ -10,6 +11,8 @@ export declare type NzRadioButtonStyle = 'outline' | 'solid';
 export declare class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDestroy, OnChanges {
     private cdr;
     private nzRadioService;
+    private elementRef;
+    private directionality;
     static ngAcceptInputType_nzDisabled: BooleanInput;
     private value;
     private destroy$;
@@ -19,7 +22,8 @@ export declare class NzRadioGroupComponent implements OnInit, ControlValueAccess
     nzButtonStyle: NzRadioButtonStyle;
     nzSize: NzSizeLDSType;
     nzName: string | null;
-    constructor(cdr: ChangeDetectorRef, nzRadioService: NzRadioService);
+    dir: Direction;
+    constructor(cdr: ChangeDetectorRef, nzRadioService: NzRadioService, elementRef: ElementRef, directionality: Directionality);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;

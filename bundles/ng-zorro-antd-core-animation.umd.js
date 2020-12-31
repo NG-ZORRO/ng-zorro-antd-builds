@@ -51,12 +51,17 @@
     ]);
     var treeCollapseMotion = animations.trigger('treeCollapseMotion', [
         animations.transition('* => *', [
-            animations.query('nz-tree-node:leave', [animations.style({ overflow: 'hidden' }), animations.stagger(0, [animations.animate("150ms " + AnimationCurves.EASE_IN_OUT, animations.style({ height: 0 }))])], {
+            animations.query('nz-tree-node:leave,nz-tree-builtin-node:leave', [
+                animations.style({ overflow: 'hidden' }),
+                animations.stagger(0, [animations.animate("150ms " + AnimationCurves.EASE_IN_OUT, animations.style({ height: 0, opacity: 0, 'padding-bottom': 0 }))])
+            ], {
                 optional: true
             }),
-            animations.query('nz-tree-node:enter', [
-                animations.style({ overflow: 'hidden', height: 0 }),
-                animations.stagger(0, [animations.animate("150ms " + AnimationCurves.EASE_IN_OUT, animations.style({ overflow: 'hidden', height: '*' }))])
+            animations.query('nz-tree-node:enter,nz-tree-builtin-node:enter', [
+                animations.style({ overflow: 'hidden', height: 0, opacity: 0, 'padding-bottom': 0 }),
+                animations.stagger(0, [
+                    animations.animate("150ms " + AnimationCurves.EASE_IN_OUT, animations.style({ overflow: 'hidden', height: '*', opacity: '*', 'padding-bottom': '*' }))
+                ])
             ], {
                 optional: true
             })

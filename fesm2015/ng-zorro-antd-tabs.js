@@ -1,8 +1,8 @@
-import { Component, ElementRef, Input, Directive, NgZone, Optional, Inject, TemplateRef, Host, Self, InjectionToken, EventEmitter, ViewEncapsulation, ChangeDetectionStrategy, Output, ViewChild, ContentChild, ChangeDetectorRef, ContentChildren, QueryList, NgModule } from '@angular/core';
+import { Component, ElementRef, Input, Directive, NgZone, Optional, Inject, TemplateRef, Host, Self, InjectionToken, EventEmitter, ViewEncapsulation, ChangeDetectionStrategy, Output, ContentChild, ViewChild, ChangeDetectorRef, ContentChildren, QueryList, NgModule } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { FocusKeyManager, A11yModule } from '@angular/cdk/a11y';
-import { Directionality } from '@angular/cdk/bidi';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { hasModifierKey, SPACE, ENTER, DOWN_ARROW, RIGHT_ARROW, UP_ARROW, LEFT_ARROW } from '@angular/cdk/keycodes';
 import { ViewportRuler } from '@angular/cdk/overlay';
@@ -12,7 +12,6 @@ import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { __decorate, __metadata } from 'tslib';
 import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 import { RouterLink, RouterLinkWithHref, NavigationEnd, Router } from '@angular/router';
-import { warnDeprecation, PREFIX } from 'ng-zorro-antd/core/logger';
 import { ObserversModule } from '@angular/cdk/observers';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CdkScrollableModule } from '@angular/cdk/scrolling';
@@ -21,6 +20,7 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { PREFIX } from 'ng-zorro-antd/core/logger';
 
 /**
  * Use of this source code is governed by an MIT-style license that can be
@@ -155,12 +155,9 @@ NzTabLinkTemplateDirective.ctorParameters = () => [
  * This component is for catching `routerLink` directive.
  */
 class NzTabLinkDirective {
-    constructor(routerLink, routerLinkWithHref, nzTabLinkTemplateDirective) {
+    constructor(routerLink, routerLinkWithHref) {
         this.routerLink = routerLink;
         this.routerLinkWithHref = routerLinkWithHref;
-        if (!nzTabLinkTemplateDirective) {
-            warnDeprecation(`'a[nz-tab-link]' is deprecated. Please use 'ng-template[nzTabLink] > a[nz-tab-link]' instead.`);
-        }
     }
 }
 NzTabLinkDirective.decorators = [
@@ -171,8 +168,7 @@ NzTabLinkDirective.decorators = [
 ];
 NzTabLinkDirective.ctorParameters = () => [
     { type: RouterLink, decorators: [{ type: Optional }, { type: Self }] },
-    { type: RouterLinkWithHref, decorators: [{ type: Optional }, { type: Self }] },
-    { type: NzTabLinkTemplateDirective, decorators: [{ type: Optional }] }
+    { type: RouterLinkWithHref, decorators: [{ type: Optional }, { type: Self }] }
 ];
 
 /**
@@ -220,7 +216,7 @@ class NzTabComponent {
     }
     get label() {
         var _a;
-        return this.nzTitle || ((_a = this.nzTabLinkTemplateDirective) === null || _a === void 0 ? void 0 : _a.templateRef) || this.tabLinkTemplate;
+        return this.nzTitle || ((_a = this.nzTabLinkTemplateDirective) === null || _a === void 0 ? void 0 : _a.templateRef);
     }
     ngOnChanges(changes) {
         const { nzTitle, nzDisabled, nzForceRender } = changes;
@@ -231,7 +227,6 @@ class NzTabComponent {
     ngOnDestroy() {
         this.stateChanges.complete();
     }
-    ngOnInit() { }
 }
 NzTabComponent.decorators = [
     { type: Component, args: [{
@@ -261,7 +256,6 @@ NzTabComponent.propDecorators = {
     nzDeselect: [{ type: Output }],
     nzClick: [{ type: Output }],
     nzContextmenu: [{ type: Output }],
-    tabLinkTemplate: [{ type: ViewChild, args: ['tabLinkTemplate', { static: true },] }],
     nzTabLinkTemplateDirective: [{ type: ContentChild, args: [NzTabLinkTemplateDirective, { static: false },] }],
     template: [{ type: ContentChild, args: [NzTabDirective, { static: false, read: TemplateRef },] }],
     linkDirective: [{ type: ContentChild, args: [NzTabLinkDirective, { static: false },] }],
@@ -593,7 +587,8 @@ class NzTabNavBarComponent {
         this.setPingStatus();
     }
     handleKeydown(event) {
-        if (hasModifierKey(event)) {
+        const inNavigationList = this.navWarpRef.nativeElement.contains(event.target);
+        if (hasModifierKey(event) || !inNavigationList) {
             return;
         }
         switch (event.keyCode) {
@@ -1161,9 +1156,10 @@ class NzTabChangeEvent {
 const NZ_CONFIG_MODULE_NAME = 'tabs';
 let nextId = 0;
 class NzTabSetComponent {
-    constructor(nzConfigService, cdr, router) {
+    constructor(nzConfigService, cdr, directionality, router) {
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
+        this.directionality = directionality;
         this.router = router;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzTabPosition = 'top';
@@ -1184,26 +1180,12 @@ class NzTabSetComponent {
         this.nzTabListScroll = new EventEmitter();
         this.nzClose = new EventEmitter();
         this.nzAdd = new EventEmitter();
-        /**
-         * @deprecated Not supported.
-         * @breaking-change 11.0.0
-         */
-        this.nzShowPagination = true;
-        /**
-         * @deprecated Not supported.
-         * @breaking-change 11.0.0
-         */
-        this.nzOnNextClick = new EventEmitter();
-        /**
-         * @deprecated Not supported.
-         * @breaking-change 11.0.0
-         */
-        this.nzOnPrevClick = new EventEmitter();
         // Pick up only direct descendants under ivy rendering engine
         // We filter out only the tabs that belong to this tab set in `tabs`.
         this.allTabs = new QueryList();
         // All the direct tabs for this tab set
         this.tabs = new QueryList();
+        this.dir = 'ltr';
         this.destroy$ = new Subject();
         this.indexToSelect = 0;
         this.selectedIndex = null;
@@ -1237,12 +1219,12 @@ class NzTabSetComponent {
         return (this.position === 'horizontal' && this.line && (typeof this.nzAnimated === 'boolean' ? this.nzAnimated : this.nzAnimated.tabPane));
     }
     ngOnInit() {
-        if (this.nzOnNextClick.observers.length) {
-            warnDeprecation(`(nzOnNextClick) of nz-tabset is not support, will be removed in 11.0.0`);
-        }
-        if (this.nzOnPrevClick.observers.length) {
-            warnDeprecation(`(nzOnPrevClick) of nz-tabset is not support, will be removed in 11.0.0`);
-        }
+        var _a;
+        this.dir = this.directionality.value;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
     }
     ngOnDestroy() {
         this.destroy$.next();
@@ -1426,10 +1408,24 @@ class NzTabSetComponent {
     isLinkActive(router) {
         return (link) => (link ? router.isActive(link.urlTree, this.nzLinkExact) : false);
     }
-    ngOnChanges(changes) {
-        if (changes.hasOwnProperty('nzShowPagination')) {
-            warnDeprecation(`[nzOnPrevClick] of nz-tabset is not support, will be removed in 11.0.0`);
+    getTabContentMarginValue() {
+        return -(this.nzSelectedIndex || 0) * 100;
+    }
+    getTabContentMarginLeft() {
+        if (this.tabPaneAnimated) {
+            if (this.dir !== 'rtl') {
+                return this.getTabContentMarginValue() + '%';
+            }
         }
+        return '';
+    }
+    getTabContentMarginRight() {
+        if (this.tabPaneAnimated) {
+            if (this.dir === 'rtl') {
+                return this.getTabContentMarginValue() + '%';
+            }
+        }
+        return '';
     }
 }
 NzTabSetComponent.decorators = [
@@ -1501,7 +1497,8 @@ NzTabSetComponent.decorators = [
         [class.ant-tabs-content-left]="nzTabPosition === 'left'"
         [class.ant-tabs-content-right]="nzTabPosition === 'right'"
         [class.ant-tabs-content-animated]="tabPaneAnimated"
-        [style.margin-left.%]="tabPaneAnimated ? -(nzSelectedIndex || 0) * 100 : null"
+        [style.margin-left]="getTabContentMarginLeft()"
+        [style.margin-right]="getTabContentMarginRight()"
       >
         <div
           nz-tab-body
@@ -1520,6 +1517,7 @@ NzTabSetComponent.decorators = [
                     '[class.ant-tabs-editable]': `nzType === 'editable-card'`,
                     '[class.ant-tabs-editable-card]': `nzType === 'editable-card'`,
                     '[class.ant-tabs-centered]': `nzCentered`,
+                    '[class.ant-tabs-rtl]': `dir === 'rtl'`,
                     '[class.ant-tabs-top]': `nzTabPosition === 'top'`,
                     '[class.ant-tabs-bottom]': `nzTabPosition === 'bottom'`,
                     '[class.ant-tabs-left]': `nzTabPosition === 'left'`,
@@ -1533,6 +1531,7 @@ NzTabSetComponent.decorators = [
 NzTabSetComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ChangeDetectorRef },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: Router, decorators: [{ type: Optional }] }
 ];
 NzTabSetComponent.propDecorators = {
@@ -1556,9 +1555,6 @@ NzTabSetComponent.propDecorators = {
     nzTabListScroll: [{ type: Output }],
     nzClose: [{ type: Output }],
     nzAdd: [{ type: Output }],
-    nzShowPagination: [{ type: Input }],
-    nzOnNextClick: [{ type: Output }],
-    nzOnPrevClick: [{ type: Output }],
     allTabs: [{ type: ContentChildren, args: [NzTabComponent, { descendants: true },] }],
     tabNavBarRef: [{ type: ViewChild, args: [NzTabNavBarComponent, { static: false },] }]
 };
@@ -1598,10 +1594,6 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzTabSetComponent.prototype, "nzLinkExact", void 0);
-__decorate([
-    InputBoolean(),
-    __metadata("design:type", Object)
-], NzTabSetComponent.prototype, "nzShowPagination", void 0);
 
 /**
  * Use of this source code is governed by an MIT-style license that can be
@@ -1628,7 +1620,17 @@ NzTabsModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [DIRECTIVES],
                 exports: [DIRECTIVES],
-                imports: [CommonModule, ObserversModule, NzIconModule, NzOutletModule, PlatformModule, A11yModule, CdkScrollableModule, NzDropDownModule]
+                imports: [
+                    BidiModule,
+                    CommonModule,
+                    ObserversModule,
+                    NzIconModule,
+                    NzOutletModule,
+                    PlatformModule,
+                    A11yModule,
+                    CdkScrollableModule,
+                    NzDropDownModule
+                ]
             },] }
 ];
 

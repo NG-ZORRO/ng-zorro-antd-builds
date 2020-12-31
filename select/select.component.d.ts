@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { AfterContentInit, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
@@ -21,6 +22,7 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     private elementRef;
     private platform;
     private focusMonitor;
+    private directionality;
     noAnimation?: NzNoAnimationDirective | undefined;
     readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzAllowClear: BooleanInput;
@@ -100,6 +102,7 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     activatedValue: NzSafeAny | null;
     listOfValue: NzSafeAny[];
     focused: boolean;
+    dir: Direction;
     generateTagItem(value: string): NzSelectItemInterface;
     onItemClick(value: NzSafeAny): void;
     onItemDelete(item: NzSelectItemInterface): void;
@@ -120,7 +123,7 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     onPositionChange(position: ConnectedOverlayPositionChange): void;
     updateCdkConnectedOverlayStatus(): void;
     updateCdkConnectedOverlayPositions(): void;
-    constructor(nzConfigService: NzConfigService, cdr: ChangeDetectorRef, elementRef: ElementRef, platform: Platform, focusMonitor: FocusMonitor, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(nzConfigService: NzConfigService, cdr: ChangeDetectorRef, elementRef: ElementRef, platform: Platform, focusMonitor: FocusMonitor, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
     writeValue(modelValue: NzSafeAny | NzSafeAny[]): void;
     registerOnChange(fn: OnChangeType): void;
     registerOnTouched(fn: OnTouchedType): void;

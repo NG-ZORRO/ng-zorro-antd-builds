@@ -2,20 +2,25 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
-export declare class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
+import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
+import { Observable } from 'rxjs';
+export declare class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges, OnDestroy {
     nzConfigService: NzConfigService;
+    protected i18n: NzI18nService;
     private element;
     private renderer;
     private cdr;
     private dateHelper;
     private platform;
+    private elementRef;
+    private directionality;
     readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzUse12Hours: BooleanInput;
     static ngAcceptInputType_nzHideDisabledOptions: BooleanInput;
@@ -24,6 +29,7 @@ export declare class NzTimePickerComponent implements ControlValueAccessor, OnIn
     static ngAcceptInputType_nzAutoFocus: BooleanInput;
     private _onChange?;
     private _onTouched?;
+    private destroy$;
     isInit: boolean;
     focused: boolean;
     inputValue: string;
@@ -31,7 +37,9 @@ export declare class NzTimePickerComponent implements ControlValueAccessor, OnIn
     preValue: Date | null;
     origin: CdkOverlayOrigin;
     inputSize?: number;
+    i18nPlaceHolder$: Observable<string | undefined>;
     overlayPositions: ConnectionPositionPair[];
+    dir: Direction;
     inputRef: ElementRef<HTMLInputElement>;
     nzSize: string | null;
     nzHourStep: number;
@@ -69,8 +77,9 @@ export declare class NzTimePickerComponent implements ControlValueAccessor, OnIn
     onInputChange(str: string): void;
     onPanelValueChange(value: Date): void;
     setCurrentValueAndClose(): void;
-    constructor(nzConfigService: NzConfigService, element: ElementRef, renderer: Renderer2, cdr: ChangeDetectorRef, dateHelper: DateHelperService, platform: Platform);
+    constructor(nzConfigService: NzConfigService, i18n: NzI18nService, element: ElementRef, renderer: Renderer2, cdr: ChangeDetectorRef, dateHelper: DateHelperService, platform: Platform, elementRef: ElementRef, directionality: Directionality);
     ngOnInit(): void;
+    ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;
     parseTimeString(str: string): void;
     ngAfterViewInit(): void;

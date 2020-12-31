@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Overlay } from '@angular/cdk/overlay';
-import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzMentionTriggerDirective } from './mention-trigger';
 import { NzMentionService } from './mention.service';
@@ -34,6 +34,7 @@ export declare class NzMentionComponent implements OnDestroy, OnInit, OnChanges 
     readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes>;
     trigger: NzMentionTriggerDirective;
     suggestionsTemp?: TemplateRef<void>;
+    items: QueryList<ElementRef>;
     set suggestionChild(value: TemplateRef<{
         $implicit: NzSafeAny;
     }>);
@@ -52,6 +53,7 @@ export declare class NzMentionComponent implements OnDestroy, OnInit, OnChanges 
     private positionStrategy;
     private overlayOutsideClickSubscription;
     private get triggerNativeElement();
+    private get focusItemElement();
     constructor(ngDocument: NzSafeAny, cdr: ChangeDetectorRef, overlay: Overlay, viewContainerRef: ViewContainerRef, nzMentionService: NzMentionService);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
@@ -68,6 +70,7 @@ export declare class NzMentionComponent implements OnDestroy, OnInit, OnChanges 
     private resetDropdown;
     private setNextItemActive;
     private setPreviousItemActive;
+    private scrollToFocusItem;
     private canOpen;
     private resetCursorMention;
     private updatePositions;

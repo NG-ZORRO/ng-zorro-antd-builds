@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/resize-observers'), require('rxjs'), require('rxjs/operators')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/page-header', ['exports', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/resize-observers', 'rxjs', 'rxjs/operators'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['page-header'] = {}), global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core['resize-observers'], global.rxjs, global.rxjs.operators));
-}(this, (function (exports, common, core, outlet, icon, config, logger, resizeObservers, rxjs, operators) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/resize-observers'), require('rxjs'), require('rxjs/operators')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/page-header', ['exports', '@angular/cdk/bidi', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/resize-observers', 'rxjs', 'rxjs/operators'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['page-header'] = {}), global.ng.cdk.bidi, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core['resize-observers'], global.rxjs, global.rxjs.operators));
+}(this, (function (exports, bidi, common, core, outlet, icon, config, logger, resizeObservers, rxjs, operators) { 'use strict';
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -418,25 +418,36 @@
 
     var NZ_CONFIG_MODULE_NAME = 'pageHeader';
     var NzPageHeaderComponent = /** @class */ (function () {
-        function NzPageHeaderComponent(location, nzConfigService, elementRef, nzResizeObserver, cdr) {
+        function NzPageHeaderComponent(location, nzConfigService, elementRef, nzResizeObserver, cdr, directionality) {
             this.location = location;
             this.nzConfigService = nzConfigService;
             this.elementRef = elementRef;
             this.nzResizeObserver = nzResizeObserver;
             this.cdr = cdr;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzBackIcon = null;
             this.nzGhost = true;
             this.nzBack = new core.EventEmitter();
             this.compact = false;
             this.destroy$ = new rxjs.Subject();
+            this.dir = 'ltr';
         }
+        NzPageHeaderComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+        };
         NzPageHeaderComponent.prototype.ngAfterViewInit = function () {
             var _this = this;
             this.nzResizeObserver
                 .observe(this.elementRef)
-                .pipe(operators.map(function (_a) {
-                var _b = __read(_a, 1), entry = _b[0];
+                .pipe(operators.map(function (_b) {
+                var _c = __read(_b, 1), entry = _c[0];
                 return entry.contentRect.width;
             }), operators.takeUntil(this.destroy$))
                 .subscribe(function (width) {
@@ -459,13 +470,19 @@
             this.destroy$.next();
             this.destroy$.complete();
         };
+        NzPageHeaderComponent.prototype.getBackIcon = function () {
+            if (this.dir === 'rtl') {
+                return 'arrow-right';
+            }
+            return 'arrow-left';
+        };
         return NzPageHeaderComponent;
     }());
     NzPageHeaderComponent.decorators = [
         { type: core.Component, args: [{
                     selector: 'nz-page-header',
                     exportAs: 'nzPageHeader',
-                    template: "\n    <ng-content select=\"nz-breadcrumb[nz-page-header-breadcrumb]\"></ng-content>\n\n    <div class=\"ant-page-header-heading\">\n      <div class=\"ant-page-header-heading-left\">\n        <!--back-->\n        <div *ngIf=\"nzBackIcon !== null\" (click)=\"onBack()\" class=\"ant-page-header-back\">\n          <div role=\"button\" tabindex=\"0\" class=\"ant-page-header-back-button\">\n            <ng-container *nzStringTemplateOutlet=\"nzBackIcon; let backIcon\">\n              <i nz-icon [nzType]=\"backIcon || 'arrow-left'\" nzTheme=\"outline\"></i>\n            </ng-container>\n          </div>\n        </div>\n        <!--avatar-->\n        <ng-content select=\"nz-avatar[nz-page-header-avatar]\"></ng-content>\n        <!--title-->\n        <span class=\"ant-page-header-heading-title\" *ngIf=\"nzTitle\">\n          <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n        </span>\n        <ng-content *ngIf=\"!nzTitle\" select=\"nz-page-header-title, [nz-page-header-title]\"></ng-content>\n        <!--subtitle-->\n        <span class=\"ant-page-header-heading-sub-title\" *ngIf=\"nzSubtitle\">\n          <ng-container *nzStringTemplateOutlet=\"nzSubtitle\">{{ nzSubtitle }}</ng-container>\n        </span>\n        <ng-content *ngIf=\"!nzSubtitle\" select=\"nz-page-header-subtitle, [nz-page-header-subtitle]\"></ng-content>\n        <ng-content select=\"nz-page-header-tags, [nz-page-header-tags]\"></ng-content>\n      </div>\n\n      <ng-content select=\"nz-page-header-extra, [nz-page-header-extra]\"></ng-content>\n    </div>\n\n    <ng-content select=\"nz-page-header-content, [nz-page-header-content]\"></ng-content>\n    <ng-content select=\"nz-page-header-footer, [nz-page-header-footer]\"></ng-content>\n  ",
+                    template: "\n    <ng-content select=\"nz-breadcrumb[nz-page-header-breadcrumb]\"></ng-content>\n\n    <div class=\"ant-page-header-heading\">\n      <div class=\"ant-page-header-heading-left\">\n        <!--back-->\n        <div *ngIf=\"nzBackIcon !== null\" (click)=\"onBack()\" class=\"ant-page-header-back\">\n          <div role=\"button\" tabindex=\"0\" class=\"ant-page-header-back-button\">\n            <ng-container *nzStringTemplateOutlet=\"nzBackIcon; let backIcon\">\n              <i nz-icon [nzType]=\"backIcon || getBackIcon()\" nzTheme=\"outline\"></i>\n            </ng-container>\n          </div>\n        </div>\n        <!--avatar-->\n        <ng-content select=\"nz-avatar[nz-page-header-avatar]\"></ng-content>\n        <!--title-->\n        <span class=\"ant-page-header-heading-title\" *ngIf=\"nzTitle\">\n          <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n        </span>\n        <ng-content *ngIf=\"!nzTitle\" select=\"nz-page-header-title, [nz-page-header-title]\"></ng-content>\n        <!--subtitle-->\n        <span class=\"ant-page-header-heading-sub-title\" *ngIf=\"nzSubtitle\">\n          <ng-container *nzStringTemplateOutlet=\"nzSubtitle\">{{ nzSubtitle }}</ng-container>\n        </span>\n        <ng-content *ngIf=\"!nzSubtitle\" select=\"nz-page-header-subtitle, [nz-page-header-subtitle]\"></ng-content>\n        <ng-content select=\"nz-page-header-tags, [nz-page-header-tags]\"></ng-content>\n      </div>\n\n      <ng-content select=\"nz-page-header-extra, [nz-page-header-extra]\"></ng-content>\n    </div>\n\n    <ng-content select=\"nz-page-header-content, [nz-page-header-content]\"></ng-content>\n    <ng-content select=\"nz-page-header-footer, [nz-page-header-footer]\"></ng-content>\n  ",
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     encapsulation: core.ViewEncapsulation.None,
                     host: {
@@ -473,7 +490,8 @@
                         '[class.has-footer]': 'nzPageHeaderFooter',
                         '[class.ant-page-header-ghost]': 'nzGhost',
                         '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb',
-                        '[class.ant-page-header-compact]': 'compact'
+                        '[class.ant-page-header-compact]': 'compact',
+                        '[class.ant-page-header-rtl]': "dir === 'rtl'"
                     }
                 },] }
     ];
@@ -482,7 +500,8 @@
         { type: config.NzConfigService },
         { type: core.ElementRef },
         { type: resizeObservers.NzResizeObserver },
-        { type: core.ChangeDetectorRef }
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzPageHeaderComponent.propDecorators = {
         nzBackIcon: [{ type: core.Input }],
@@ -519,7 +538,7 @@
     }());
     NzPageHeaderModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, outlet.NzOutletModule, icon.NzIconModule],
+                    imports: [bidi.BidiModule, common.CommonModule, outlet.NzOutletModule, icon.NzIconModule],
                     exports: [NzPageHeaderComponent, NzPageHeaderCells],
                     declarations: [NzPageHeaderComponent, NzPageHeaderCells]
                 },] }

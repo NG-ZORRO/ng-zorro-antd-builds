@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
@@ -10,6 +11,7 @@ export declare class NzRateComponent implements OnInit, OnDestroy, ControlValueA
     nzConfigService: NzConfigService;
     private renderer;
     private cdr;
+    private directionality;
     readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzAllowClear: BooleanInput;
     static ngAcceptInputType_nzAllowHalf: BooleanInput;
@@ -31,6 +33,7 @@ export declare class NzRateComponent implements OnInit, OnDestroy, ControlValueA
     classMap: NgClassType;
     starArray: number[];
     starStyleArray: NgClassType[];
+    dir: Direction;
     private readonly destroy$;
     private hasHalf;
     private hoverValue;
@@ -38,7 +41,7 @@ export declare class NzRateComponent implements OnInit, OnDestroy, ControlValueA
     private _value;
     get nzValue(): number;
     set nzValue(input: number);
-    constructor(nzConfigService: NzConfigService, renderer: Renderer2, cdr: ChangeDetectorRef);
+    constructor(nzConfigService: NzConfigService, renderer: Renderer2, cdr: ChangeDetectorRef, directionality: Directionality);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
     ngOnDestroy(): void;

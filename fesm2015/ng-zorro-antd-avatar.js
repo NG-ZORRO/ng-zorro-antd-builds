@@ -3,6 +3,7 @@ import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, ChangeDetectorRef, Input, Output, ViewChild, NgModule } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { InputNumber } from 'ng-zorro-antd/core/util';
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -29,6 +30,8 @@ class NzAvatarComponent {
         this.classMap = {};
         this.customSize = null;
         this.el = this.elementRef.nativeElement;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-avatar');
     }
     imgError($event) {
         this.nzError.emit($event);
@@ -100,7 +103,6 @@ NzAvatarComponent.decorators = [
     <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>
   `,
                 host: {
-                    '[class.ant-avatar]': 'true',
                     '[class.ant-avatar-lg]': `nzSize === 'large'`,
                     '[class.ant-avatar-sm]': `nzSize === 'small'`,
                     '[class.ant-avatar-square]': `nzShape === 'square'`,
@@ -180,7 +182,7 @@ NzAvatarModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NzAvatarComponent, NzAvatarGroupComponent],
                 exports: [NzAvatarComponent, NzAvatarGroupComponent],
-                imports: [CommonModule, NzIconModule, PlatformModule]
+                imports: [BidiModule, CommonModule, NzIconModule, PlatformModule]
             },] }
 ];
 

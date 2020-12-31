@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/a11y'), require('@angular/cdk/keycodes'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/wave'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/switch', ['exports', '@angular/cdk/a11y', '@angular/cdk/keycodes', '@angular/core', '@angular/forms', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/wave', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].switch = {}), global.ng.cdk.a11y, global.ng.cdk.keycodes, global.ng.core, global.ng.forms, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.wave, global['ng-zorro-antd'].icon));
-}(this, (function (exports, a11y, keycodes, core, forms, config, util, common, outlet, wave, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/a11y'), require('@angular/cdk/keycodes'), require('@angular/core'), require('@angular/forms'), require('@angular/cdk/bidi'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/wave'), require('ng-zorro-antd/icon')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/switch', ['exports', '@angular/cdk/a11y', '@angular/cdk/keycodes', '@angular/core', '@angular/forms', '@angular/cdk/bidi', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/wave', 'ng-zorro-antd/icon'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].switch = {}), global.ng.cdk.a11y, global.ng.cdk.keycodes, global.ng.core, global.ng.forms, global.ng.cdk.bidi, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.wave, global['ng-zorro-antd'].icon));
+}(this, (function (exports, a11y, keycodes, core, forms, bidi, config, util, rxjs, operators, common, outlet, wave, icon) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -311,10 +311,11 @@
      */
     var NZ_CONFIG_MODULE_NAME = 'switch';
     var NzSwitchComponent = /** @class */ (function () {
-        function NzSwitchComponent(nzConfigService, cdr, focusMonitor) {
+        function NzSwitchComponent(nzConfigService, cdr, focusMonitor, directionality) {
             this.nzConfigService = nzConfigService;
             this.cdr = cdr;
             this.focusMonitor = focusMonitor;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.isChecked = false;
             this.onChange = function () { };
@@ -325,6 +326,8 @@
             this.nzCheckedChildren = null;
             this.nzUnCheckedChildren = null;
             this.nzSize = 'default';
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
         }
         NzSwitchComponent.prototype.onHostClick = function (e) {
             e.preventDefault();
@@ -362,6 +365,15 @@
             var _a;
             (_a = this.switchElement) === null || _a === void 0 ? void 0 : _a.nativeElement.blur();
         };
+        NzSwitchComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+        };
         NzSwitchComponent.prototype.ngAfterViewInit = function () {
             var _this = this;
             this.focusMonitor.monitor(this.switchElement.nativeElement, true).subscribe(function (focusOrigin) {
@@ -373,6 +385,8 @@
         };
         NzSwitchComponent.prototype.ngOnDestroy = function () {
             this.focusMonitor.stopMonitoring(this.switchElement.nativeElement);
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         NzSwitchComponent.prototype.writeValue = function (value) {
             this.isChecked = value;
@@ -404,7 +418,7 @@
                             multi: true
                         }
                     ],
-                    template: "\n    <button\n      nz-wave\n      type=\"button\"\n      class=\"ant-switch\"\n      #switchElement\n      [disabled]=\"nzDisabled\"\n      [class.ant-switch-checked]=\"isChecked\"\n      [class.ant-switch-loading]=\"nzLoading\"\n      [class.ant-switch-disabled]=\"nzDisabled\"\n      [class.ant-switch-small]=\"nzSize === 'small'\"\n      [nzWaveExtraNode]=\"true\"\n      (keydown)=\"onKeyDown($event)\"\n    >\n      <span class=\"ant-switch-handle\">\n        <i *ngIf=\"nzLoading\" nz-icon nzType=\"loading\" class=\"ant-switch-loading-icon\"></i>\n      </span>\n      <span class=\"ant-switch-inner\">\n        <ng-container *ngIf=\"isChecked; else uncheckTemplate\">\n          <ng-container *nzStringTemplateOutlet=\"nzCheckedChildren\">{{ nzCheckedChildren }}</ng-container>\n        </ng-container>\n        <ng-template #uncheckTemplate>\n          <ng-container *nzStringTemplateOutlet=\"nzUnCheckedChildren\">{{ nzUnCheckedChildren }}</ng-container>\n        </ng-template>\n      </span>\n      <div class=\"ant-click-animating-node\"></div>\n    </button>\n  ",
+                    template: "\n    <button\n      nz-wave\n      type=\"button\"\n      class=\"ant-switch\"\n      #switchElement\n      [disabled]=\"nzDisabled\"\n      [class.ant-switch-checked]=\"isChecked\"\n      [class.ant-switch-loading]=\"nzLoading\"\n      [class.ant-switch-disabled]=\"nzDisabled\"\n      [class.ant-switch-small]=\"nzSize === 'small'\"\n      [class.ant-switch-rtl]=\"dir === 'rtl'\"\n      [nzWaveExtraNode]=\"true\"\n      (keydown)=\"onKeyDown($event)\"\n    >\n      <span class=\"ant-switch-handle\">\n        <i *ngIf=\"nzLoading\" nz-icon nzType=\"loading\" class=\"ant-switch-loading-icon\"></i>\n      </span>\n      <span class=\"ant-switch-inner\">\n        <ng-container *ngIf=\"isChecked; else uncheckTemplate\">\n          <ng-container *nzStringTemplateOutlet=\"nzCheckedChildren\">{{ nzCheckedChildren }}</ng-container>\n        </ng-container>\n        <ng-template #uncheckTemplate>\n          <ng-container *nzStringTemplateOutlet=\"nzUnCheckedChildren\">{{ nzUnCheckedChildren }}</ng-container>\n        </ng-template>\n      </span>\n      <div class=\"ant-click-animating-node\"></div>\n    </button>\n  ",
                     host: {
                         '(click)': 'onHostClick($event)'
                     }
@@ -413,7 +427,8 @@
     NzSwitchComponent.ctorParameters = function () { return [
         { type: config.NzConfigService },
         { type: core.ChangeDetectorRef },
-        { type: a11y.FocusMonitor }
+        { type: a11y.FocusMonitor },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzSwitchComponent.propDecorators = {
         switchElement: [{ type: core.ViewChild, args: ['switchElement', { static: true },] }],
@@ -454,7 +469,7 @@
         { type: core.NgModule, args: [{
                     exports: [NzSwitchComponent],
                     declarations: [NzSwitchComponent],
-                    imports: [common.CommonModule, wave.NzWaveModule, icon.NzIconModule, outlet.NzOutletModule]
+                    imports: [bidi.BidiModule, common.CommonModule, wave.NzWaveModule, icon.NzIconModule, outlet.NzOutletModule]
                 },] }
     ];
 

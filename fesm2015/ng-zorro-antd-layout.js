@@ -1,11 +1,12 @@
-import { Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, Renderer2, EventEmitter, ChangeDetectorRef, ContentChild, Output, Input, ContentChildren, NgModule } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, Renderer2, EventEmitter, ChangeDetectorRef, ContentChild, Output, Input, Optional, ContentChildren, NgModule } from '@angular/core';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { __decorate, __metadata } from 'tslib';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { siderResponsiveMap, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { toCssPixel, inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { LayoutModule } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -93,10 +94,11 @@ NzHeaderComponent.ctorParameters = () => [
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzSiderComponent {
-    constructor(platform, cdr, breakpointService) {
+    constructor(platform, cdr, breakpointService, elementRef) {
         this.platform = platform;
         this.cdr = cdr;
         this.breakpointService = breakpointService;
+        this.elementRef = elementRef;
         this.destroy$ = new Subject();
         this.nzMenuDirective = null;
         this.nzCollapsedChange = new EventEmitter();
@@ -112,6 +114,8 @@ class NzSiderComponent {
         this.matchBreakPoint = false;
         this.flexSetting = null;
         this.widthSetting = null;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-layout-sider');
     }
     updateStyleMap() {
         this.widthSetting = this.nzCollapsed ? `${this.nzCollapsedWidth}px` : toCssPixel(this.nzWidth);
@@ -193,7 +197,6 @@ NzSiderComponent.decorators = [
     ></div>
   `,
                 host: {
-                    '[class.ant-layout-sider]': 'true',
                     '[class.ant-layout-sider-zero-width]': `nzCollapsed && nzCollapsedWidth === 0`,
                     '[class.ant-layout-sider-light]': `nzTheme === 'light'`,
                     '[class.ant-layout-sider-dark]': `nzTheme === 'dark'`,
@@ -208,7 +211,8 @@ NzSiderComponent.decorators = [
 NzSiderComponent.ctorParameters = () => [
     { type: Platform },
     { type: ChangeDetectorRef },
-    { type: NzBreakpointService }
+    { type: NzBreakpointService },
+    { type: ElementRef }
 ];
 NzSiderComponent.propDecorators = {
     nzMenuDirective: [{ type: ContentChild, args: [NzMenuDirective,] }],
@@ -241,6 +245,25 @@ __decorate([
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzLayoutComponent {
+    constructor(elementRef, directionality) {
+        this.elementRef = elementRef;
+        this.directionality = directionality;
+        this.dir = 'ltr';
+        this.destroy$ = new Subject();
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-layout');
+    }
+    ngOnInit() {
+        var _a;
+        this.dir = this.directionality.value;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+        });
+    }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }
 NzLayoutComponent.decorators = [
     { type: Component, args: [{
@@ -249,12 +272,18 @@ NzLayoutComponent.decorators = [
                 encapsulation: ViewEncapsulation.None,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 preserveWhitespaces: false,
-                template: ` <ng-content></ng-content> `,
+                template: `
+    <ng-content></ng-content>
+  `,
                 host: {
-                    '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0',
-                    '[class.ant-layout]': 'true'
+                    '[class.ant-layout-rtl]': `dir === 'rtl'`,
+                    '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0'
                 }
             },] }
+];
+NzLayoutComponent.ctorParameters = () => [
+    { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzLayoutComponent.propDecorators = {
     listOfNzSiderComponent: [{ type: ContentChildren, args: [NzSiderComponent,] }]
@@ -340,7 +369,7 @@ NzLayoutModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NzLayoutComponent, NzHeaderComponent, NzContentComponent, NzFooterComponent, NzSiderComponent, NzSiderTriggerComponent],
                 exports: [NzLayoutComponent, NzHeaderComponent, NzContentComponent, NzFooterComponent, NzSiderComponent],
-                imports: [CommonModule, NzIconModule, LayoutModule, PlatformModule]
+                imports: [BidiModule, CommonModule, NzIconModule, LayoutModule, PlatformModule]
             },] }
 ];
 

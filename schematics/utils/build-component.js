@@ -6,6 +6,15 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildComponent = void 0;
 const core_1 = require("@angular-devkit/core");
@@ -14,10 +23,10 @@ const schematics_2 = require("@angular/cdk/schematics");
 const schema_1 = require("@schematics/angular/component/schema");
 const ast_utils_1 = require("@schematics/angular/utility/ast-utils");
 const change_1 = require("@schematics/angular/utility/change");
-const config_1 = require("@schematics/angular/utility/config");
 const find_module_1 = require("@schematics/angular/utility/find-module");
 const parse_name_1 = require("@schematics/angular/utility/parse-name");
 const validation_1 = require("@schematics/angular/utility/validation");
+const workspace_1 = require("@schematics/angular/utility/workspace");
 const workspace_models_1 = require("@schematics/angular/utility/workspace-models");
 const fs_1 = require("fs");
 const path_1 = require("path");
@@ -30,7 +39,7 @@ function buildDefaultPath(project) {
     const root = project.sourceRoot
         ? `/${project.sourceRoot}/`
         : `/${project.root}/src/`;
-    const projectDirName = project.projectType === workspace_models_1.ProjectType.Application ? 'app' : 'lib';
+    const projectDirName = project.extensions.projectType === workspace_models_1.ProjectType.Application ? 'app' : 'lib';
     return `${root}${projectDirName}`;
 }
 /**
@@ -142,8 +151,8 @@ function indentTextContent(text, numSpaces) {
  * to manually duplicate the file content.
  */
 function buildComponent(options, additionalFiles = {}) {
-    return (host, context) => {
-        const workspace = config_1.getWorkspace(host);
+    return (host, context) => __awaiter(this, void 0, void 0, function* () {
+        const workspace = yield workspace_1.getWorkspace(host);
         const project = schematics_2.getProjectFromWorkspace(workspace, options.project);
         const defaultZorroComponentOptions = schematics_2.getDefaultComponentOptions(project);
         let modulePrefix = '';
@@ -216,13 +225,13 @@ function buildComponent(options, additionalFiles = {}) {
             // tslint:disable-next-line no-any
             schematics_1.move(null, parsedPath.path)
         ]);
-        return schematics_1.chain([
+        return () => schematics_1.chain([
             schematics_1.branchAndMerge(schematics_1.chain([
                 addDeclarationToNgModule(options),
                 schematics_1.mergeWith(templateSource)
             ]))
         ])(host, context);
-    };
+    });
 }
 exports.buildComponent = buildComponent;
 //# sourceMappingURL=build-component.js.map

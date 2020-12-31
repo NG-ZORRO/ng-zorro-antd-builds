@@ -401,6 +401,8 @@
             this.ghostElement = null;
             this.sizeCache = null;
             this.destroy$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('nz-resizable');
             this.nzResizableService.handleMouseDown$.pipe(operators.takeUntil(this.destroy$)).subscribe(function (event) {
                 if (_this.nzDisabled) {
                     return;
@@ -626,7 +628,6 @@
                     exportAs: 'nzResizable',
                     providers: [NzResizableService],
                     host: {
-                        '[class.nz-resizable]': 'true',
                         '[class.nz-resizable-resizing]': 'resizing',
                         '[class.nz-resizable-disabled]': 'nzDisabled',
                         '(mouseenter)': 'onMouseenter()',
@@ -682,13 +683,16 @@
         return NzResizeHandleMouseDownEvent;
     }());
     var NzResizeHandleComponent = /** @class */ (function () {
-        function NzResizeHandleComponent(nzResizableService, cdr) {
+        function NzResizeHandleComponent(nzResizableService, cdr, elementRef) {
             this.nzResizableService = nzResizableService;
             this.cdr = cdr;
+            this.elementRef = elementRef;
             this.nzDirection = 'bottomRight';
             this.nzMouseDown = new core.EventEmitter();
             this.entered = false;
             this.destroy$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('nz-resizable-handle');
         }
         NzResizeHandleComponent.prototype.ngOnInit = function () {
             var _this = this;
@@ -710,10 +714,9 @@
         { type: core.Component, args: [{
                     selector: 'nz-resize-handle, [nz-resize-handle]',
                     exportAs: 'nzResizeHandle',
-                    template: " <ng-content></ng-content> ",
+                    template: "\n    <ng-content></ng-content>\n  ",
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     host: {
-                        '[class.nz-resizable-handle]': 'true',
                         '[class.nz-resizable-handle-top]': "nzDirection === 'top'",
                         '[class.nz-resizable-handle-right]': "nzDirection === 'right'",
                         '[class.nz-resizable-handle-bottom]': "nzDirection === 'bottom'",
@@ -730,7 +733,8 @@
     ];
     NzResizeHandleComponent.ctorParameters = function () { return [
         { type: NzResizableService },
-        { type: core.ChangeDetectorRef }
+        { type: core.ChangeDetectorRef },
+        { type: core.ElementRef }
     ]; };
     NzResizeHandleComponent.propDecorators = {
         nzDirection: [{ type: core.Input }],

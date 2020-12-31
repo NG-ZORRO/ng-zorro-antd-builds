@@ -2,12 +2,13 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { EventEmitter, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+import { ElementRef, EventEmitter, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzSelectSearchComponent } from './select-search.component';
 import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } from './select.types';
 export declare class NzSelectTopControlComponent implements OnChanges {
+    private elementRef;
     noAnimation?: NzNoAnimationDirective | undefined;
     showSearch: boolean;
     placeHolder: string | TemplateRef<NzSafeAny> | null;
@@ -46,6 +47,6 @@ export declare class NzSelectTopControlComponent implements OnChanges {
     trackValue(_index: number, option: NzSelectTopControlItemType): NzSafeAny;
     onDeleteItem(item: NzSelectItemInterface): void;
     onAnimationEnd(): void;
-    constructor(noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(elementRef: ElementRef, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnChanges(changes: SimpleChanges): void;
 }

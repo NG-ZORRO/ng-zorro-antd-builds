@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/keycodes'), require('@angular/cdk/overlay'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/i18n'), require('@angular/common'), require('ng-zorro-antd/core/highlight'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/empty'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/input')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/cascader', ['exports', '@angular/cdk/keycodes', '@angular/cdk/overlay', '@angular/core', '@angular/forms', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/i18n', '@angular/common', 'ng-zorro-antd/core/highlight', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/empty', 'ng-zorro-antd/icon', 'ng-zorro-antd/input'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].cascader = {}), global.ng.cdk.keycodes, global.ng.cdk.overlay, global.ng.core, global.ng.forms, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].i18n, global.ng.common, global['ng-zorro-antd'].core.highlight, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].empty, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].input));
-}(this, (function (exports, keycodes, overlay$1, core, forms, animation, config, noAnimation, overlay, util, rxjs, operators, i18n, common, highlight, outlet, empty, icon, input) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/keycodes'), require('@angular/cdk/overlay'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('ng-zorro-antd/core/highlight'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/empty'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/input')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/cascader', ['exports', '@angular/cdk/bidi', '@angular/cdk/keycodes', '@angular/cdk/overlay', '@angular/core', '@angular/forms', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', 'rxjs', 'rxjs/operators', '@angular/common', 'ng-zorro-antd/core/highlight', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/empty', 'ng-zorro-antd/icon', 'ng-zorro-antd/input'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].cascader = {}), global.ng.cdk.bidi, global.ng.cdk.keycodes, global.ng.cdk.overlay, global.ng.core, global.ng.forms, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.rxjs, global.rxjs.operators, global.ng.common, global['ng-zorro-antd'].core.highlight, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].empty, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].input));
+}(this, (function (exports, bidi, keycodes, overlay$1, core, forms, animation, config, noAnimation, overlay, util, i18n, rxjs, operators, common, highlight, outlet, empty, icon, input) { 'use strict';
 
     function isShowSearchObject(options) {
         return typeof options !== 'boolean';
@@ -330,10 +330,19 @@
             this.optionTemplate = null;
             this.activated = false;
             this.nzLabelProperty = 'label';
-            this.expandIcon = 'right';
+            this.expandIcon = '';
+            this.dir = 'ltr';
             renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
             this.nativeElement = elementRef.nativeElement;
         }
+        NzCascaderOptionComponent.prototype.ngOnInit = function () {
+            if (this.expandIcon === '' && this.dir === 'rtl') {
+                this.expandIcon = 'left';
+            }
+            else if (this.expandIcon === '') {
+                this.expandIcon = 'right';
+            }
+        };
         Object.defineProperty(NzCascaderOptionComponent.prototype, "optionLabel", {
             get: function () {
                 return this.option[this.nzLabelProperty];
@@ -373,7 +382,8 @@
         highlightText: [{ type: core.Input }],
         nzLabelProperty: [{ type: core.Input }],
         columnIndex: [{ type: core.Input }],
-        expandIcon: [{ type: core.Input }]
+        expandIcon: [{ type: core.Input }],
+        dir: [{ type: core.Input }]
     };
 
     /**
@@ -762,11 +772,12 @@
     var defaultDisplayRender = function (labels) { return labels.join(' / '); };
     var ɵ0 = defaultDisplayRender;
     var NzCascaderComponent = /** @class */ (function () {
-        function NzCascaderComponent(cascaderService, nzConfigService, cdr, i18nService, elementRef, renderer, noAnimation) {
+        function NzCascaderComponent(cascaderService, nzConfigService, cdr, i18nService, elementRef, renderer, directionality, noAnimation) {
             this.cascaderService = cascaderService;
             this.nzConfigService = nzConfigService;
             this.cdr = cdr;
             this.i18nService = i18nService;
+            this.directionality = directionality;
             this.noAnimation = noAnimation;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzOptionRender = null;
@@ -789,7 +800,7 @@
             this.nzTriggerAction = ['click'];
             // TODO: RTL
             this.nzSuffixIcon = 'down';
-            this.nzExpandIcon = 'right';
+            this.nzExpandIcon = '';
             this.nzVisibleChange = new core.EventEmitter();
             this.nzSelectionChange = new core.EventEmitter();
             this.nzSelect = new core.EventEmitter();
@@ -807,6 +818,7 @@
             this.positions = __spread(overlay.DEFAULT_CASCADER_POSITIONS);
             this.dropdownHeightStyle = '';
             this.isFocused = false;
+            this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
             this.inputString = '';
             this.isOpening = false;
@@ -898,6 +910,7 @@
         });
         NzCascaderComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             var srv = this.cascaderService;
             srv.$redraw.pipe(operators.takeUntil(this.destroy$)).subscribe(function () {
                 // These operations would not mutate data.
@@ -940,6 +953,11 @@
                 .pipe(operators.takeUntil(this.destroy$))
                 .subscribe(function () {
                 _this.cdr.markForCheck();
+            });
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function () {
+                _this.dir = _this.directionality.value;
+                srv.$redraw.next();
             });
         };
         NzCascaderComponent.prototype.ngOnDestroy = function () {
@@ -989,6 +1007,9 @@
             if (visible) {
                 this.cascaderService.syncOptions();
                 this.scrollToActivatedOptions();
+            }
+            if (!visible) {
+                this.inputValue = '';
             }
             this.menuVisible = visible;
             this.nzVisibleChange.emit(visible);
@@ -1256,7 +1277,7 @@
                 this.labelRenderContext = { labels: labels, selectedOptions: selectedOptions };
             }
             else {
-                this.labelRenderText = defaultDisplayRender.call(this, labels, selectedOptions);
+                this.labelRenderText = defaultDisplayRender.call(this, labels);
             }
         };
         NzCascaderComponent.prototype.setDropdownStyles = function () {
@@ -1295,7 +1316,7 @@
                     selector: 'nz-cascader, [nz-cascader]',
                     exportAs: 'nzCascader',
                     preserveWhitespaces: false,
-                    template: "\n    <div cdkOverlayOrigin #origin=\"cdkOverlayOrigin\" #trigger>\n      <div *ngIf=\"nzShowInput\">\n        <input\n          #input\n          nz-input\n          class=\"ant-cascader-input\"\n          [class.ant-cascader-input-disabled]=\"nzDisabled\"\n          [class.ant-cascader-input-lg]=\"nzSize === 'large'\"\n          [class.ant-cascader-input-sm]=\"nzSize === 'small'\"\n          [attr.autoComplete]=\"'off'\"\n          [attr.placeholder]=\"showPlaceholder ? nzPlaceHolder || locale?.placeholder : null\"\n          [attr.autofocus]=\"nzAutoFocus ? 'autofocus' : null\"\n          [readonly]=\"!nzShowSearch\"\n          [disabled]=\"nzDisabled\"\n          [nzSize]=\"nzSize\"\n          [(ngModel)]=\"inputValue\"\n          (blur)=\"handleInputBlur()\"\n          (focus)=\"handleInputFocus()\"\n          (change)=\"$event.stopPropagation()\"\n        />\n        <i\n          *ngIf=\"clearIconVisible\"\n          nz-icon\n          nzType=\"close-circle\"\n          nzTheme=\"fill\"\n          class=\"ant-cascader-picker-clear\"\n          (click)=\"clearSelection($event)\"\n        ></i>\n        <ng-container *nzStringTemplateOutlet=\"nzSuffixIcon\">\n          <i\n            *ngIf=\"nzShowArrow && !isLoading\"\n            nz-icon\n            [nzType]=\"$any(nzSuffixIcon)\"\n            class=\"ant-cascader-picker-arrow\"\n            [class.ant-cascader-picker-arrow-expand]=\"menuVisible\"\n          ></i>\n        </ng-container>\n        <i *ngIf=\"isLoading\" nz-icon nzType=\"loading\" class=\"ant-cascader-picker-arrow\"></i>\n        <span\n          class=\"ant-cascader-picker-label\"\n          [class.ant-cascader-picker-show-search]=\"!!nzShowSearch\"\n          [class.ant-cascader-picker-focused]=\"!!nzShowSearch && isFocused && !inputValue\"\n        >\n          <ng-container *ngIf=\"!isLabelRenderTemplate; else labelTemplate\">{{ labelRenderText }}</ng-container>\n          <ng-template #labelTemplate>\n            <ng-template [ngTemplateOutlet]=\"nzLabelRender\" [ngTemplateOutletContext]=\"labelRenderContext\"></ng-template>\n          </ng-template>\n        </span>\n      </div>\n      <ng-content></ng-content>\n    </div>\n    <ng-template\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayPositions]=\"positions\"\n      [cdkConnectedOverlayTransformOriginOn]=\"'.ant-cascader-menus'\"\n      [cdkConnectedOverlayOpen]=\"menuVisible\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n      (detach)=\"closeMenu()\"\n    >\n      <div\n        #menu\n        class=\"ant-cascader-menus\"\n        [class.ant-cascader-menus-hidden]=\"!menuVisible\"\n        [ngClass]=\"menuCls\"\n        [ngStyle]=\"nzMenuStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@slideMotion]=\"'enter'\"\n        (mouseleave)=\"onTriggerMouseLeave($event)\"\n      >\n        <ul\n          *ngIf=\"shouldShowEmpty; else hasOptionsTemplate\"\n          class=\"ant-cascader-menu\"\n          [style.width]=\"dropdownWidthStyle\"\n          [style.height]=\"dropdownHeightStyle\"\n        >\n          <li class=\"ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled\">\n            <nz-embed-empty [nzComponentName]=\"'cascader'\" [specificContent]=\"nzNotFoundContent\"></nz-embed-empty>\n          </li>\n        </ul>\n        <ng-template #hasOptionsTemplate>\n          <ul\n            *ngFor=\"let options of cascaderService.columns; let i = index\"\n            class=\"ant-cascader-menu\"\n            [ngClass]=\"menuColumnCls\"\n            [style.height]=\"dropdownHeightStyle\"\n            [style.width]=\"dropdownWidthStyle\"\n          >\n            <li\n              nz-cascader-option\n              *ngFor=\"let option of options\"\n              [expandIcon]=\"nzExpandIcon\"\n              [columnIndex]=\"i\"\n              [nzLabelProperty]=\"nzLabelProperty\"\n              [optionTemplate]=\"nzOptionRender\"\n              [activated]=\"isOptionActivated(option, i)\"\n              [highlightText]=\"inSearchingMode ? inputValue : ''\"\n              [option]=\"option\"\n              (mouseenter)=\"onOptionMouseEnter(option, i, $event)\"\n              (mouseleave)=\"onOptionMouseLeave(option, i, $event)\"\n              (click)=\"onOptionClick(option, i, $event)\"\n            ></li>\n          </ul>\n        </ng-template>\n      </div>\n    </ng-template>\n  ",
+                    template: "\n    <div cdkOverlayOrigin #origin=\"cdkOverlayOrigin\" #trigger>\n      <div *ngIf=\"nzShowInput\">\n        <input\n          #input\n          nz-input\n          class=\"ant-cascader-input\"\n          [class.ant-cascader-input-disabled]=\"nzDisabled\"\n          [class.ant-cascader-input-lg]=\"nzSize === 'large'\"\n          [class.ant-cascader-input-sm]=\"nzSize === 'small'\"\n          [attr.autoComplete]=\"'off'\"\n          [attr.placeholder]=\"showPlaceholder ? nzPlaceHolder || locale?.placeholder : null\"\n          [attr.autofocus]=\"nzAutoFocus ? 'autofocus' : null\"\n          [readonly]=\"!nzShowSearch\"\n          [disabled]=\"nzDisabled\"\n          [nzSize]=\"nzSize\"\n          [(ngModel)]=\"inputValue\"\n          (blur)=\"handleInputBlur()\"\n          (focus)=\"handleInputFocus()\"\n          (change)=\"$event.stopPropagation()\"\n        />\n        <i\n          *ngIf=\"clearIconVisible\"\n          nz-icon\n          nzType=\"close-circle\"\n          nzTheme=\"fill\"\n          class=\"ant-cascader-picker-clear\"\n          (click)=\"clearSelection($event)\"\n        ></i>\n        <ng-container *nzStringTemplateOutlet=\"nzSuffixIcon\">\n          <i\n            *ngIf=\"nzShowArrow && !isLoading\"\n            nz-icon\n            [nzType]=\"$any(nzSuffixIcon)\"\n            class=\"ant-cascader-picker-arrow\"\n            [class.ant-cascader-picker-arrow-expand]=\"menuVisible\"\n          ></i>\n        </ng-container>\n        <i *ngIf=\"isLoading\" nz-icon nzType=\"loading\" class=\"ant-cascader-picker-arrow\"></i>\n        <span\n          class=\"ant-cascader-picker-label\"\n          [class.ant-cascader-picker-show-search]=\"!!nzShowSearch\"\n          [class.ant-cascader-picker-focused]=\"!!nzShowSearch && isFocused && !inputValue\"\n        >\n          <ng-container *ngIf=\"!isLabelRenderTemplate; else labelTemplate\">{{ labelRenderText }}</ng-container>\n          <ng-template #labelTemplate>\n            <ng-template [ngTemplateOutlet]=\"nzLabelRender\" [ngTemplateOutletContext]=\"labelRenderContext\"></ng-template>\n          </ng-template>\n        </span>\n      </div>\n      <ng-content></ng-content>\n    </div>\n    <ng-template\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayPositions]=\"positions\"\n      [cdkConnectedOverlayTransformOriginOn]=\"'.ant-cascader-menus'\"\n      [cdkConnectedOverlayOpen]=\"menuVisible\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n      (detach)=\"closeMenu()\"\n    >\n      <div\n        #menu\n        class=\"ant-cascader-menus\"\n        [class.ant-cascader-menu-rtl]=\"dir === 'rtl'\"\n        [class.ant-cascader-menus-hidden]=\"!menuVisible\"\n        [ngClass]=\"menuCls\"\n        [ngStyle]=\"nzMenuStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@slideMotion]=\"'enter'\"\n        (mouseleave)=\"onTriggerMouseLeave($event)\"\n      >\n        <ul\n          *ngIf=\"shouldShowEmpty; else hasOptionsTemplate\"\n          class=\"ant-cascader-menu\"\n          [style.width]=\"dropdownWidthStyle\"\n          [style.height]=\"dropdownHeightStyle\"\n        >\n          <li class=\"ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled\">\n            <nz-embed-empty [nzComponentName]=\"'cascader'\" [specificContent]=\"nzNotFoundContent\"></nz-embed-empty>\n          </li>\n        </ul>\n        <ng-template #hasOptionsTemplate>\n          <ul\n            *ngFor=\"let options of cascaderService.columns; let i = index\"\n            class=\"ant-cascader-menu\"\n            [ngClass]=\"menuColumnCls\"\n            [style.height]=\"dropdownHeightStyle\"\n            [style.width]=\"dropdownWidthStyle\"\n          >\n            <li\n              nz-cascader-option\n              *ngFor=\"let option of options\"\n              [expandIcon]=\"nzExpandIcon\"\n              [columnIndex]=\"i\"\n              [nzLabelProperty]=\"nzLabelProperty\"\n              [optionTemplate]=\"nzOptionRender\"\n              [activated]=\"isOptionActivated(option, i)\"\n              [highlightText]=\"inSearchingMode ? inputValue : ''\"\n              [option]=\"option\"\n              [dir]=\"dir\"\n              (mouseenter)=\"onOptionMouseEnter(option, i, $event)\"\n              (mouseleave)=\"onOptionMouseLeave(option, i, $event)\"\n              (click)=\"onOptionClick(option, i, $event)\"\n            ></li>\n          </ul>\n        </ng-template>\n      </div>\n    </ng-template>\n  ",
                     animations: [animation.slideMotion],
                     providers: [
                         {
@@ -1312,7 +1333,8 @@
                         '[class.ant-cascader-picker-disabled]': 'nzDisabled',
                         '[class.ant-cascader-picker-open]': 'menuVisible',
                         '[class.ant-cascader-picker-with-value]': '!!inputValue',
-                        '[class.ant-cascader-focused]': 'isFocused'
+                        '[class.ant-cascader-focused]': 'isFocused',
+                        '[class.ant-cascader-picker-rtl]': "dir ==='rtl'"
                     }
                 },] }
     ];
@@ -1323,6 +1345,7 @@
         { type: i18n.NzI18nService },
         { type: core.ElementRef },
         { type: core.Renderer2 },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
         { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] }
     ]; };
     NzCascaderComponent.propDecorators = {
@@ -1406,6 +1429,7 @@
     NzCascaderModule.decorators = [
         { type: core.NgModule, args: [{
                     imports: [
+                        bidi.BidiModule,
                         common.CommonModule,
                         forms.FormsModule,
                         overlay$1.OverlayModule,

@@ -18,5 +18,5 @@ export declare class NzTabLinkTemplateDirective {
 export declare class NzTabLinkDirective {
     routerLink?: RouterLink | undefined;
     routerLinkWithHref?: RouterLinkWithHref | undefined;
-    constructor(routerLink?: RouterLink | undefined, routerLinkWithHref?: RouterLinkWithHref | undefined, nzTabLinkTemplateDirective?: NzTabLinkTemplateDirective);
+    constructor(routerLink?: RouterLink | undefined, routerLinkWithHref?: RouterLinkWithHref | undefined);
 }

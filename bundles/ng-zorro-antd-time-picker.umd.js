@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/overlay'), require('@angular/cdk/platform'), require('@angular/core'), require('@angular/forms'), require('date-fns'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('@angular/common'), require('ng-zorro-antd/button'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/polyfill'), require('rxjs'), require('rxjs/operators')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/time-picker', ['exports', '@angular/cdk/overlay', '@angular/cdk/platform', '@angular/core', '@angular/forms', 'date-fns', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', '@angular/common', 'ng-zorro-antd/button', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/polyfill', 'rxjs', 'rxjs/operators'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['time-picker'] = {}), global.ng.cdk.overlay, global.ng.cdk.platform, global.ng.core, global.ng.forms, global.dateFns, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.ng.common, global['ng-zorro-antd'].button, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.polyfill, global.rxjs, global.rxjs.operators));
-}(this, (function (exports, overlay, platform, core, forms, dateFns, animation, config, logger, util, i18n, common, button, outlet, overlay$1, icon, polyfill, rxjs, operators) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/overlay'), require('@angular/cdk/platform'), require('@angular/core'), require('@angular/forms'), require('date-fns'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('ng-zorro-antd/button'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/polyfill')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/time-picker', ['exports', '@angular/cdk/bidi', '@angular/cdk/overlay', '@angular/cdk/platform', '@angular/core', '@angular/forms', 'date-fns', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', 'rxjs', 'rxjs/operators', '@angular/common', 'ng-zorro-antd/button', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/polyfill'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['time-picker'] = {}), global.ng.cdk.bidi, global.ng.cdk.overlay, global.ng.cdk.platform, global.ng.core, global.ng.forms, global.dateFns, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.rxjs, global.rxjs.operators, global.ng.common, global['ng-zorro-antd'].button, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.polyfill));
+}(this, (function (exports, bidi, overlay, platform, core, forms, dateFns, animation, config, logger, util, i18n, rxjs, operators, common, button, outlet, overlay$1, icon, polyfill) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -311,19 +311,24 @@
      */
     var NZ_CONFIG_MODULE_NAME = 'timePicker';
     var NzTimePickerComponent = /** @class */ (function () {
-        function NzTimePickerComponent(nzConfigService, element, renderer, cdr, dateHelper, platform) {
+        function NzTimePickerComponent(nzConfigService, i18n, element, renderer, cdr, dateHelper, platform, elementRef, directionality) {
             this.nzConfigService = nzConfigService;
+            this.i18n = i18n;
             this.element = element;
             this.renderer = renderer;
             this.cdr = cdr;
             this.dateHelper = dateHelper;
             this.platform = platform;
+            this.elementRef = elementRef;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
+            this.destroy$ = new rxjs.Subject();
             this.isInit = false;
             this.focused = false;
             this.inputValue = '';
             this.value = null;
             this.preValue = null;
+            this.i18nPlaceHolder$ = rxjs.of(undefined);
             this.overlayPositions = [
                 {
                     originX: 'start',
@@ -333,6 +338,7 @@
                     offsetY: 3
                 }
             ];
+            this.dir = 'ltr';
             this.nzSize = null;
             this.nzHourStep = 1;
             this.nzMinuteStep = 1;
@@ -349,6 +355,8 @@
             this.nzAllowEmpty = true;
             this.nzDisabled = false;
             this.nzAutoFocus = false;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-picker');
         }
         NzTimePickerComponent.prototype.emitValue = function (value) {
             this.setValue(value, true);
@@ -439,8 +447,19 @@
             this.close();
         };
         NzTimePickerComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
             this.inputSize = Math.max(8, this.nzFormat.length) + 2;
             this.origin = new overlay.CdkOverlayOrigin(this.element);
+            this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(operators.map(function (nzLocale) { return nzLocale.TimePicker.placeholder; }));
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+            });
+        };
+        NzTimePickerComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         NzTimePickerComponent.prototype.ngOnChanges = function (changes) {
             var nzUse12Hours = changes.nzUse12Hours, nzFormat = changes.nzFormat, nzDisabled = changes.nzDisabled, nzAutoFocus = changes.nzAutoFocus;
@@ -504,13 +523,13 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     selector: 'nz-time-picker',
                     exportAs: 'nzTimePicker',
-                    template: "\n    <div class=\"ant-picker-input\">\n      <input\n        #inputElement\n        type=\"text\"\n        [size]=\"inputSize\"\n        [placeholder]=\"nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)\"\n        [(ngModel)]=\"inputValue\"\n        [disabled]=\"nzDisabled\"\n        (focus)=\"onFocus(true)\"\n        (blur)=\"onFocus(false)\"\n        (keyup.enter)=\"onKeyupEnter()\"\n        (keyup.escape)=\"onKeyupEsc()\"\n        (ngModelChange)=\"onInputChange($event)\"\n      />\n      <span class=\"ant-picker-suffix\">\n        <ng-container *nzStringTemplateOutlet=\"nzSuffixIcon; let suffixIcon\">\n          <i nz-icon [nzType]=\"suffixIcon\"></i>\n        </ng-container>\n      </span>\n      <span *ngIf=\"nzAllowEmpty && !nzDisabled && value\" class=\"ant-picker-clear\" (click)=\"onClickClearBtn($event)\">\n        <i nz-icon nzType=\"close-circle\" nzTheme=\"fill\" [attr.aria-label]=\"nzClearText\" [attr.title]=\"nzClearText\"></i>\n      </span>\n    </div>\n\n    <ng-template\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayPositions]=\"overlayPositions\"\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayOpen]=\"nzOpen\"\n      [cdkConnectedOverlayOffsetY]=\"-2\"\n      [cdkConnectedOverlayTransformOriginOn]=\"'.ant-picker-dropdown'\"\n      (detach)=\"close()\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n    >\n      <div [@slideMotion]=\"'enter'\" class=\"ant-picker-dropdown\">\n        <div class=\"ant-picker-panel-container\">\n          <div tabindex=\"-1\" class=\"ant-picker-panel\">\n            <nz-time-picker-panel\n              [ngClass]=\"nzPopupClassName\"\n              [format]=\"nzFormat\"\n              [nzHourStep]=\"nzHourStep\"\n              [nzMinuteStep]=\"nzMinuteStep\"\n              [nzSecondStep]=\"nzSecondStep\"\n              [nzDisabledHours]=\"nzDisabledHours\"\n              [nzDisabledMinutes]=\"nzDisabledMinutes\"\n              [nzDisabledSeconds]=\"nzDisabledSeconds\"\n              [nzPlaceHolder]=\"nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)\"\n              [nzHideDisabledOptions]=\"nzHideDisabledOptions\"\n              [nzUse12Hours]=\"nzUse12Hours\"\n              [nzDefaultOpenValue]=\"nzDefaultOpenValue\"\n              [nzAddOn]=\"nzAddOn\"\n              [nzClearText]=\"nzClearText\"\n              [nzAllowEmpty]=\"nzAllowEmpty\"\n              [(ngModel)]=\"value\"\n              (ngModelChange)=\"onPanelValueChange($event)\"\n              (closePanel)=\"setCurrentValueAndClose()\"\n            ></nz-time-picker-panel>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  ",
+                    template: "\n    <div class=\"ant-picker-input\">\n      <input\n        #inputElement\n        type=\"text\"\n        [size]=\"inputSize\"\n        [placeholder]=\"nzPlaceHolder || (i18nPlaceHolder$ | async)\"\n        [(ngModel)]=\"inputValue\"\n        [disabled]=\"nzDisabled\"\n        (focus)=\"onFocus(true)\"\n        (blur)=\"onFocus(false)\"\n        (keyup.enter)=\"onKeyupEnter()\"\n        (keyup.escape)=\"onKeyupEsc()\"\n        (ngModelChange)=\"onInputChange($event)\"\n      />\n      <span class=\"ant-picker-suffix\">\n        <ng-container *nzStringTemplateOutlet=\"nzSuffixIcon; let suffixIcon\">\n          <i nz-icon [nzType]=\"suffixIcon\"></i>\n        </ng-container>\n      </span>\n      <span *ngIf=\"nzAllowEmpty && !nzDisabled && value\" class=\"ant-picker-clear\" (click)=\"onClickClearBtn($event)\">\n        <i nz-icon nzType=\"close-circle\" nzTheme=\"fill\" [attr.aria-label]=\"nzClearText\" [attr.title]=\"nzClearText\"></i>\n      </span>\n    </div>\n\n    <ng-template\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayPositions]=\"overlayPositions\"\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayOpen]=\"nzOpen\"\n      [cdkConnectedOverlayOffsetY]=\"-2\"\n      [cdkConnectedOverlayTransformOriginOn]=\"'.ant-picker-dropdown'\"\n      (detach)=\"close()\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n    >\n      <div [@slideMotion]=\"'enter'\" class=\"ant-picker-dropdown\">\n        <div class=\"ant-picker-panel-container\">\n          <div tabindex=\"-1\" class=\"ant-picker-panel\">\n            <nz-time-picker-panel\n              [ngClass]=\"nzPopupClassName\"\n              [format]=\"nzFormat\"\n              [nzHourStep]=\"nzHourStep\"\n              [nzMinuteStep]=\"nzMinuteStep\"\n              [nzSecondStep]=\"nzSecondStep\"\n              [nzDisabledHours]=\"nzDisabledHours\"\n              [nzDisabledMinutes]=\"nzDisabledMinutes\"\n              [nzDisabledSeconds]=\"nzDisabledSeconds\"\n              [nzPlaceHolder]=\"nzPlaceHolder || (i18nPlaceHolder$ | async)\"\n              [nzHideDisabledOptions]=\"nzHideDisabledOptions\"\n              [nzUse12Hours]=\"nzUse12Hours\"\n              [nzDefaultOpenValue]=\"nzDefaultOpenValue\"\n              [nzAddOn]=\"nzAddOn\"\n              [nzClearText]=\"nzClearText\"\n              [nzAllowEmpty]=\"nzAllowEmpty\"\n              [(ngModel)]=\"value\"\n              (ngModelChange)=\"onPanelValueChange($event)\"\n              (closePanel)=\"setCurrentValueAndClose()\"\n            ></nz-time-picker-panel>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  ",
                     host: {
-                        '[class.ant-picker]': "true",
                         '[class.ant-picker-large]': "nzSize === 'large'",
                         '[class.ant-picker-small]': "nzSize === 'small'",
                         '[class.ant-picker-disabled]': "nzDisabled",
                         '[class.ant-picker-focused]': "focused",
+                        '[class.ant-picker-rtl]': "dir === 'rtl'",
                         '(click)': 'open()'
                     },
                     animations: [animation.slideMotion],
@@ -519,11 +538,14 @@
     ];
     NzTimePickerComponent.ctorParameters = function () { return [
         { type: config.NzConfigService },
+        { type: i18n.NzI18nService },
         { type: core.ElementRef },
         { type: core.Renderer2 },
         { type: core.ChangeDetectorRef },
         { type: i18n.DateHelperService },
-        { type: platform.Platform }
+        { type: platform.Platform },
+        { type: core.ElementRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzTimePickerComponent.propDecorators = {
         inputRef: [{ type: core.ViewChild, args: ['inputElement', { static: true },] }],
@@ -795,9 +817,10 @@
         return new Array(Math.ceil(length / step)).fill(0).map(function (_, i) { return (i + start) * step; });
     }
     var NzTimePickerPanelComponent = /** @class */ (function () {
-        function NzTimePickerPanelComponent(cdr, dateHelper) {
+        function NzTimePickerPanelComponent(cdr, dateHelper, elementRef) {
             this.cdr = cdr;
             this.dateHelper = dateHelper;
+            this.elementRef = elementRef;
             this._nzHourStep = 1;
             this._nzMinuteStep = 1;
             this._nzSecondStep = 1;
@@ -817,6 +840,8 @@
             this.nzHideDisabledOptions = false;
             this.nzUse12Hours = false;
             this.closePanel = new core.EventEmitter();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-picker-time-panel');
         }
         Object.defineProperty(NzTimePickerPanelComponent.prototype, "nzAllowEmpty", {
             get: function () {
@@ -1197,6 +1222,13 @@
         NzTimePickerPanelComponent.prototype.registerOnTouched = function (fn) {
             this.onTouch = fn;
         };
+        /**
+         * Prevent input losing focus when click panel
+         * @param event
+         */
+        NzTimePickerPanelComponent.prototype.onMousedown = function (event) {
+            event.preventDefault();
+        };
         return NzTimePickerPanelComponent;
     }());
     NzTimePickerPanelComponent.decorators = [
@@ -1207,20 +1239,21 @@
                     exportAs: 'nzTimePickerPanel',
                     template: "\n    <div *ngIf=\"nzInDatePicker\" class=\"ant-picker-header\">\n      <div class=\"ant-picker-header-view\">{{ dateHelper.format($any(time?.value), format) || '&nbsp;' }}</div>\n    </div>\n    <div class=\"ant-picker-content\">\n      <ul *ngIf=\"hourEnabled\" #hourListElement class=\"ant-picker-time-panel-column\" style=\"position: relative;\">\n        <ng-container *ngFor=\"let hour of hourRange\">\n          <li\n            *ngIf=\"!(nzHideDisabledOptions && hour.disabled)\"\n            class=\"ant-picker-time-panel-cell\"\n            (click)=\"selectHour(hour)\"\n            [class.ant-picker-time-panel-cell-selected]=\"isSelectedHour(hour)\"\n            [class.ant-picker-time-panel-cell-disabled]=\"hour.disabled\"\n          >\n            <div class=\"ant-picker-time-panel-cell-inner\">{{ hour.index | number: '2.0-0' }}</div>\n          </li>\n        </ng-container>\n      </ul>\n      <ul *ngIf=\"minuteEnabled\" #minuteListElement class=\"ant-picker-time-panel-column\" style=\"position: relative;\">\n        <ng-container *ngFor=\"let minute of minuteRange\">\n          <li\n            *ngIf=\"!(nzHideDisabledOptions && minute.disabled)\"\n            class=\"ant-picker-time-panel-cell\"\n            (click)=\"selectMinute(minute)\"\n            [class.ant-picker-time-panel-cell-selected]=\"isSelectedMinute(minute)\"\n            [class.ant-picker-time-panel-cell-disabled]=\"minute.disabled\"\n          >\n            <div class=\"ant-picker-time-panel-cell-inner\">{{ minute.index | number: '2.0-0' }}</div>\n          </li>\n        </ng-container>\n      </ul>\n      <ul *ngIf=\"secondEnabled\" #secondListElement class=\"ant-picker-time-panel-column\" style=\"position: relative;\">\n        <ng-container *ngFor=\"let second of secondRange\">\n          <li\n            *ngIf=\"!(nzHideDisabledOptions && second.disabled)\"\n            class=\"ant-picker-time-panel-cell\"\n            (click)=\"selectSecond(second)\"\n            [class.ant-picker-time-panel-cell-selected]=\"isSelectedSecond(second)\"\n            [class.ant-picker-time-panel-cell-disabled]=\"second.disabled\"\n          >\n            <div class=\"ant-picker-time-panel-cell-inner\">{{ second.index | number: '2.0-0' }}</div>\n          </li>\n        </ng-container>\n      </ul>\n      <ul *ngIf=\"nzUse12Hours\" #use12HoursListElement class=\"ant-picker-time-panel-column\" style=\"position: relative;\">\n        <ng-container *ngFor=\"let range of use12HoursRange\">\n          <li\n            *ngIf=\"!nzHideDisabledOptions\"\n            (click)=\"select12Hours(range)\"\n            class=\"ant-picker-time-panel-cell\"\n            [class.ant-picker-time-panel-cell-selected]=\"isSelected12Hours(range)\"\n          >\n            <div class=\"ant-picker-time-panel-cell-inner\">{{ range.value }}</div>\n          </li>\n        </ng-container>\n      </ul>\n    </div>\n    <div *ngIf=\"!nzInDatePicker\" class=\"ant-picker-footer\">\n      <div *ngIf=\"nzAddOn\" class=\"ant-picker-footer-extra\">\n        <ng-template [ngTemplateOutlet]=\"nzAddOn\"></ng-template>\n      </div>\n      <ul class=\"ant-picker-ranges\">\n        <li class=\"ant-picker-now\">\n          <a (click)=\"onClickNow()\">\n            {{ 'Calendar.lang.now' | nzI18n }}\n          </a>\n        </li>\n        <li class=\"ant-picker-ok\">\n          <button nz-button type=\"button\" nzSize=\"small\" nzType=\"primary\" (click)=\"onClickOk()\">\n            {{ 'Calendar.lang.ok' | nzI18n }}\n          </button>\n        </li>\n      </ul>\n    </div>\n  ",
                     host: {
-                        '[class.ant-picker-time-panel]': "true",
                         '[class.ant-picker-time-panel-column-0]': "enabledColumns === 0 && !nzInDatePicker",
                         '[class.ant-picker-time-panel-column-1]': "enabledColumns === 1 && !nzInDatePicker",
                         '[class.ant-picker-time-panel-column-2]': "enabledColumns === 2 && !nzInDatePicker",
                         '[class.ant-picker-time-panel-column-3]': "enabledColumns === 3 && !nzInDatePicker",
                         '[class.ant-picker-time-panel-narrow]': "enabledColumns < 3",
-                        '[class.ant-picker-time-panel-placement-bottomLeft]': "!nzInDatePicker"
+                        '[class.ant-picker-time-panel-placement-bottomLeft]': "!nzInDatePicker",
+                        '(mousedown)': 'onMousedown($event)'
                     },
                     providers: [{ provide: forms.NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }]
                 },] }
     ];
     NzTimePickerPanelComponent.ctorParameters = function () { return [
         { type: core.ChangeDetectorRef },
-        { type: i18n.DateHelperService }
+        { type: i18n.DateHelperService },
+        { type: core.ElementRef }
     ]; };
     NzTimePickerPanelComponent.propDecorators = {
         hourListElement: [{ type: core.ViewChild, args: ['hourListElement', { static: false },] }],
@@ -1262,7 +1295,17 @@
         { type: core.NgModule, args: [{
                     declarations: [NzTimePickerComponent, NzTimePickerPanelComponent],
                     exports: [NzTimePickerPanelComponent, NzTimePickerComponent],
-                    imports: [common.CommonModule, forms.FormsModule, i18n.NzI18nModule, overlay.OverlayModule, icon.NzIconModule, overlay$1.NzOverlayModule, outlet.NzOutletModule, button.NzButtonModule]
+                    imports: [
+                        bidi.BidiModule,
+                        common.CommonModule,
+                        forms.FormsModule,
+                        i18n.NzI18nModule,
+                        overlay.OverlayModule,
+                        icon.NzIconModule,
+                        overlay$1.NzOverlayModule,
+                        outlet.NzOutletModule,
+                        button.NzButtonModule
+                    ]
                 },] }
     ];
 

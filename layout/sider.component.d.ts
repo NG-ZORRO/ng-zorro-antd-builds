@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Platform } from '@angular/cdk/platform';
-import { AfterContentInit, ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { AfterContentInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
@@ -11,6 +11,7 @@ export declare class NzSiderComponent implements OnInit, OnDestroy, OnChanges, A
     private platform;
     private cdr;
     private breakpointService;
+    private elementRef;
     static ngAcceptInputType_nzReverseArrow: BooleanInput;
     static ngAcceptInputType_nzCollapsible: BooleanInput;
     static ngAcceptInputType_nzCollapsed: BooleanInput;
@@ -32,7 +33,7 @@ export declare class NzSiderComponent implements OnInit, OnDestroy, OnChanges, A
     updateStyleMap(): void;
     updateMenuInlineCollapsed(): void;
     setCollapsed(collapsed: boolean): void;
-    constructor(platform: Platform, cdr: ChangeDetectorRef, breakpointService: NzBreakpointService);
+    constructor(platform: Platform, cdr: ChangeDetectorRef, breakpointService: NzBreakpointService, elementRef: ElementRef);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterContentInit(): void;

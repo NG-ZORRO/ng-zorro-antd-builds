@@ -2,9 +2,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { ElementRef, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export declare class NzBadgeSupComponent implements OnInit, OnChanges {
+    private elementRef;
     nzOffset?: [number, number];
     nzTitle?: string | null | undefined;
     nzStyle: {
@@ -18,6 +19,7 @@ export declare class NzBadgeSupComponent implements OnInit, OnChanges {
     countArray: number[];
     count: number;
     countSingleArray: number[];
+    constructor(elementRef: ElementRef);
     generateMaxNumberArray(): void;
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;

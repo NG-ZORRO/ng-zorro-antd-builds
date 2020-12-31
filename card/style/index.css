@@ -2,46 +2,6 @@
 /* stylelint-disable no-duplicate-selectors */
 /* stylelint-disable */
 /* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
-.ant-modal,
-.ant-image-preview {
-  pointer-events: none;
-}
-.ant-modal.zoom-enter,
-.ant-modal.zoom-appear,
-.ant-image-preview.zoom-enter,
-.ant-image-preview.zoom-appear {
-  transform: none;
-  opacity: 0;
-  animation-duration: 0.3s;
-  user-select: none;
-}
-.ant-modal-mask,
-.ant-image-preview-mask {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1000;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.45);
-  filter: alpha(opacity=50);
-}
-.ant-modal-mask-hidden,
-.ant-image-preview-mask-hidden {
-  display: none;
-}
-.ant-modal-wrap,
-.ant-image-preview-wrap {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow: auto;
-  outline: 0;
-  -webkit-overflow-scrolling: touch;
-}
 .ant-card {
   box-sizing: border-box;
   margin: 0;
@@ -976,6 +936,10 @@ nz-tabs-nav {
 .nz-tabs-dropdown.ant-dropdown .ant-dropdown-menu-item-disabled:hover a {
   pointer-events: none;
   color: rgba(0, 0, 0, 0.25);
+}
+.ant-tabs-rtl .ant-tabs-rtl-tab-next {
+  right: auto;
+  left: 2px;
 }
 .ant-tabs-tab-disabled a {
   pointer-events: none;
@@ -6157,6 +6121,9 @@ nz-tabs-nav {
 }
 .ant-row-rtl {
   direction: rtl;
+}
+.ant-card-rtl .ant-skeleton-header {
+  padding: 0 0 0 16px;
 }
 nz-card {
   display: block;

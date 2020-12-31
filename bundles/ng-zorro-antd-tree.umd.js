@@ -1,8 +1,75 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/scrolling'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/highlight'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/tree'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/forms'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/tree', ['exports', '@angular/cdk/scrolling', '@angular/common', '@angular/core', 'ng-zorro-antd/core/highlight', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/tree', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/forms', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].tree = {}), global.ng.cdk.scrolling, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.highlight, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.tree, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.forms, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config));
-}(this, (function (exports, scrolling, common, core, highlight, noAnimation, outlet, icon, tree, util, rxjs, operators, forms, animation, config) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/scrolling'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/highlight'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/tree'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/forms'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/tree', ['exports', '@angular/cdk/bidi', '@angular/cdk/scrolling', '@angular/common', '@angular/core', 'ng-zorro-antd/core/highlight', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/tree', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/forms', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].tree = {}), global.ng.cdk.bidi, global.ng.cdk.scrolling, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.highlight, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.tree, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.forms, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config));
+}(this, (function (exports, bidi, scrolling, common, core, highlight, noAnimation, outlet, icon, tree, util, rxjs, operators, forms, animation, config) { 'use strict';
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
+    var NzTreeDropIndicatorComponent = /** @class */ (function () {
+        function NzTreeDropIndicatorComponent(cdr) {
+            this.cdr = cdr;
+            this.level = 1;
+            this.direction = 'ltr';
+            this.style = {};
+        }
+        NzTreeDropIndicatorComponent.prototype.ngOnChanges = function (_changes) {
+            this.renderIndicator(this.dropPosition, this.direction);
+        };
+        NzTreeDropIndicatorComponent.prototype.renderIndicator = function (dropPosition, direction) {
+            var _a;
+            if (direction === void 0) { direction = 'ltr'; }
+            var offset = 4;
+            var startPosition = direction === 'ltr' ? 'left' : 'right';
+            var endPosition = direction === 'ltr' ? 'right' : 'left';
+            var style = (_a = {},
+                _a[startPosition] = offset + "px",
+                _a[endPosition] = '0px',
+                _a);
+            switch (dropPosition) {
+                case -1:
+                    style.top = -3 + "px";
+                    break;
+                case 1:
+                    style.bottom = -3 + "px";
+                    break;
+                case 0:
+                    // dropPosition === 0
+                    style.bottom = -3 + "px";
+                    style[startPosition] = offset + 24 + "px";
+                    break;
+                default:
+                    style.display = 'none';
+                    break;
+            }
+            this.style = style;
+            this.cdr.markForCheck();
+        };
+        return NzTreeDropIndicatorComponent;
+    }());
+    NzTreeDropIndicatorComponent.decorators = [
+        { type: core.Component, args: [{
+                    selector: 'nz-tree-drop-indicator',
+                    exportAs: 'NzTreeDropIndicator',
+                    template: "",
+                    changeDetection: core.ChangeDetectionStrategy.OnPush,
+                    preserveWhitespaces: false,
+                    host: {
+                        '[class.ant-tree-drop-indicator]': 'true',
+                        '[style]': 'style'
+                    }
+                },] }
+    ];
+    NzTreeDropIndicatorComponent.ctorParameters = function () { return [
+        { type: core.ChangeDetectorRef }
+    ]; };
+    NzTreeDropIndicatorComponent.propDecorators = {
+        dropPosition: [{ type: core.Input }],
+        level: [{ type: core.Input }],
+        direction: [{ type: core.Input }]
+    };
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -307,20 +374,12 @@
 
     var NzTreeIndentComponent = /** @class */ (function () {
         function NzTreeIndentComponent() {
+            this.nzTreeLevel = 0;
+            this.nzIsStart = [];
+            this.nzIsEnd = [];
             this.nzSelectMode = false;
             this.listOfUnit = [];
         }
-        NzTreeIndentComponent.prototype.unitMapOfClass = function (index) {
-            var _a;
-            return _a = {},
-                _a["ant-tree-indent-unit"] = !this.nzSelectMode,
-                _a["ant-tree-indent-unit-start"] = !this.nzSelectMode && this.nzIsStart[index + 1],
-                _a["ant-tree-indent-unit-end"] = !this.nzSelectMode && this.nzIsEnd[index + 1],
-                _a["ant-select-tree-indent-unit"] = this.nzSelectMode,
-                _a["ant-select-tree-indent-unit-start"] = this.nzSelectMode && this.nzIsStart[index + 1],
-                _a["ant-select-tree-indent-unit-end"] = this.nzSelectMode && this.nzIsEnd[index + 1],
-                _a;
-        };
         NzTreeIndentComponent.prototype.ngOnInit = function () { };
         NzTreeIndentComponent.prototype.ngOnChanges = function (changes) {
             var nzTreeLevel = changes.nzTreeLevel;
@@ -334,7 +393,7 @@
         { type: core.Component, args: [{
                     selector: 'nz-tree-indent',
                     exportAs: 'nzTreeIndent',
-                    template: " <span *ngFor=\"let i of listOfUnit; let index = index\" [ngClass]=\"unitMapOfClass(index)\"></span> ",
+                    template: "\n    <span\n      [class.ant-tree-indent-unit]=\"!nzSelectMode\"\n      [class.ant-select-tree-indent-unit]=\"nzSelectMode\"\n      [class.ant-select-tree-indent-unit-start]=\"nzSelectMode && nzIsStart[i]\"\n      [class.ant-tree-indent-unit-start]=\"!nzSelectMode && nzIsStart[i]\"\n      [class.ant-select-tree-indent-unit-end]=\"nzSelectMode && nzIsEnd[i]\"\n      [class.ant-tree-indent-unit-end]=\"!nzSelectMode && nzIsEnd[i]\"\n      *ngFor=\"let _ of listOfUnit; let i = index\"\n    ></span>\n  ",
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     preserveWhitespaces: false,
                     host: {
@@ -355,16 +414,16 @@
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
-    var NzTreeNodeCheckboxComponent = /** @class */ (function () {
-        function NzTreeNodeCheckboxComponent() {
+    var NzTreeNodeBuiltinCheckboxComponent = /** @class */ (function () {
+        function NzTreeNodeBuiltinCheckboxComponent() {
             this.nzSelectMode = false;
         }
-        return NzTreeNodeCheckboxComponent;
+        return NzTreeNodeBuiltinCheckboxComponent;
     }());
-    NzTreeNodeCheckboxComponent.decorators = [
+    NzTreeNodeBuiltinCheckboxComponent.decorators = [
         { type: core.Component, args: [{
-                    selector: 'nz-tree-node-checkbox',
-                    template: " <span [class.ant-tree-checkbox-inner]=\"!nzSelectMode\" [class.ant-select-tree-checkbox-inner]=\"nzSelectMode\"></span> ",
+                    selector: 'nz-tree-node-checkbox[builtin]',
+                    template: "\n    <span [class.ant-tree-checkbox-inner]=\"!nzSelectMode\" [class.ant-select-tree-checkbox-inner]=\"nzSelectMode\"></span>\n  ",
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     preserveWhitespaces: false,
                     host: {
@@ -379,7 +438,7 @@
                     }
                 },] }
     ];
-    NzTreeNodeCheckboxComponent.propDecorators = {
+    NzTreeNodeBuiltinCheckboxComponent.propDecorators = {
         nzSelectMode: [{ type: core.Input }],
         isChecked: [{ type: core.Input }],
         isHalfChecked: [{ type: core.Input }],
@@ -459,9 +518,12 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzTreeNodeTitleComponent = /** @class */ (function () {
-        function NzTreeNodeTitleComponent() {
+        function NzTreeNodeTitleComponent(cdr) {
+            this.cdr = cdr;
             this.treeTemplate = null;
             this.selectMode = false;
+            // Drag indicator
+            this.showIndicator = true;
         }
         Object.defineProperty(NzTreeNodeTitleComponent.prototype, "canDraggable", {
             get: function () {
@@ -491,12 +553,18 @@
             enumerable: false,
             configurable: true
         });
+        NzTreeNodeTitleComponent.prototype.ngOnChanges = function (changes) {
+            var showIndicator = changes.showIndicator, dragPosition = changes.dragPosition;
+            if (showIndicator || dragPosition) {
+                this.cdr.markForCheck();
+            }
+        };
         return NzTreeNodeTitleComponent;
     }());
     NzTreeNodeTitleComponent.decorators = [
         { type: core.Component, args: [{
                     selector: 'nz-tree-node-title',
-                    template: " <ng-template [ngTemplateOutlet]=\"treeTemplate\" [ngTemplateOutletContext]=\"{ $implicit: context, origin: context.origin }\">\n    </ng-template>\n    <ng-container *ngIf=\"!treeTemplate\">\n      <span\n        *ngIf=\"icon && showIcon\"\n        [class.ant-tree-icon__open]=\"isSwitcherOpen\"\n        [class.ant-tree-icon__close]=\"isSwitcherClose\"\n        [class.ant-tree-icon_loading]=\"isLoading\"\n        [class.ant-select-tree-iconEle]=\"selectMode\"\n        [class.ant-tree-iconEle]=\"!selectMode\"\n      >\n        <span\n          [class.ant-select-tree-iconEle]=\"selectMode\"\n          [class.ant-select-tree-icon__customize]=\"selectMode\"\n          [class.ant-tree-iconEle]=\"!selectMode\"\n          [class.ant-tree-icon__customize]=\"!selectMode\"\n        >\n          <i nz-icon *ngIf=\"icon\" [nzType]=\"icon\"></i>\n        </span>\n      </span>\n      <span class=\"ant-tree-title\" [innerHTML]=\"title | nzHighlight: matchedValue:'i':'font-highlight'\"> </span>\n    </ng-container>",
+                    template: "\n    <ng-template [ngTemplateOutlet]=\"treeTemplate\" [ngTemplateOutletContext]=\"{ $implicit: context, origin: context.origin }\"></ng-template>\n    <ng-container *ngIf=\"!treeTemplate\">\n      <span\n        *ngIf=\"icon && showIcon\"\n        [class.ant-tree-icon__open]=\"isSwitcherOpen\"\n        [class.ant-tree-icon__close]=\"isSwitcherClose\"\n        [class.ant-tree-icon_loading]=\"isLoading\"\n        [class.ant-select-tree-iconEle]=\"selectMode\"\n        [class.ant-tree-iconEle]=\"!selectMode\"\n      >\n        <span\n          [class.ant-select-tree-iconEle]=\"selectMode\"\n          [class.ant-select-tree-icon__customize]=\"selectMode\"\n          [class.ant-tree-iconEle]=\"!selectMode\"\n          [class.ant-tree-icon__customize]=\"!selectMode\"\n        >\n          <i nz-icon *ngIf=\"icon\" [nzType]=\"icon\"></i>\n        </span>\n      </span>\n      <span class=\"ant-tree-title\" [innerHTML]=\"title | nzHighlight: matchedValue:'i':'font-highlight'\"></span>\n      <nz-tree-drop-indicator *ngIf=\"showIndicator\" [dropPosition]=\"dragPosition\" [level]=\"context.level\"></nz-tree-drop-indicator>\n    </ng-container>\n  ",
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     preserveWhitespaces: false,
                     host: {
@@ -515,6 +583,9 @@
                     }
                 },] }
     ];
+    NzTreeNodeTitleComponent.ctorParameters = function () { return [
+        { type: core.ChangeDetectorRef }
+    ]; };
     NzTreeNodeTitleComponent.propDecorators = {
         searchValue: [{ type: core.Input }],
         treeTemplate: [{ type: core.Input }],
@@ -529,15 +600,17 @@
         isDisabled: [{ type: core.Input }],
         isMatched: [{ type: core.Input }],
         isExpanded: [{ type: core.Input }],
-        isLeaf: [{ type: core.Input }]
+        isLeaf: [{ type: core.Input }],
+        showIndicator: [{ type: core.Input }],
+        dragPosition: [{ type: core.Input }]
     };
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
-    var NzTreeNodeComponent = /** @class */ (function () {
-        function NzTreeNodeComponent(nzTreeService, ngZone, renderer, elementRef, cdr, noAnimation) {
+    var NzTreeNodeBuiltinComponent = /** @class */ (function () {
+        function NzTreeNodeBuiltinComponent(nzTreeService, ngZone, renderer, elementRef, cdr, noAnimation) {
             this.nzTreeService = nzTreeService;
             this.ngZone = ngZone;
             this.renderer = renderer;
@@ -553,6 +626,8 @@
             this.isSelected = false;
             this.isDisabled = false;
             this.isMatched = false;
+            this.isStart = [];
+            this.isEnd = [];
             this.nzHideUnMatched = false;
             this.nzNoAnimation = false;
             this.nzSelectMode = false;
@@ -581,8 +656,9 @@
                 '1': 'drag-over-gap-bottom',
                 '-1': 'drag-over-gap-top'
             };
+            this.showIndicator = false;
         }
-        Object.defineProperty(NzTreeNodeComponent.prototype, "displayStyle", {
+        Object.defineProperty(NzTreeNodeBuiltinComponent.prototype, "displayStyle", {
             /**
              * default set
              */
@@ -593,21 +669,21 @@
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(NzTreeNodeComponent.prototype, "isSwitcherOpen", {
+        Object.defineProperty(NzTreeNodeBuiltinComponent.prototype, "isSwitcherOpen", {
             get: function () {
                 return this.isExpanded && !this.isLeaf;
             },
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(NzTreeNodeComponent.prototype, "isSwitcherClose", {
+        Object.defineProperty(NzTreeNodeBuiltinComponent.prototype, "isSwitcherClose", {
             get: function () {
                 return !this.isExpanded && !this.isLeaf;
             },
             enumerable: false,
             configurable: true
         });
-        NzTreeNodeComponent.prototype.onMousedown = function (event) {
+        NzTreeNodeBuiltinComponent.prototype.onMousedown = function (event) {
             if (this.nzSelectMode) {
                 event.preventDefault();
             }
@@ -616,7 +692,7 @@
          * collapse node
          * @param event
          */
-        NzTreeNodeComponent.prototype.clickExpand = function (event) {
+        NzTreeNodeBuiltinComponent.prototype.clickExpand = function (event) {
             event.preventDefault();
             if (!this.isLoading && !this.isLeaf) {
                 // set async state
@@ -629,7 +705,7 @@
             var eventNext = this.nzTreeService.formatEvent('expand', this.nzTreeNode, event);
             this.nzExpandChange.emit(eventNext);
         };
-        NzTreeNodeComponent.prototype.clickSelect = function (event) {
+        NzTreeNodeBuiltinComponent.prototype.clickSelect = function (event) {
             event.preventDefault();
             if (this.isSelectable && !this.isDisabled) {
                 this.nzTreeNode.isSelected = !this.nzTreeNode.isSelected;
@@ -638,12 +714,12 @@
             var eventNext = this.nzTreeService.formatEvent('click', this.nzTreeNode, event);
             this.nzClick.emit(eventNext);
         };
-        NzTreeNodeComponent.prototype.dblClick = function (event) {
+        NzTreeNodeBuiltinComponent.prototype.dblClick = function (event) {
             event.preventDefault();
             var eventNext = this.nzTreeService.formatEvent('dblclick', this.nzTreeNode, event);
             this.nzDblClick.emit(eventNext);
         };
-        NzTreeNodeComponent.prototype.contextMenu = function (event) {
+        NzTreeNodeBuiltinComponent.prototype.contextMenu = function (event) {
             event.preventDefault();
             var eventNext = this.nzTreeService.formatEvent('contextmenu', this.nzTreeNode, event);
             this.nzContextMenu.emit(eventNext);
@@ -652,7 +728,7 @@
          * check node
          * @param event
          */
-        NzTreeNodeComponent.prototype.clickCheckBox = function (event) {
+        NzTreeNodeBuiltinComponent.prototype.clickCheckBox = function (event) {
             event.preventDefault();
             // return if node is disabled
             if (this.isDisabled || this.isDisableCheckbox) {
@@ -664,9 +740,9 @@
             var eventNext = this.nzTreeService.formatEvent('check', this.nzTreeNode, event);
             this.nzCheckBoxChange.emit(eventNext);
         };
-        NzTreeNodeComponent.prototype.clearDragClass = function () {
+        NzTreeNodeBuiltinComponent.prototype.clearDragClass = function () {
             var _this = this;
-            var dragClass = ['drag-over-gap-top', 'drag-over-gap-bottom', 'drag-over'];
+            var dragClass = ['drag-over-gap-top', 'drag-over-gap-bottom', 'drag-over', 'drop-target'];
             dragClass.forEach(function (e) {
                 _this.renderer.removeClass(_this.elementRef.nativeElement, e);
             });
@@ -675,7 +751,7 @@
          * drag event
          * @param e
          */
-        NzTreeNodeComponent.prototype.handleDragStart = function (e) {
+        NzTreeNodeBuiltinComponent.prototype.handleDragStart = function (e) {
             try {
                 // ie throw error
                 // firefox-need-it
@@ -688,39 +764,44 @@
             var eventNext = this.nzTreeService.formatEvent('dragstart', this.nzTreeNode, e);
             this.nzOnDragStart.emit(eventNext);
         };
-        NzTreeNodeComponent.prototype.handleDragEnter = function (e) {
+        NzTreeNodeBuiltinComponent.prototype.handleDragEnter = function (e) {
             var _this = this;
+            var _a;
             e.preventDefault();
             // reset position
-            this.dragPos = 2;
+            this.showIndicator = this.nzTreeNode.key !== ((_a = this.nzTreeService.getSelectedNode()) === null || _a === void 0 ? void 0 : _a.key);
+            this.renderIndicator(2);
             this.ngZone.run(function () {
                 var eventNext = _this.nzTreeService.formatEvent('dragenter', _this.nzTreeNode, e);
                 _this.nzOnDragEnter.emit(eventNext);
             });
         };
-        NzTreeNodeComponent.prototype.handleDragOver = function (e) {
+        NzTreeNodeBuiltinComponent.prototype.handleDragOver = function (e) {
             e.preventDefault();
             var dropPosition = this.nzTreeService.calcDropPosition(e);
             if (this.dragPos !== dropPosition) {
                 this.clearDragClass();
-                this.dragPos = dropPosition;
+                this.renderIndicator(dropPosition);
                 // leaf node will pass
                 if (!(this.dragPos === 0 && this.isLeaf)) {
                     this.renderer.addClass(this.elementRef.nativeElement, this.dragPosClass[this.dragPos]);
+                    this.renderer.addClass(this.elementRef.nativeElement, 'drop-target');
                 }
             }
             var eventNext = this.nzTreeService.formatEvent('dragover', this.nzTreeNode, e);
             this.nzOnDragOver.emit(eventNext);
         };
-        NzTreeNodeComponent.prototype.handleDragLeave = function (e) {
+        NzTreeNodeBuiltinComponent.prototype.handleDragLeave = function (e) {
             e.preventDefault();
+            this.renderIndicator(2);
             this.clearDragClass();
             var eventNext = this.nzTreeService.formatEvent('dragleave', this.nzTreeNode, e);
             this.nzOnDragLeave.emit(eventNext);
         };
-        NzTreeNodeComponent.prototype.handleDragDrop = function (e) {
+        NzTreeNodeBuiltinComponent.prototype.handleDragDrop = function (e) {
             var _this = this;
             this.ngZone.run(function () {
+                _this.showIndicator = false;
                 _this.clearDragClass();
                 var node = _this.nzTreeService.getSelectedNode();
                 if (!node || (node && node.key === _this.nzTreeNode.key) || (_this.dragPos === 0 && _this.isLeaf)) {
@@ -748,7 +829,7 @@
                 }
             });
         };
-        NzTreeNodeComponent.prototype.handleDragEnd = function (e) {
+        NzTreeNodeBuiltinComponent.prototype.handleDragEnd = function (e) {
             var _this = this;
             e.preventDefault();
             this.ngZone.run(function () {
@@ -762,7 +843,7 @@
         /**
          * Listening to dragging events.
          */
-        NzTreeNodeComponent.prototype.handDragEvent = function () {
+        NzTreeNodeBuiltinComponent.prototype.handDragEvent = function () {
             var _this = this;
             this.ngZone.runOutsideAngular(function () {
                 if (_this.nzDraggable) {
@@ -793,29 +874,41 @@
                 }
             });
         };
-        NzTreeNodeComponent.prototype.markForCheck = function () {
+        NzTreeNodeBuiltinComponent.prototype.markForCheck = function () {
             this.cdr.markForCheck();
         };
-        NzTreeNodeComponent.prototype.ngOnInit = function () {
+        NzTreeNodeBuiltinComponent.prototype.ngOnInit = function () {
             this.nzTreeNode.component = this;
         };
-        NzTreeNodeComponent.prototype.ngOnChanges = function (changes) {
+        NzTreeNodeBuiltinComponent.prototype.ngOnChanges = function (changes) {
             var nzDraggable = changes.nzDraggable;
             if (nzDraggable) {
                 this.handDragEvent();
             }
         };
-        NzTreeNodeComponent.prototype.ngOnDestroy = function () {
+        NzTreeNodeBuiltinComponent.prototype.ngOnDestroy = function () {
             this.destroy$.next();
             this.destroy$.complete();
         };
-        return NzTreeNodeComponent;
+        NzTreeNodeBuiltinComponent.prototype.renderIndicator = function (dropPosition) {
+            var _this = this;
+            this.ngZone.run(function () {
+                var _a;
+                _this.showIndicator = dropPosition !== 2;
+                if (_this.nzTreeNode.key === ((_a = _this.nzTreeService.getSelectedNode()) === null || _a === void 0 ? void 0 : _a.key) || (dropPosition === 0 && _this.isLeaf)) {
+                    return;
+                }
+                _this.dragPos = dropPosition;
+                _this.cdr.markForCheck();
+            });
+        };
+        return NzTreeNodeBuiltinComponent;
     }());
-    NzTreeNodeComponent.decorators = [
+    NzTreeNodeBuiltinComponent.decorators = [
         { type: core.Component, args: [{
-                    selector: 'nz-tree-node',
-                    exportAs: 'nzTreeNode',
-                    template: "\n    <nz-tree-indent [nzTreeLevel]=\"nzTreeNode.level\" [nzSelectMode]=\"nzSelectMode\" [nzIsStart]=\"isStart\" [nzIsEnd]=\"isEnd\"></nz-tree-indent>\n    <nz-tree-node-switcher\n      *ngIf=\"nzShowExpand\"\n      [nzShowExpand]=\"nzShowExpand\"\n      [nzShowLine]=\"nzShowLine\"\n      [nzExpandedIcon]=\"nzExpandedIcon\"\n      [nzSelectMode]=\"nzSelectMode\"\n      [context]=\"nzTreeNode\"\n      [isLeaf]=\"isLeaf\"\n      [isExpanded]=\"isExpanded\"\n      [isLoading]=\"isLoading\"\n      (click)=\"clickExpand($event)\"\n    ></nz-tree-node-switcher>\n    <nz-tree-node-checkbox\n      *ngIf=\"nzCheckable\"\n      (click)=\"clickCheckBox($event)\"\n      [nzSelectMode]=\"nzSelectMode\"\n      [isChecked]=\"isChecked\"\n      [isHalfChecked]=\"isHalfChecked\"\n      [isDisabled]=\"isDisabled\"\n      [isDisableCheckbox]=\"isDisableCheckbox\"\n    ></nz-tree-node-checkbox>\n    <nz-tree-node-title\n      [icon]=\"icon\"\n      [title]=\"title\"\n      [isLoading]=\"isLoading\"\n      [isSelected]=\"isSelected\"\n      [isDisabled]=\"isDisabled\"\n      [isMatched]=\"isMatched\"\n      [isExpanded]=\"isExpanded\"\n      [isLeaf]=\"isLeaf\"\n      [searchValue]=\"nzSearchValue\"\n      [treeTemplate]=\"nzTreeTemplate\"\n      [draggable]=\"nzDraggable\"\n      [showIcon]=\"nzShowIcon\"\n      [selectMode]=\"nzSelectMode\"\n      [context]=\"nzTreeNode\"\n      (dblclick)=\"dblClick($event)\"\n      (click)=\"clickSelect($event)\"\n      (contextmenu)=\"contextMenu($event)\"\n    ></nz-tree-node-title>\n  ",
+                    selector: 'nz-tree-node[builtin]',
+                    exportAs: 'nzTreeBuiltinNode',
+                    template: "\n    <nz-tree-indent [nzTreeLevel]=\"nzTreeNode.level\" [nzSelectMode]=\"nzSelectMode\" [nzIsStart]=\"isStart\" [nzIsEnd]=\"isEnd\"></nz-tree-indent>\n    <nz-tree-node-switcher\n      *ngIf=\"nzShowExpand\"\n      [nzShowExpand]=\"nzShowExpand\"\n      [nzShowLine]=\"nzShowLine\"\n      [nzExpandedIcon]=\"nzExpandedIcon\"\n      [nzSelectMode]=\"nzSelectMode\"\n      [context]=\"nzTreeNode\"\n      [isLeaf]=\"isLeaf\"\n      [isExpanded]=\"isExpanded\"\n      [isLoading]=\"isLoading\"\n      (click)=\"clickExpand($event)\"\n    ></nz-tree-node-switcher>\n    <nz-tree-node-checkbox\n      builtin\n      *ngIf=\"nzCheckable\"\n      (click)=\"clickCheckBox($event)\"\n      [nzSelectMode]=\"nzSelectMode\"\n      [isChecked]=\"isChecked\"\n      [isHalfChecked]=\"isHalfChecked\"\n      [isDisabled]=\"isDisabled\"\n      [isDisableCheckbox]=\"isDisableCheckbox\"\n    ></nz-tree-node-checkbox>\n    <nz-tree-node-title\n      [icon]=\"icon\"\n      [title]=\"title\"\n      [isLoading]=\"isLoading\"\n      [isSelected]=\"isSelected\"\n      [isDisabled]=\"isDisabled\"\n      [isMatched]=\"isMatched\"\n      [isExpanded]=\"isExpanded\"\n      [isLeaf]=\"isLeaf\"\n      [searchValue]=\"nzSearchValue\"\n      [treeTemplate]=\"nzTreeTemplate\"\n      [draggable]=\"nzDraggable\"\n      [showIcon]=\"nzShowIcon\"\n      [selectMode]=\"nzSelectMode\"\n      [context]=\"nzTreeNode\"\n      [showIndicator]=\"showIndicator\"\n      [dragPosition]=\"dragPos\"\n      (dblclick)=\"dblClick($event)\"\n      (click)=\"clickSelect($event)\"\n      (contextmenu)=\"contextMenu($event)\"\n    ></nz-tree-node-title>\n  ",
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     preserveWhitespaces: false,
                     host: {
@@ -840,7 +933,7 @@
                     }
                 },] }
     ];
-    NzTreeNodeComponent.ctorParameters = function () { return [
+    NzTreeNodeBuiltinComponent.ctorParameters = function () { return [
         { type: tree.NzTreeBaseService },
         { type: core.NgZone },
         { type: core.Renderer2 },
@@ -848,7 +941,7 @@
         { type: core.ChangeDetectorRef },
         { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] }
     ]; };
-    NzTreeNodeComponent.propDecorators = {
+    NzTreeNodeBuiltinComponent.propDecorators = {
         icon: [{ type: core.Input }],
         title: [{ type: core.Input }],
         isLoading: [{ type: core.Input }],
@@ -893,35 +986,35 @@
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Boolean)
-    ], NzTreeNodeComponent.prototype, "nzShowLine", void 0);
+    ], NzTreeNodeBuiltinComponent.prototype, "nzShowLine", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Boolean)
-    ], NzTreeNodeComponent.prototype, "nzShowExpand", void 0);
+    ], NzTreeNodeBuiltinComponent.prototype, "nzShowExpand", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Boolean)
-    ], NzTreeNodeComponent.prototype, "nzCheckable", void 0);
+    ], NzTreeNodeBuiltinComponent.prototype, "nzCheckable", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Boolean)
-    ], NzTreeNodeComponent.prototype, "nzAsyncData", void 0);
+    ], NzTreeNodeBuiltinComponent.prototype, "nzAsyncData", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Object)
-    ], NzTreeNodeComponent.prototype, "nzHideUnMatched", void 0);
+    ], NzTreeNodeBuiltinComponent.prototype, "nzHideUnMatched", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Object)
-    ], NzTreeNodeComponent.prototype, "nzNoAnimation", void 0);
+    ], NzTreeNodeBuiltinComponent.prototype, "nzNoAnimation", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Object)
-    ], NzTreeNodeComponent.prototype, "nzSelectMode", void 0);
+    ], NzTreeNodeBuiltinComponent.prototype, "nzSelectMode", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Object)
-    ], NzTreeNodeComponent.prototype, "nzShowIcon", void 0);
+    ], NzTreeNodeBuiltinComponent.prototype, "nzShowIcon", void 0);
 
     var NzTreeService = /** @class */ (function (_super) {
         __extends(NzTreeService, _super);
@@ -942,10 +1035,11 @@
     var NzTreeComponent = /** @class */ (function (_super) {
         __extends(NzTreeComponent, _super);
         // Handle emit event end
-        function NzTreeComponent(nzTreeService, nzConfigService, cdr, noAnimation) {
+        function NzTreeComponent(nzTreeService, nzConfigService, cdr, directionality, noAnimation) {
             var _this = _super.call(this, nzTreeService) || this;
             _this.nzConfigService = nzConfigService;
             _this.cdr = cdr;
+            _this.directionality = directionality;
             _this.noAnimation = noAnimation;
             _this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             _this.nzShowIcon = false;
@@ -971,6 +1065,7 @@
             _this.nzSearchValue = '';
             _this.nzFlattenNodes = [];
             _this.beforeInit = true;
+            _this.dir = 'ltr';
             _this.nzExpandedKeysChange = new core.EventEmitter();
             _this.nzSelectedKeysChange = new core.EventEmitter();
             _this.nzCheckedKeysChange = new core.EventEmitter();
@@ -1178,9 +1273,15 @@
         };
         NzTreeComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             this.nzTreeService.flattenNodes$.pipe(operators.takeUntil(this.destroy$)).subscribe(function (data) {
                 _this.nzFlattenNodes = data;
                 _this.cdr.markForCheck();
+            });
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
             });
         };
         NzTreeComponent.prototype.ngOnChanges = function (changes) {
@@ -1200,7 +1301,7 @@
                     selector: 'nz-tree',
                     exportAs: 'nzTree',
                     animations: [animation.treeCollapseMotion],
-                    template: "\n    <div role=\"tree\">\n      <input [ngStyle]=\"HIDDEN_STYLE\" />\n    </div>\n    <div class=\"ant-tree-list\" [class.ant-select-tree-list]=\"nzSelectMode\">\n      <div>\n        <cdk-virtual-scroll-viewport\n          *ngIf=\"nzVirtualHeight\"\n          [class.ant-select-tree-list-holder-inner]=\"nzSelectMode\"\n          [class.ant-tree-list-holder-inner]=\"!nzSelectMode\"\n          [itemSize]=\"nzVirtualItemSize\"\n          [minBufferPx]=\"nzVirtualMinBufferPx\"\n          [maxBufferPx]=\"nzVirtualMaxBufferPx\"\n          [style.height]=\"nzVirtualHeight\"\n        >\n          <ng-container *cdkVirtualFor=\"let node of nzFlattenNodes; trackBy: trackByFlattenNode\">\n            <ng-template [ngTemplateOutlet]=\"nodeTemplate\" [ngTemplateOutletContext]=\"{ $implicit: node }\"></ng-template>\n          </ng-container>\n        </cdk-virtual-scroll-viewport>\n\n        <div\n          *ngIf=\"!nzVirtualHeight\"\n          [class.ant-select-tree-list-holder-inner]=\"nzSelectMode\"\n          [class.ant-tree-list-holder-inner]=\"!nzSelectMode\"\n          [@.disabled]=\"beforeInit || noAnimation?.nzNoAnimation\"\n          [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n          [@treeCollapseMotion]=\"nzFlattenNodes.length\"\n        >\n          <ng-container *ngFor=\"let node of nzFlattenNodes; trackBy: trackByFlattenNode\">\n            <ng-template [ngTemplateOutlet]=\"nodeTemplate\" [ngTemplateOutletContext]=\"{ $implicit: node }\"></ng-template>\n          </ng-container>\n        </div>\n      </div>\n    </div>\n    <ng-template #nodeTemplate let-treeNode>\n      <nz-tree-node\n        [icon]=\"treeNode.icon\"\n        [title]=\"treeNode.title\"\n        [isLoading]=\"treeNode.isLoading\"\n        [isSelected]=\"treeNode.isSelected\"\n        [isDisabled]=\"treeNode.isDisabled\"\n        [isMatched]=\"treeNode.isMatched\"\n        [isExpanded]=\"treeNode.isExpanded\"\n        [isLeaf]=\"treeNode.isLeaf\"\n        [isStart]=\"treeNode.isStart\"\n        [isEnd]=\"treeNode.isEnd\"\n        [isChecked]=\"treeNode.isChecked\"\n        [isHalfChecked]=\"treeNode.isHalfChecked\"\n        [isDisableCheckbox]=\"treeNode.isDisableCheckbox\"\n        [isSelectable]=\"treeNode.isSelectable\"\n        [canHide]=\"treeNode.canHide\"\n        [nzTreeNode]=\"treeNode\"\n        [nzSelectMode]=\"nzSelectMode\"\n        [nzShowLine]=\"nzShowLine\"\n        [nzExpandedIcon]=\"nzExpandedIcon\"\n        [nzDraggable]=\"nzDraggable\"\n        [nzCheckable]=\"nzCheckable\"\n        [nzShowExpand]=\"nzShowExpand\"\n        [nzAsyncData]=\"nzAsyncData\"\n        [nzSearchValue]=\"nzSearchValue\"\n        [nzHideUnMatched]=\"nzHideUnMatched\"\n        [nzBeforeDrop]=\"nzBeforeDrop\"\n        [nzShowIcon]=\"nzShowIcon\"\n        [nzTreeTemplate]=\"nzTreeTemplate || nzTreeTemplateChild\"\n        (nzExpandChange)=\"eventTriggerChanged($event)\"\n        (nzClick)=\"eventTriggerChanged($event)\"\n        (nzDblClick)=\"eventTriggerChanged($event)\"\n        (nzContextMenu)=\"eventTriggerChanged($event)\"\n        (nzCheckBoxChange)=\"eventTriggerChanged($event)\"\n        (nzOnDragStart)=\"eventTriggerChanged($event)\"\n        (nzOnDragEnter)=\"eventTriggerChanged($event)\"\n        (nzOnDragOver)=\"eventTriggerChanged($event)\"\n        (nzOnDragLeave)=\"eventTriggerChanged($event)\"\n        (nzOnDragEnd)=\"eventTriggerChanged($event)\"\n        (nzOnDrop)=\"eventTriggerChanged($event)\"\n      ></nz-tree-node>\n    </ng-template>\n  ",
+                    template: "\n    <div role=\"tree\">\n      <input [ngStyle]=\"HIDDEN_STYLE\" />\n    </div>\n    <div class=\"ant-tree-list\" [class.ant-select-tree-list]=\"nzSelectMode\">\n      <div>\n        <cdk-virtual-scroll-viewport\n          *ngIf=\"nzVirtualHeight\"\n          [class.ant-select-tree-list-holder-inner]=\"nzSelectMode\"\n          [class.ant-tree-list-holder-inner]=\"!nzSelectMode\"\n          [itemSize]=\"nzVirtualItemSize\"\n          [minBufferPx]=\"nzVirtualMinBufferPx\"\n          [maxBufferPx]=\"nzVirtualMaxBufferPx\"\n          [style.height]=\"nzVirtualHeight\"\n        >\n          <ng-container *cdkVirtualFor=\"let node of nzFlattenNodes; trackBy: trackByFlattenNode\">\n            <ng-template [ngTemplateOutlet]=\"nodeTemplate\" [ngTemplateOutletContext]=\"{ $implicit: node }\"></ng-template>\n          </ng-container>\n        </cdk-virtual-scroll-viewport>\n\n        <div\n          *ngIf=\"!nzVirtualHeight\"\n          [class.ant-select-tree-list-holder-inner]=\"nzSelectMode\"\n          [class.ant-tree-list-holder-inner]=\"!nzSelectMode\"\n          [@.disabled]=\"beforeInit || noAnimation?.nzNoAnimation\"\n          [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n          [@treeCollapseMotion]=\"nzFlattenNodes.length\"\n        >\n          <ng-container *ngFor=\"let node of nzFlattenNodes; trackBy: trackByFlattenNode\">\n            <ng-template [ngTemplateOutlet]=\"nodeTemplate\" [ngTemplateOutletContext]=\"{ $implicit: node }\"></ng-template>\n          </ng-container>\n        </div>\n      </div>\n    </div>\n    <ng-template #nodeTemplate let-treeNode>\n      <nz-tree-node\n        builtin\n        [icon]=\"treeNode.icon\"\n        [title]=\"treeNode.title\"\n        [isLoading]=\"treeNode.isLoading\"\n        [isSelected]=\"treeNode.isSelected\"\n        [isDisabled]=\"treeNode.isDisabled\"\n        [isMatched]=\"treeNode.isMatched\"\n        [isExpanded]=\"treeNode.isExpanded\"\n        [isLeaf]=\"treeNode.isLeaf\"\n        [isStart]=\"treeNode.isStart\"\n        [isEnd]=\"treeNode.isEnd\"\n        [isChecked]=\"treeNode.isChecked\"\n        [isHalfChecked]=\"treeNode.isHalfChecked\"\n        [isDisableCheckbox]=\"treeNode.isDisableCheckbox\"\n        [isSelectable]=\"treeNode.isSelectable\"\n        [canHide]=\"treeNode.canHide\"\n        [nzTreeNode]=\"treeNode\"\n        [nzSelectMode]=\"nzSelectMode\"\n        [nzShowLine]=\"nzShowLine\"\n        [nzExpandedIcon]=\"nzExpandedIcon\"\n        [nzDraggable]=\"nzDraggable\"\n        [nzCheckable]=\"nzCheckable\"\n        [nzShowExpand]=\"nzShowExpand\"\n        [nzAsyncData]=\"nzAsyncData\"\n        [nzSearchValue]=\"nzSearchValue\"\n        [nzHideUnMatched]=\"nzHideUnMatched\"\n        [nzBeforeDrop]=\"nzBeforeDrop\"\n        [nzShowIcon]=\"nzShowIcon\"\n        [nzTreeTemplate]=\"nzTreeTemplate || nzTreeTemplateChild\"\n        (nzExpandChange)=\"eventTriggerChanged($event)\"\n        (nzClick)=\"eventTriggerChanged($event)\"\n        (nzDblClick)=\"eventTriggerChanged($event)\"\n        (nzContextMenu)=\"eventTriggerChanged($event)\"\n        (nzCheckBoxChange)=\"eventTriggerChanged($event)\"\n        (nzOnDragStart)=\"eventTriggerChanged($event)\"\n        (nzOnDragEnter)=\"eventTriggerChanged($event)\"\n        (nzOnDragOver)=\"eventTriggerChanged($event)\"\n        (nzOnDragLeave)=\"eventTriggerChanged($event)\"\n        (nzOnDragEnd)=\"eventTriggerChanged($event)\"\n        (nzOnDrop)=\"eventTriggerChanged($event)\"\n      ></nz-tree-node>\n    </ng-template>\n  ",
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     providers: [
                         NzTreeService,
@@ -1221,6 +1322,7 @@
                         '[class.ant-select-tree-icon-hide]': "nzSelectMode && !nzShowIcon",
                         '[class.ant-select-tree-block-node]': "nzSelectMode && nzBlockNode",
                         '[class.ant-tree]': "!nzSelectMode",
+                        '[class.ant-tree-rtl]': "dir === 'rtl'",
                         '[class.ant-tree-show-line]': "!nzSelectMode && nzShowLine",
                         '[class.ant-tree-icon-hide]': "!nzSelectMode && !nzShowIcon",
                         '[class.ant-tree-block-node]': "!nzSelectMode && nzBlockNode",
@@ -1232,6 +1334,7 @@
         { type: tree.NzTreeBaseService },
         { type: config.NzConfigService },
         { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
         { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] }
     ]; };
     NzTreeComponent.propDecorators = {
@@ -1341,16 +1444,17 @@
     }());
     NzTreeModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, outlet.NzOutletModule, icon.NzIconModule, noAnimation.NzNoAnimationModule, highlight.NzHighlightModule, scrolling.ScrollingModule],
+                    imports: [bidi.BidiModule, common.CommonModule, outlet.NzOutletModule, icon.NzIconModule, noAnimation.NzNoAnimationModule, highlight.NzHighlightModule, scrolling.ScrollingModule],
                     declarations: [
                         NzTreeComponent,
-                        NzTreeNodeComponent,
+                        NzTreeNodeBuiltinComponent,
                         NzTreeIndentComponent,
                         NzTreeNodeSwitcherComponent,
-                        NzTreeNodeCheckboxComponent,
-                        NzTreeNodeTitleComponent
+                        NzTreeNodeBuiltinCheckboxComponent,
+                        NzTreeNodeTitleComponent,
+                        NzTreeDropIndicatorComponent
                     ],
-                    exports: [NzTreeComponent, NzTreeNodeComponent, NzTreeIndentComponent]
+                    exports: [NzTreeComponent, NzTreeNodeBuiltinComponent, NzTreeIndentComponent]
                 },] }
     ];
 
@@ -1372,12 +1476,13 @@
     exports.NzTreeComponent = NzTreeComponent;
     exports.NzTreeIndentComponent = NzTreeIndentComponent;
     exports.NzTreeModule = NzTreeModule;
-    exports.NzTreeNodeCheckboxComponent = NzTreeNodeCheckboxComponent;
-    exports.NzTreeNodeComponent = NzTreeNodeComponent;
+    exports.NzTreeNodeBuiltinCheckboxComponent = NzTreeNodeBuiltinCheckboxComponent;
+    exports.NzTreeNodeBuiltinComponent = NzTreeNodeBuiltinComponent;
     exports.NzTreeNodeSwitcherComponent = NzTreeNodeSwitcherComponent;
     exports.NzTreeNodeTitleComponent = NzTreeNodeTitleComponent;
     exports.NzTreeService = NzTreeService;
     exports.NzTreeServiceFactory = NzTreeServiceFactory;
+    exports.ɵa = NzTreeDropIndicatorComponent;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/util'), require('rxjs'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/services'), require('rxjs/operators')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/descriptions', ['exports', '@angular/cdk/platform', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/util', 'rxjs', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/services', 'rxjs/operators'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].descriptions = {}), global.ng.cdk.platform, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.util, global.rxjs, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.services, global.rxjs.operators));
-}(this, (function (exports, platform, common, core, outlet, util, rxjs, config, logger, services, operators) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/util'), require('rxjs'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/services'), require('rxjs/operators')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/descriptions', ['exports', '@angular/cdk/bidi', '@angular/cdk/platform', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/util', 'rxjs', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/services', 'rxjs/operators'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].descriptions = {}), global.ng.cdk.bidi, global.ng.cdk.platform, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.util, global.rxjs, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.services, global.rxjs.operators));
+}(this, (function (exports, bidi, platform, common, core, outlet, util, rxjs, config, logger, services, operators) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -353,10 +353,11 @@
         xs: 1
     };
     var NzDescriptionsComponent = /** @class */ (function () {
-        function NzDescriptionsComponent(nzConfigService, cdr, breakpointService) {
+        function NzDescriptionsComponent(nzConfigService, cdr, breakpointService, directionality) {
             this.nzConfigService = nzConfigService;
             this.cdr = cdr;
             this.breakpointService = breakpointService;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzBordered = false;
             this.nzLayout = 'horizontal';
@@ -366,9 +367,18 @@
             this.nzColon = true;
             this.itemMatrix = [];
             this.realColumn = 3;
+            this.dir = 'ltr';
             this.breakpoint = services.NzBreakpointEnum.md;
             this.destroy$ = new rxjs.Subject();
         }
+        NzDescriptionsComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+            });
+        };
         NzDescriptionsComponent.prototype.ngOnChanges = function (changes) {
             if (changes.nzColumn) {
                 this.prepareMatrix();
@@ -445,19 +455,21 @@
                     selector: 'nz-descriptions',
                     exportAs: 'nzDescriptions',
                     preserveWhitespaces: false,
-                    template: "\n    <div *ngIf=\"nzTitle || nzExtra\" class=\"ant-descriptions-header\">\n      <div *ngIf=\"nzTitle\" class=\"ant-descriptions-title\">\n        <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n      </div>\n      <div *ngIf=\"nzExtra\" class=\"ant-descriptions-extra\">\n        <ng-container *nzStringTemplateOutlet=\"nzExtra\">{{ nzExtra }}</ng-container>\n      </div>\n    </div>\n    <div class=\"ant-descriptions-view\">\n      <table>\n        <tbody>\n          <ng-container *ngIf=\"nzLayout === 'horizontal'\">\n            <tr class=\"ant-descriptions-row\" *ngFor=\"let row of itemMatrix; let i = index\">\n              <ng-container *ngFor=\"let item of row; let isLast = last\">\n                <!-- Horizontal & NOT Bordered -->\n                <ng-container *ngIf=\"!nzBordered\">\n                  <td class=\"ant-descriptions-item\" [colSpan]=\"item.span\">\n                    <span class=\"ant-descriptions-item-label\" [class.ant-descriptions-item-colon]=\"nzColon\">\n                      <ng-container *nzStringTemplateOutlet=\"item.title\">\n                        {{ item.title }}\n                      </ng-container>\n                    </span>\n                    <span class=\"ant-descriptions-item-content\">\n                      <ng-template [ngTemplateOutlet]=\"item.content\"></ng-template>\n                    </span>\n                  </td>\n                </ng-container>\n                <!-- Horizontal & Bordered -->\n                <ng-container *ngIf=\"nzBordered\">\n                  <td class=\"ant-descriptions-item-label\" *nzStringTemplateOutlet=\"item.title\">\n                    <ng-container *nzStringTemplateOutlet=\"item.title\">\n                      {{ item.title }}\n                    </ng-container>\n                  </td>\n                  <td class=\"ant-descriptions-item-content\" [colSpan]=\"item.span * 2 - 1\">\n                    <ng-template [ngTemplateOutlet]=\"item.content\"></ng-template>\n                  </td>\n                </ng-container>\n              </ng-container>\n            </tr>\n          </ng-container>\n\n          <ng-container *ngIf=\"nzLayout === 'vertical'\">\n            <!-- Vertical & NOT Bordered -->\n            <ng-container *ngIf=\"!nzBordered\">\n              <ng-container *ngFor=\"let row of itemMatrix; let i = index\">\n                <tr class=\"ant-descriptions-row\">\n                  <ng-container *ngFor=\"let item of row; let isLast = last\">\n                    <td class=\"ant-descriptions-item\" [colSpan]=\"item.span\">\n                      <span class=\"ant-descriptions-item-label\" [class.ant-descriptions-item-colon]=\"nzColon\">\n                        <ng-container *nzStringTemplateOutlet=\"item.title\">\n                          {{ item.title }}\n                        </ng-container>\n                      </span>\n                    </td>\n                  </ng-container>\n                </tr>\n                <tr class=\"ant-descriptions-row\">\n                  <ng-container *ngFor=\"let item of row; let isLast = last\">\n                    <td class=\"ant-descriptions-item\" [colSpan]=\"item.span\">\n                      <span class=\"ant-descriptions-item-content\">\n                        <ng-template [ngTemplateOutlet]=\"item.content\"></ng-template>\n                      </span>\n                    </td>\n                  </ng-container>\n                </tr>\n              </ng-container>\n            </ng-container>\n            <!-- Vertical & Bordered -->\n            <ng-container *ngIf=\"nzBordered\">\n              <ng-container *ngFor=\"let row of itemMatrix; let i = index\">\n                <tr class=\"ant-descriptions-row\">\n                  <ng-container *ngFor=\"let item of row; let isLast = last\">\n                    <td class=\"ant-descriptions-item-label\" [colSpan]=\"item.span\">\n                      <ng-container *nzStringTemplateOutlet=\"item.title\">\n                        {{ item.title }}\n                      </ng-container>\n                    </td>\n                  </ng-container>\n                </tr>\n                <tr class=\"ant-descriptions-row\">\n                  <ng-container *ngFor=\"let item of row; let isLast = last\">\n                    <td class=\"ant-descriptions-item-content\" [colSpan]=\"item.span\">\n                      <ng-template [ngTemplateOutlet]=\"item.content\"></ng-template>\n                    </td>\n                  </ng-container>\n                </tr>\n              </ng-container>\n            </ng-container>\n          </ng-container>\n        </tbody>\n      </table>\n    </div>\n  ",
+                    template: "\n    <div *ngIf=\"nzTitle || nzExtra\" class=\"ant-descriptions-header\">\n      <div *ngIf=\"nzTitle\" class=\"ant-descriptions-title\">\n        <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n      </div>\n      <div *ngIf=\"nzExtra\" class=\"ant-descriptions-extra\">\n        <ng-container *nzStringTemplateOutlet=\"nzExtra\">{{ nzExtra }}</ng-container>\n      </div>\n    </div>\n    <div class=\"ant-descriptions-view\">\n      <table>\n        <tbody>\n          <ng-container *ngIf=\"nzLayout === 'horizontal'\">\n            <tr class=\"ant-descriptions-row\" *ngFor=\"let row of itemMatrix; let i = index\">\n              <ng-container *ngFor=\"let item of row; let isLast = last\">\n                <!-- Horizontal & NOT Bordered -->\n                <ng-container *ngIf=\"!nzBordered\">\n                  <td class=\"ant-descriptions-item\" [colSpan]=\"item.span\">\n                    <div class=\"ant-descriptions-item-container\">\n                      <span class=\"ant-descriptions-item-label\" [class.ant-descriptions-item-no-colon]=\"!nzColon\">\n                        <ng-container *nzStringTemplateOutlet=\"item.title\">\n                          {{ item.title }}\n                        </ng-container>\n                      </span>\n                      <span class=\"ant-descriptions-item-content\">\n                        <ng-template [ngTemplateOutlet]=\"item.content\"></ng-template>\n                      </span>\n                    </div>\n                  </td>\n                </ng-container>\n                <!-- Horizontal & Bordered -->\n                <ng-container *ngIf=\"nzBordered\">\n                  <td class=\"ant-descriptions-item-label\" *nzStringTemplateOutlet=\"item.title\">\n                    <ng-container *nzStringTemplateOutlet=\"item.title\">\n                      {{ item.title }}\n                    </ng-container>\n                  </td>\n                  <td class=\"ant-descriptions-item-content\" [colSpan]=\"item.span * 2 - 1\">\n                    <ng-template [ngTemplateOutlet]=\"item.content\"></ng-template>\n                  </td>\n                </ng-container>\n              </ng-container>\n            </tr>\n          </ng-container>\n\n          <ng-container *ngIf=\"nzLayout === 'vertical'\">\n            <!-- Vertical & NOT Bordered -->\n            <ng-container *ngIf=\"!nzBordered\">\n              <ng-container *ngFor=\"let row of itemMatrix; let i = index\">\n                <tr class=\"ant-descriptions-row\">\n                  <ng-container *ngFor=\"let item of row; let isLast = last\">\n                    <td class=\"ant-descriptions-item\" [colSpan]=\"item.span\">\n                      <span class=\"ant-descriptions-item-label\" [class.ant-descriptions-item-no-colon]=\"!nzColon\">\n                        <ng-container *nzStringTemplateOutlet=\"item.title\">\n                          {{ item.title }}\n                        </ng-container>\n                      </span>\n                    </td>\n                  </ng-container>\n                </tr>\n                <tr class=\"ant-descriptions-row\">\n                  <ng-container *ngFor=\"let item of row; let isLast = last\">\n                    <td class=\"ant-descriptions-item\" [colSpan]=\"item.span\">\n                      <span class=\"ant-descriptions-item-content\">\n                        <ng-template [ngTemplateOutlet]=\"item.content\"></ng-template>\n                      </span>\n                    </td>\n                  </ng-container>\n                </tr>\n              </ng-container>\n            </ng-container>\n            <!-- Vertical & Bordered -->\n            <ng-container *ngIf=\"nzBordered\">\n              <ng-container *ngFor=\"let row of itemMatrix; let i = index\">\n                <tr class=\"ant-descriptions-row\">\n                  <ng-container *ngFor=\"let item of row; let isLast = last\">\n                    <td class=\"ant-descriptions-item-label\" [colSpan]=\"item.span\">\n                      <ng-container *nzStringTemplateOutlet=\"item.title\">\n                        {{ item.title }}\n                      </ng-container>\n                    </td>\n                  </ng-container>\n                </tr>\n                <tr class=\"ant-descriptions-row\">\n                  <ng-container *ngFor=\"let item of row; let isLast = last\">\n                    <td class=\"ant-descriptions-item-content\" [colSpan]=\"item.span\">\n                      <ng-template [ngTemplateOutlet]=\"item.content\"></ng-template>\n                    </td>\n                  </ng-container>\n                </tr>\n              </ng-container>\n            </ng-container>\n          </ng-container>\n        </tbody>\n      </table>\n    </div>\n  ",
                     host: {
                         class: 'ant-descriptions',
                         '[class.ant-descriptions-bordered]': 'nzBordered',
                         '[class.ant-descriptions-middle]': 'nzSize === "middle"',
-                        '[class.ant-descriptions-small]': 'nzSize === "small"'
+                        '[class.ant-descriptions-small]': 'nzSize === "small"',
+                        '[class.ant-descriptions-rtl]': 'dir === "rtl"'
                     }
                 },] }
     ];
     NzDescriptionsComponent.ctorParameters = function () { return [
         { type: config.NzConfigService },
         { type: core.ChangeDetectorRef },
-        { type: services.NzBreakpointService }
+        { type: services.NzBreakpointService },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzDescriptionsComponent.propDecorators = {
         items: [{ type: core.ContentChildren, args: [NzDescriptionsItemComponent,] }],
@@ -499,7 +511,7 @@
     }());
     NzDescriptionsModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, outlet.NzOutletModule, platform.PlatformModule],
+                    imports: [bidi.BidiModule, common.CommonModule, outlet.NzOutletModule, platform.PlatformModule],
                     declarations: [NzDescriptionsComponent, NzDescriptionsItemComponent],
                     exports: [NzDescriptionsComponent, NzDescriptionsItemComponent]
                 },] }

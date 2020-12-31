@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { Direction } from '@angular/cdk/bidi';
 import { CandyDate, CompatibleValue, SingleValue } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
@@ -18,6 +19,7 @@ export declare class DateRangePopupComponent implements OnInit, OnChanges, OnDes
     disabledDate?: DisabledDateFn;
     disabledTime?: DisabledTimeFn;
     showToday: boolean;
+    showNow: boolean;
     showTime: SupportTimeOptions | boolean;
     extraFooter?: TemplateRef<void> | string;
     ranges?: PresetRanges;
@@ -27,6 +29,7 @@ export declare class DateRangePopupComponent implements OnInit, OnChanges, OnDes
     readonly panelModeChange: EventEmitter<"decade" | "year" | "month" | "week" | "date" | "time" | NzDateMode[]>;
     readonly calendarChange: EventEmitter<CompatibleValue>;
     readonly resultOk: EventEmitter<void>;
+    dir: Direction;
     prefixCls: string;
     endPanelMode: NzDateMode | NzDateMode[];
     timeOptions: SupportTimeOptions | SupportTimeOptions[] | null;
@@ -41,6 +44,11 @@ export declare class DateRangePopupComponent implements OnInit, OnChanges, OnDes
     ngOnDestroy(): void;
     updateActiveDate(): void;
     init(): void;
+    /**
+     * Prevent input losing focus when click panel
+     * @param event
+     */
+    onMousedown(event: MouseEvent): void;
     onClickOk(): void;
     onClickToday(value: CandyDate): void;
     onCellHover(value: CandyDate): void;

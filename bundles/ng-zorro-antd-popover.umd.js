@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/tooltip'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/overlay')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/popover', ['exports', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/tooltip', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/overlay'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].popover = {}), global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].tooltip, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.overlay));
-}(this, (function (exports, core, animation, noAnimation, tooltip, overlay, common, outlet, overlay$1) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/no-animation'), require('@angular/cdk/bidi'), require('ng-zorro-antd/tooltip'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/overlay')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/popover', ['exports', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/no-animation', '@angular/cdk/bidi', 'ng-zorro-antd/tooltip', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/overlay'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].popover = {}), global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core['no-animation'], global.ng.cdk.bidi, global['ng-zorro-antd'].tooltip, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.overlay));
+}(this, (function (exports, core, animation, noAnimation, bidi, tooltip, overlay, common, outlet, overlay$1) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -351,8 +351,8 @@
     };
     var NzPopoverComponent = /** @class */ (function (_super) {
         __extends(NzPopoverComponent, _super);
-        function NzPopoverComponent(cdr, noAnimation) {
-            var _this = _super.call(this, cdr, noAnimation) || this;
+        function NzPopoverComponent(cdr, directionality, noAnimation) {
+            var _this = _super.call(this, cdr, directionality, noAnimation) || this;
             _this.noAnimation = noAnimation;
             _this._prefix = 'ant-popover';
             return _this;
@@ -370,11 +370,12 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     encapsulation: core.ViewEncapsulation.None,
                     preserveWhitespaces: false,
-                    template: "\n    <ng-template\n      #overlay=\"cdkConnectedOverlay\"\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayPositions]=\"_positions\"\n      [cdkConnectedOverlayOpen]=\"_visible\"\n      [cdkConnectedOverlayPush]=\"true\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n      (detach)=\"hide()\"\n      (positionChange)=\"onPositionChange($event)\"\n    >\n      <div\n        class=\"ant-popover\"\n        [ngClass]=\"_classMap\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@zoomBigMotion]=\"'active'\"\n      >\n        <div class=\"ant-popover-content\">\n          <div class=\"ant-popover-arrow\"></div>\n          <div class=\"ant-popover-inner\" role=\"tooltip\">\n            <div>\n              <div class=\"ant-popover-title\" *ngIf=\"nzTitle\">\n                <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n              </div>\n              <div class=\"ant-popover-inner-content\">\n                <ng-container *nzStringTemplateOutlet=\"nzContent\">{{ nzContent }}</ng-container>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  "
+                    template: "\n    <ng-template\n      #overlay=\"cdkConnectedOverlay\"\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayPositions]=\"_positions\"\n      [cdkConnectedOverlayOpen]=\"_visible\"\n      [cdkConnectedOverlayPush]=\"true\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n      (detach)=\"hide()\"\n      (positionChange)=\"onPositionChange($event)\"\n    >\n      <div\n        class=\"ant-popover\"\n        [class.ant-popover-rtl]=\"dir === 'rtl'\"\n        [ngClass]=\"_classMap\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@zoomBigMotion]=\"'active'\"\n      >\n        <div class=\"ant-popover-content\">\n          <div class=\"ant-popover-arrow\"></div>\n          <div class=\"ant-popover-inner\" role=\"tooltip\">\n            <div>\n              <div class=\"ant-popover-title\" *ngIf=\"nzTitle\">\n                <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n              </div>\n              <div class=\"ant-popover-inner-content\">\n                <ng-container *nzStringTemplateOutlet=\"nzContent\">{{ nzContent }}</ng-container>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  "
                 },] }
     ];
     NzPopoverComponent.ctorParameters = function () { return [
         { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
         { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] }
     ]; };
 
@@ -392,7 +393,7 @@
                     exports: [NzPopoverDirective, NzPopoverComponent],
                     entryComponents: [NzPopoverComponent],
                     declarations: [NzPopoverDirective, NzPopoverComponent],
-                    imports: [common.CommonModule, overlay.OverlayModule, outlet.NzOutletModule, overlay$1.NzOverlayModule, noAnimation.NzNoAnimationModule, tooltip.NzToolTipModule]
+                    imports: [bidi.BidiModule, common.CommonModule, overlay.OverlayModule, outlet.NzOutletModule, overlay$1.NzOverlayModule, noAnimation.NzNoAnimationModule, tooltip.NzToolTipModule]
                 },] }
     ];
 

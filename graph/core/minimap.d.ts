@@ -4,6 +4,7 @@
  */
 import { ZoomBehavior, ZoomTransform } from 'd3-zoom';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzZoomTransform } from '../interface';
 export declare class Minimap {
     private minimap;
     private canvas;
@@ -13,7 +14,7 @@ export declare class Minimap {
     private viewpoint;
     private scaleMinimap;
     private scaleMain;
-    private maxWandH;
+    private maxWidth;
     private translate;
     private viewpointCoord;
     private minimapSize;
@@ -21,7 +22,7 @@ export declare class Minimap {
     private svg;
     private zoomG;
     private mainZoom;
-    constructor(svg: SVGSVGElement, zoomG: SVGGElement, mainZoom: ZoomBehavior<NzSafeAny, NzSafeAny>, minimap: HTMLElement, maxWandH: number, labelPadding: number);
+    constructor(svg: SVGSVGElement, zoomG: SVGGElement, mainZoom: ZoomBehavior<NzSafeAny, NzSafeAny>, minimap: HTMLElement, maxWidth: number, labelPadding: number);
     private minimapOffset;
     private updateViewpoint;
     update(): void;
@@ -31,5 +32,5 @@ export declare class Minimap {
      * viewpoint rectangle.
      * @param transform
      */
-    zoom(transform?: ZoomTransform): void;
+    zoom(transform?: ZoomTransform | NzZoomTransform): void;
 }

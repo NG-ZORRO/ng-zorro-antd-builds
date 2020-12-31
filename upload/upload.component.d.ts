@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Subscription } from 'rxjs';
@@ -12,6 +13,7 @@ import { NzUploadListComponent } from './upload-list.component';
 export declare class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     private cdr;
     private i18n;
+    private directionality;
     static ngAcceptInputType_nzLimit: NumberInput;
     static ngAcceptInputType_nzSize: NumberInput;
     static ngAcceptInputType_nzDirectory: BooleanInput;
@@ -25,6 +27,7 @@ export declare class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     uploadComp: NzUploadBtnComponent;
     listComp: NzUploadListComponent;
     locale: NzUploadI18nInterface;
+    dir: Direction;
     nzType: NzUploadType;
     nzLimit: number;
     nzSize: number;
@@ -60,7 +63,7 @@ export declare class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     readonly nzFileListChange: EventEmitter<NzUploadFile[]>;
     _btnOptions?: ZipButtonOptions;
     private zipOptions;
-    constructor(cdr: ChangeDetectorRef, i18n: NzI18nService);
+    constructor(cdr: ChangeDetectorRef, i18n: NzI18nService, directionality: Directionality);
     private fileToObject;
     private getFileItem;
     private removeFileItem;

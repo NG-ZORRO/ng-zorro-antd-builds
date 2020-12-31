@@ -41,12 +41,17 @@ const collapseMotion = trigger('collapseMotion', [
 ]);
 const treeCollapseMotion = trigger('treeCollapseMotion', [
     transition('* => *', [
-        query('nz-tree-node:leave', [style({ overflow: 'hidden' }), stagger(0, [animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: 0 }))])], {
+        query('nz-tree-node:leave,nz-tree-builtin-node:leave', [
+            style({ overflow: 'hidden' }),
+            stagger(0, [animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: 0, opacity: 0, 'padding-bottom': 0 }))])
+        ], {
             optional: true
         }),
-        query('nz-tree-node:enter', [
-            style({ overflow: 'hidden', height: 0 }),
-            stagger(0, [animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ overflow: 'hidden', height: '*' }))])
+        query('nz-tree-node:enter,nz-tree-builtin-node:enter', [
+            style({ overflow: 'hidden', height: 0, opacity: 0, 'padding-bottom': 0 }),
+            stagger(0, [
+                animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ overflow: 'hidden', height: '*', opacity: '*', 'padding-bottom': '*' }))
+            ])
         ], {
             optional: true
         })

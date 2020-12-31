@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/button'), require('ng-zorro-antd/checkbox'), require('ng-zorro-antd/empty'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/input')) :
-  typeof define === 'function' && define.amd ? define('ng-zorro-antd/transfer', ['exports', '@angular/core', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/forms', 'ng-zorro-antd/button', 'ng-zorro-antd/checkbox', 'ng-zorro-antd/empty', 'ng-zorro-antd/icon', 'ng-zorro-antd/input'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].transfer = {}), global.ng.core, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.forms, global['ng-zorro-antd'].button, global['ng-zorro-antd'].checkbox, global['ng-zorro-antd'].empty, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].input));
-}(this, (function (exports, core, util, i18n, rxjs, operators, common, forms, button, checkbox, empty, icon, input) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/cdk/bidi'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/button'), require('ng-zorro-antd/checkbox'), require('ng-zorro-antd/empty'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/input')) :
+  typeof define === 'function' && define.amd ? define('ng-zorro-antd/transfer', ['exports', '@angular/core', '@angular/cdk/bidi', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/forms', 'ng-zorro-antd/button', 'ng-zorro-antd/checkbox', 'ng-zorro-antd/empty', 'ng-zorro-antd/icon', 'ng-zorro-antd/input'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].transfer = {}), global.ng.core, global.ng.cdk.bidi, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.forms, global['ng-zorro-antd'].button, global['ng-zorro-antd'].checkbox, global['ng-zorro-antd'].empty, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].input));
+}(this, (function (exports, core, bidi, util, i18n, rxjs, operators, common, forms, button, checkbox, empty, icon, input) { 'use strict';
 
   /**
    * Use of this source code is governed by an MIT-style license that can be
@@ -10,9 +10,10 @@
    */
   var NzTransferListComponent = /** @class */ (function () {
       // #endregion
-      function NzTransferListComponent(cdr) {
+      function NzTransferListComponent(cdr, elementRef) {
           var _this = this;
           this.cdr = cdr;
+          this.elementRef = elementRef;
           // #region fields
           this.direction = 'left';
           this.titleText = '';
@@ -52,11 +53,20 @@
               _this.updateCheckStatus();
               _this.handleSelectAll.emit(status);
           };
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-transfer-list');
       }
+      Object.defineProperty(NzTransferListComponent.prototype, "validData", {
+          get: function () {
+              return this.dataSource.filter(function (w) { return !w.hide; });
+          },
+          enumerable: false,
+          configurable: true
+      });
       NzTransferListComponent.prototype.updateCheckStatus = function () {
           var validCount = this.dataSource.filter(function (w) { return !w.disabled; }).length;
           this.stat.checkCount = this.dataSource.filter(function (w) { return w.checked && !w.disabled; }).length;
-          this.stat.shownCount = this.dataSource.filter(function (w) { return !w.hide; }).length;
+          this.stat.shownCount = this.validData.length;
           this.stat.checkAll = validCount > 0 && validCount === this.stat.checkCount;
           this.stat.checkHalf = this.stat.checkCount > 0 && !this.stat.checkAll;
       };
@@ -68,7 +78,7 @@
           this.dataSource.forEach(function (item) {
               item.hide = value.length > 0 && !_this.matchFilter(value, item);
           });
-          this.stat.shownCount = this.dataSource.filter(function (w) { return !w.hide; }).length;
+          this.stat.shownCount = this.validData.length;
           this.filterChange.emit({ direction: this.direction, value: value });
       };
       NzTransferListComponent.prototype.handleClear = function () {
@@ -91,17 +101,17 @@
                   selector: 'nz-transfer-list',
                   exportAs: 'nzTransferList',
                   preserveWhitespaces: false,
-                  template: "\n    <ng-template #defaultRenderList>\n      <ul *ngIf=\"stat.shownCount > 0\" class=\"ant-transfer-list-content\">\n        <div class=\"LazyLoad\" *ngFor=\"let item of dataSource\">\n          <li\n            *ngIf=\"!item.hide\"\n            (click)=\"onItemSelect(item)\"\n            class=\"ant-transfer-list-content-item\"\n            [ngClass]=\"{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }\"\n          >\n            <label\n              nz-checkbox\n              [nzChecked]=\"item.checked\"\n              (nzCheckedChange)=\"onItemSelect(item)\"\n              (click)=\"$event.stopPropagation()\"\n              [nzDisabled]=\"disabled || item.disabled\"\n            >\n              <ng-container *ngIf=\"!render; else renderContainer\">{{ item.title }}</ng-container>\n              <ng-template #renderContainer [ngTemplateOutlet]=\"render\" [ngTemplateOutletContext]=\"{ $implicit: item }\"></ng-template>\n            </label>\n          </li>\n        </div>\n      </ul>\n      <div *ngIf=\"stat.shownCount === 0\" class=\"ant-transfer-list-body-not-found\">\n        <nz-embed-empty [nzComponentName]=\"'transfer'\" [specificContent]=\"notFoundContent\"></nz-embed-empty>\n      </div>\n    </ng-template>\n    <div class=\"ant-transfer-list-header\">\n      <label\n        *ngIf=\"showSelectAll\"\n        nz-checkbox\n        [nzChecked]=\"stat.checkAll\"\n        (nzCheckedChange)=\"onItemSelectAll($event)\"\n        [nzIndeterminate]=\"stat.checkHalf\"\n        [nzDisabled]=\"stat.shownCount == 0 || disabled\"\n      ></label>\n      <span class=\"ant-transfer-list-header-selected\">\n        <span>\n          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ dataSource.length > 1 ? itemsUnit : itemUnit }}\n        </span>\n        <span *ngIf=\"titleText\" class=\"ant-transfer-list-header-title\">{{ titleText }}</span>\n      </span>\n    </div>\n    <div\n      class=\"{{ showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body' }}\"\n      [ngClass]=\"{ 'ant-transfer__nodata': stat.shownCount === 0 }\"\n    >\n      <div *ngIf=\"showSearch\" class=\"ant-transfer-list-body-search-wrapper\">\n        <div\n          nz-transfer-search\n          (valueChanged)=\"handleFilter($event)\"\n          (valueClear)=\"handleClear()\"\n          [placeholder]=\"searchPlaceholder\"\n          [disabled]=\"disabled\"\n          [value]=\"filter\"\n        ></div>\n      </div>\n      <ng-container *ngIf=\"renderList; else defaultRenderList\">\n        <div class=\"ant-transfer-list-body-customize-wrapper\">\n          <ng-container\n            *ngTemplateOutlet=\"\n              renderList;\n              context: {\n                $implicit: dataSource,\n                direction: direction,\n                disabled: disabled,\n                onItemSelectAll: onItemSelectAll,\n                onItemSelect: onItemSelect,\n                stat: stat\n              }\n            \"\n          ></ng-container>\n        </div>\n      </ng-container>\n    </div>\n    <div *ngIf=\"footer\" class=\"ant-transfer-list-footer\">\n      <ng-template [ngTemplateOutlet]=\"footer\" [ngTemplateOutletContext]=\"{ $implicit: direction }\"></ng-template>\n    </div>\n  ",
+                  template: "\n    <ng-template #defaultRenderList>\n      <ul *ngIf=\"stat.shownCount > 0\" class=\"ant-transfer-list-content\">\n        <li\n          *ngFor=\"let item of validData\"\n          (click)=\"onItemSelect(item)\"\n          class=\"ant-transfer-list-content-item\"\n          [ngClass]=\"{ 'ant-transfer-list-content-item-disabled': disabled || item.disabled }\"\n        >\n          <label\n            nz-checkbox\n            [nzChecked]=\"item.checked\"\n            (nzCheckedChange)=\"onItemSelect(item)\"\n            (click)=\"$event.stopPropagation()\"\n            [nzDisabled]=\"disabled || item.disabled\"\n          >\n            <ng-container *ngIf=\"!render; else renderContainer\">{{ item.title }}</ng-container>\n            <ng-template #renderContainer [ngTemplateOutlet]=\"render\" [ngTemplateOutletContext]=\"{ $implicit: item }\"></ng-template>\n          </label>\n        </li>\n      </ul>\n      <div *ngIf=\"stat.shownCount === 0\" class=\"ant-transfer-list-body-not-found\">\n        <nz-embed-empty [nzComponentName]=\"'transfer'\" [specificContent]=\"notFoundContent\"></nz-embed-empty>\n      </div>\n    </ng-template>\n    <div class=\"ant-transfer-list-header\">\n      <label\n        *ngIf=\"showSelectAll\"\n        nz-checkbox\n        [nzChecked]=\"stat.checkAll\"\n        (nzCheckedChange)=\"onItemSelectAll($event)\"\n        [nzIndeterminate]=\"stat.checkHalf\"\n        [nzDisabled]=\"stat.shownCount == 0 || disabled\"\n      ></label>\n      <span class=\"ant-transfer-list-header-selected\">\n        <span>\n          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ validData.length > 1 ? itemsUnit : itemUnit }}\n        </span>\n        <span *ngIf=\"titleText\" class=\"ant-transfer-list-header-title\">{{ titleText }}</span>\n      </span>\n    </div>\n    <div\n      class=\"{{ showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body' }}\"\n      [ngClass]=\"{ 'ant-transfer__nodata': stat.shownCount === 0 }\"\n    >\n      <div *ngIf=\"showSearch\" class=\"ant-transfer-list-body-search-wrapper\">\n        <div\n          nz-transfer-search\n          (valueChanged)=\"handleFilter($event)\"\n          (valueClear)=\"handleClear()\"\n          [placeholder]=\"searchPlaceholder\"\n          [disabled]=\"disabled\"\n          [value]=\"filter\"\n        ></div>\n      </div>\n      <ng-container *ngIf=\"renderList; else defaultRenderList\">\n        <div class=\"ant-transfer-list-body-customize-wrapper\">\n          <ng-container\n            *ngTemplateOutlet=\"\n              renderList;\n              context: {\n                $implicit: validData,\n                direction: direction,\n                disabled: disabled,\n                onItemSelectAll: onItemSelectAll,\n                onItemSelect: onItemSelect,\n                stat: stat\n              }\n            \"\n          ></ng-container>\n        </div>\n      </ng-container>\n    </div>\n    <div *ngIf=\"footer\" class=\"ant-transfer-list-footer\">\n      <ng-template [ngTemplateOutlet]=\"footer\" [ngTemplateOutletContext]=\"{ $implicit: direction }\"></ng-template>\n    </div>\n  ",
                   encapsulation: core.ViewEncapsulation.None,
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
                   host: {
-                      '[class.ant-transfer-list]': 'true',
                       '[class.ant-transfer-list-with-footer]': '!!footer'
                   }
               },] }
   ];
   NzTransferListComponent.ctorParameters = function () { return [
-      { type: core.ChangeDetectorRef }
+      { type: core.ChangeDetectorRef },
+      { type: core.ElementRef }
   ]; };
   NzTransferListComponent.propDecorators = {
       direction: [{ type: core.Input }],
@@ -475,13 +485,16 @@
 
   var NzTransferComponent = /** @class */ (function () {
       // #endregion
-      function NzTransferComponent(cdr, i18n) {
+      function NzTransferComponent(cdr, i18n, elementRef, directionality) {
           var _this = this;
           this.cdr = cdr;
           this.i18n = i18n;
+          this.elementRef = elementRef;
+          this.directionality = directionality;
           this.unsubscribe$ = new rxjs.Subject();
           this.leftFilter = '';
           this.rightFilter = '';
+          this.dir = 'ltr';
           // #region fields
           this.nzDisabled = false;
           this.nzDataSource = [];
@@ -516,6 +529,8 @@
           this.rightActive = false;
           this.moveToLeft = function () { return _this.moveTo('left'); };
           this.moveToRight = function () { return _this.moveTo('right'); };
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-transfer');
       }
       NzTransferComponent.prototype.splitDataSource = function () {
           var _this = this;
@@ -556,7 +571,7 @@
           this.nzCanMove({ direction: direction, list: moveList }).subscribe(function (newMoveList) { return _this.truthMoveTo(direction, newMoveList.filter(function (i) { return !!i; })); }, function () { return moveList.forEach(function (i) { return (i.checked = false); }); });
       };
       NzTransferComponent.prototype.truthMoveTo = function (direction, list) {
-          var e_1, _a;
+          var e_1, _b;
           var oppositeDirection = direction === 'left' ? 'right' : 'left';
           var datasource = direction === 'left' ? this.rightDataSource : this.leftDataSource;
           var targetDatasource = direction === 'left' ? this.leftDataSource : this.rightDataSource;
@@ -572,7 +587,7 @@
           catch (e_1_1) { e_1 = { error: e_1_1 }; }
           finally {
               try {
-                  if (list_1_1 && !list_1_1.done && (_a = list_1.return)) _a.call(list_1);
+                  if (list_1_1 && !list_1_1.done && (_b = list_1.return)) _b.call(list_1);
               }
               finally { if (e_1) throw e_1.error; }
           }
@@ -614,9 +629,15 @@
       };
       NzTransferComponent.prototype.ngOnInit = function () {
           var _this = this;
+          var _a;
           this.i18n.localeChange.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function () {
               _this.locale = _this.i18n.getLocaleData('Transfer');
               _this.markForCheckAllList();
+          });
+          this.dir = this.directionality.value;
+          (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (direction) {
+              _this.dir = direction;
+              _this.cdr.detectChanges();
           });
       };
       NzTransferComponent.prototype.ngOnChanges = function (changes) {
@@ -645,9 +666,9 @@
                   selector: 'nz-transfer',
                   exportAs: 'nzTransfer',
                   preserveWhitespaces: false,
-                  template: "\n    <nz-transfer-list\n      class=\"ant-transfer-list\"\n      [ngStyle]=\"nzListStyle\"\n      data-direction=\"left\"\n      direction=\"left\"\n      [titleText]=\"nzTitles[0]\"\n      [showSelectAll]=\"nzShowSelectAll\"\n      [dataSource]=\"leftDataSource\"\n      [filter]=\"leftFilter\"\n      [filterOption]=\"nzFilterOption\"\n      (filterChange)=\"handleFilterChange($event)\"\n      [renderList]=\"nzRenderList && nzRenderList[0]\"\n      [render]=\"nzRender\"\n      [disabled]=\"nzDisabled\"\n      [showSearch]=\"nzShowSearch\"\n      [searchPlaceholder]=\"nzSearchPlaceholder || locale?.searchPlaceholder\"\n      [notFoundContent]=\"nzNotFoundContent\"\n      [itemUnit]=\"nzItemUnit || locale?.itemUnit\"\n      [itemsUnit]=\"nzItemsUnit || locale?.itemsUnit\"\n      [footer]=\"nzFooter\"\n      (handleSelect)=\"handleLeftSelect($event)\"\n      (handleSelectAll)=\"handleLeftSelectAll($event)\"\n    >\n    </nz-transfer-list>\n    <div class=\"ant-transfer-operation\">\n      <button nz-button (click)=\"moveToLeft()\" [disabled]=\"nzDisabled || !leftActive\" [nzType]=\"'primary'\" [nzSize]=\"'small'\">\n        <i nz-icon nzType=\"left\"></i><span *ngIf=\"nzOperations[1]\">{{ nzOperations[1] }}</span>\n      </button>\n      <button nz-button (click)=\"moveToRight()\" [disabled]=\"nzDisabled || !rightActive\" [nzType]=\"'primary'\" [nzSize]=\"'small'\">\n        <i nz-icon nzType=\"right\"></i><span *ngIf=\"nzOperations[0]\">{{ nzOperations[0] }}</span>\n      </button>\n    </div>\n    <nz-transfer-list\n      class=\"ant-transfer-list\"\n      [ngStyle]=\"nzListStyle\"\n      data-direction=\"right\"\n      direction=\"right\"\n      [titleText]=\"nzTitles[1]\"\n      [showSelectAll]=\"nzShowSelectAll\"\n      [dataSource]=\"rightDataSource\"\n      [filter]=\"rightFilter\"\n      [filterOption]=\"nzFilterOption\"\n      (filterChange)=\"handleFilterChange($event)\"\n      [renderList]=\"nzRenderList && nzRenderList[1]\"\n      [render]=\"nzRender\"\n      [disabled]=\"nzDisabled\"\n      [showSearch]=\"nzShowSearch\"\n      [searchPlaceholder]=\"nzSearchPlaceholder || locale?.searchPlaceholder\"\n      [notFoundContent]=\"nzNotFoundContent\"\n      [itemUnit]=\"nzItemUnit || locale?.itemUnit\"\n      [itemsUnit]=\"nzItemsUnit || locale?.itemsUnit\"\n      [footer]=\"nzFooter\"\n      (handleSelect)=\"handleRightSelect($event)\"\n      (handleSelectAll)=\"handleRightSelectAll($event)\"\n    >\n    </nz-transfer-list>\n  ",
+                  template: "\n    <nz-transfer-list\n      class=\"ant-transfer-list\"\n      [ngStyle]=\"nzListStyle\"\n      data-direction=\"left\"\n      direction=\"left\"\n      [titleText]=\"nzTitles[0]\"\n      [showSelectAll]=\"nzShowSelectAll\"\n      [dataSource]=\"leftDataSource\"\n      [filter]=\"leftFilter\"\n      [filterOption]=\"nzFilterOption\"\n      (filterChange)=\"handleFilterChange($event)\"\n      [renderList]=\"nzRenderList && nzRenderList[0]\"\n      [render]=\"nzRender\"\n      [disabled]=\"nzDisabled\"\n      [showSearch]=\"nzShowSearch\"\n      [searchPlaceholder]=\"nzSearchPlaceholder || locale?.searchPlaceholder\"\n      [notFoundContent]=\"nzNotFoundContent\"\n      [itemUnit]=\"nzItemUnit || locale?.itemUnit\"\n      [itemsUnit]=\"nzItemsUnit || locale?.itemsUnit\"\n      [footer]=\"nzFooter\"\n      (handleSelect)=\"handleLeftSelect($event)\"\n      (handleSelectAll)=\"handleLeftSelectAll($event)\"\n    ></nz-transfer-list>\n    <div *ngIf=\"dir !== 'rtl'\" class=\"ant-transfer-operation\">\n      <button nz-button (click)=\"moveToLeft()\" [disabled]=\"nzDisabled || !leftActive\" [nzType]=\"'primary'\" [nzSize]=\"'small'\">\n        <i nz-icon nzType=\"left\"></i>\n        <span *ngIf=\"nzOperations[1]\">{{ nzOperations[1] }}</span>\n      </button>\n      <button nz-button (click)=\"moveToRight()\" [disabled]=\"nzDisabled || !rightActive\" [nzType]=\"'primary'\" [nzSize]=\"'small'\">\n        <i nz-icon nzType=\"right\"></i>\n        <span *ngIf=\"nzOperations[0]\">{{ nzOperations[0] }}</span>\n      </button>\n    </div>\n    <div *ngIf=\"dir === 'rtl'\" class=\"ant-transfer-operation\">\n      <button nz-button (click)=\"moveToRight()\" [disabled]=\"nzDisabled || !rightActive\" [nzType]=\"'primary'\" [nzSize]=\"'small'\">\n        <i nz-icon nzType=\"left\"></i>\n        <span *ngIf=\"nzOperations[0]\">{{ nzOperations[0] }}</span>\n      </button>\n      <button nz-button (click)=\"moveToLeft()\" [disabled]=\"nzDisabled || !leftActive\" [nzType]=\"'primary'\" [nzSize]=\"'small'\">\n        <i nz-icon nzType=\"right\"></i>\n        <span *ngIf=\"nzOperations[1]\">{{ nzOperations[1] }}</span>\n      </button>\n    </div>\n    <nz-transfer-list\n      class=\"ant-transfer-list\"\n      [ngStyle]=\"nzListStyle\"\n      data-direction=\"right\"\n      direction=\"right\"\n      [titleText]=\"nzTitles[1]\"\n      [showSelectAll]=\"nzShowSelectAll\"\n      [dataSource]=\"rightDataSource\"\n      [filter]=\"rightFilter\"\n      [filterOption]=\"nzFilterOption\"\n      (filterChange)=\"handleFilterChange($event)\"\n      [renderList]=\"nzRenderList && nzRenderList[1]\"\n      [render]=\"nzRender\"\n      [disabled]=\"nzDisabled\"\n      [showSearch]=\"nzShowSearch\"\n      [searchPlaceholder]=\"nzSearchPlaceholder || locale?.searchPlaceholder\"\n      [notFoundContent]=\"nzNotFoundContent\"\n      [itemUnit]=\"nzItemUnit || locale?.itemUnit\"\n      [itemsUnit]=\"nzItemsUnit || locale?.itemsUnit\"\n      [footer]=\"nzFooter\"\n      (handleSelect)=\"handleRightSelect($event)\"\n      (handleSelectAll)=\"handleRightSelectAll($event)\"\n    ></nz-transfer-list>\n  ",
                   host: {
-                      '[class.ant-transfer]': "true",
+                      '[class.ant-transfer-rtl]': "dir === 'rtl'",
                       '[class.ant-transfer-disabled]': "nzDisabled",
                       '[class.ant-transfer-customize-list]': "nzRenderList"
                   },
@@ -657,7 +678,9 @@
   ];
   NzTransferComponent.ctorParameters = function () { return [
       { type: core.ChangeDetectorRef },
-      { type: i18n.NzI18nService }
+      { type: i18n.NzI18nService },
+      { type: core.ElementRef },
+      { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
   ]; };
   NzTransferComponent.propDecorators = {
       lists: [{ type: core.ViewChildren, args: [NzTransferListComponent,] }],
@@ -707,7 +730,17 @@
   }());
   NzTransferModule.decorators = [
       { type: core.NgModule, args: [{
-                  imports: [common.CommonModule, forms.FormsModule, checkbox.NzCheckboxModule, button.NzButtonModule, input.NzInputModule, i18n.NzI18nModule, icon.NzIconModule, empty.NzEmptyModule],
+                  imports: [
+                      bidi.BidiModule,
+                      common.CommonModule,
+                      forms.FormsModule,
+                      checkbox.NzCheckboxModule,
+                      button.NzButtonModule,
+                      input.NzInputModule,
+                      i18n.NzI18nModule,
+                      icon.NzIconModule,
+                      empty.NzEmptyModule
+                  ],
                   declarations: [NzTransferComponent, NzTransferListComponent, NzTransferSearchComponent],
                   exports: [NzTransferComponent]
               },] }

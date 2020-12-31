@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, TrackByFunction } from '@angular/core';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
@@ -20,6 +21,7 @@ export declare class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestro
     private cdr;
     private nzTableStyleService;
     private nzTableDataService;
+    private directionality;
     readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzFrontPagination: BooleanInput;
     static ngAcceptInputType_nzTemplateMode: BooleanInput;
@@ -82,17 +84,21 @@ export declare class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestro
     listOfManualColWidth: Array<string | null>;
     hasFixLeft: boolean;
     hasFixRight: boolean;
+    showPagination: boolean;
     private destroy$;
     private loading$;
     private templateMode$;
+    dir: Direction;
     nzVirtualScrollDirective: NzTableVirtualScrollDirective;
     nzTableInnerScrollComponent: NzTableInnerScrollComponent;
     verticalScrollBarWidth: number;
     onPageSizeChange(size: number): void;
     onPageIndexChange(index: number): void;
-    constructor(elementRef: ElementRef, nzResizeObserver: NzResizeObserver, nzConfigService: NzConfigService, cdr: ChangeDetectorRef, nzTableStyleService: NzTableStyleService, nzTableDataService: NzTableDataService);
+    constructor(elementRef: ElementRef, nzResizeObserver: NzResizeObserver, nzConfigService: NzConfigService, cdr: ChangeDetectorRef, nzTableStyleService: NzTableStyleService, nzTableDataService: NzTableDataService, directionality: Directionality);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    private setScrollOnChanges;
+    private updateShowPagination;
 }

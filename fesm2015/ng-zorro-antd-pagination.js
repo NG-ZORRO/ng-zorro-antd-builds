@@ -1,5 +1,6 @@
 import { __decorate, __metadata } from 'tslib';
-import { EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef, Output, Input, Renderer2, ElementRef, ViewChild, NgModule } from '@angular/core';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
+import { EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef, Optional, ElementRef, Output, Input, Renderer2, ViewChild, NgModule } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { InputBoolean, InputNumber, toNumber } from 'ng-zorro-antd/core/util';
@@ -17,11 +18,13 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
  */
 const NZ_CONFIG_MODULE_NAME = 'pagination';
 class NzPaginationComponent {
-    constructor(i18n, cdr, breakpointService, nzConfigService) {
+    constructor(i18n, cdr, breakpointService, nzConfigService, directionality, elementRef) {
         this.i18n = i18n;
         this.cdr = cdr;
         this.breakpointService = breakpointService;
         this.nzConfigService = nzConfigService;
+        this.directionality = directionality;
+        this.elementRef = elementRef;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzPageSizeChange = new EventEmitter();
         this.nzPageIndexChange = new EventEmitter();
@@ -40,8 +43,11 @@ class NzPaginationComponent {
         this.nzPageSize = 10;
         this.showPagination = true;
         this.size = 'default';
+        this.dir = 'ltr';
         this.destroy$ = new Subject();
         this.total$ = new ReplaySubject(1);
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-pagination');
     }
     validatePageIndex(value, lastIndex) {
         if (value > lastIndex) {
@@ -80,6 +86,7 @@ class NzPaginationComponent {
         return Math.ceil(total / pageSize);
     }
     ngOnInit() {
+        var _a;
         this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.locale = this.i18n.getLocaleData('Pagination');
             this.cdr.markForCheck();
@@ -96,6 +103,11 @@ class NzPaginationComponent {
                 this.cdr.markForCheck();
             }
         });
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
     }
     ngOnDestroy() {
         this.destroy$.next();
@@ -155,10 +167,10 @@ NzPaginationComponent.decorators = [
     ></nz-pagination-default>
   `,
                 host: {
-                    '[class.ant-pagination]': 'true',
                     '[class.ant-pagination-simple]': 'nzSimple',
                     '[class.ant-pagination-disabled]': 'nzDisabled',
-                    '[class.mini]': `!nzSimple && size === 'small'`
+                    '[class.mini]': `!nzSimple && size === 'small'`,
+                    '[class.ant-pagination-rtl]': `dir === 'rtl'`
                 }
             },] }
 ];
@@ -166,7 +178,9 @@ NzPaginationComponent.ctorParameters = () => [
     { type: NzI18nService },
     { type: ChangeDetectorRef },
     { type: NzBreakpointService },
-    { type: NzConfigService }
+    { type: NzConfigService },
+    { type: Directionality, decorators: [{ type: Optional }] },
+    { type: ElementRef }
 ];
 NzPaginationComponent.propDecorators = {
     nzPageSizeChange: [{ type: Output }],
@@ -238,7 +252,11 @@ __decorate([
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPaginationDefaultComponent {
-    constructor(renderer, elementRef) {
+    constructor(cdr, renderer, elementRef, directionality) {
+        this.cdr = cdr;
+        this.renderer = renderer;
+        this.elementRef = elementRef;
+        this.directionality = directionality;
         this.nzSize = 'default';
         this.itemRender = null;
         this.showTotal = null;
@@ -253,7 +271,31 @@ class NzPaginationDefaultComponent {
         this.pageSizeChange = new EventEmitter();
         this.ranges = [0, 0];
         this.listOfPageItem = [];
+        this.dir = 'ltr';
+        this.destroy$ = new Subject();
         renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
+    }
+    ngOnInit() {
+        var _a;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.updateRtlStyle();
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
+        this.updateRtlStyle();
+    }
+    updateRtlStyle() {
+        if (this.dir === 'rtl') {
+            this.renderer.addClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
+        }
+        else {
+            this.renderer.removeClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
+        }
+    }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
     jumpPage(index) {
         this.onPageIndexChange(index);
@@ -357,6 +399,7 @@ NzPaginationDefaultComponent.decorators = [
         [active]="pageIndex === page.index"
         (gotoIndex)="jumpPage($event)"
         (diffIndex)="jumpDiff($event)"
+        [direction]="dir"
       ></li>
       <div
         nz-pagination-options
@@ -378,8 +421,10 @@ NzPaginationDefaultComponent.decorators = [
             },] }
 ];
 NzPaginationDefaultComponent.ctorParameters = () => [
+    { type: ChangeDetectorRef },
     { type: Renderer2 },
-    { type: ElementRef }
+    { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzPaginationDefaultComponent.propDecorators = {
     template: [{ type: ViewChild, args: ['containerTemplate', { static: true },] }],
@@ -407,6 +452,7 @@ class NzPaginationItemComponent {
         this.active = false;
         this.index = null;
         this.disabled = false;
+        this.direction = 'ltr';
         this.type = null;
         this.itemRender = null;
         this.diffIndex = new EventEmitter();
@@ -452,14 +498,30 @@ NzPaginationItemComponent.decorators = [
     <ng-template #renderItemTemplate let-type let-page="page">
       <ng-container [ngSwitch]="type">
         <a *ngSwitchCase="'page'">{{ page }}</a>
-        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'"><i nz-icon nzType="left"></i></button>
-        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'"><i nz-icon nzType="right"></i></button>
+        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'">
+          <ng-container [ngSwitch]="direction">
+            <i *ngSwitchCase="'rtl'" nz-icon nzType="right"></i>
+            <i *ngSwitchDefault nz-icon nzType="left"></i>
+          </ng-container>
+        </button>
+        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'">
+          <ng-container [ngSwitch]="direction">
+            <i *ngSwitchCase="'rtl'" nz-icon nzType="left"></i>
+            <i *ngSwitchDefault nz-icon nzType="right"></i>
+          </ng-container>
+        </button>
         <ng-container *ngSwitchDefault>
           <a class="ant-pagination-item-link" [ngSwitch]="type">
             <div class="ant-pagination-item-container" *ngSwitchDefault>
               <ng-container [ngSwitch]="type">
-                <i *ngSwitchCase="'prev_5'" nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></i>
-                <i *ngSwitchCase="'next_5'" nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></i>
+                <ng-container *ngSwitchCase="'prev_5'" [ngSwitch]="direction">
+                  <i *ngSwitchCase="'rtl'" nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></i>
+                  <i *ngSwitchDefault nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></i>
+                </ng-container>
+                <ng-container *ngSwitchCase="'next_5'" [ngSwitch]="direction">
+                  <i *ngSwitchCase="'rtl'" nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></i>
+                  <i *ngSwitchDefault nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></i>
+                </ng-container>
               </ng-container>
               <span class="ant-pagination-item-ellipsis">•••</span>
             </div>
@@ -492,6 +554,7 @@ NzPaginationItemComponent.propDecorators = {
     locale: [{ type: Input }],
     index: [{ type: Input }],
     disabled: [{ type: Input }],
+    direction: [{ type: Input }],
     type: [{ type: Input }],
     itemRender: [{ type: Input }],
     diffIndex: [{ type: Output }],
@@ -503,7 +566,8 @@ NzPaginationItemComponent.propDecorators = {
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPaginationOptionsComponent {
-    constructor() {
+    constructor(elementRef) {
+        this.elementRef = elementRef;
         this.nzSize = 'default';
         this.disabled = false;
         this.showSizeChanger = false;
@@ -515,6 +579,8 @@ class NzPaginationOptionsComponent {
         this.pageIndexChange = new EventEmitter();
         this.pageSizeChange = new EventEmitter();
         this.listOfPageSizeOption = [];
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-pagination-options');
     }
     onPageSizeChange(size) {
         if (this.pageSize !== size) {
@@ -568,11 +634,11 @@ NzPaginationOptionsComponent.decorators = [
       <input [disabled]="disabled" (keydown.enter)="jumpToPageViaInput($event)" />
       {{ locale.page }}
     </div>
-  `,
-                host: {
-                    '[class.ant-pagination-options]': 'true'
-                }
+  `
             },] }
+];
+NzPaginationOptionsComponent.ctorParameters = () => [
+    { type: ElementRef }
 ];
 NzPaginationOptionsComponent.propDecorators = {
     nzSize: [{ type: Input }],
@@ -593,7 +659,11 @@ NzPaginationOptionsComponent.propDecorators = {
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzPaginationSimpleComponent {
-    constructor(renderer, elementRef) {
+    constructor(cdr, renderer, elementRef, directionality) {
+        this.cdr = cdr;
+        this.renderer = renderer;
+        this.elementRef = elementRef;
+        this.directionality = directionality;
         this.itemRender = null;
         this.disabled = false;
         this.total = 0;
@@ -603,7 +673,31 @@ class NzPaginationSimpleComponent {
         this.lastIndex = 0;
         this.isFirstIndex = false;
         this.isLastIndex = false;
+        this.dir = 'ltr';
+        this.destroy$ = new Subject();
         renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
+    }
+    ngOnInit() {
+        var _a;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.updateRtlStyle();
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
+        this.updateRtlStyle();
+    }
+    updateRtlStyle() {
+        if (this.dir === 'rtl') {
+            this.renderer.addClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
+        }
+        else {
+            this.renderer.removeClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
+        }
+    }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
     jumpToPageViaInput($event) {
         const target = $event.target;
@@ -644,6 +738,7 @@ NzPaginationSimpleComponent.decorators = [
         nz-pagination-item
         [attr.title]="locale.prev_page"
         [disabled]="isFirstIndex"
+        [direction]="dir"
         (click)="prePage()"
         type="prev"
         [itemRender]="itemRender"
@@ -657,6 +752,7 @@ NzPaginationSimpleComponent.decorators = [
         nz-pagination-item
         [attr.title]="locale?.next_page"
         [disabled]="isLastIndex"
+        [direction]="dir"
         (click)="nextPage()"
         type="next"
         [itemRender]="itemRender"
@@ -666,8 +762,10 @@ NzPaginationSimpleComponent.decorators = [
             },] }
 ];
 NzPaginationSimpleComponent.ctorParameters = () => [
+    { type: ChangeDetectorRef },
     { type: Renderer2 },
-    { type: ElementRef }
+    { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzPaginationSimpleComponent.propDecorators = {
     template: [{ type: ViewChild, args: ['containerTemplate', { static: true },] }],
@@ -696,7 +794,7 @@ NzPaginationModule.decorators = [
                     NzPaginationDefaultComponent
                 ],
                 exports: [NzPaginationComponent],
-                imports: [CommonModule, FormsModule, NzSelectModule, NzI18nModule, NzIconModule]
+                imports: [BidiModule, CommonModule, FormsModule, NzSelectModule, NzI18nModule, NzIconModule]
             },] }
 ];
 

@@ -1,6 +1,7 @@
 import { __decorate, __metadata } from 'tslib';
-import { Component, ViewEncapsulation, ChangeDetectionStrategy, Input, NgModule } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy, ElementRef, Input, NgModule } from '@angular/core';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
@@ -9,11 +10,14 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDividerComponent {
-    constructor() {
+    constructor(elementRef) {
+        this.elementRef = elementRef;
         this.nzType = 'horizontal';
         this.nzOrientation = 'center';
         this.nzDashed = false;
         this.nzPlain = false;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-divider');
     }
 }
 NzDividerComponent.decorators = [
@@ -29,7 +33,6 @@ NzDividerComponent.decorators = [
     </span>
   `,
                 host: {
-                    '[class.ant-divider]': 'true',
                     '[class.ant-divider-horizontal]': `nzType === 'horizontal'`,
                     '[class.ant-divider-vertical]': `nzType === 'vertical'`,
                     '[class.ant-divider-with-text]': `nzText`,
@@ -40,6 +43,9 @@ NzDividerComponent.decorators = [
                     '[class.ant-divider-dashed]': `nzDashed`
                 }
             },] }
+];
+NzDividerComponent.ctorParameters = () => [
+    { type: ElementRef }
 ];
 NzDividerComponent.propDecorators = {
     nzText: [{ type: Input }],
@@ -65,7 +71,7 @@ class NzDividerModule {
 }
 NzDividerModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule, NzOutletModule],
+                imports: [BidiModule, CommonModule, NzOutletModule],
                 declarations: [NzDividerComponent],
                 exports: [NzDividerComponent]
             },] }

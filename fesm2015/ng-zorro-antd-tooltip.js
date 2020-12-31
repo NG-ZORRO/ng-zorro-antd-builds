@@ -1,7 +1,8 @@
-import { EventEmitter, Directive, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer2, ChangeDetectorRef, ViewChild, TemplateRef, Host, Optional, Input, Output, Component, ChangeDetectionStrategy, ViewEncapsulation, NgModule } from '@angular/core';
+import { EventEmitter, Directive, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer2, ChangeDetectorRef, Optional, ViewChild, TemplateRef, Host, Input, Output, Component, ChangeDetectionStrategy, ViewEncapsulation, NgModule } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { isPresetColor } from 'ng-zorro-antd/core/color';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP, getPlacementName, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { toBoolean, isNotNil } from 'ng-zorro-antd/core/util';
@@ -214,8 +215,9 @@ NzTooltipBaseDirective.ctorParameters = () => [
 ];
 // tslint:disable-next-line:directive-class-suffix
 class NzTooltipBaseComponent {
-    constructor(cdr, noAnimation) {
+    constructor(cdr, directionality, noAnimation) {
         this.cdr = cdr;
+        this.directionality = directionality;
         this.noAnimation = noAnimation;
         this.nzTitle = null;
         this.nzContent = null;
@@ -224,10 +226,12 @@ class NzTooltipBaseComponent {
         this._visible = false;
         this._trigger = 'hover';
         this.preferredPlacement = 'top';
+        this.dir = 'ltr';
         this._classMap = {};
         this._hasBackdrop = false;
         this._prefix = 'ant-tooltip';
         this._positions = [...DEFAULT_TOOLTIP_POSITIONS];
+        this.destroy$ = new Subject();
     }
     set nzVisible(value) {
         const visible = toBoolean(value);
@@ -249,8 +253,18 @@ class NzTooltipBaseComponent {
         const preferredPosition = value.map(placement => POSITION_MAP[placement]);
         this._positions = [...preferredPosition, ...DEFAULT_TOOLTIP_POSITIONS];
     }
+    ngOnInit() {
+        var _a;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
+    }
     ngOnDestroy() {
         this.nzVisibleChange.complete();
+        this.destroy$.next();
+        this.destroy$.complete();
     }
     show() {
         if (this.nzVisible) {
@@ -260,6 +274,10 @@ class NzTooltipBaseComponent {
             this.nzVisible = true;
             this.nzVisibleChange.next(true);
             this.cdr.detectChanges();
+        }
+        // for ltr for overlay to display tooltip in correct placement in rtl direction.
+        if (this.origin && this.overlay && this.overlay.overlayRef && this.overlay.overlayRef.getDirection() === 'rtl') {
+            this.overlay.overlayRef.setDirection('ltr');
         }
     }
     hide() {
@@ -321,6 +339,7 @@ NzTooltipBaseComponent.decorators = [
 ];
 NzTooltipBaseComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: NzNoAnimationDirective }
 ];
 NzTooltipBaseComponent.propDecorators = {
@@ -380,8 +399,8 @@ NzTooltipDirective.propDecorators = {
     visibleChange: [{ type: Output, args: ['nzTooltipVisibleChange',] }]
 };
 class NzToolTipComponent extends NzTooltipBaseComponent {
-    constructor(cdr, noAnimation) {
-        super(cdr, noAnimation);
+    constructor(cdr, directionality, noAnimation) {
+        super(cdr, directionality, noAnimation);
         this.noAnimation = noAnimation;
         this.nzTitle = null;
         this._contentStyleMap = {};
@@ -423,6 +442,7 @@ NzToolTipComponent.decorators = [
     >
       <div
         class="ant-tooltip"
+        [class.ant-tooltip-rtl]="dir === 'rtl'"
         [ngClass]="_classMap"
         [ngStyle]="nzOverlayStyle"
         [@.disabled]="noAnimation?.nzNoAnimation"
@@ -445,6 +465,7 @@ NzToolTipComponent.decorators = [
 ];
 NzToolTipComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 
@@ -459,7 +480,7 @@ NzToolTipModule.decorators = [
                 declarations: [NzToolTipComponent, NzTooltipDirective],
                 exports: [NzToolTipComponent, NzTooltipDirective],
                 entryComponents: [NzToolTipComponent],
-                imports: [CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule]
+                imports: [BidiModule, CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule]
             },] }
 ];
 

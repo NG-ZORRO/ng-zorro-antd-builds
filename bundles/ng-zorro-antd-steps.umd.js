@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/steps', ['exports', '@angular/core', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].steps = {}), global.ng.core, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon));
-}(this, (function (exports, core, util, rxjs, operators, common, outlet, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/bidi'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/steps', ['exports', '@angular/core', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/bidi', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].steps = {}), global.ng.core, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.bidi, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon));
+}(this, (function (exports, core, util, rxjs, operators, bidi, common, outlet, icon) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -369,6 +369,14 @@
                 this.click$.next(this.index);
             }
         };
+        NzStepComponent.prototype.enable = function () {
+            this.nzDisabled = false;
+            this.cdr.markForCheck();
+        };
+        NzStepComponent.prototype.disable = function () {
+            this.nzDisabled = true;
+            this.cdr.markForCheck();
+        };
         NzStepComponent.prototype.markForCheck = function () {
             this.cdr.markForCheck();
         };
@@ -384,7 +392,7 @@
                     selector: 'nz-step',
                     exportAs: 'nzStep',
                     preserveWhitespaces: false,
-                    template: "\n    <div\n      class=\"ant-steps-item-container\"\n      [attr.role]=\"clickable && !nzDisabled ? 'button' : null\"\n      [tabindex]=\"clickable && !nzDisabled ? 0 : null\"\n      (click)=\"onClick()\"\n    >\n      <div class=\"ant-steps-item-tail\" *ngIf=\"last !== true\"></div>\n      <div class=\"ant-steps-item-icon\">\n        <ng-template [ngIf]=\"!showProcessDot\">\n          <span class=\"ant-steps-icon\" *ngIf=\"nzStatus === 'finish' && !nzIcon\"><i nz-icon nzType=\"check\"></i></span>\n          <span class=\"ant-steps-icon\" *ngIf=\"nzStatus === 'error'\"><i nz-icon nzType=\"close\"></i></span>\n          <span class=\"ant-steps-icon\" *ngIf=\"(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon\">{{ index + 1 }}</span>\n          <span class=\"ant-steps-icon\" *ngIf=\"nzIcon\">\n            <ng-container *nzStringTemplateOutlet=\"nzIcon; let icon\">\n              <i nz-icon [nzType]=\"!oldAPIIcon && icon\" [ngClass]=\"oldAPIIcon && icon\"></i>\n            </ng-container>\n          </span>\n        </ng-template>\n        <ng-template [ngIf]=\"showProcessDot\">\n          <span class=\"ant-steps-icon\">\n            <ng-template #processDotTemplate>\n              <span class=\"ant-steps-icon-dot\"></span>\n            </ng-template>\n            <ng-template\n              [ngTemplateOutlet]=\"customProcessTemplate || processDotTemplate\"\n              [ngTemplateOutletContext]=\"{\n                $implicit: processDotTemplate,\n                status: nzStatus,\n                index: index\n              }\"\n            >\n            </ng-template>\n          </span>\n        </ng-template>\n      </div>\n      <div class=\"ant-steps-item-content\">\n        <div class=\"ant-steps-item-title\">\n          <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n          <div *ngIf=\"nzSubtitle\" class=\"ant-steps-item-subtitle\">\n            <ng-container *nzStringTemplateOutlet=\"nzSubtitle\">{{ nzSubtitle }}</ng-container>\n          </div>\n        </div>\n        <div class=\"ant-steps-item-description\">\n          <ng-container *nzStringTemplateOutlet=\"nzDescription\">{{ nzDescription }}</ng-container>\n        </div>\n      </div>\n    </div>\n  ",
+                    template: "\n    <div\n      class=\"ant-steps-item-container\"\n      [attr.role]=\"clickable && !nzDisabled ? 'button' : null\"\n      [tabindex]=\"clickable && !nzDisabled ? 0 : null\"\n      (click)=\"onClick()\"\n    >\n      <div class=\"ant-steps-item-tail\" *ngIf=\"last !== true\"></div>\n      <div class=\"ant-steps-item-icon\">\n        <ng-template [ngIf]=\"!showProcessDot\">\n          <span class=\"ant-steps-icon\" *ngIf=\"nzStatus === 'finish' && !nzIcon\"><i nz-icon nzType=\"check\"></i></span>\n          <span class=\"ant-steps-icon\" *ngIf=\"nzStatus === 'error'\"><i nz-icon nzType=\"close\"></i></span>\n          <span class=\"ant-steps-icon\" *ngIf=\"(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon\">{{ index + 1 }}</span>\n          <span class=\"ant-steps-icon\" *ngIf=\"nzIcon\">\n            <ng-container *nzStringTemplateOutlet=\"nzIcon; let icon\">\n              <i nz-icon [nzType]=\"!oldAPIIcon && icon\" [ngClass]=\"oldAPIIcon && icon\"></i>\n            </ng-container>\n          </span>\n        </ng-template>\n        <ng-template [ngIf]=\"showProcessDot\">\n          <span class=\"ant-steps-icon\">\n            <ng-template #processDotTemplate>\n              <span class=\"ant-steps-icon-dot\"></span>\n            </ng-template>\n            <ng-template\n              [ngTemplateOutlet]=\"customProcessTemplate || processDotTemplate\"\n              [ngTemplateOutletContext]=\"{\n                $implicit: processDotTemplate,\n                status: nzStatus,\n                index: index\n              }\"\n            ></ng-template>\n          </span>\n        </ng-template>\n      </div>\n      <div class=\"ant-steps-item-content\">\n        <div class=\"ant-steps-item-title\">\n          <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n          <div *ngIf=\"nzSubtitle\" class=\"ant-steps-item-subtitle\">\n            <ng-container *nzStringTemplateOutlet=\"nzSubtitle\">{{ nzSubtitle }}</ng-container>\n          </div>\n        </div>\n        <div class=\"ant-steps-item-description\">\n          <ng-container *nzStringTemplateOutlet=\"nzDescription\">{{ nzDescription }}</ng-container>\n        </div>\n      </div>\n    </div>\n  ",
                     host: {
                         class: 'ant-steps-item',
                         '[class.ant-steps-item-wait]': 'nzStatus === "wait"',
@@ -416,7 +424,9 @@
     ], NzStepComponent.prototype, "nzDisabled", void 0);
 
     var NzStepsComponent = /** @class */ (function () {
-        function NzStepsComponent() {
+        function NzStepsComponent(cdr, directionality) {
+            this.cdr = cdr;
+            this.directionality = directionality;
             this.nzCurrent = 0;
             this.nzDirection = 'horizontal';
             this.nzLabelPlacement = 'horizontal';
@@ -428,6 +438,8 @@
             this.destroy$ = new rxjs.Subject();
             this.showProcessDot = false;
             this.classMap = {};
+            this.dir = 'ltr';
+            this.setClassMap();
         }
         Object.defineProperty(NzStepsComponent.prototype, "nzProgressDot", {
             set: function (value) {
@@ -452,6 +464,14 @@
             }
         };
         NzStepsComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.setClassMap();
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
             this.setClassMap();
             this.updateChildrenSteps();
         };
@@ -496,15 +516,16 @@
             }
         };
         NzStepsComponent.prototype.setClassMap = function () {
-            var _a;
-            this.classMap = (_a = {},
-                _a["ant-steps-" + this.nzDirection] = true,
-                _a["ant-steps-label-horizontal"] = this.nzDirection === 'horizontal',
-                _a["ant-steps-label-vertical"] = (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
-                _a["ant-steps-dot"] = this.showProcessDot,
-                _a['ant-steps-small'] = this.nzSize === 'small',
-                _a['ant-steps-navigation'] = this.nzType === 'navigation',
-                _a);
+            var _b;
+            this.classMap = (_b = {},
+                _b["ant-steps-" + this.nzDirection] = true,
+                _b["ant-steps-label-horizontal"] = this.nzDirection === 'horizontal',
+                _b["ant-steps-label-vertical"] = (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
+                _b["ant-steps-dot"] = this.showProcessDot,
+                _b['ant-steps-small'] = this.nzSize === 'small',
+                _b['ant-steps-navigation'] = this.nzType === 'navigation',
+                _b['ant-steps-rtl'] = this.dir === 'rtl',
+                _b);
         };
         return NzStepsComponent;
     }());
@@ -518,6 +539,10 @@
                     template: "\n    <div class=\"ant-steps\" [ngClass]=\"classMap\">\n      <ng-content></ng-content>\n    </div>\n  "
                 },] }
     ];
+    NzStepsComponent.ctorParameters = function () { return [
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
+    ]; };
     NzStepsComponent.propDecorators = {
         steps: [{ type: core.ContentChildren, args: [NzStepComponent,] }],
         nzCurrent: [{ type: core.Input }],
@@ -542,7 +567,7 @@
     }());
     NzStepsModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, icon.NzIconModule, outlet.NzOutletModule],
+                    imports: [bidi.BidiModule, common.CommonModule, icon.NzIconModule, outlet.NzOutletModule],
                     exports: [NzStepsComponent, NzStepComponent],
                     declarations: [NzStepsComponent, NzStepComponent]
                 },] }

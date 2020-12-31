@@ -2,7 +2,7 @@ import { __decorate, __metadata } from 'tslib';
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { TAB, ESCAPE, BACKSPACE } from '@angular/cdk/keycodes';
 import { CdkOverlayOrigin, CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
-import { Injectable, EventEmitter, Component, Self, Injector, forwardRef, Renderer2, ChangeDetectorRef, ElementRef, Host, Optional, Input, Output, ViewChild, ContentChild, NgModule } from '@angular/core';
+import { Injectable, EventEmitter, Component, Self, Injector, forwardRef, Renderer2, ChangeDetectorRef, ElementRef, Optional, Host, Input, Output, ViewChild, ContentChild, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -11,8 +11,9 @@ import { NzTreeBaseService, NzTreeBase, NzTreeHigherOrderServiceToken } from 'ng
 import { isNotNil, InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent, NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
-import { merge, of } from 'rxjs';
-import { tap, filter } from 'rxjs/operators';
+import { Subject, merge, of } from 'rxjs';
+import { takeUntil, tap, filter } from 'rxjs/operators';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
@@ -38,12 +39,13 @@ function higherOrderServiceFactory(injector) {
 const NZ_CONFIG_MODULE_NAME = 'treeSelect';
 const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown';
 class NzTreeSelectComponent extends NzTreeBase {
-    constructor(nzTreeService, nzConfigService, renderer, cdr, elementRef, focusMonitor, noAnimation) {
+    constructor(nzTreeService, nzConfigService, renderer, cdr, elementRef, directionality, focusMonitor, noAnimation) {
         super(nzTreeService);
         this.nzConfigService = nzConfigService;
         this.renderer = renderer;
         this.cdr = cdr;
         this.elementRef = elementRef;
+        this.directionality = directionality;
         this.focusMonitor = focusMonitor;
         this.noAnimation = noAnimation;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
@@ -87,8 +89,12 @@ class NzTreeSelectComponent extends NzTreeBase {
         this.selectedNodes = [];
         this.expandedKeys = [];
         this.value = [];
+        this.dir = 'ltr';
+        this.destroy$ = new Subject();
         this.onChange = _value => { };
         this.onTouched = () => { };
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-select');
         this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
         this.renderer.addClass(this.elementRef.nativeElement, 'ant-tree-select');
     }
@@ -108,8 +114,14 @@ class NzTreeSelectComponent extends NzTreeBase {
         return this.nzMultiple || this.nzCheckable;
     }
     ngOnInit() {
+        var _a;
         this.isDestroy = false;
         this.selectionChangeSubscription = this.subscribeSelectionChange();
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
         this.focusChangeSubscription = this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
             if (!focusOrigin) {
                 this.focused = false;
@@ -128,6 +140,8 @@ class NzTreeSelectComponent extends NzTreeBase {
         this.isDestroy = true;
         this.closeDropDown();
         this.selectionChangeSubscription.unsubscribe();
+        this.destroy$.next();
+        this.destroy$.complete();
         this.focusChangeSubscription.unsubscribe();
     }
     isComposingChange(isComposing) {
@@ -362,6 +376,8 @@ NzTreeSelectComponent.decorators = [
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
+        [class.ant-tree-select-dropdown-rtl]="dir === 'rtl'"
+        [dir]="dir"
         [ngStyle]="nzDropdownStyle"
       >
         <nz-tree
@@ -474,8 +490,8 @@ NzTreeSelectComponent.decorators = [
                     }
                 ],
                 host: {
-                    '[class.ant-select]': 'true',
                     '[class.ant-select-lg]': 'nzSize==="large"',
+                    '[class.ant-select-rtl]': 'dir==="rtl"',
                     '[class.ant-select-sm]': 'nzSize==="small"',
                     '[class.ant-select-disabled]': 'nzDisabled',
                     '[class.ant-select-single]': '!isMultiple',
@@ -496,6 +512,7 @@ NzTreeSelectComponent.ctorParameters = () => [
     { type: Renderer2 },
     { type: ChangeDetectorRef },
     { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: FocusMonitor },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
@@ -611,6 +628,7 @@ class NzTreeSelectModule {
 NzTreeSelectModule.decorators = [
     { type: NgModule, args: [{
                 imports: [
+                    BidiModule,
                     CommonModule,
                     OverlayModule,
                     FormsModule,

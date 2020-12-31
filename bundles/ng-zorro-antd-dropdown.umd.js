@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/keycodes'), require('@angular/cdk/overlay'), require('@angular/cdk/platform'), require('@angular/cdk/portal'), require('@angular/core'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/button'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/menu'), require('ng-zorro-antd/core/animation')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/dropdown', ['exports', '@angular/cdk/keycodes', '@angular/cdk/overlay', '@angular/cdk/platform', '@angular/cdk/portal', '@angular/core', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/forms', 'ng-zorro-antd/button', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/menu', 'ng-zorro-antd/core/animation'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].dropdown = {}), global.ng.cdk.keycodes, global.ng.cdk.overlay, global.ng.cdk.platform, global.ng.cdk.portal, global.ng.core, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.forms, global['ng-zorro-antd'].button, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].menu, global['ng-zorro-antd'].core.animation));
-}(this, (function (exports, keycodes, i1, platform, portal, i0, logger, overlay, util, rxjs, operators, common, forms, button, noAnimation, outlet, icon, menu, animation) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/keycodes'), require('@angular/cdk/overlay'), require('@angular/cdk/platform'), require('@angular/cdk/portal'), require('@angular/core'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/bidi'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/button'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/menu'), require('ng-zorro-antd/core/animation')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/dropdown', ['exports', '@angular/cdk/keycodes', '@angular/cdk/overlay', '@angular/cdk/platform', '@angular/cdk/portal', '@angular/core', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/bidi', '@angular/common', '@angular/forms', 'ng-zorro-antd/button', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/menu', 'ng-zorro-antd/core/animation'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].dropdown = {}), global.ng.cdk.keycodes, global.ng.cdk.overlay, global.ng.cdk.platform, global.ng.cdk.portal, global.ng.core, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.bidi, global.ng.common, global.ng.forms, global['ng-zorro-antd'].button, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].menu, global['ng-zorro-antd'].core.animation));
+}(this, (function (exports, keycodes, i1, platform, portal, i0, logger, overlay, util, rxjs, operators, bidi, common, forms, button, noAnimation, outlet, icon, menu, animation) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -327,10 +327,11 @@
             this.nzTrigger = 'hover';
             this.nzMatchWidthElement = null;
             /**
-             * @deprecated Not supported.
-             * @breaking-change 11.0.0
+             * @deprecated Not supported, use `nzHasBackDrop` instead.
+             * @breaking-change 12.0.0
              */
-            this.nzBackdrop = true;
+            this.nzBackdrop = false;
+            this.nzHasBackdrop = false;
             this.nzClickHide = true;
             this.nzDisabled = false;
             this.nzVisible = false;
@@ -338,6 +339,8 @@
             this.nzOverlayStyle = {};
             this.nzPlacement = 'bottomLeft';
             this.nzVisibleChange = new i0.EventEmitter();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-dropdown-trigger');
         }
         NzDropDownDirective.prototype.setDropdownMenuValue = function (key, value) {
             if (this.nzDropdownMenu) {
@@ -392,11 +395,10 @@
                                 positionStrategy: _this.positionStrategy,
                                 minWidth: triggerWidth,
                                 disposeOnNavigation: true,
-                                hasBackdrop: _this.nzTrigger === 'click',
-                                backdropClass: _this.nzBackdrop ? undefined : 'nz-overlay-transparent-backdrop',
+                                hasBackdrop: (_this.nzHasBackdrop || _this.nzBackdrop) && _this.nzTrigger === 'click',
                                 scrollStrategy: _this.overlay.scrollStrategies.reposition()
                             });
-                            rxjs.merge(_this.overlayRef.backdropClick(), _this.overlayRef.detachments(), _this.overlayRef.keydownEvents().pipe(operators.filter(function (e) { return e.keyCode === keycodes.ESCAPE && !keycodes.hasModifierKey(e); })))
+                            rxjs.merge(_this.overlayRef.backdropClick(), _this.overlayRef.detachments(), _this.overlayRef.outsidePointerEvents().pipe(operators.filter(function (e) { return !_this.elementRef.nativeElement.contains(e.target); })), _this.overlayRef.keydownEvents().pipe(operators.filter(function (e) { return e.keyCode === keycodes.ESCAPE && !keycodes.hasModifierKey(e); })))
                                 .pipe(operators.mapTo(false), operators.takeUntil(_this.destroy$))
                                 .subscribe(_this.overlayClose$);
                         }
@@ -455,7 +457,7 @@
                 this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
             }
             if (nzBackdrop) {
-                logger.warnDeprecation('`nzBackdrop` in dropdown component will be removed in 11.0.0.');
+                logger.warnDeprecation('`nzBackdrop` in dropdown component will be removed in 12.0.0, please use `nzHasBackdrop` instead.');
             }
         };
         return NzDropDownDirective;
@@ -463,10 +465,7 @@
     NzDropDownDirective.decorators = [
         { type: i0.Directive, args: [{
                     selector: '[nz-dropdown]',
-                    exportAs: 'nzDropdown',
-                    host: {
-                        '[class.ant-dropdown-trigger]': 'true'
-                    }
+                    exportAs: 'nzDropdown'
                 },] }
     ];
     NzDropDownDirective.ctorParameters = function () { return [
@@ -481,6 +480,7 @@
         nzTrigger: [{ type: i0.Input }],
         nzMatchWidthElement: [{ type: i0.Input }],
         nzBackdrop: [{ type: i0.Input }],
+        nzHasBackdrop: [{ type: i0.Input }],
         nzClickHide: [{ type: i0.Input }],
         nzDisabled: [{ type: i0.Input }],
         nzVisible: [{ type: i0.Input }],
@@ -493,6 +493,10 @@
         util.InputBoolean(),
         __metadata("design:type", Object)
     ], NzDropDownDirective.prototype, "nzBackdrop", void 0);
+    __decorate([
+        util.InputBoolean(),
+        __metadata("design:type", Object)
+    ], NzDropDownDirective.prototype, "nzHasBackdrop", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Object)
@@ -524,18 +528,21 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzDropDownADirective = /** @class */ (function () {
-        function NzDropDownADirective() {
+        function NzDropDownADirective(elementRef) {
+            this.elementRef = elementRef;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-dropdown-link');
         }
         return NzDropDownADirective;
     }());
     NzDropDownADirective.decorators = [
         { type: i0.Directive, args: [{
-                    selector: 'a[nz-dropdown]',
-                    host: {
-                        '[class.ant-dropdown-link]': 'true'
-                    }
+                    selector: 'a[nz-dropdown]'
                 },] }
     ];
+    NzDropDownADirective.ctorParameters = function () { return [
+        { type: i0.ElementRef }
+    ]; };
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -571,18 +578,21 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzDropdownMenuComponent = /** @class */ (function () {
-        function NzDropdownMenuComponent(cdr, elementRef, renderer, viewContainerRef, nzMenuService, noAnimation) {
+        function NzDropdownMenuComponent(cdr, elementRef, renderer, viewContainerRef, nzMenuService, directionality, noAnimation) {
             this.cdr = cdr;
             this.elementRef = elementRef;
             this.renderer = renderer;
             this.viewContainerRef = viewContainerRef;
             this.nzMenuService = nzMenuService;
+            this.directionality = directionality;
             this.noAnimation = noAnimation;
             this.mouseState$ = new rxjs.BehaviorSubject(false);
             this.isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
             this.descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
             this.nzOverlayClassName = '';
             this.nzOverlayStyle = {};
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
         }
         NzDropdownMenuComponent.prototype.setMouseState = function (visible) {
             this.mouseState$.next(visible);
@@ -591,8 +601,21 @@
             this[key] = value;
             this.cdr.markForCheck();
         };
+        NzDropdownMenuComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+        };
         NzDropdownMenuComponent.prototype.ngAfterContentInit = function () {
             this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
+        };
+        NzDropdownMenuComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         return NzDropdownMenuComponent;
     }());
@@ -609,7 +632,7 @@
                             useValue: true
                         }
                     ],
-                    template: "\n    <ng-template>\n      <div\n        class=\"ant-dropdown\"\n        [ngClass]=\"nzOverlayClassName\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@slideMotion]=\"'enter'\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        (mouseenter)=\"setMouseState(true)\"\n        (mouseleave)=\"setMouseState(false)\"\n      >\n        <ng-content></ng-content>\n      </div>\n    </ng-template>\n  ",
+                    template: "\n    <ng-template>\n      <div\n        class=\"ant-dropdown\"\n        [class.ant-dropdown-rtl]=\"dir === 'rtl'\"\n        [ngClass]=\"nzOverlayClassName\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@slideMotion]=\"'enter'\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        (mouseenter)=\"setMouseState(true)\"\n        (mouseleave)=\"setMouseState(false)\"\n      >\n        <ng-content></ng-content>\n      </div>\n    </ng-template>\n  ",
                     preserveWhitespaces: false,
                     encapsulation: i0.ViewEncapsulation.None,
                     changeDetection: i0.ChangeDetectionStrategy.OnPush
@@ -621,6 +644,7 @@
         { type: i0.Renderer2 },
         { type: i0.ViewContainerRef },
         { type: menu.MenuService },
+        { type: bidi.Directionality, decorators: [{ type: i0.Optional }] },
         { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: i0.Host }, { type: i0.Optional }] }
     ]; };
     NzDropdownMenuComponent.propDecorators = {
@@ -639,6 +663,7 @@
     NzDropDownModule.decorators = [
         { type: i0.NgModule, args: [{
                     imports: [
+                        bidi.BidiModule,
                         common.CommonModule,
                         i1.OverlayModule,
                         forms.FormsModule,

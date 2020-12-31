@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/a11y'), require('@angular/cdk/keycodes'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/core/util'), require('@angular/common'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/input-number', ['exports', '@angular/cdk/a11y', '@angular/cdk/keycodes', '@angular/core', '@angular/forms', 'ng-zorro-antd/core/util', '@angular/common', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['input-number'] = {}), global.ng.cdk.a11y, global.ng.cdk.keycodes, global.ng.core, global.ng.forms, global['ng-zorro-antd'].core.util, global.ng.common, global['ng-zorro-antd'].icon));
-}(this, (function (exports, a11y, keycodes, core, forms, util, common, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/a11y'), require('@angular/cdk/bidi'), require('@angular/cdk/keycodes'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('ng-zorro-antd/icon')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/input-number', ['exports', '@angular/cdk/a11y', '@angular/cdk/bidi', '@angular/cdk/keycodes', '@angular/core', '@angular/forms', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/common', 'ng-zorro-antd/icon'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['input-number'] = {}), global.ng.cdk.a11y, global.ng.cdk.bidi, global.ng.cdk.keycodes, global.ng.core, global.ng.forms, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.common, global['ng-zorro-antd'].icon));
+}(this, (function (exports, a11y, bidi, keycodes, core, forms, util, rxjs, operators, common, icon) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -305,18 +305,17 @@
         return value;
     }
 
-    /**
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
-     */
     var NzInputNumberComponent = /** @class */ (function () {
-        function NzInputNumberComponent(elementRef, cdr, focusMonitor) {
+        function NzInputNumberComponent(elementRef, cdr, focusMonitor, directionality) {
             this.elementRef = elementRef;
             this.cdr = cdr;
             this.focusMonitor = focusMonitor;
+            this.directionality = directionality;
+            this.destroy$ = new rxjs.Subject();
             this.isFocused = false;
             this.disabledUp = false;
             this.disabledDown = false;
+            this.dir = 'ltr';
             this.onChange = function () { };
             this.onTouched = function () { };
             this.nzBlur = new core.EventEmitter();
@@ -336,6 +335,8 @@
             this.nzDisabled = false;
             this.nzAutoFocus = false;
             this.nzFormatter = function (value) { return value; };
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-input-number');
         }
         NzInputNumberComponent.prototype.onModelChange = function (value) {
             this.parsedValue = this.nzParser(value);
@@ -569,6 +570,7 @@
         };
         NzInputNumberComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             this.focusMonitor.monitor(this.elementRef, true).subscribe(function (focusOrigin) {
                 if (!focusOrigin) {
                     _this.isFocused = false;
@@ -580,6 +582,10 @@
                     _this.isFocused = true;
                     _this.nzFocus.emit();
                 }
+            });
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
             });
         };
         NzInputNumberComponent.prototype.ngOnChanges = function (changes) {
@@ -596,6 +602,8 @@
         };
         NzInputNumberComponent.prototype.ngOnDestroy = function () {
             this.focusMonitor.stopMonitoring(this.elementRef);
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         return NzInputNumberComponent;
     }());
@@ -614,18 +622,19 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     encapsulation: core.ViewEncapsulation.None,
                     host: {
-                        '[class.ant-input-number]': 'true',
                         '[class.ant-input-number-focused]': 'isFocused',
                         '[class.ant-input-number-lg]': "nzSize === 'large'",
                         '[class.ant-input-number-sm]': "nzSize === 'small'",
-                        '[class.ant-input-number-disabled]': 'nzDisabled'
+                        '[class.ant-input-number-disabled]': 'nzDisabled',
+                        '[class.ant-input-number-rtl]': "dir === 'rtl'"
                     }
                 },] }
     ];
     NzInputNumberComponent.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: core.ChangeDetectorRef },
-        { type: a11y.FocusMonitor }
+        { type: a11y.FocusMonitor },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzInputNumberComponent.propDecorators = {
         nzBlur: [{ type: core.Output }],
@@ -665,7 +674,7 @@
     }());
     NzInputNumberModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, forms.FormsModule, icon.NzIconModule],
+                    imports: [bidi.BidiModule, common.CommonModule, forms.FormsModule, icon.NzIconModule],
                     declarations: [NzInputNumberComponent],
                     exports: [NzInputNumberComponent]
                 },] }

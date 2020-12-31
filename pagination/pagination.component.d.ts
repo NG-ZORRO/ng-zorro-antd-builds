@@ -2,7 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
@@ -13,6 +14,8 @@ export declare class NzPaginationComponent implements OnInit, OnDestroy, OnChang
     private cdr;
     private breakpointService;
     protected nzConfigService: NzConfigService;
+    private directionality;
+    private elementRef;
     readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzDisabled: BooleanInput;
     static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
@@ -44,6 +47,7 @@ export declare class NzPaginationComponent implements OnInit, OnDestroy, OnChang
     showPagination: boolean;
     locale: NzPaginationI18nInterface;
     size: 'default' | 'small';
+    dir: Direction;
     private destroy$;
     private total$;
     validatePageIndex(value: number, lastIndex: number): number;
@@ -51,7 +55,7 @@ export declare class NzPaginationComponent implements OnInit, OnDestroy, OnChang
     onPageSizeChange(size: number): void;
     onTotalChange(total: number): void;
     getLastIndex(total: number, pageSize: number): number;
-    constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, breakpointService: NzBreakpointService, nzConfigService: NzConfigService);
+    constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, breakpointService: NzBreakpointService, nzConfigService: NzConfigService, directionality: Directionality, elementRef: ElementRef);
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;

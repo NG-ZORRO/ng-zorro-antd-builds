@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/layout'), require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/grid'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/tooltip'), require('@angular/forms'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/config')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/form', ['exports', '@angular/cdk/layout', '@angular/cdk/platform', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/grid', 'ng-zorro-antd/icon', 'ng-zorro-antd/tooltip', '@angular/forms', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/config'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].form = {}), global.ng.cdk.layout, global.ng.cdk.platform, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].grid, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].tooltip, global.ng.forms, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.config));
-}(this, (function (exports, layout, platform, common, core, outlet, grid, icon, tooltip, forms, animation, util, i18n, rxjs, operators, config) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/layout'), require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/grid'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/tooltip'), require('@angular/forms'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/config')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/form', ['exports', '@angular/cdk/bidi', '@angular/cdk/layout', '@angular/cdk/platform', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/grid', 'ng-zorro-antd/icon', 'ng-zorro-antd/tooltip', '@angular/forms', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/config'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].form = {}), global.ng.cdk.bidi, global.ng.cdk.layout, global.ng.cdk.platform, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].grid, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].tooltip, global.ng.forms, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.config));
+}(this, (function (exports, bidi, layout, platform, common, core, outlet, grid, icon, tooltip, forms, animation, util, i18n, rxjs, operators, config) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -315,18 +315,26 @@
         theme: 'outline'
     };
     var NzFormDirective = /** @class */ (function () {
-        function NzFormDirective(nzConfigService, elementRef, renderer) {
+        function NzFormDirective(nzConfigService, elementRef, renderer, directionality) {
+            var _this = this;
+            var _a;
             this.nzConfigService = nzConfigService;
             this.renderer = renderer;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzLayout = 'horizontal';
             this.nzNoColon = false;
             this.nzAutoTips = {};
             this.nzDisableAutoTips = false;
             this.nzTooltipIcon = DefaultTooltipIcon;
+            this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
             this.inputChanges$ = new rxjs.Subject();
             this.renderer.addClass(elementRef.nativeElement, 'ant-form');
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+            });
         }
         NzFormDirective.prototype.getInputObservable = function (changeType) {
             return this.inputChanges$.pipe(operators.filter(function (changes) { return changeType in changes; }), operators.map(function (value) { return value[changeType]; }));
@@ -348,14 +356,16 @@
                     host: {
                         '[class.ant-form-horizontal]': "nzLayout === 'horizontal'",
                         '[class.ant-form-vertical]': "nzLayout === 'vertical'",
-                        '[class.ant-form-inline]': "nzLayout === 'inline'"
+                        '[class.ant-form-inline]': "nzLayout === 'inline'",
+                        '[class.ant-form-rtl]': "dir === 'rtl'"
                     }
                 },] }
     ];
     NzFormDirective.ctorParameters = function () { return [
         { type: config.NzConfigService },
         { type: core.ElementRef },
-        { type: core.Renderer2 }
+        { type: core.Renderer2 },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzFormDirective.propDecorators = {
         nzLayout: [{ type: core.Input }],
@@ -836,7 +846,7 @@
                         NzFormTextComponent,
                         NzFormSplitComponent
                     ],
-                    imports: [common.CommonModule, grid.NzGridModule, icon.NzIconModule, tooltip.NzToolTipModule, layout.LayoutModule, platform.PlatformModule, outlet.NzOutletModule]
+                    imports: [bidi.BidiModule, common.CommonModule, grid.NzGridModule, icon.NzIconModule, tooltip.NzToolTipModule, layout.LayoutModule, platform.PlatformModule, outlet.NzOutletModule]
                 },] }
     ];
 

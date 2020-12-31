@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/date-picker'), require('ng-zorro-antd/i18n'), require('ng-zorro-antd/radio'), require('ng-zorro-antd/select'), require('ng-zorro-antd/core/time'), require('ng-zorro-antd/core/util')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/calendar', ['exports', '@angular/common', '@angular/core', '@angular/forms', 'ng-zorro-antd/date-picker', 'ng-zorro-antd/i18n', 'ng-zorro-antd/radio', 'ng-zorro-antd/select', 'ng-zorro-antd/core/time', 'ng-zorro-antd/core/util'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].calendar = {}), global.ng.common, global.ng.core, global.ng.forms, global['ng-zorro-antd']['date-picker'], global['ng-zorro-antd'].i18n, global['ng-zorro-antd'].radio, global['ng-zorro-antd'].select, global['ng-zorro-antd'].core.time, global['ng-zorro-antd'].core.util));
-}(this, (function (exports, common, core, forms, datePicker, i18n, radio, select, time, util) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/common'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/date-picker'), require('ng-zorro-antd/i18n'), require('ng-zorro-antd/radio'), require('ng-zorro-antd/select'), require('ng-zorro-antd/core/time'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/calendar', ['exports', '@angular/cdk/bidi', '@angular/common', '@angular/core', '@angular/forms', 'ng-zorro-antd/date-picker', 'ng-zorro-antd/i18n', 'ng-zorro-antd/radio', 'ng-zorro-antd/select', 'ng-zorro-antd/core/time', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].calendar = {}), global.ng.cdk.bidi, global.ng.common, global.ng.core, global.ng.forms, global['ng-zorro-antd']['date-picker'], global['ng-zorro-antd'].i18n, global['ng-zorro-antd'].radio, global['ng-zorro-antd'].select, global['ng-zorro-antd'].core.time, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators));
+}(this, (function (exports, bidi, common, core, forms, datePicker, i18n, radio, select, time, util, rxjs, operators) { 'use strict';
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -58,9 +58,10 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzCalendarHeaderComponent = /** @class */ (function () {
-        function NzCalendarHeaderComponent(i18n, dateHelper) {
+        function NzCalendarHeaderComponent(i18n, dateHelper, elementRef) {
             this.i18n = i18n;
             this.dateHelper = dateHelper;
+            this.elementRef = elementRef;
             this.mode = 'month';
             this.fullscreen = true;
             this.activeDate = new time.CandyDate();
@@ -72,6 +73,8 @@
             this.yearTotal = 20;
             this.years = [];
             this.months = [];
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-fullcalendar-header');
         }
         Object.defineProperty(NzCalendarHeaderComponent.prototype, "activeYear", {
             get: function () {
@@ -142,14 +145,14 @@
                     exportAs: 'nzCalendarHeader',
                     template: "\n    <div class=\"ant-picker-calendar-header\">\n      <nz-select\n        class=\"ant-picker-calendar-year-select\"\n        [nzSize]=\"size\"\n        [nzDropdownMatchSelectWidth]=\"false\"\n        [ngModel]=\"activeYear\"\n        (ngModelChange)=\"updateYear($event)\"\n      >\n        <nz-option *ngFor=\"let year of years\" [nzLabel]=\"year.label\" [nzValue]=\"year.value\"></nz-option>\n      </nz-select>\n\n      <nz-select\n        *ngIf=\"mode === 'month'\"\n        class=\"ant-picker-calendar-month-select\"\n        [nzSize]=\"size\"\n        [nzDropdownMatchSelectWidth]=\"false\"\n        [ngModel]=\"activeMonth\"\n        (ngModelChange)=\"monthChange.emit($event)\"\n      >\n        <nz-option *ngFor=\"let month of months\" [nzLabel]=\"month.label\" [nzValue]=\"month.value\"></nz-option>\n      </nz-select>\n\n      <nz-radio-group class=\"ant-picker-calendar-mode-switch\" [(ngModel)]=\"mode\" (ngModelChange)=\"modeChange.emit($event)\" [nzSize]=\"size\">\n        <label nz-radio-button nzValue=\"month\">{{ monthTypeText }}</label>\n        <label nz-radio-button nzValue=\"year\">{{ yearTypeText }}</label>\n      </nz-radio-group>\n    </div>\n  ",
                     host: {
-                        '[style.display]': "'block'",
-                        '[class.ant-fullcalendar-header]': "true"
+                        '[style.display]': "'block'"
                     }
                 },] }
     ];
     NzCalendarHeaderComponent.ctorParameters = function () { return [
         { type: i18n.NzI18nService },
-        { type: i18n.DateHelperService }
+        { type: i18n.DateHelperService },
+        { type: core.ElementRef }
     ]; };
     NzCalendarHeaderComponent.propDecorators = {
         mode: [{ type: core.Input }],
@@ -466,10 +469,14 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzCalendarComponent = /** @class */ (function () {
-        function NzCalendarComponent(cdr) {
+        function NzCalendarComponent(cdr, elementRef, directionality) {
             this.cdr = cdr;
+            this.elementRef = elementRef;
+            this.directionality = directionality;
             this.activeDate = new time.CandyDate();
             this.prefixCls = 'ant-picker-calendar';
+            this.destroy$ = new rxjs.Subject();
+            this.dir = 'ltr';
             this.onChangeFn = function () { };
             this.onTouchFn = function () { };
             this.nzMode = 'month';
@@ -478,6 +485,8 @@
             this.nzSelectChange = new core.EventEmitter();
             this.nzValueChange = new core.EventEmitter();
             this.nzFullscreen = true;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-picker-calendar');
         }
         Object.defineProperty(NzCalendarComponent.prototype, "dateCell", {
             get: function () {
@@ -507,6 +516,14 @@
             enumerable: false,
             configurable: true
         });
+        NzCalendarComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function () {
+                _this.dir = _this.directionality.value;
+            });
+        };
         NzCalendarComponent.prototype.onModeChange = function (mode) {
             this.nzModeChange.emit(mode);
             this.nzPanelChange.emit({ date: this.activeDate.nativeDate, mode: mode });
@@ -549,6 +566,10 @@
                 this.updateDate(new time.CandyDate(this.nzValue), false);
             }
         };
+        NzCalendarComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
+        };
         return NzCalendarComponent;
     }());
     NzCalendarComponent.decorators = [
@@ -557,17 +578,19 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     selector: 'nz-calendar',
                     exportAs: 'nzCalendar',
-                    template: "\n    <nz-calendar-header\n      [fullscreen]=\"nzFullscreen\"\n      [activeDate]=\"activeDate\"\n      [(mode)]=\"nzMode\"\n      (modeChange)=\"onModeChange($event)\"\n      (yearChange)=\"onYearSelect($event)\"\n      (monthChange)=\"onMonthSelect($event)\"\n    >\n    </nz-calendar-header>\n\n    <div class=\"ant-picker-panel\">\n      <div class=\"ant-picker-{{ nzMode === 'month' ? 'date' : 'month' }}-panel\">\n        <div class=\"ant-picker-body\">\n          <ng-container *ngIf=\"nzMode === 'month'; then monthModeTable; else yearModeTable\"></ng-container>\n        </div>\n      </div>\n    </div>\n    <ng-template #monthModeTable>\n      <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->\n      <date-table\n        [prefixCls]=\"prefixCls\"\n        [value]=\"activeDate\"\n        [activeDate]=\"activeDate\"\n        [cellRender]=\"$any(dateCell)\"\n        [fullCellRender]=\"$any(dateFullCell)\"\n        [disabledDate]=\"nzDisabledDate\"\n        (valueChange)=\"onDateSelect($event)\"\n      ></date-table>\n    </ng-template>\n\n    <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->\n    <ng-template #yearModeTable>\n      <month-table\n        [prefixCls]=\"prefixCls\"\n        [value]=\"activeDate\"\n        [activeDate]=\"activeDate\"\n        [cellRender]=\"$any(monthCell)\"\n        [fullCellRender]=\"$any(monthFullCell)\"\n        (valueChange)=\"onDateSelect($event)\"\n      ></month-table>\n    </ng-template>\n  ",
+                    template: "\n    <nz-calendar-header\n      [fullscreen]=\"nzFullscreen\"\n      [activeDate]=\"activeDate\"\n      [(mode)]=\"nzMode\"\n      (modeChange)=\"onModeChange($event)\"\n      (yearChange)=\"onYearSelect($event)\"\n      (monthChange)=\"onMonthSelect($event)\"\n    ></nz-calendar-header>\n\n    <div class=\"ant-picker-panel\">\n      <div class=\"ant-picker-{{ nzMode === 'month' ? 'date' : 'month' }}-panel\">\n        <div class=\"ant-picker-body\">\n          <ng-container *ngIf=\"nzMode === 'month'; then monthModeTable; else yearModeTable\"></ng-container>\n        </div>\n      </div>\n    </div>\n    <ng-template #monthModeTable>\n      <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->\n      <date-table\n        [prefixCls]=\"prefixCls\"\n        [value]=\"activeDate\"\n        [activeDate]=\"activeDate\"\n        [cellRender]=\"$any(dateCell)\"\n        [fullCellRender]=\"$any(dateFullCell)\"\n        [disabledDate]=\"nzDisabledDate\"\n        (valueChange)=\"onDateSelect($event)\"\n      ></date-table>\n    </ng-template>\n\n    <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->\n    <ng-template #yearModeTable>\n      <month-table\n        [prefixCls]=\"prefixCls\"\n        [value]=\"activeDate\"\n        [activeDate]=\"activeDate\"\n        [cellRender]=\"$any(monthCell)\"\n        [fullCellRender]=\"$any(monthFullCell)\"\n        (valueChange)=\"onDateSelect($event)\"\n      ></month-table>\n    </ng-template>\n  ",
                     host: {
-                        '[class.ant-picker-calendar]': 'true',
                         '[class.ant-picker-calendar-full]': 'nzFullscreen',
-                        '[class.ant-picker-calendar-mini]': '!nzFullscreen'
+                        '[class.ant-picker-calendar-mini]': '!nzFullscreen',
+                        '[class.ant-picker-calendar-rtl]': "dir === 'rtl'"
                     },
                     providers: [{ provide: forms.NG_VALUE_ACCESSOR, useExisting: core.forwardRef(function () { return NzCalendarComponent; }), multi: true }]
                 },] }
     ];
     NzCalendarComponent.ctorParameters = function () { return [
-        { type: core.ChangeDetectorRef }
+        { type: core.ChangeDetectorRef },
+        { type: core.ElementRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzCalendarComponent.propDecorators = {
         nzMode: [{ type: core.Input }],
@@ -612,7 +635,7 @@
                         NzMonthFullCellDirective
                     ],
                     exports: [NzCalendarComponent, NzDateCellDirective, NzDateFullCellDirective, NzMonthCellDirective, NzMonthFullCellDirective],
-                    imports: [common.CommonModule, forms.FormsModule, i18n.NzI18nModule, radio.NzRadioModule, select.NzSelectModule, datePicker.LibPackerModule]
+                    imports: [bidi.BidiModule, common.CommonModule, forms.FormsModule, i18n.NzI18nModule, radio.NzRadioModule, select.NzSelectModule, datePicker.LibPackerModule]
                 },] }
     ];
 

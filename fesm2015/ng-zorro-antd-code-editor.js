@@ -156,6 +156,7 @@ class NzCodeEditorComponent {
         this.onChange = (_value) => { };
         this.onTouch = () => { };
         this.el = elementRef.nativeElement;
+        this.el.classList.add('ant-code-editor');
     }
     set nzEditorOption(value) {
         this.editorOption$.next(value);
@@ -331,9 +332,6 @@ NzCodeEditorComponent.decorators = [
       <ng-template [ngTemplateOutlet]="nzToolkit"></ng-template>
     </div>
   `,
-                host: {
-                    '[class.ant-code-editor]': 'true'
-                },
                 providers: [
                     {
                         provide: NG_VALUE_ACCESSOR,

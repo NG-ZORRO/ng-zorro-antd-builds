@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/a11y'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/core/util'), require('@angular/common')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/checkbox', ['exports', '@angular/cdk/a11y', '@angular/core', '@angular/forms', 'ng-zorro-antd/core/util', '@angular/common'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].checkbox = {}), global.ng.cdk.a11y, global.ng.core, global.ng.forms, global['ng-zorro-antd'].core.util, global.ng.common));
-}(this, (function (exports, a11y, core, forms, util, common) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/a11y'), require('@angular/cdk/bidi'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/common')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/checkbox', ['exports', '@angular/cdk/a11y', '@angular/cdk/bidi', '@angular/core', '@angular/forms', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/common'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].checkbox = {}), global.ng.cdk.a11y, global.ng.cdk.bidi, global.ng.core, global.ng.forms, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.common));
+}(this, (function (exports, a11y, bidi, core, forms, util, rxjs, operators, common) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -334,7 +334,7 @@
                     preserveWhitespaces: false,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     encapsulation: core.ViewEncapsulation.None,
-                    template: " <ng-content></ng-content> "
+                    template: "\n    <ng-content></ng-content>\n  "
                 },] }
     ];
     NzCheckboxWrapperComponent.ctorParameters = function () { return [
@@ -350,11 +350,14 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzCheckboxComponent = /** @class */ (function () {
-        function NzCheckboxComponent(elementRef, nzCheckboxWrapperComponent, cdr, focusMonitor) {
+        function NzCheckboxComponent(elementRef, nzCheckboxWrapperComponent, cdr, focusMonitor, directionality) {
             this.elementRef = elementRef;
             this.nzCheckboxWrapperComponent = nzCheckboxWrapperComponent;
             this.cdr = cdr;
             this.focusMonitor = focusMonitor;
+            this.directionality = directionality;
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
             this.onChange = function () { };
             this.onTouched = function () { };
             this.nzCheckedChange = new core.EventEmitter();
@@ -363,6 +366,8 @@
             this.nzDisabled = false;
             this.nzIndeterminate = false;
             this.nzChecked = false;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-checkbox-wrapper');
         }
         NzCheckboxComponent.prototype.hostClick = function (e) {
             e.preventDefault();
@@ -401,6 +406,7 @@
         };
         NzCheckboxComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             this.focusMonitor.monitor(this.elementRef, true).subscribe(function (focusOrigin) {
                 if (!focusOrigin) {
                     Promise.resolve().then(function () { return _this.onTouched(); });
@@ -409,6 +415,11 @@
             if (this.nzCheckboxWrapperComponent) {
                 this.nzCheckboxWrapperComponent.addCheckbox(this);
             }
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
         };
         NzCheckboxComponent.prototype.ngAfterViewInit = function () {
             if (this.nzAutoFocus) {
@@ -420,6 +431,8 @@
             if (this.nzCheckboxWrapperComponent) {
                 this.nzCheckboxWrapperComponent.removeCheckbox(this);
             }
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         return NzCheckboxComponent;
     }());
@@ -439,8 +452,8 @@
                         }
                     ],
                     host: {
-                        '[class.ant-checkbox-wrapper]': 'true',
                         '[class.ant-checkbox-wrapper-checked]': 'nzChecked',
+                        '[class.ant-checkbox-rtl]': "dir === 'rtl'",
                         '(click)': 'hostClick($event)'
                     }
                 },] }
@@ -449,7 +462,8 @@
         { type: core.ElementRef },
         { type: NzCheckboxWrapperComponent, decorators: [{ type: core.Optional }] },
         { type: core.ChangeDetectorRef },
-        { type: a11y.FocusMonitor }
+        { type: a11y.FocusMonitor },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzCheckboxComponent.propDecorators = {
         inputElement: [{ type: core.ViewChild, args: ['inputElement', { static: true },] }],
@@ -482,14 +496,19 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzCheckboxGroupComponent = /** @class */ (function () {
-        function NzCheckboxGroupComponent(elementRef, focusMonitor, cdr) {
+        function NzCheckboxGroupComponent(elementRef, focusMonitor, cdr, directionality) {
             this.elementRef = elementRef;
             this.focusMonitor = focusMonitor;
             this.cdr = cdr;
+            this.directionality = directionality;
             this.onChange = function () { };
             this.onTouched = function () { };
             this.options = [];
             this.nzDisabled = false;
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-checkbox-group');
         }
         NzCheckboxGroupComponent.prototype.trackByOption = function (_, option) {
             return option.value;
@@ -500,14 +519,22 @@
         };
         NzCheckboxGroupComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             this.focusMonitor.monitor(this.elementRef, true).subscribe(function (focusOrigin) {
                 if (!focusOrigin) {
                     Promise.resolve().then(function () { return _this.onTouched(); });
                 }
             });
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
         };
         NzCheckboxGroupComponent.prototype.ngOnDestroy = function () {
             this.focusMonitor.stopMonitoring(this.elementRef);
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         NzCheckboxGroupComponent.prototype.writeValue = function (value) {
             this.options = value;
@@ -540,14 +567,15 @@
                         }
                     ],
                     host: {
-                        '[class.ant-checkbox-group]': 'true'
+                        '[class.ant-checkbox-group-rtl]': "dir === 'rtl'"
                     }
                 },] }
     ];
     NzCheckboxGroupComponent.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: a11y.FocusMonitor },
-        { type: core.ChangeDetectorRef }
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzCheckboxGroupComponent.propDecorators = {
         nzDisabled: [{ type: core.Input }]
@@ -568,7 +596,7 @@
     }());
     NzCheckboxModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, forms.FormsModule, a11y.A11yModule],
+                    imports: [bidi.BidiModule, common.CommonModule, forms.FormsModule, a11y.A11yModule],
                     declarations: [NzCheckboxComponent, NzCheckboxGroupComponent, NzCheckboxWrapperComponent],
                     exports: [NzCheckboxComponent, NzCheckboxGroupComponent, NzCheckboxWrapperComponent]
                 },] }

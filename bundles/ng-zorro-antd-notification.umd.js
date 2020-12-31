@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/message'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/services')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/notification', ['exports', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/message', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/services'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].notification = {}), global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].message, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.services));
-}(this, (function (exports, i0, animation, message, i2, common, outlet, icon, config, util, rxjs, operators, i1) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/message'), require('@angular/cdk/bidi'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/services')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/notification', ['exports', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/message', '@angular/cdk/bidi', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/services'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].notification = {}), global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].message, global.ng.cdk.bidi, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.services));
+}(this, (function (exports, i0, animation, message, bidi, i2, common, outlet, icon, config, util, rxjs, operators, i1) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -369,17 +369,21 @@
         nzDuration: 4500,
         nzMaxStack: 7,
         nzPauseOnHover: true,
-        nzAnimate: true
+        nzAnimate: true,
+        nzDirection: 'ltr'
     };
     var NzNotificationContainerComponent = /** @class */ (function (_super) {
         __extends(NzNotificationContainerComponent, _super);
         function NzNotificationContainerComponent(cdr, nzConfigService) {
             var _this = _super.call(this, cdr, nzConfigService) || this;
+            _this.dir = 'ltr';
             _this.instances = [];
             _this.topLeftInstances = [];
             _this.topRightInstances = [];
             _this.bottomLeftInstances = [];
             _this.bottomRightInstances = [];
+            var config = _this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
+            _this.dir = (config === null || config === void 0 ? void 0 : config.nzDirection) || 'ltr';
             return _this;
         }
         NzNotificationContainerComponent.prototype.create = function (notification) {
@@ -409,7 +413,14 @@
             this.nzConfigService
                 .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
                 .pipe(operators.takeUntil(this.destroy$))
-                .subscribe(function () { return _this.updateConfig(); });
+                .subscribe(function () {
+                _this.updateConfig();
+                var config = _this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
+                if (config) {
+                    var nzDirection = config.nzDirection;
+                    _this.dir = nzDirection || _this.dir;
+                }
+            });
         };
         NzNotificationContainerComponent.prototype.updateConfig = function () {
             this.config = Object.assign(Object.assign(Object.assign({}, NZ_NOTIFICATION_DEFAULT_CONFIG), this.config), this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME));
@@ -444,7 +455,7 @@
                     selector: 'nz-notification-container',
                     exportAs: 'nzNotificationContainer',
                     preserveWhitespaces: false,
-                    template: "\n    <div class=\"ant-notification ant-notification-topLeft\" [style.top]=\"top\" [style.left]=\"'0px'\">\n      <nz-notification\n        *ngFor=\"let instance of topLeftInstances\"\n        [instance]=\"instance\"\n        [placement]=\"config.nzPlacement\"\n        (destroyed)=\"remove($event.id, $event.userAction)\"\n      ></nz-notification>\n    </div>\n    <div class=\"ant-notification ant-notification-topRight\" [style.top]=\"top\" [style.right]=\"'0px'\">\n      <nz-notification\n        *ngFor=\"let instance of topRightInstances\"\n        [instance]=\"instance\"\n        [placement]=\"config.nzPlacement\"\n        (destroyed)=\"remove($event.id, $event.userAction)\"\n      ></nz-notification>\n    </div>\n    <div class=\"ant-notification ant-notification-bottomLeft\" [style.bottom]=\"bottom\" [style.left]=\"'0px'\">\n      <nz-notification\n        *ngFor=\"let instance of bottomLeftInstances\"\n        [instance]=\"instance\"\n        [placement]=\"config.nzPlacement\"\n        (destroyed)=\"remove($event.id, $event.userAction)\"\n      ></nz-notification>\n    </div>\n    <div class=\"ant-notification ant-notification-bottomRight\" [style.bottom]=\"bottom\" [style.right]=\"'0px'\">\n      <nz-notification\n        *ngFor=\"let instance of bottomRightInstances\"\n        [instance]=\"instance\"\n        [placement]=\"config.nzPlacement\"\n        (destroyed)=\"remove($event.id, $event.userAction)\"\n      ></nz-notification>\n    </div>\n  "
+                    template: "\n    <div\n      class=\"ant-notification ant-notification-topLeft\"\n      [class.ant-notification-rtl]=\"dir === 'rtl'\"\n      [style.top]=\"top\"\n      [style.left]=\"'0px'\"\n    >\n      <nz-notification\n        *ngFor=\"let instance of topLeftInstances\"\n        [instance]=\"instance\"\n        [placement]=\"config.nzPlacement\"\n        (destroyed)=\"remove($event.id, $event.userAction)\"\n      ></nz-notification>\n    </div>\n    <div\n      class=\"ant-notification ant-notification-topRight\"\n      [class.ant-notification-rtl]=\"dir === 'rtl'\"\n      [style.top]=\"top\"\n      [style.right]=\"'0px'\"\n    >\n      <nz-notification\n        *ngFor=\"let instance of topRightInstances\"\n        [instance]=\"instance\"\n        [placement]=\"config.nzPlacement\"\n        (destroyed)=\"remove($event.id, $event.userAction)\"\n      ></nz-notification>\n    </div>\n    <div\n      class=\"ant-notification ant-notification-bottomLeft\"\n      [class.ant-notification-rtl]=\"dir === 'rtl'\"\n      [style.bottom]=\"bottom\"\n      [style.left]=\"'0px'\"\n    >\n      <nz-notification\n        *ngFor=\"let instance of bottomLeftInstances\"\n        [instance]=\"instance\"\n        [placement]=\"config.nzPlacement\"\n        (destroyed)=\"remove($event.id, $event.userAction)\"\n      ></nz-notification>\n    </div>\n    <div\n      class=\"ant-notification ant-notification-bottomRight\"\n      [class.ant-notification-rtl]=\"dir === 'rtl'\"\n      [style.bottom]=\"bottom\"\n      [style.right]=\"'0px'\"\n    >\n      <nz-notification\n        *ngFor=\"let instance of bottomRightInstances\"\n        [instance]=\"instance\"\n        [placement]=\"config.nzPlacement\"\n        (destroyed)=\"remove($event.id, $event.userAction)\"\n      ></nz-notification>\n    </div>\n  "
                 },] }
     ];
     NzNotificationContainerComponent.ctorParameters = function () { return [
@@ -476,7 +487,7 @@
     }());
     NzNotificationModule.decorators = [
         { type: i0.NgModule, args: [{
-                    imports: [common.CommonModule, i2.OverlayModule, icon.NzIconModule, outlet.NzOutletModule, NzNotificationServiceModule],
+                    imports: [bidi.BidiModule, common.CommonModule, i2.OverlayModule, icon.NzIconModule, outlet.NzOutletModule, NzNotificationServiceModule],
                     declarations: [NzNotificationComponent, NzNotificationContainerComponent],
                     entryComponents: [NzNotificationContainerComponent]
                 },] }

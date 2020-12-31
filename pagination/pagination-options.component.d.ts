@@ -2,9 +2,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { ElementRef, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 export declare class NzPaginationOptionsComponent implements OnChanges {
+    private elementRef;
     nzSize: 'default' | 'small';
     disabled: boolean;
     showSizeChanger: boolean;
@@ -20,6 +21,7 @@ export declare class NzPaginationOptionsComponent implements OnChanges {
         value: number;
         label: string;
     }>;
+    constructor(elementRef: ElementRef);
     onPageSizeChange(size: number): void;
     jumpToPageViaInput($event: Event): void;
     trackByOption(_: number, option: {

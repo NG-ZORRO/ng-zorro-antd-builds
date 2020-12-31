@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { Subject } from 'rxjs';
-import { BarsOutline, CalendarOutline, CaretUpFill, CaretUpOutline, CaretDownFill, CaretDownOutline, CheckCircleFill, CheckCircleOutline, CheckOutline, ClockCircleOutline, CloseCircleOutline, CloseCircleFill, CloseOutline, CopyOutline, DoubleLeftOutline, DoubleRightOutline, DownOutline, EditOutline, EllipsisOutline, ExclamationCircleFill, ExclamationCircleOutline, EyeOutline, FileFill, FileOutline, FilterFill, InfoCircleFill, InfoCircleOutline, LeftOutline, LoadingOutline, PaperClipOutline, QuestionCircleOutline, RightOutline, StarFill, SearchOutline, UploadOutline, VerticalAlignTopOutline, UpOutline, SwapRightOutline } from '@ant-design/icons-angular/icons';
+import { BarsOutline, CalendarOutline, CaretUpFill, CaretUpOutline, CaretDownFill, CaretDownOutline, CheckCircleFill, CheckCircleOutline, CheckOutline, ClockCircleOutline, CloseCircleOutline, CloseCircleFill, CloseOutline, CopyOutline, DoubleLeftOutline, DoubleRightOutline, DownOutline, EditOutline, EllipsisOutline, ExclamationCircleFill, ExclamationCircleOutline, EyeOutline, FileFill, FileOutline, FilterFill, InfoCircleFill, InfoCircleOutline, LeftOutline, LoadingOutline, PaperClipOutline, QuestionCircleOutline, RightOutline, RotateRightOutline, RotateLeftOutline, StarFill, SearchOutline, UploadOutline, VerticalAlignTopOutline, UpOutline, SwapRightOutline, ZoomInOutline, ZoomOutOutline } from '@ant-design/icons-angular/icons';
 
 /**
  * Use of this source code is governed by an MIT-style license that can be
@@ -48,13 +48,17 @@ const NZ_ICONS_USED_BY_ZORRO = [
     PaperClipOutline,
     QuestionCircleOutline,
     RightOutline,
+    RotateRightOutline,
+    RotateLeftOutline,
     StarFill,
     SearchOutline,
     StarFill,
     UploadOutline,
     VerticalAlignTopOutline,
     UpOutline,
-    SwapRightOutline
+    SwapRightOutline,
+    ZoomInOutline,
+    ZoomOutOutline
 ];
 
 /**

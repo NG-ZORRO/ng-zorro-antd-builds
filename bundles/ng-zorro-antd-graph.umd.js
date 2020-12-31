@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/collections'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/spin'), require('d3-shape'), require('d3-drag'), require('d3-selection'), require('d3-zoom'), require('@angular/animations'), require('@nx-component/hierarchy-graph'), require('ng-zorro-antd/core/util')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/graph', ['exports', '@angular/cdk/collections', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/core', 'ng-zorro-antd/icon', 'ng-zorro-antd/spin', 'd3-shape', 'd3-drag', 'd3-selection', 'd3-zoom', '@angular/animations', '@nx-component/hierarchy-graph', 'ng-zorro-antd/core/util'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].graph = {}), global.ng.cdk.collections, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.core, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].spin, global.d3Shape, global.d3Drag, global.d3Selection, global.d3Zoom, global.ng.animations, global.hierarchyGraph, global['ng-zorro-antd'].core.util));
-}(this, (function (exports, collections, rxjs, operators, common, core, icon, spin, d3Shape, d3Drag, d3Selection, d3Zoom, animations, hierarchyGraph, util) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/collections'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/spin'), require('d3-shape'), require('d3-drag'), require('d3-selection'), require('d3-zoom'), require('@angular/animations'), require('ng-zorro-antd/core/util'), require('d3-transition'), require('dagre-compound'), require('ng-zorro-antd/core/polyfill')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/graph', ['exports', '@angular/cdk/collections', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/core', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/icon', 'ng-zorro-antd/spin', 'd3-shape', 'd3-drag', 'd3-selection', 'd3-zoom', '@angular/animations', 'ng-zorro-antd/core/util', 'd3-transition', 'dagre-compound', 'ng-zorro-antd/core/polyfill'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].graph = {}), global.ng.cdk.collections, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.core, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].icon, global['ng-zorro-antd'].spin, global.d3Shape, global.d3Drag, global.d3Selection, global.d3Zoom, global.ng.animations, global['ng-zorro-antd'].core.util, global.d3Transition, global.dagreCompound, global['ng-zorro-antd'].core.polyfill));
+}(this, (function (exports, collections, rxjs, operators, common, core, noAnimation, icon, spin, d3Shape, d3Drag, d3Selection, d3Zoom, animations, util, d3Transition, dagreCompound, polyfill) { 'use strict';
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -12,118 +12,40 @@
         return function (item) { return item; };
     }
     var NZ_GRAPH_LAYOUT_SETTING = {
-        animation: {
-            /** Default duration for graph animations in ms. */
-            duration: 250
-        },
         graph: {
-            /** Graph parameter for metanode. */
             meta: {
-                /**
-                 * Dagre's nodesep param - number of pixels that
-                 * separate nodes horizontally in the layout.
-                 *
-                 * See https://github.com/cpettitt/dagre/wiki#configuring-the-layout
-                 */
                 nodeSep: 50,
-                /**
-                 * Dagre's ranksep param - number of pixels
-                 * between each rank in the layout.
-                 *
-                 * See https://github.com/cpettitt/dagre/wiki#configuring-the-layout
-                 */
-                rankSep: 40,
-                /**
-                 * Dagre's edgesep param - number of pixels that separate
-                 * edges horizontally in the layout.
-                 */
+                rankSep: 50,
                 edgeSep: 5
-            },
-            /**
-             * Padding is used to correctly position the graph SVG inside of its parent
-             * element. The padding amounts are applied using an SVG transform of X and
-             * Y coordinates.
-             */
-            padding: { paddingTop: 10, paddingLeft: 0 }
+            }
         },
-        subscene: {
+        subScene: {
             meta: {
                 paddingTop: 20,
                 paddingBottom: 20,
                 paddingLeft: 20,
                 paddingRight: 20,
-                /**
-                 * Used to leave room for the label on top of the highest node in
-                 * the groupCore graph.
-                 */
-                labelHeight: 20,
-                /** X-space between each extracted node and the groupCore graph. */
-                extractXOffset: 0,
-                /** Y-space between each extracted node. */
-                extractYOffset: 0
+                labelHeight: 20
             }
         },
         nodeSize: {
-            /** Size of meta nodes. */
             meta: {
-                radius: 2,
-                width: 160,
+                width: 50,
                 maxLabelWidth: 0,
-                /** A scale for the node's height based on number of nodes inside */
-                // Hack - set this as an any type to avoid issues in exporting a type
-                // from an external module.
-                height: 100,
-                /** The radius of the circle denoting the expand button. */
-                expandButtonRadius: 3
+                height: 50
             },
-            /** Size of op nodes. */
-            op: {
-                width: 160,
-                height: 100,
-                radius: 1,
+            node: {
+                width: 50,
+                height: 50,
                 labelOffset: 10,
                 maxLabelWidth: 40
             },
-            /** Size of bridge nodes. */
             bridge: {
-                // NOTE: bridge nodes will normally be invisible, but they must
-                // take up some space so that the layout step leaves room for
-                // their edges.
-                width: 10,
-                height: 10,
+                width: 5,
+                height: 5,
                 radius: 2,
                 labelOffset: 0
             }
-        },
-        shortcutSize: {
-            /** Size of shortcuts for op nodes */
-            op: { width: 10, height: 4 },
-            /** Size of shortcuts for meta nodes */
-            meta: { width: 12, height: 4, radius: 1 },
-            /** Size of shortcuts for series nodes */
-            series: {
-                width: 14,
-                height: 4
-            }
-        },
-        annotations: {
-            /** Maximum possible width of the bounding box for in annotations */
-            inboxWidth: 50,
-            /** Maximum possible width of the bounding box for out annotations */
-            outboxWidth: 50,
-            /** X-space between the shape and each annotation-node. */
-            xOffset: 10,
-            /** Y-space between each annotation-node. */
-            yOffset: 3,
-            /** X-space between each annotation-node and its label. */
-            labelOffset: 2,
-            /** Defines the max width for annotation label */
-            maxLabelWidth: 120
-        },
-        constant: { size: { width: 4, height: 4 } },
-        minimap: {
-            /** The maximum width/height the minimap can have. */
-            size: 150
         }
     };
 
@@ -485,22 +407,6 @@
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
-    var NzCustomGraphNodeDirective = /** @class */ (function () {
-        function NzCustomGraphNodeDirective() {
-        }
-        return NzCustomGraphNodeDirective;
-    }());
-    NzCustomGraphNodeDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: '[nzGraphNode]',
-                    exportAs: 'nzGraphNode'
-                },] }
-    ];
-
-    /**
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
-     */
     var NzGraphDefsComponent = /** @class */ (function () {
         function NzGraphDefsComponent() {
         }
@@ -509,22 +415,27 @@
     NzGraphDefsComponent.decorators = [
         { type: core.Component, args: [{
                     selector: 'svg:defs[nz-graph-defs]',
-                    template: "\n    <svg:marker\n      class=\"nz-graph-edge-marker\"\n      id=\"edge-end-arrow\"\n      viewBox=\"1 0 20 20\"\n      refX=\"9\"\n      refY=\"3.5\"\n      markerWidth=\"10\"\n      markerHeight=\"10\"\n      orient=\"auto\"\n    >\n      <svg:polygon points=\"0 0, 10 3.5, 0 7\"></svg:polygon>\n    </svg:marker>\n  "
+                    template: "\n    <svg:marker\n      class=\"nz-graph-edge-marker\"\n      id=\"edge-end-arrow\"\n      viewBox=\"1 0 20 20\"\n      refX=\"8\"\n      refY=\"3.5\"\n      markerWidth=\"10\"\n      markerHeight=\"10\"\n      orient=\"auto\"\n    >\n      <svg:polygon points=\"0 0, 10 3.5, 0 7\"></svg:polygon>\n    </svg:marker>\n  "
                 },] }
     ];
     NzGraphDefsComponent.ctorParameters = function () { return []; };
 
-    var NzGraphEdgeDirective = /** @class */ (function () {
-        function NzGraphEdgeDirective(elementRef, ngZone) {
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
+    var NzGraphEdgeComponent = /** @class */ (function () {
+        function NzGraphEdgeComponent(elementRef, ngZone, cdr) {
             this.elementRef = elementRef;
             this.ngZone = ngZone;
+            this.cdr = cdr;
             this.line = d3Shape.line()
                 .x(function (d) { return d.x; })
                 .y(function (d) { return d.y; })
                 .curve(d3Shape.curveBasis);
             this.el = this.elementRef.nativeElement;
         }
-        Object.defineProperty(NzGraphEdgeDirective.prototype, "id", {
+        Object.defineProperty(NzGraphEdgeComponent.prototype, "id", {
             get: function () {
                 var _a;
                 return ((_a = this.edge) === null || _a === void 0 ? void 0 : _a.id) || this.edge.v + "--" + this.edge.w;
@@ -532,77 +443,102 @@
             enumerable: false,
             configurable: true
         });
-        NzGraphEdgeDirective.prototype.ngOnInit = function () {
+        NzGraphEdgeComponent.prototype.ngOnInit = function () {
+            this.initElementStyle();
+        };
+        NzGraphEdgeComponent.prototype.ngOnChanges = function (changes) {
+            var _this = this;
+            var edge = changes.edge, customTemplate = changes.customTemplate;
+            if (edge) {
+                this.ngZone.onStable.pipe(operators.take(1)).subscribe(function () {
+                    // Update path element if customTemplate set
+                    if (customTemplate) {
+                        _this.initElementStyle();
+                    }
+                    _this.setLine();
+                    _this.cdr.markForCheck();
+                });
+            }
+        };
+        NzGraphEdgeComponent.prototype.initElementStyle = function () {
+            this.path = this.el.querySelector('path');
             this.setElementData();
         };
-        NzGraphEdgeDirective.prototype.setLine = function () {
-            var adjoiningPath = this.getAdjoiningEdgeElement();
-            if (adjoiningPath) {
-                var adjoiningPoint = adjoiningPath
-                    .getPointAtLength(this.edge.inbound ? adjoiningPath.getTotalLength() : 0)
-                    .matrixTransform(adjoiningPath.getCTM())
-                    .matrixTransform(this.el.getCTM().inverse());
-                var points = __spread(this.edge.points);
-                var index = this.edge.inbound ? 0 : points.length - 1;
-                points[index].x = adjoiningPoint.x;
-                points[index].y = adjoiningPoint.y;
-                this.setPath(this.line(points));
+        NzGraphEdgeComponent.prototype.setLine = function () {
+            this.setPath(this.line(this.edge.points));
+        };
+        NzGraphEdgeComponent.prototype.setPath = function (d) {
+            this.path.setAttribute('d', d);
+        };
+        NzGraphEdgeComponent.prototype.setElementData = function () {
+            if (!this.path) {
+                return;
             }
-            else {
-                this.setPath(this.line(this.edge.points));
-            }
+            this.path.setAttribute('id', this.id);
+            this.path.setAttribute('data-edge', this.id);
+            this.path.setAttribute('data-v', "" + this.edge.v);
+            this.path.setAttribute('data-w', "" + this.edge.w);
         };
-        NzGraphEdgeDirective.prototype.setPath = function (d) {
-            this.el.setAttribute('d', d);
-        };
-        NzGraphEdgeDirective.prototype.setElementData = function () {
-            this.el.setAttribute('data-edge', this.edge.v + "--" + this.edge.w);
-            this.el.setAttribute('data-v', "" + this.edge.v);
-            this.el.setAttribute('data-w', "" + this.edge.w);
-        };
-        NzGraphEdgeDirective.prototype.getAdjoiningEdgeElement = function () {
-            var adjoiningEdge = this.edge.adjoiningEdge;
-            if (adjoiningEdge) {
-                return document.querySelector("path[data-edge=\"" + adjoiningEdge.v + "--" + adjoiningEdge.w + "\"]");
-            }
-            else {
-                return null;
-            }
-        };
-        NzGraphEdgeDirective.prototype.ngOnChanges = function (_changes) {
-            var _this = this;
-            this.ngZone.onStable.pipe(operators.take(1)).subscribe(function () {
-                _this.setLine();
-            });
-        };
+        return NzGraphEdgeComponent;
+    }());
+    NzGraphEdgeComponent.decorators = [
+        { type: core.Component, args: [{
+                    selector: '[nz-graph-edge]',
+                    template: "\n    <ng-container *ngIf=\"customTemplate\" [ngTemplateOutlet]=\"customTemplate\" [ngTemplateOutletContext]=\"{ $implicit: edge }\"></ng-container>\n    <svg:g *ngIf=\"!customTemplate\">\n      <path class=\"nz-graph-edge-line\" [attr.marker-end]=\"'url(#edge-end-arrow)'\"></path>\n      <svg:text class=\"nz-graph-edge-text\" text-anchor=\"middle\" dy=\"10\" *ngIf=\"edge.label\">\n        <textPath [attr.href]=\"'#' + id\" startOffset=\"50%\">{{ edge.label }}</textPath>\n      </svg:text>\n    </svg:g>\n  ",
+                    changeDetection: core.ChangeDetectionStrategy.OnPush
+                },] }
+    ];
+    NzGraphEdgeComponent.ctorParameters = function () { return [
+        { type: core.ElementRef },
+        { type: core.NgZone },
+        { type: core.ChangeDetectorRef }
+    ]; };
+    NzGraphEdgeComponent.propDecorators = {
+        edge: [{ type: core.Input }],
+        customTemplate: [{ type: core.Input }]
+    };
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
+    var NzGraphEdgeDirective = /** @class */ (function () {
+        function NzGraphEdgeDirective() {
+        }
         return NzGraphEdgeDirective;
     }());
     NzGraphEdgeDirective.decorators = [
         { type: core.Directive, args: [{
-                    selector: 'svg:path[nz-graph-edge]',
-                    host: {
-                        '[class.nz-graph-edge-line]': 'true',
-                        '[id]': 'id'
-                    }
+                    selector: '[nzGraphEdge]',
+                    exportAs: 'nzGraphEdge'
                 },] }
     ];
-    NzGraphEdgeDirective.ctorParameters = function () { return [
-        { type: core.ElementRef },
-        { type: core.NgZone }
-    ]; };
-    NzGraphEdgeDirective.propDecorators = {
-        edge: [{ type: core.Input }]
-    };
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
+    var NzGraphGroupNodeDirective = /** @class */ (function () {
+        function NzGraphGroupNodeDirective() {
+        }
+        return NzGraphGroupNodeDirective;
+    }());
+    NzGraphGroupNodeDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: '[nzGraphGroupNode]',
+                    exportAs: 'nzGraphGroupNode'
+                },] }
+    ];
 
     var FRAC_VIEWPOINT_AREA = 0.8;
     var Minimap = /** @class */ (function () {
-        function Minimap(svg, zoomG, mainZoom, minimap, maxWandH, labelPadding) {
+        function Minimap(svg, zoomG, mainZoom, minimap, maxWidth, labelPadding) {
             var _this = this;
             this.svg = svg;
             this.labelPadding = labelPadding;
             this.zoomG = zoomG;
             this.mainZoom = mainZoom;
-            this.maxWandH = maxWandH;
+            this.maxWidth = maxWidth;
             var minimapElement = d3Selection.select(minimap);
             var minimapSvgElement = minimapElement.select('svg');
             var viewpointElement = minimapSvgElement.select('rect');
@@ -727,7 +663,7 @@
             // the aspect ratio have also changed. Thus, we need to update the scale
             // factor of the minimap. The scale factor is determined such that both
             // the width and height of the minimap are <= maximum specified w/h.
-            this.scaleMinimap = this.maxWandH / Math.max(sceneSize.width, sceneSize.height);
+            this.scaleMinimap = this.maxWidth / Math.max(sceneSize.width, sceneSize.height);
             this.minimapSize = {
                 width: sceneSize.width * this.scaleMinimap,
                 height: sceneSize.height * this.scaleMinimap
@@ -825,8 +761,10 @@
             this.elementRef = elementRef;
         }
         NzGraphMinimapComponent.prototype.ngOnInit = function () { };
-        NzGraphMinimapComponent.prototype.init = function (svgEle, zoomEle, zoomBehavior) {
-            this.minimap = new Minimap(svgEle, zoomEle, zoomBehavior, this.elementRef.nativeElement, NZ_GRAPH_LAYOUT_SETTING.minimap.size, NZ_GRAPH_LAYOUT_SETTING.subscene.meta.labelHeight);
+        NzGraphMinimapComponent.prototype.init = function (containerEle, zoomBehavior) {
+            var svgEle = containerEle.nativeElement.querySelector('svg');
+            var zoomEle = containerEle.nativeElement.querySelector('svg > g');
+            this.minimap = new Minimap(svgEle, zoomEle, zoomBehavior, this.elementRef.nativeElement, 150, 0);
         };
         NzGraphMinimapComponent.prototype.zoom = function (transform) {
             if (this.minimap) {
@@ -844,6 +782,7 @@
         { type: core.Component, args: [{
                     selector: 'nz-graph-minimap',
                     template: "\n    <svg>\n      <defs>\n        <filter id=\"minimapDropShadow\" x=\"-20%\" y=\"-20%\" width=\"150%\" height=\"150%\">\n          <feOffset result=\"offOut\" in=\"SourceGraphic\" dx=\"1\" dy=\"1\"></feOffset>\n          <feColorMatrix\n            result=\"matrixOut\"\n            in=\"offOut\"\n            type=\"matrix\"\n            values=\"0.1 0 0 0 0 0 0.1 0 0 0 0 0 0.1 0 0 0 0 0 0.5 0\"\n          ></feColorMatrix>\n          <feGaussianBlur result=\"blurOut\" in=\"matrixOut\" stdDeviation=\"2\"></feGaussianBlur>\n          <feBlend in=\"SourceGraphic\" in2=\"blurOut\" mode=\"normal\"></feBlend>\n        </filter>\n      </defs>\n      <rect></rect>\n    </svg>\n    <canvas class=\"viewport\"></canvas>\n    <!-- Additional canvas to use as buffer to avoid flickering between updates -->\n    <canvas class=\"buffer\"></canvas>\n  ",
+                    changeDetection: core.ChangeDetectionStrategy.OnPush,
                     host: {
                         '[class.nz-graph-minimap]': 'true'
                     }
@@ -857,50 +796,51 @@
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
-    var NzGraphNodeDirective = /** @class */ (function () {
-        function NzGraphNodeDirective(el, builder, renderer2) {
+    var NzGraphNodeComponent = /** @class */ (function () {
+        function NzGraphNodeComponent(el, builder, renderer2) {
             this.el = el;
             this.builder = builder;
             this.renderer2 = renderer2;
             this.nodeClick = new core.EventEmitter();
             this.animationInfo = null;
+            this.initialState = true;
             this.animationPlayer = null;
         }
-        NzGraphNodeDirective.prototype.onTriggerClick = function (event) {
+        NzGraphNodeComponent.prototype.triggerClick = function (event) {
             event.preventDefault();
             this.nodeClick.emit(this.node);
         };
-        NzGraphNodeDirective.prototype.makeAnimation = function (isFirstChange) {
+        NzGraphNodeComponent.prototype.makeAnimation = function () {
             var _this = this;
-            if (isFirstChange === void 0) { isFirstChange = false; }
+            var cur = this.getAnimationInfo();
             if (this.animationPlayer) {
                 this.animationPlayer.destroy();
             }
             var animationFactory;
-            var cur = this.getAnimationInfo();
             var pre = Object.assign({}, this.animationInfo);
-            if (isFirstChange) {
+            if (this.initialState) {
                 animationFactory = this.builder.build([
                     animations.style({ transform: "translate(" + cur.x + "px, " + cur.y + "px)" }),
-                    animations.query('.nz-graph-node-rect', [
+                    animations.query('g', [
                         animations.style({
                             width: cur.width + "px",
                             height: cur.height + "px"
                         })
                     ])
                 ]);
+                this.initialState = false;
             }
             else {
                 animationFactory = this.builder.build([
                     animations.style({ transform: "translate(" + pre.x + "px, " + pre.y + "px)" }),
-                    animations.query('.nz-graph-node-rect', [
+                    animations.query('g', [
                         animations.style({
                             width: pre.width + "px",
                             height: pre.height + "px"
                         })
                     ]),
                     animations.group([
-                        animations.query('.nz-graph-node-rect', [
+                        animations.query('g', [
                             animations.animate('150ms ease-out', animations.style({
                                 width: cur.width + "px",
                                 height: cur.height + "px"
@@ -910,10 +850,10 @@
                     ])
                 ]);
             }
-            var done$ = new rxjs.Subject();
             this.animationInfo = cur;
             this.animationPlayer = animationFactory.create(this.el.nativeElement);
             this.animationPlayer.play();
+            var done$ = new rxjs.Subject();
             this.animationPlayer.onDone(function () {
                 // Need this for canvas for now.
                 _this.renderer2.setAttribute(_this.el.nativeElement, 'transform', "translate(" + cur.x + ", " + cur.y + ")");
@@ -922,7 +862,12 @@
             });
             return done$.asObservable();
         };
-        NzGraphNodeDirective.prototype.getAnimationInfo = function () {
+        NzGraphNodeComponent.prototype.makeNoAnimation = function () {
+            var cur = this.getAnimationInfo();
+            // Need this for canvas for now.
+            this.renderer2.setAttribute(this.el.nativeElement, 'transform', "translate(" + cur.x + ", " + cur.y + ")");
+        };
+        NzGraphNodeComponent.prototype.getAnimationInfo = function () {
             var _a = this.nodeTransform(), x = _a.x, y = _a.y;
             return {
                 width: this.node.width,
@@ -931,150 +876,210 @@
                 y: y
             };
         };
-        NzGraphNodeDirective.prototype.nodeTransform = function () {
+        NzGraphNodeComponent.prototype.nodeTransform = function () {
             var x = this.computeCXPositionOfNodeShape() - this.node.width / 2;
             var y = this.node.y - this.node.height / 2;
             return { x: x, y: y };
         };
-        NzGraphNodeDirective.prototype.computeCXPositionOfNodeShape = function () {
+        NzGraphNodeComponent.prototype.computeCXPositionOfNodeShape = function () {
             if (this.node.expanded) {
                 return this.node.x;
             }
             return this.node.x - this.node.width / 2 + this.node.coreBox.width / 2;
         };
-        NzGraphNodeDirective.prototype.ngAfterViewInit = function () {
-            this.makeAnimation(true);
-        };
-        return NzGraphNodeDirective;
+        return NzGraphNodeComponent;
     }());
-    NzGraphNodeDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: 'svg:g[nz-graph-node]',
+    NzGraphNodeComponent.decorators = [
+        { type: core.Component, args: [{
+                    selector: '[nz-graph-node]',
+                    template: "\n    <svg:g>\n      <ng-container\n        *ngIf=\"customTemplate\"\n        [ngTemplateOutlet]=\"customTemplate\"\n        [ngTemplateOutletContext]=\"{ $implicit: node }\"\n      ></ng-container>\n      <ng-container *ngIf=\"!customTemplate\">\n        <svg:rect class=\"nz-graph-node-rect\" [attr.width]=\"node.width\" [attr.height]=\"node.height\"></svg:rect>\n        <svg:text x=\"10\" y=\"20\">{{ node.id || node.name }}</svg:text>\n      </ng-container>\n    </svg:g>\n  ",
+                    changeDetection: core.ChangeDetectionStrategy.OnPush,
                     host: {
                         '[id]': 'node.id || node.name',
                         '[class.nz-graph-node-expanded]': 'node.expanded',
                         '[class.nz-graph-group-node]': 'node.type===0',
                         '[class.nz-graph-base-node]': 'node.type===1',
-                        '(click)': 'onTriggerClick($event)'
+                        '(click)': 'triggerClick($event)'
                     }
                 },] }
     ];
-    NzGraphNodeDirective.ctorParameters = function () { return [
+    NzGraphNodeComponent.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: animations.AnimationBuilder },
         { type: core.Renderer2 }
     ]; };
-    NzGraphNodeDirective.propDecorators = {
+    NzGraphNodeComponent.propDecorators = {
         node: [{ type: core.Input }],
+        noAnimation: [{ type: core.Input }],
+        customTemplate: [{ type: core.Input }],
         nodeClick: [{ type: core.Output }]
+    };
+    __decorate([
+        util.InputBoolean(),
+        __metadata("design:type", Boolean)
+    ], NzGraphNodeComponent.prototype, "noAnimation", void 0);
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
+    var NzGraphNodeDirective = /** @class */ (function () {
+        function NzGraphNodeDirective() {
+        }
+        return NzGraphNodeDirective;
+    }());
+    NzGraphNodeDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: '[nzGraphNode]',
+                    exportAs: 'nzGraphNode'
+                },] }
+    ];
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
+    /**
+     * Calculate position and scale
+     * @param containerEle
+     * @param targetEle
+     * @param scale: if scale is set, skip calculate scale value
+     */
+    var calculateTransform = function (containerEle, targetEle, scale) {
+        var containerEleSize = containerEle.getBoundingClientRect();
+        var targetEleSize = targetEle.getBBox();
+        if (!targetEleSize.width) {
+            // There is no g element anymore.
+            return null;
+        }
+        // TODO
+        // leave some place when re-scale
+        var scaleUnit = (containerEleSize.width - 48) / containerEleSize.width;
+        var k = scale || Math.min(containerEleSize.width / targetEleSize.width, containerEleSize.height / targetEleSize.height, 1) * scaleUnit;
+        var x = (containerEleSize.width - targetEleSize.width * k) / 2;
+        var y = (containerEleSize.height - targetEleSize.height * k) / 2;
+        return {
+            x: x,
+            y: y,
+            k: k
+        };
     };
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
-    var NzGraphSvgContainerComponent = /** @class */ (function () {
-        function NzGraphSvgContainerComponent(cdr) {
+    Selection.bind('transition', d3Transition.transition);
+    var NzGraphZoomDirective = /** @class */ (function () {
+        function NzGraphZoomDirective(element, cdr) {
+            this.element = element;
             this.cdr = cdr;
-            this.maxZoomLevel = 10;
-            this.minZoomLevel = 0.1;
-            this.zoom = 1;
-            this.zoomEvent = new core.EventEmitter();
-            this.transformEvent = new core.EventEmitter();
-            this.transform = { x: 0, y: 0, k: 1 };
-            this.transformStyle = '';
+            this.nzMinZoom = 0.1;
+            this.nzMaxZoom = 10;
+            this.nzTransformEvent = new core.EventEmitter();
+            this.nzZoomChange = new core.EventEmitter();
+            this.destroy$ = new rxjs.Subject();
         }
-        NzGraphSvgContainerComponent.prototype.ngOnInit = function () {
+        NzGraphZoomDirective.prototype.ngAfterViewInit = function () {
             this.bind();
         };
-        NzGraphSvgContainerComponent.prototype.ngOnDestroy = function () {
+        NzGraphZoomDirective.prototype.ngOnDestroy = function () {
             this.unbind();
+            this.destroy$.next();
+            this.destroy$.complete();
         };
-        NzGraphSvgContainerComponent.prototype.bind = function () {
+        NzGraphZoomDirective.prototype.bind = function () {
             var _this = this;
-            this.svgSelect = d3Selection.select(this.containerElement.nativeElement);
-            this.zoomController = d3Zoom.zoom()
-                .scaleExtent([this.minZoomLevel, this.maxZoomLevel])
-                .on('zoom', function (_b) {
-                var transform = _b.transform;
-                var x = transform.x, y = transform.y, k = transform.k;
-                _this.zoom = k;
-                _this.zoomEvent.emit(k);
-                _this.transform = transform;
-                _this.transformEvent.emit(transform);
-                _this.transformStyle = "translate(" + x + " ," + y + ")scale(" + k + ")";
-                _this.cdr.detectChanges();
+            this.svgElement = this.element.nativeElement.querySelector('svg');
+            this.gZoomElement = this.element.nativeElement.querySelector('svg > g');
+            var _b = this.element.nativeElement.getBoundingClientRect(), width = _b.width, height = _b.height;
+            this.svgSelection = d3Selection.select(this.svgElement);
+            this.zoomBehavior = d3Zoom.zoom()
+                .extent([
+                [0, 0],
+                [width, height]
+            ])
+                .scaleExtent([this.nzMinZoom, this.nzMaxZoom])
+                .on('zoom', function (e) {
+                _this.zoomed(e);
             });
-            this.svgSelect.call(this.zoomController, d3Zoom.zoomIdentity.translate(0, 0).scale(this.zoom));
+            this.svgSelection.call(this.zoomBehavior, d3Zoom.zoomIdentity.translate(0, 0).scale(this.nzZoom || 1));
+            // Init with nzZoom
+            this.reScale(0, this.nzZoom);
         };
-        NzGraphSvgContainerComponent.prototype.unbind = function () {
+        NzGraphZoomDirective.prototype.unbind = function () {
             var _a;
-            (_a = this.svgSelect) === null || _a === void 0 ? void 0 : _a.interrupt().selectAll('*').interrupt();
-            if (this.zoomController) {
-                this.zoomController.on('end', null).on('zoom', null);
-                this.transformEvent.complete();
+            // Destroy listener
+            (_a = this.svgSelection) === null || _a === void 0 ? void 0 : _a.interrupt().selectAll('*').interrupt();
+            if (this.zoomBehavior) {
+                this.zoomBehavior.on('end', null).on('zoom', null);
             }
         };
-        /**
-         * Zoom to fit
-         */
-        NzGraphSvgContainerComponent.prototype.fit = function (duration, scale) {
-            var _this = this;
-            if (duration === void 0) { duration = 500; }
-            if (scale === void 0) { scale = 0.9; }
-            var svgRect = this.containerElement.nativeElement.getBoundingClientRect();
-            var sceneSize = null;
-            try {
-                sceneSize = this.zoomElement.nativeElement.getBBox();
-                if (sceneSize.width === 0) {
-                    // There is no scene anymore. We have been detached from the dom.
-                    return;
-                }
-            }
-            catch (e) {
-                // Firefox produced NS_ERROR_FAILURE if we have been
-                // detached from the dom.
-                return;
-            }
-            var fitScale = Math.min(svgRect.width / sceneSize.width, svgRect.height / sceneSize.height, 2) * scale;
-            var dx = (svgRect.width - sceneSize.width * fitScale) / 2;
-            var dy = (svgRect.height - sceneSize.height * fitScale) / 2;
-            var params = NZ_GRAPH_LAYOUT_SETTING.graph;
-            var transform = d3Zoom.zoomIdentity.translate(dx + params.padding.paddingLeft, dy + params.padding.paddingTop).scale(fitScale);
-            this.svgSelect
-                .transition()
-                .duration(duration)
-                .call(this.zoomController.transform, transform)
-                .on('end.fitted', function () {
-                // Remove the listener for the zoomend event,
-                // so we don't get called at the end of regular zoom events,
-                // just those that fit the graph to screen.
-                _this.zoomController.on('end.fitted', null);
-            });
+        // Methods
+        NzGraphZoomDirective.prototype.fitCenter = function (duration) {
+            if (duration === void 0) { duration = 0; }
+            this.reScale(duration);
         };
-        // Move node to center
-        NzGraphSvgContainerComponent.prototype.setNodeToCenter = function (node) {
+        NzGraphZoomDirective.prototype.focus = function (id, duration) {
+            if (duration === void 0) { duration = 0; }
             // Make sure this node is under SVG container
-            if (!node || !this.containerElement.nativeElement.contains(node)) {
+            if (!this.svgElement.getElementById("" + id)) {
                 return;
             }
-            var svgRect = this.containerElement.nativeElement.getBoundingClientRect();
+            var node = this.svgElement.getElementById("" + id);
+            var svgRect = this.svgElement.getBoundingClientRect();
             var position = this.getRelativePositionInfo(node);
-            var svgTransform = d3Zoom.zoomTransform(this.containerElement.nativeElement);
+            var svgTransform = d3Zoom.zoomTransform(this.svgElement);
             var centerX = (position.topLeft.x + position.bottomRight.x) / 2;
             var centerY = (position.topLeft.y + position.bottomRight.y) / 2;
             var dx = svgRect.left + svgRect.width / 2 - centerX;
             var dy = svgRect.top + svgRect.height / 2 - centerY;
-            d3Selection.select(this.containerElement.nativeElement)
+            this.svgSelection
                 .transition()
-                .duration(250)
-                .call(this.zoomController.translateBy, dx / svgTransform.k, dy / svgTransform.k);
+                .duration(duration)
+                .call(this.zoomBehavior.translateBy, dx / svgTransform.k, dy / svgTransform.k);
         };
-        NzGraphSvgContainerComponent.prototype.getRelativePositionInfo = function (node) {
+        /**
+         * Handle zoom event
+         * @param transform
+         */
+        NzGraphZoomDirective.prototype.zoomed = function (_b) {
+            var transform = _b.transform;
+            var x = transform.x, y = transform.y, k = transform.k;
+            // Update g element transform
+            this.gZoomElement.setAttribute('transform', "translate(" + x + ", " + y + ")scale(" + k + ")");
+            this.nzZoom = k;
+            this.nzZoomChange.emit(this.nzZoom);
+            this.nzTransformEvent.emit(transform);
+            this.cdr.markForCheck();
+        };
+        /**
+         * Scale with zoom and duration
+         * @param duration
+         * @param scale
+         * @private
+         */
+        NzGraphZoomDirective.prototype.reScale = function (duration, scale) {
+            var _this = this;
+            var transform = calculateTransform(this.svgElement, this.gZoomElement, scale);
+            if (!transform) {
+                return;
+            }
+            var x = transform.x, y = transform.y, k = transform.k;
+            var zTransform = d3Zoom.zoomIdentity.translate(x, y).scale(Math.max(k, this.nzMinZoom));
+            this.svgSelection
+                .transition()
+                .duration(duration)
+                .call(this.zoomBehavior.transform, zTransform)
+                .on('end.fitted', function () {
+                _this.zoomBehavior.on('end.fitted', null);
+            });
+        };
+        NzGraphZoomDirective.prototype.getRelativePositionInfo = function (node) {
             var nodeBox = node.getBBox();
             var nodeCtm = node.getScreenCTM();
-            var pointTL = this.containerElement.nativeElement.createSVGPoint();
-            var pointBR = this.containerElement.nativeElement.createSVGPoint();
+            var pointTL = this.svgElement.createSVGPoint();
+            var pointBR = this.svgElement.createSVGPoint();
             pointTL.x = nodeBox.x;
             pointTL.y = nodeBox.y;
             pointBR.x = nodeBox.x + nodeBox.width;
@@ -1086,50 +1091,25 @@
                 bottomRight: pointBR
             };
         };
-        return NzGraphSvgContainerComponent;
+        return NzGraphZoomDirective;
     }());
-    NzGraphSvgContainerComponent.decorators = [
-        { type: core.Component, args: [{
-                    changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    encapsulation: core.ViewEncapsulation.None,
-                    selector: 'nz-graph-svg-container',
-                    exportAs: 'nzGraphSvgContainer',
-                    template: "\n    <svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" #container width=\"100%\" height=\"100%\">\n      <rect width=\"100%\" height=\"100%\" fill=\"transparent\" class=\"nz-graph-background\"></rect>\n      <g #zoom [attr.transform]=\"transformStyle\" class=\"nz-graph-zoom\">\n        <ng-content></ng-content>\n      </g>\n    </svg>\n  ",
-                    host: {
-                        '[class.nz-graph-svg-container]': 'true'
-                    }
+    NzGraphZoomDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: '[nz-graph-zoom]',
+                    exportAs: 'nzGraphZoom'
                 },] }
     ];
-    NzGraphSvgContainerComponent.ctorParameters = function () { return [
+    NzGraphZoomDirective.ctorParameters = function () { return [
+        { type: core.ElementRef },
         { type: core.ChangeDetectorRef }
     ]; };
-    NzGraphSvgContainerComponent.propDecorators = {
-        containerElement: [{ type: core.ViewChild, args: ['container', { static: true },] }],
-        zoomElement: [{ type: core.ViewChild, args: ['zoom', { static: true },] }],
-        maxZoomLevel: [{ type: core.Input }],
-        minZoomLevel: [{ type: core.Input }],
-        zoom: [{ type: core.Input }],
-        zoomEvent: [{ type: core.Output }],
-        transformEvent: [{ type: core.Output }]
+    NzGraphZoomDirective.propDecorators = {
+        nzZoom: [{ type: core.Input }],
+        nzMinZoom: [{ type: core.Input }],
+        nzMaxZoom: [{ type: core.Input }],
+        nzTransformEvent: [{ type: core.Output }],
+        nzZoomChange: [{ type: core.Output }]
     };
-
-    /**
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
-     */
-    function flattenNodes(renderInfo) {
-        var nodes = [];
-        var edges = [];
-        var dig = function (node) {
-            nodes.push(node);
-            if (node.type === 0) {
-                edges = edges.concat(node.edges);
-                node.nodes.forEach(function (n) { return dig(n); });
-            }
-        };
-        dig(renderInfo);
-        return __spread(nodes);
-    }
 
     /** Checks whether an object is a data source. */
     function isDataSource(value) {
@@ -1139,22 +1119,23 @@
         return value && typeof value.connect === 'function';
     }
     var NzGraphComponent = /** @class */ (function () {
-        function NzGraphComponent(cdr, ngZone, elementRef) {
+        function NzGraphComponent(cdr, elementRef, noAnimation, nzGraphZoom) {
             this.cdr = cdr;
-            this.ngZone = ngZone;
             this.elementRef = elementRef;
+            this.noAnimation = noAnimation;
+            this.nzGraphZoom = nzGraphZoom;
             this.nzRankDirection = 'LR';
-            this.nzShowMinimap = false;
-            this.nzShowArrow = false;
-            this.nzZoom = 1;
             this.nzAutoSize = false;
             this.nzGraphInitialized = new core.EventEmitter();
-            this.nzZoomInit = new core.EventEmitter();
-            this.nzTransformEvent = new core.EventEmitter();
+            this.nzGraphRendered = new core.EventEmitter();
             this.nzNodeClick = new core.EventEmitter();
+            this.requestId = -1;
+            this.transformStyle = '';
+            this.graphRenderedSubject$ = new rxjs.ReplaySubject(1);
             this.renderInfo = { labelHeight: 0 };
             this.mapOfNodeAttr = {};
             this.mapOfEdgeAttr = {};
+            this.zoom = 1;
             this.typedNodes = nzTypeDefinition();
             this.layoutSetting = NZ_GRAPH_LAYOUT_SETTING;
             this.destroy$ = new rxjs.Subject();
@@ -1162,22 +1143,29 @@
             this.edgeTrackByFun = function (_, edge) { return edge.v + "-" + edge.w; };
             this.subGraphTransform = function (node) {
                 var x = node.x - node.coreBox.width / 2.0;
-                var y = node.y - node.height / 2.0 + node.paddingTop / 2.0;
+                var y = node.y - node.height / 2.0 + node.paddingTop;
                 return "translate(" + x + ", " + y + ")";
             };
             this.coreTransform = function (node) {
-                return "translate(0, " + node.labelHeight + ")";
+                return "translate(0, " + (node.parentNodeName ? node.labelHeight : 0) + ")";
             };
         }
         NzGraphComponent.prototype.ngOnInit = function () {
-            if (this.dataSource !== this.nzGraphData) {
-                this._switchDataSource(this.nzGraphData);
-            }
+            var _this = this;
+            this.graphRenderedSubject$.pipe(operators.take(1), operators.takeUntil(this.destroy$)).subscribe(function () {
+                // Only zooming is not set, move graph to center
+                if (!_this.nzGraphZoom) {
+                    _this.fitCenter();
+                }
+                _this.nzGraphInitialized.emit(_this);
+            });
         };
         NzGraphComponent.prototype.ngOnChanges = function (changes) {
-            var nzAutoFit = changes.nzAutoFit, nzRankDirection = changes.nzRankDirection, nzGraphData = changes.nzGraphData, nzGraphLayoutSettings = changes.nzGraphLayoutSettings;
-            if (nzGraphLayoutSettings) {
-                Object.assign(this.layoutSetting, this.nzGraphLayoutSettings || {});
+            var _this = this;
+            var nzAutoFit = changes.nzAutoFit, nzRankDirection = changes.nzRankDirection, nzGraphData = changes.nzGraphData, nzGraphLayoutConfig = changes.nzGraphLayoutConfig;
+            if (nzGraphLayoutConfig) {
+                this.layoutSetting = this.mergeConfig(nzGraphLayoutConfig.currentValue);
+                // Object.assign(this.layoutSetting, this.nzGraphLayoutSetting || {});
             }
             if (nzGraphData) {
                 if (this.dataSource !== this.nzGraphData) {
@@ -1187,18 +1175,17 @@
             if ((nzAutoFit && !nzAutoFit.firstChange) || (nzRankDirection && !nzRankDirection.firstChange)) {
                 // Render graph
                 if (this.dataSource.dataSource) {
-                    this.renderGraph(this.dataSource.dataSource, {
+                    this.drawGraph(this.dataSource.dataSource, {
                         rankDirection: this.nzRankDirection,
                         expanded: this.dataSource.expansionModel.selected || []
+                    }).then(function () {
+                        _this.cdr.markForCheck();
                     });
                 }
             }
             this.cdr.markForCheck();
         };
-        NzGraphComponent.prototype.ngAfterViewInit = function () {
-            this.autoFit();
-            this.drawMinimap(true);
-        };
+        NzGraphComponent.prototype.ngAfterViewInit = function () { };
         NzGraphComponent.prototype.ngAfterContentChecked = function () {
             if (this.dataSource && !this._dataSubscription) {
                 this.observeRenderChanges();
@@ -1214,17 +1201,7 @@
                 this._dataSubscription.unsubscribe();
                 this._dataSubscription = null;
             }
-        };
-        /**
-         * Transform event
-         */
-        NzGraphComponent.prototype.triggerTransform = function ($event) {
-            this.nzZoom = $event.k;
-            if (this.minimap) {
-                this.minimap.zoom($event);
-            }
-            this.nzTransformEvent.emit($event);
-            this.cdr.markForCheck();
+            polyfill.cancelRequestAnimationFrame(this.requestId);
         };
         /**
          * Emit event
@@ -1233,36 +1210,110 @@
             this.nzNodeClick.emit(node);
         };
         /**
-         * Move graph to center
+         * Move graph to center and scale automatically
          */
-        NzGraphComponent.prototype.autoFit = function () {
-            var _a;
-            if (this.renderInfo) {
-                (_a = this.svgContainerComponent) === null || _a === void 0 ? void 0 : _a.fit(0);
+        NzGraphComponent.prototype.fitCenter = function () {
+            var _b = calculateTransform(this.elementRef.nativeElement.querySelector('svg'), this.elementRef.nativeElement.querySelector('svg > g')), x = _b.x, y = _b.y, k = _b.k;
+            if (k) {
+                this.zoom = k;
+                this.transformStyle = "translate(" + x + ", " + y + ")scale(" + k + ")";
             }
+            this.cdr.markForCheck();
         };
         /**
-         * Refactor
+         * re-Draw graph
+         * @param data
+         * @param options
+         * @param needResize
          */
-        NzGraphComponent.prototype.toggleNode = function (node, expanded) {
-            if (expanded) {
-                // collapse it
-                this.nzGraphData.collapse(node);
-            }
-            else {
-                // expand it
-                this.nzGraphData.expand(node);
-            }
+        NzGraphComponent.prototype.drawGraph = function (data, options, needResize) {
+            var _this = this;
+            if (needResize === void 0) { needResize = false; }
+            return new Promise(function (resolve) {
+                _this.requestId = requestAnimationFrame(function () {
+                    var renderInfo = _this.buildGraphInfo(data, options);
+                    // TODO
+                    // Need better performance
+                    _this.renderInfo = renderInfo;
+                    _this.cdr.markForCheck();
+                    _this.requestId = requestAnimationFrame(function () {
+                        var _a;
+                        _this.drawNodes(!((_a = _this.noAnimation) === null || _a === void 0 ? void 0 : _a.nzNoAnimation)).then(function () {
+                            // Update element
+                            _this.cdr.markForCheck();
+                            if (needResize) {
+                                _this.resizeNodeSize().then(function () {
+                                    var dataSource = _this.dataSource.dataSource;
+                                    _this.drawGraph(dataSource, options, false).then(function () { return resolve(); });
+                                });
+                            }
+                            else {
+                                _this.graphRenderedSubject$.next();
+                                _this.nzGraphRendered.emit(_this);
+                                resolve();
+                            }
+                        });
+                    });
+                });
+                _this.cdr.markForCheck();
+            });
         };
-        NzGraphComponent.prototype.renderGraph = function (data, options) {
-            var renderInfo = this.buildGraphInfo(data, options);
-            // TODO
-            // Need better performance
-            this.setRenderInfo(renderInfo, false);
-            if (this.nzAutoSize) {
-                this.resizeNodes(renderInfo, options);
-            }
-            this.cdr.detectChanges();
+        /**
+         * Redraw all nodes
+         * @param animate
+         */
+        NzGraphComponent.prototype.drawNodes = function (animate) {
+            var _this = this;
+            if (animate === void 0) { animate = true; }
+            return new Promise(function (resolve) {
+                if (animate) {
+                    _this.makeNodesAnimation().subscribe(function () {
+                        resolve();
+                    });
+                }
+                else {
+                    _this.listOfNodeComponent.map(function (node) {
+                        node.makeNoAnimation();
+                    });
+                    resolve();
+                }
+            });
+        };
+        NzGraphComponent.prototype.resizeNodeSize = function () {
+            var _this = this;
+            return new Promise(function (resolve) {
+                var _a;
+                var dataSource = _this.dataSource.dataSource;
+                var scale = ((_a = _this.nzGraphZoom) === null || _a === void 0 ? void 0 : _a.nzZoom) || _this.zoom || 1;
+                _this.listOfNodeElement.forEach(function (nodeEle) {
+                    var _a;
+                    var contentEle = nodeEle.nativeElement;
+                    if (contentEle) {
+                        var width = void 0;
+                        var height = void 0;
+                        // Check if foreignObject is set
+                        var clientRect = (_a = contentEle.querySelector('foreignObject > :first-child')) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect();
+                        if (clientRect) {
+                            width = clientRect.width;
+                            height = clientRect.height;
+                        }
+                        else {
+                            var bBoxRect = contentEle.getBBox();
+                            width = bBoxRect.width;
+                            height = bBoxRect.height;
+                            // getBBox will return actual value
+                            scale = 1;
+                        }
+                        // Element id type is string
+                        var node = dataSource.nodes.find(function (n) { return "" + n.id === nodeEle.nativeElement.id; });
+                        if (node && width && height) {
+                            node.height = height / scale;
+                            node.width = width / scale;
+                        }
+                    }
+                });
+                resolve();
+            });
         };
         /**
          * Switch to the provided data source by resetting the data and unsubscribing from the current
@@ -1296,31 +1347,25 @@
                         rankDirection: _this.nzRankDirection,
                         expanded: _this.nzGraphData.expansionModel.selected
                     };
-                    _this.renderGraph(data, graphOptions);
-                    _this.cdr.detectChanges();
+                    _this.drawGraph(data, graphOptions, _this.nzAutoSize).then(function () {
+                        _this.cdr.detectChanges();
+                    });
                 });
             }
             else {
                 throw Error("A valid data source must be provided.");
             }
         };
-        NzGraphComponent.prototype.setRenderInfo = function (renderInfo, asPatch) {
-            var _this = this;
-            if (asPatch === void 0) { asPatch = true; }
-            if (asPatch) {
-                this.assignRenderInfo(renderInfo);
-            }
-            else {
-                this.renderInfo = renderInfo;
-            }
-            this.ngZone.onStable.pipe(operators.take(1)).subscribe(function () {
-                _this.makeNodesAnimation().subscribe();
-            });
-        };
+        /**
+         * Get renderInfo and prepare some data
+         * @param data
+         * @param options
+         * @private
+         */
         NzGraphComponent.prototype.buildGraphInfo = function (data, options) {
             var _this = this;
             this.parseInfo(data);
-            var renderInfo = hierarchyGraph.buildGraph(data, options, this.layoutSetting);
+            var renderInfo = dagreCompound.buildGraph(data, options, this.layoutSetting);
             var dig = function (nodes) {
                 nodes.forEach(function (node) {
                     if (node.type === 1 && _this.mapOfNodeAttr.hasOwnProperty(node.name)) {
@@ -1345,45 +1390,13 @@
             });
             return renderInfo;
         };
-        NzGraphComponent.prototype.resizeNodes = function (renderInfo, options) {
-            var _this = this;
-            this.ngZone.onStable
-                .asObservable()
-                .pipe(operators.take(1), operators.finalize(function () {
-                _this.cdr.detectChanges();
-            }))
-                .subscribe(function () {
-                var dataSource = _this.dataSource.dataSource;
-                _this.elementRef.nativeElement.querySelectorAll('[nz-graph-node]').forEach(function (nodeEle) {
-                    var contentEle = nodeEle.querySelector('.nz-graph-node-wrapper');
-                    if (contentEle) {
-                        var height = contentEle.getBoundingClientRect().height;
-                        var width = contentEle.getBoundingClientRect().width;
-                        // Element id type is string
-                        var targetNode = flattenNodes(renderInfo).find(function (n) { return "" + n.name === nodeEle.id; });
-                        var nodeName_1 = targetNode && targetNode.name;
-                        var node = dataSource.nodes.find(function (n) { return n.id === nodeName_1; });
-                        if (node) {
-                            node.height = height / _this.nzZoom;
-                            node.width = width / _this.nzZoom;
-                        }
-                    }
-                });
-                var newRenderInfo = _this.buildGraphInfo(dataSource, options);
-                _this.setRenderInfo(newRenderInfo, false);
-            });
-        };
-        NzGraphComponent.prototype.assignRenderInfo = function (renderInfo) {
-            this.renderInfo.edges = renderInfo.edges;
-            this.renderInfo.nodes.forEach(function (node, index) {
-                Object.assign(node, renderInfo.nodes[index]);
-            });
-        };
+        /**
+         * Play with animation
+         * @private
+         */
         NzGraphComponent.prototype.makeNodesAnimation = function () {
             var _this = this;
-            return rxjs.forkJoin.apply(void 0, __spread(this.graphNodes.map(function (node) { return node.makeAnimation(); }))).pipe(operators.tap(function () {
-                _this.drawMinimap();
-            }), operators.finalize(function () {
+            return rxjs.forkJoin.apply(void 0, __spread(this.listOfNodeComponent.map(function (node) { return node.makeAnimation(); }))).pipe(operators.finalize(function () {
                 _this.cdr.detectChanges();
             }));
         };
@@ -1396,18 +1409,27 @@
                 _this.mapOfEdgeAttr[e.v + "-" + e.w] = e;
             });
         };
-        NzGraphComponent.prototype.drawMinimap = function (forceRerender) {
-            if (forceRerender === void 0) { forceRerender = false; }
-            var _a, _b;
-            if (!this.minimap || !this.nzShowMinimap) {
-                return;
-            }
-            if (forceRerender) {
-                (_a = this.minimap) === null || _a === void 0 ? void 0 : _a.init(this.svgContainerComponent.containerElement.nativeElement, this.svgContainerComponent.zoomElement.nativeElement, this.svgContainerComponent.zoomController);
-            }
-            else {
-                (_b = this.minimap) === null || _b === void 0 ? void 0 : _b.update();
-            }
+        /**
+         * Merge config with user inputs
+         * @param config
+         * @private
+         */
+        NzGraphComponent.prototype.mergeConfig = function (config) {
+            var graphMeta = (config === null || config === void 0 ? void 0 : config.layout) || {};
+            var subSceneMeta = (config === null || config === void 0 ? void 0 : config.subScene) || {};
+            var defaultNodeMeta = (config === null || config === void 0 ? void 0 : config.defaultNode) || {};
+            var defaultCompoundNodeMeta = (config === null || config === void 0 ? void 0 : config.defaultCompoundNode) || {};
+            var bridge = NZ_GRAPH_LAYOUT_SETTING.nodeSize.bridge;
+            var graph = { meta: Object.assign(Object.assign({}, NZ_GRAPH_LAYOUT_SETTING.graph.meta), graphMeta) };
+            var subScene = {
+                meta: Object.assign(Object.assign({}, NZ_GRAPH_LAYOUT_SETTING.subScene.meta), subSceneMeta)
+            };
+            var nodeSize = {
+                meta: Object.assign(Object.assign({}, NZ_GRAPH_LAYOUT_SETTING.nodeSize.meta), defaultCompoundNodeMeta),
+                node: Object.assign(Object.assign({}, NZ_GRAPH_LAYOUT_SETTING.nodeSize.node), defaultNodeMeta),
+                bridge: bridge
+            };
+            return { graph: graph, subScene: subScene, nodeSize: nodeSize };
         };
         return NzGraphComponent;
     }());
@@ -1417,43 +1439,33 @@
                     encapsulation: core.ViewEncapsulation.None,
                     selector: 'nz-graph',
                     exportAs: 'nzGraph',
-                    template: "\n    <ng-content></ng-content>\n    <nz-graph-svg-container (transformEvent)=\"triggerTransform($event)\">\n      <svg:defs nz-graph-defs></svg:defs>\n      <ng-container [ngTemplateOutlet]=\"groupTemplate\" [ngTemplateOutletContext]=\"{ renderInfo: renderInfo, type: 'root' }\"></ng-container>\n    </nz-graph-svg-container>\n\n    <nz-graph-minimap *ngIf=\"nzShowMinimap\"></nz-graph-minimap>\n\n    <ng-template #groupTemplate let-renderInfo=\"renderInfo\" let-type=\"type\">\n      <svg:g [attr.transform]=\"type === 'sub' ? subGraphTransform(renderInfo) : null\">\n        <svg:g class=\"core\" [attr.transform]=\"coreTransform(renderInfo)\">\n          <svg:g class=\"nz-graph-edges\">\n            <svg:g class=\"nz-graph-edge\" *ngFor=\"let edge of renderInfo.edges; let index = index; trackBy: edgeTrackByFun\">\n              <svg:path\n                class=\"nz-graph-edge-line\"\n                nz-graph-edge\n                [attr.marker-end]=\"nzShowArrow ? 'url(#edge-end-arrow)' : null\"\n                [edge]=\"edge\"\n              ></svg:path>\n              <svg:text class=\"nz-graph-edge-text\" text-anchor=\"middle\" dy=\"20\" *ngIf=\"edge.label\">\n                <textPath [attr.href]=\"'#' + edge.v + '--' + edge.w\" startOffset=\"50%\">{{ edge.label }}</textPath>\n              </svg:text>\n            </svg:g>\n          </svg:g>\n\n          <svg:g class=\"nz-graph-nodes\">\n            <svg:g\n              class=\"nz-graph-node\"\n              [class.nz-graph-custom-node]=\"!!customGraphNodeTemplate\"\n              [style.display]=\"node.type === 2 ? 'none' : null\"\n              *ngFor=\"let node of typedNodes(renderInfo.nodes); trackBy: nodeTrackByFun\"\n            >\n              <svg:g nz-graph-node [node]=\"node\" (nodeClick)=\"clickNode($event)\">\n                <foreignObject class=\"nz-graph-node-rect\" x=\"0\" y=\"0\" [attr.width]=\"node.width\" [attr.height]=\"node.height\">\n                  <xhtml:div class=\"nz-graph-node-wrapper\">\n                    <ng-container\n                      *ngIf=\"customGraphNodeTemplate\"\n                      [ngTemplateOutlet]=\"customGraphNodeTemplate\"\n                      [ngTemplateOutletContext]=\"{ $implicit: node }\"\n                    ></ng-container>\n                    <div class=\"node-content\" *ngIf=\"!customGraphNodeTemplate\">\n                      <div class=\"title\">\n                        {{ node.name }}\n                        <i\n                          class=\"action-icon\"\n                          *ngIf=\"node.type === 0\"\n                          nz-icon\n                          [nzType]=\"node.expanded ? 'minus' : 'plus'\"\n                          nzTheme=\"outline\"\n                          (click)=\"toggleNode(node.name, node.expanded)\"\n                        ></i>\n                      </div>\n                      <div class=\"label\" *ngIf=\"!node.expanded\">{{ node.label }}</div>\n                    </div>\n                  </xhtml:div>\n                </foreignObject>\n              </svg:g>\n\n              <ng-container\n                *ngIf=\"node.expanded\"\n                [ngTemplateOutlet]=\"groupTemplate\"\n                [ngTemplateOutletContext]=\"{ renderInfo: node, type: 'sub' }\"\n              ></ng-container>\n            </svg:g>\n          </svg:g>\n        </svg:g>\n      </svg:g>\n    </ng-template>\n  ",
+                    template: "\n    <ng-content></ng-content>\n    <svg width=\"100%\" height=\"100%\">\n      <svg:defs nz-graph-defs></svg:defs>\n      <svg:g [attr.transform]=\"transformStyle\">\n        <ng-container\n          [ngTemplateOutlet]=\"groupTemplate\"\n          [ngTemplateOutletContext]=\"{ renderNode: renderInfo, type: 'root' }\"\n        ></ng-container>\n      </svg:g>\n    </svg>\n\n    <ng-template #groupTemplate let-renderNode=\"renderNode\" let-type=\"type\">\n      <svg:g [attr.transform]=\"type === 'sub' ? subGraphTransform(renderNode) : null\">\n        <svg:g class=\"core\" [attr.transform]=\"coreTransform(renderNode)\">\n          <svg:g class=\"nz-graph-edges\">\n            <ng-container *ngFor=\"let edge of renderNode.edges; trackBy: edgeTrackByFun\">\n              <g class=\"nz-graph-edge\" nz-graph-edge [edge]=\"edge\" [customTemplate]=\"customGraphEdgeTemplate\"></g>\n            </ng-container>\n          </svg:g>\n\n          <svg:g class=\"nz-graph-nodes\">\n            <ng-container *ngFor=\"let node of typedNodes(renderNode.nodes); trackBy: nodeTrackByFun\">\n              <g\n                *ngIf=\"node.type === 1\"\n                class=\"nz-graph-node\"\n                nz-graph-node\n                [node]=\"node\"\n                [customTemplate]=\"nodeTemplate\"\n                (nodeClick)=\"clickNode($event)\"\n              ></g>\n              <g\n                *ngIf=\"node.type === 0\"\n                class=\"nz-graph-node\"\n                nz-graph-node\n                [node]=\"node\"\n                [customTemplate]=\"groupNodeTemplate\"\n                (nodeClick)=\"clickNode($event)\"\n              ></g>\n              <ng-container\n                *ngIf=\"node.expanded\"\n                [ngTemplateOutlet]=\"groupTemplate\"\n                [ngTemplateOutletContext]=\"{ renderNode: node, type: 'sub' }\"\n              ></ng-container>\n            </ng-container>\n          </svg:g>\n        </svg:g>\n      </svg:g>\n    </ng-template>\n  ",
                     host: {
                         '[class.nz-graph]': 'true',
-                        '[class.nz-graph-auto-fit]': 'nzAutoSize'
+                        '[class.nz-graph-auto-size]': 'nzAutoSize'
                     }
                 },] }
     ];
     NzGraphComponent.ctorParameters = function () { return [
         { type: core.ChangeDetectorRef },
-        { type: core.NgZone },
-        { type: core.ElementRef }
+        { type: core.ElementRef },
+        { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] },
+        { type: NzGraphZoomDirective, decorators: [{ type: core.Optional }] }
     ]; };
     NzGraphComponent.propDecorators = {
-        graphNodes: [{ type: core.ViewChildren, args: [NzGraphNodeDirective,] }],
-        svgContainerComponent: [{ type: core.ViewChild, args: [NzGraphSvgContainerComponent,] }],
-        minimap: [{ type: core.ViewChild, args: [NzGraphMinimapComponent,] }],
-        customGraphNodeTemplate: [{ type: core.ContentChild, args: [NzCustomGraphNodeDirective, { static: true, read: core.TemplateRef },] }],
+        listOfNodeElement: [{ type: core.ViewChildren, args: [NzGraphNodeComponent, { read: core.ElementRef },] }],
+        listOfNodeComponent: [{ type: core.ViewChildren, args: [NzGraphNodeComponent,] }],
+        nodeTemplate: [{ type: core.ContentChild, args: [NzGraphNodeDirective, { static: true, read: core.TemplateRef },] }],
+        groupNodeTemplate: [{ type: core.ContentChild, args: [NzGraphGroupNodeDirective, { static: true, read: core.TemplateRef },] }],
+        customGraphEdgeTemplate: [{ type: core.ContentChild, args: [NzGraphEdgeDirective, { static: true, read: core.TemplateRef },] }],
         nzGraphData: [{ type: core.Input }],
         nzRankDirection: [{ type: core.Input }],
-        nzGraphLayoutSettings: [{ type: core.Input }],
-        nzShowMinimap: [{ type: core.Input }],
-        nzShowArrow: [{ type: core.Input }],
-        nzZoom: [{ type: core.Input }],
+        nzGraphLayoutConfig: [{ type: core.Input }],
         nzAutoSize: [{ type: core.Input }],
         nzGraphInitialized: [{ type: core.Output }],
-        nzZoomInit: [{ type: core.Output }],
-        nzTransformEvent: [{ type: core.Output }],
+        nzGraphRendered: [{ type: core.Output }],
         nzNodeClick: [{ type: core.Output }]
     };
-    __decorate([
-        util.InputBoolean(),
-        __metadata("design:type", Object)
-    ], NzGraphComponent.prototype, "nzShowMinimap", void 0);
-    __decorate([
-        util.InputBoolean(),
-        __metadata("design:type", Object)
-    ], NzGraphComponent.prototype, "nzShowArrow", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Object)
@@ -1461,12 +1473,14 @@
 
     var COMPONENTS = [
         NzGraphComponent,
-        NzGraphSvgContainerComponent,
-        NzGraphEdgeDirective,
-        NzGraphNodeDirective,
         NzGraphMinimapComponent,
         NzGraphDefsComponent,
-        NzCustomGraphNodeDirective
+        NzGraphNodeDirective,
+        NzGraphGroupNodeDirective,
+        NzGraphZoomDirective,
+        NzGraphNodeComponent,
+        NzGraphEdgeComponent,
+        NzGraphEdgeDirective
     ];
     var NzGraphModule = /** @class */ (function () {
         function NzGraphModule() {
@@ -1476,7 +1490,7 @@
     NzGraphModule.decorators = [
         { type: core.NgModule, args: [{
                     declarations: __spread(COMPONENTS),
-                    imports: [common.CommonModule, icon.NzIconModule, spin.NzSpinModule],
+                    imports: [common.CommonModule, icon.NzIconModule, spin.NzSpinModule, noAnimation.NzNoAnimationModule],
                     exports: __spread(COMPONENTS)
                 },] }
     ];
@@ -1491,17 +1505,19 @@
      */
 
     exports.NZ_GRAPH_LAYOUT_SETTING = NZ_GRAPH_LAYOUT_SETTING;
-    exports.NzCustomGraphNodeDirective = NzCustomGraphNodeDirective;
     exports.NzGraphComponent = NzGraphComponent;
     exports.NzGraphData = NzGraphData;
+    exports.NzGraphEdgeComponent = NzGraphEdgeComponent;
     exports.NzGraphEdgeDirective = NzGraphEdgeDirective;
+    exports.NzGraphGroupNodeDirective = NzGraphGroupNodeDirective;
+    exports.NzGraphMinimapComponent = NzGraphMinimapComponent;
     exports.NzGraphModule = NzGraphModule;
+    exports.NzGraphNodeComponent = NzGraphNodeComponent;
     exports.NzGraphNodeDirective = NzGraphNodeDirective;
-    exports.NzGraphSvgContainerComponent = NzGraphSvgContainerComponent;
+    exports.NzGraphZoomDirective = NzGraphZoomDirective;
     exports.isDataSource = isDataSource;
     exports.nzTypeDefinition = nzTypeDefinition;
-    exports.ɵa = NzGraphMinimapComponent;
-    exports.ɵb = NzGraphDefsComponent;
+    exports.ɵa = NzGraphDefsComponent;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

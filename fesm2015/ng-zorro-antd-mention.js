@@ -1,6 +1,7 @@
+import { BidiModule } from '@angular/cdk/bidi';
 import { OverlayConfig, ConnectionPositionPair, Overlay, OverlayModule } from '@angular/cdk/overlay';
 import { DOCUMENT, CommonModule } from '@angular/common';
-import { Directive, Injectable, forwardRef, EventEmitter, ElementRef, Component, ChangeDetectionStrategy, Optional, Inject, ChangeDetectorRef, ViewContainerRef, Input, Output, ViewChild, TemplateRef, ContentChild, NgModule } from '@angular/core';
+import { Directive, Injectable, forwardRef, EventEmitter, ElementRef, Component, ChangeDetectionStrategy, Optional, Inject, ChangeDetectorRef, ViewContainerRef, Input, Output, ViewChild, TemplateRef, ViewChildren, ContentChild, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { Subject, merge, fromEvent } from 'rxjs';
@@ -166,6 +167,14 @@ class NzMentionComponent {
     get triggerNativeElement() {
         return this.trigger.el.nativeElement;
     }
+    get focusItemElement() {
+        var _a;
+        const itemArr = (_a = this.items) === null || _a === void 0 ? void 0 : _a.toArray();
+        if (itemArr && itemArr[this.activeIndex]) {
+            return itemArr[this.activeIndex].nativeElement;
+        }
+        return null;
+    }
     ngOnInit() {
         this.nzMentionService.triggerChanged().subscribe(trigger => {
             this.trigger = trigger;
@@ -290,10 +299,17 @@ class NzMentionComponent {
     setNextItemActive() {
         this.activeIndex = this.activeIndex + 1 <= this.filteredSuggestions.length - 1 ? this.activeIndex + 1 : 0;
         this.cdr.markForCheck();
+        this.scrollToFocusItem();
     }
     setPreviousItemActive() {
         this.activeIndex = this.activeIndex - 1 < 0 ? this.filteredSuggestions.length - 1 : this.activeIndex - 1;
         this.cdr.markForCheck();
+        this.scrollToFocusItem();
+    }
+    scrollToFocusItem() {
+        if (this.focusItemElement) {
+            this.focusItemElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+        }
     }
     canOpen() {
         const element = this.triggerNativeElement;
@@ -388,6 +404,7 @@ NzMentionComponent.decorators = [
     <ng-template #suggestions>
       <ul class="ant-mention-dropdown">
         <li
+          #items
           class="ant-mention-dropdown-item"
           *ngFor="let suggestion of filteredSuggestions; let i = index"
           [class.focus]="i === activeIndex"
@@ -428,6 +445,7 @@ NzMentionComponent.propDecorators = {
     nzOnSelect: [{ type: Output }],
     nzOnSearchChange: [{ type: Output }],
     suggestionsTemp: [{ type: ViewChild, args: [TemplateRef, { static: false },] }],
+    items: [{ type: ViewChildren, args: ['items', { read: ElementRef },] }],
     suggestionChild: [{ type: ContentChild, args: [NzMentionSuggestionDirective, { static: false, read: TemplateRef },] }]
 };
 __decorate([
@@ -444,7 +462,7 @@ class NzMentionModule {
 }
 NzMentionModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule, OverlayModule, NzIconModule],
+                imports: [BidiModule, CommonModule, FormsModule, OverlayModule, NzIconModule],
                 declarations: [...COMPONENTS],
                 exports: [...COMPONENTS]
             },] }

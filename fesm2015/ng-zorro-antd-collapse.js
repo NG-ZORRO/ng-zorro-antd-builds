@@ -1,10 +1,12 @@
 import { __decorate, __metadata } from 'tslib';
-import { Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, Input, EventEmitter, Host, Output, NgModule } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, ElementRef, Optional, Input, EventEmitter, Host, Output, NgModule } from '@angular/core';
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -15,22 +17,35 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
  */
 const NZ_CONFIG_MODULE_NAME = 'collapse';
 class NzCollapseComponent {
-    constructor(nzConfigService, cdr) {
+    constructor(nzConfigService, cdr, elementRef, directionality) {
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
+        this.elementRef = elementRef;
+        this.directionality = directionality;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzAccordion = false;
         this.nzBordered = true;
         this.nzGhost = false;
         this.nzExpandIconPosition = 'left';
+        this.dir = 'ltr';
         this.listOfNzCollapsePanelComponent = [];
         this.destroy$ = new Subject();
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-collapse');
         this.nzConfigService
             .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
             this.cdr.markForCheck();
         });
+    }
+    ngOnInit() {
+        var _a;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
     }
     addPanel(value) {
         this.listOfNzCollapsePanelComponent.push(value);
@@ -68,17 +83,19 @@ NzCollapseComponent.decorators = [
     <ng-content></ng-content>
   `,
                 host: {
-                    '[class.ant-collapse]': 'true',
                     '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
                     '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,
                     '[class.ant-collapse-ghost]': `nzGhost`,
-                    '[class.ant-collapse-borderless]': '!nzBordered'
+                    '[class.ant-collapse-borderless]': '!nzBordered',
+                    '[class.ant-collapse-rtl]': "dir === 'rtl'"
                 }
             },] }
 ];
 NzCollapseComponent.ctorParameters = () => [
     { type: NzConfigService },
-    { type: ChangeDetectorRef }
+    { type: ChangeDetectorRef },
+    { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzCollapseComponent.propDecorators = {
     nzAccordion: [{ type: Input }],
@@ -108,16 +125,20 @@ __decorate([
  */
 const NZ_CONFIG_MODULE_NAME$1 = 'collapsePanel';
 class NzCollapsePanelComponent {
-    constructor(nzConfigService, cdr, nzCollapseComponent) {
+    constructor(nzConfigService, cdr, nzCollapseComponent, elementRef, noAnimation) {
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
         this.nzCollapseComponent = nzCollapseComponent;
+        this.elementRef = elementRef;
+        this.noAnimation = noAnimation;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME$1;
         this.nzActive = false;
         this.nzDisabled = false;
         this.nzShowArrow = true;
         this.nzActiveChange = new EventEmitter();
         this.destroy$ = new Subject();
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-collapse-item');
         this.nzConfigService
             .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME$1)
             .pipe(takeUntil(this.destroy$))
@@ -161,14 +182,18 @@ NzCollapsePanelComponent.decorators = [
         <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
       </div>
     </div>
-    <div class="ant-collapse-content" [class.ant-collapse-content-active]="nzActive" [@collapseMotion]="nzActive ? 'expanded' : 'hidden'">
+    <div
+      class="ant-collapse-content"
+      [class.ant-collapse-content-active]="nzActive"
+      [@.disabled]="noAnimation?.nzNoAnimation"
+      [@collapseMotion]="nzActive ? 'expanded' : 'hidden'"
+    >
       <div class="ant-collapse-content-box">
         <ng-content></ng-content>
       </div>
     </div>
   `,
                 host: {
-                    '[class.ant-collapse-item]': 'true',
                     '[class.ant-collapse-no-arrow]': '!nzShowArrow',
                     '[class.ant-collapse-item-active]': 'nzActive',
                     '[class.ant-collapse-item-disabled]': 'nzDisabled'
@@ -178,7 +203,9 @@ NzCollapsePanelComponent.decorators = [
 NzCollapsePanelComponent.ctorParameters = () => [
     { type: NzConfigService },
     { type: ChangeDetectorRef },
-    { type: NzCollapseComponent, decorators: [{ type: Host }] }
+    { type: NzCollapseComponent, decorators: [{ type: Host }] },
+    { type: ElementRef },
+    { type: NzNoAnimationDirective, decorators: [{ type: Optional }] }
 ];
 NzCollapsePanelComponent.propDecorators = {
     nzActive: [{ type: Input }],
@@ -213,7 +240,7 @@ NzCollapseModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NzCollapsePanelComponent, NzCollapseComponent],
                 exports: [NzCollapsePanelComponent, NzCollapseComponent],
-                imports: [CommonModule, NzIconModule, NzOutletModule]
+                imports: [BidiModule, CommonModule, NzIconModule, NzOutletModule, NzNoAnimationModule]
             },] }
 ];
 

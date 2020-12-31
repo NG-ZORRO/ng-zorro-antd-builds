@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/affix', ['exports', '@angular/cdk/platform', '@angular/common', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].affix = {}), global.ng.cdk.platform, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators));
-}(this, (function (exports, platform, common, core, config, services, util, rxjs, operators) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/bidi')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/affix', ['exports', '@angular/cdk/platform', '@angular/common', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/bidi'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].affix = {}), global.ng.cdk.platform, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.bidi));
+}(this, (function (exports, platform, common, core, config, services, util, rxjs, operators, bidi) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -341,14 +341,17 @@
     var NZ_AFFIX_CLS_PREFIX = 'ant-affix';
     var NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
     var NzAffixComponent = /** @class */ (function () {
-        function NzAffixComponent(el, doc, nzConfigService, scrollSrv, ngZone, platform, renderer) {
+        function NzAffixComponent(el, doc, nzConfigService, scrollSrv, ngZone, platform, renderer, cdr, directionality) {
             this.nzConfigService = nzConfigService;
             this.scrollSrv = scrollSrv;
             this.ngZone = ngZone;
             this.platform = platform;
             this.renderer = renderer;
+            this.cdr = cdr;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzChange = new core.EventEmitter();
+            this.dir = 'ltr';
             this.positionChangeSubscription = rxjs.Subscription.EMPTY;
             this.offsetChanged$ = new rxjs.ReplaySubject(1);
             this.destroy$ = new rxjs.Subject();
@@ -364,6 +367,17 @@
             enumerable: false,
             configurable: true
         });
+        NzAffixComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.registerListeners();
+                _this.updatePosition({});
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+        };
         NzAffixComponent.prototype.ngOnChanges = function (changes) {
             var nzOffsetBottom = changes.nzOffsetBottom, nzOffsetTop = changes.nzOffsetTop, nzTarget = changes.nzTarget;
             if (nzOffsetBottom || nzOffsetTop) {
@@ -431,6 +445,7 @@
             else {
                 wrapEl.classList.remove(NZ_AFFIX_CLS_PREFIX);
             }
+            this.updateRtlClass();
             if ((affixStyle && !originalAffixStyle) || (!affixStyle && originalAffixStyle)) {
                 this.nzChange.emit(fixed);
             }
@@ -528,6 +543,20 @@
                 this.syncPlaceholderStyle(e);
             }
         };
+        NzAffixComponent.prototype.updateRtlClass = function () {
+            var wrapEl = this.fixedEl.nativeElement;
+            if (this.dir === 'rtl') {
+                if (wrapEl.classList.contains(NZ_AFFIX_CLS_PREFIX)) {
+                    wrapEl.classList.add(NZ_AFFIX_CLS_PREFIX + "-rtl");
+                }
+                else {
+                    wrapEl.classList.remove(NZ_AFFIX_CLS_PREFIX + "-rtl");
+                }
+            }
+            else {
+                wrapEl.classList.remove(NZ_AFFIX_CLS_PREFIX + "-rtl");
+            }
+        };
         return NzAffixComponent;
     }());
     NzAffixComponent.decorators = [
@@ -546,7 +575,9 @@
         { type: services.NzScrollService },
         { type: core.NgZone },
         { type: platform.Platform },
-        { type: core.Renderer2 }
+        { type: core.Renderer2 },
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzAffixComponent.propDecorators = {
         fixedEl: [{ type: core.ViewChild, args: ['fixedEl', { static: true },] }],
@@ -579,7 +610,7 @@
         { type: core.NgModule, args: [{
                     declarations: [NzAffixComponent],
                     exports: [NzAffixComponent],
-                    imports: [common.CommonModule, platform.PlatformModule]
+                    imports: [bidi.BidiModule, common.CommonModule, platform.PlatformModule]
                 },] }
     ];
 

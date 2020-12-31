@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/layout'), require('@angular/cdk/platform'), require('@angular/core'), require('ng-zorro-antd/core/services'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/util'), require('@angular/common')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/grid', ['exports', '@angular/cdk/layout', '@angular/cdk/platform', '@angular/core', 'ng-zorro-antd/core/services', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/util', '@angular/common'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].grid = {}), global.ng.cdk.layout, global.ng.cdk.platform, global.ng.core, global['ng-zorro-antd'].core.services, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.util, global.ng.common));
-}(this, (function (exports, layout, platform, core, services, rxjs, operators, util, common) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/layout'), require('@angular/cdk/platform'), require('@angular/core'), require('ng-zorro-antd/core/services'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/util'), require('@angular/common')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/grid', ['exports', '@angular/cdk/bidi', '@angular/cdk/layout', '@angular/cdk/platform', '@angular/core', 'ng-zorro-antd/core/services', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/util', '@angular/common'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].grid = {}), global.ng.cdk.bidi, global.ng.cdk.layout, global.ng.cdk.platform, global.ng.core, global['ng-zorro-antd'].core.services, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.util, global.ng.common));
+}(this, (function (exports, bidi, layout, platform, core, services, rxjs, operators, util, common) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -306,18 +306,22 @@
     }
 
     var NzRowDirective = /** @class */ (function () {
-        function NzRowDirective(elementRef, renderer, mediaMatcher, ngZone, platform, breakpointService) {
+        function NzRowDirective(elementRef, renderer, mediaMatcher, ngZone, platform, breakpointService, directionality) {
             this.elementRef = elementRef;
             this.renderer = renderer;
             this.mediaMatcher = mediaMatcher;
             this.ngZone = ngZone;
             this.platform = platform;
             this.breakpointService = breakpointService;
+            this.directionality = directionality;
             this.nzAlign = null;
             this.nzJustify = null;
             this.nzGutter = null;
             this.actualGutter$ = new rxjs.ReplaySubject(1);
+            this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-row');
         }
         NzRowDirective.prototype.getGutter = function () {
             var _this = this;
@@ -342,7 +346,7 @@
         };
         NzRowDirective.prototype.setGutterStyle = function () {
             var _this = this;
-            var _a = __read(this.getGutter(), 2), horizontalGutter = _a[0], verticalGutter = _a[1];
+            var _b = __read(this.getGutter(), 2), horizontalGutter = _b[0], verticalGutter = _b[1];
             this.actualGutter$.next([horizontalGutter, verticalGutter]);
             var renderGutter = function (name, gutter) {
                 var nativeElement = _this.elementRef.nativeElement;
@@ -356,6 +360,12 @@
             renderGutter('margin-bottom', verticalGutter);
         };
         NzRowDirective.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+            });
             this.setGutterStyle();
         };
         NzRowDirective.prototype.ngOnChanges = function (changes) {
@@ -385,7 +395,6 @@
                     selector: '[nz-row],nz-row,nz-form-item',
                     exportAs: 'nzRow',
                     host: {
-                        '[class.ant-row]': "true",
                         '[class.ant-row-top]': "nzAlign === 'top'",
                         '[class.ant-row-middle]': "nzAlign === 'middle'",
                         '[class.ant-row-bottom]': "nzAlign === 'bottom'",
@@ -393,7 +402,8 @@
                         '[class.ant-row-end]': "nzJustify === 'end'",
                         '[class.ant-row-center]': "nzJustify === 'center'",
                         '[class.ant-row-space-around]': "nzJustify === 'space-around'",
-                        '[class.ant-row-space-between]': "nzJustify === 'space-between'"
+                        '[class.ant-row-space-between]': "nzJustify === 'space-between'",
+                        '[class.ant-row-rtl]': "dir === \"rtl\""
                     }
                 },] }
     ];
@@ -403,7 +413,8 @@
         { type: layout.MediaMatcher },
         { type: core.NgZone },
         { type: platform.Platform },
-        { type: services.NzBreakpointService }
+        { type: services.NzBreakpointService },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzRowDirective.propDecorators = {
         nzAlign: [{ type: core.Input }],
@@ -412,13 +423,15 @@
     };
 
     var NzColDirective = /** @class */ (function () {
-        function NzColDirective(elementRef, nzRowDirective, renderer) {
+        function NzColDirective(elementRef, nzRowDirective, renderer, directionality) {
             this.elementRef = elementRef;
             this.nzRowDirective = nzRowDirective;
             this.renderer = renderer;
+            this.directionality = directionality;
             this.classMap = {};
             this.destroy$ = new rxjs.Subject();
             this.hostFlexStyle = null;
+            this.dir = 'ltr';
             this.nzFlex = null;
             this.nzSpan = null;
             this.nzOrder = null;
@@ -434,7 +447,7 @@
         }
         NzColDirective.prototype.setHostClassMap = function () {
             var _a;
-            var hostClassMap = Object.assign((_a = {}, _a['ant-col'] = true, _a["ant-col-" + this.nzSpan] = util.isNotNil(this.nzSpan), _a["ant-col-order-" + this.nzOrder] = util.isNotNil(this.nzOrder), _a["ant-col-offset-" + this.nzOffset] = util.isNotNil(this.nzOffset), _a["ant-col-pull-" + this.nzPull] = util.isNotNil(this.nzPull), _a["ant-col-push-" + this.nzPush] = util.isNotNil(this.nzPush), _a), this.generateClass());
+            var hostClassMap = Object.assign((_a = {}, _a['ant-col'] = true, _a["ant-col-" + this.nzSpan] = util.isNotNil(this.nzSpan), _a["ant-col-order-" + this.nzOrder] = util.isNotNil(this.nzOrder), _a["ant-col-offset-" + this.nzOffset] = util.isNotNil(this.nzOffset), _a["ant-col-pull-" + this.nzPull] = util.isNotNil(this.nzPull), _a["ant-col-push-" + this.nzPush] = util.isNotNil(this.nzPush), _a['ant-col-rtl'] = this.dir === 'rtl', _a), this.generateClass());
             for (var i in this.classMap) {
                 if (this.classMap.hasOwnProperty(i)) {
                     this.renderer.removeClass(this.elementRef.nativeElement, i);
@@ -484,6 +497,12 @@
             return listClassMap;
         };
         NzColDirective.prototype.ngOnInit = function () {
+            var _this = this;
+            this.dir = this.directionality.value;
+            this.directionality.change.subscribe(function (direction) {
+                _this.dir = direction;
+                _this.setHostClassMap();
+            });
             this.setHostClassMap();
             this.setHostFlexStyle();
         };
@@ -530,7 +549,8 @@
     NzColDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: NzRowDirective, decorators: [{ type: core.Optional }, { type: core.Host }] },
-        { type: core.Renderer2 }
+        { type: core.Renderer2 },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzColDirective.propDecorators = {
         nzFlex: [{ type: core.Input }],
@@ -560,7 +580,7 @@
         { type: core.NgModule, args: [{
                     declarations: [NzColDirective, NzRowDirective],
                     exports: [NzColDirective, NzRowDirective],
-                    imports: [common.CommonModule, layout.LayoutModule, platform.PlatformModule]
+                    imports: [bidi.BidiModule, common.CommonModule, layout.LayoutModule, platform.PlatformModule]
                 },] }
     ];
 

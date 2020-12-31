@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/select')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/pagination', ['exports', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/forms', 'ng-zorro-antd/icon', 'ng-zorro-antd/select'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].pagination = {}), global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.forms, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].select));
-}(this, (function (exports, core, config, services, util, i18n, rxjs, operators, common, forms, icon, select) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/select')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/pagination', ['exports', '@angular/cdk/bidi', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/forms', 'ng-zorro-antd/icon', 'ng-zorro-antd/select'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].pagination = {}), global.ng.cdk.bidi, global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.forms, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].select));
+}(this, (function (exports, bidi, core, config, services, util, i18n, rxjs, operators, common, forms, icon, select) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -311,11 +311,13 @@
      */
     var NZ_CONFIG_MODULE_NAME = 'pagination';
     var NzPaginationComponent = /** @class */ (function () {
-        function NzPaginationComponent(i18n, cdr, breakpointService, nzConfigService) {
+        function NzPaginationComponent(i18n, cdr, breakpointService, nzConfigService, directionality, elementRef) {
             this.i18n = i18n;
             this.cdr = cdr;
             this.breakpointService = breakpointService;
             this.nzConfigService = nzConfigService;
+            this.directionality = directionality;
+            this.elementRef = elementRef;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzPageSizeChange = new core.EventEmitter();
             this.nzPageIndexChange = new core.EventEmitter();
@@ -334,8 +336,11 @@
             this.nzPageSize = 10;
             this.showPagination = true;
             this.size = 'default';
+            this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
             this.total$ = new rxjs.ReplaySubject(1);
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-pagination');
         }
         NzPaginationComponent.prototype.validatePageIndex = function (value, lastIndex) {
             if (value > lastIndex) {
@@ -376,6 +381,7 @@
         };
         NzPaginationComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             this.i18n.localeChange.pipe(operators.takeUntil(this.destroy$)).subscribe(function () {
                 _this.locale = _this.i18n.getLocaleData('Pagination');
                 _this.cdr.markForCheck();
@@ -392,6 +398,11 @@
                     _this.cdr.markForCheck();
                 }
             });
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
         };
         NzPaginationComponent.prototype.ngOnDestroy = function () {
             this.destroy$.next();
@@ -420,10 +431,10 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     template: "\n    <ng-container *ngIf=\"showPagination\">\n      <ng-container *ngIf=\"nzSimple; else defaultPagination.template\">\n        <ng-template [ngTemplateOutlet]=\"simplePagination.template\"></ng-template>\n      </ng-container>\n    </ng-container>\n    <nz-pagination-simple\n      #simplePagination\n      [disabled]=\"nzDisabled\"\n      [itemRender]=\"nzItemRender\"\n      [locale]=\"locale\"\n      [pageSize]=\"nzPageSize\"\n      [total]=\"nzTotal\"\n      [pageIndex]=\"nzPageIndex\"\n      (pageIndexChange)=\"onPageIndexChange($event)\"\n    ></nz-pagination-simple>\n    <nz-pagination-default\n      #defaultPagination\n      [nzSize]=\"size\"\n      [itemRender]=\"nzItemRender\"\n      [showTotal]=\"nzShowTotal\"\n      [disabled]=\"nzDisabled\"\n      [locale]=\"locale\"\n      [showSizeChanger]=\"nzShowSizeChanger\"\n      [showQuickJumper]=\"nzShowQuickJumper\"\n      [total]=\"nzTotal\"\n      [pageIndex]=\"nzPageIndex\"\n      [pageSize]=\"nzPageSize\"\n      [pageSizeOptions]=\"nzPageSizeOptions\"\n      (pageIndexChange)=\"onPageIndexChange($event)\"\n      (pageSizeChange)=\"onPageSizeChange($event)\"\n    ></nz-pagination-default>\n  ",
                     host: {
-                        '[class.ant-pagination]': 'true',
                         '[class.ant-pagination-simple]': 'nzSimple',
                         '[class.ant-pagination-disabled]': 'nzDisabled',
-                        '[class.mini]': "!nzSimple && size === 'small'"
+                        '[class.mini]': "!nzSimple && size === 'small'",
+                        '[class.ant-pagination-rtl]': "dir === 'rtl'"
                     }
                 },] }
     ];
@@ -431,7 +442,9 @@
         { type: i18n.NzI18nService },
         { type: core.ChangeDetectorRef },
         { type: services.NzBreakpointService },
-        { type: config.NzConfigService }
+        { type: config.NzConfigService },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
+        { type: core.ElementRef }
     ]; };
     NzPaginationComponent.propDecorators = {
         nzPageSizeChange: [{ type: core.Output }],
@@ -499,7 +512,11 @@
     ], NzPaginationComponent.prototype, "nzPageSize", void 0);
 
     var NzPaginationDefaultComponent = /** @class */ (function () {
-        function NzPaginationDefaultComponent(renderer, elementRef) {
+        function NzPaginationDefaultComponent(cdr, renderer, elementRef, directionality) {
+            this.cdr = cdr;
+            this.renderer = renderer;
+            this.elementRef = elementRef;
+            this.directionality = directionality;
             this.nzSize = 'default';
             this.itemRender = null;
             this.showTotal = null;
@@ -514,8 +531,33 @@
             this.pageSizeChange = new core.EventEmitter();
             this.ranges = [0, 0];
             this.listOfPageItem = [];
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
             renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
         }
+        NzPaginationDefaultComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.updateRtlStyle();
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+            this.updateRtlStyle();
+        };
+        NzPaginationDefaultComponent.prototype.updateRtlStyle = function () {
+            if (this.dir === 'rtl') {
+                this.renderer.addClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
+            }
+            else {
+                this.renderer.removeClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
+            }
+        };
+        NzPaginationDefaultComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
+        };
         NzPaginationDefaultComponent.prototype.jumpPage = function (index) {
             this.onPageIndexChange(index);
         };
@@ -603,12 +645,14 @@
                     preserveWhitespaces: false,
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    template: "\n    <ng-template #containerTemplate>\n      <li class=\"ant-pagination-total-text\" *ngIf=\"showTotal\">\n        <ng-template [ngTemplateOutlet]=\"showTotal\" [ngTemplateOutletContext]=\"{ $implicit: total, range: ranges }\"></ng-template>\n      </li>\n      <li\n        *ngFor=\"let page of listOfPageItem; trackBy: trackByPageItem\"\n        nz-pagination-item\n        [locale]=\"locale\"\n        [type]=\"page.type\"\n        [index]=\"page.index\"\n        [disabled]=\"!!page.disabled\"\n        [itemRender]=\"itemRender\"\n        [active]=\"pageIndex === page.index\"\n        (gotoIndex)=\"jumpPage($event)\"\n        (diffIndex)=\"jumpDiff($event)\"\n      ></li>\n      <div\n        nz-pagination-options\n        *ngIf=\"showQuickJumper || showSizeChanger\"\n        [total]=\"total\"\n        [locale]=\"locale\"\n        [disabled]=\"disabled\"\n        [nzSize]=\"nzSize\"\n        [showSizeChanger]=\"showSizeChanger\"\n        [showQuickJumper]=\"showQuickJumper\"\n        [pageIndex]=\"pageIndex\"\n        [pageSize]=\"pageSize\"\n        [pageSizeOptions]=\"pageSizeOptions\"\n        (pageIndexChange)=\"onPageIndexChange($event)\"\n        (pageSizeChange)=\"onPageSizeChange($event)\"\n      ></div>\n    </ng-template>\n  "
+                    template: "\n    <ng-template #containerTemplate>\n      <li class=\"ant-pagination-total-text\" *ngIf=\"showTotal\">\n        <ng-template [ngTemplateOutlet]=\"showTotal\" [ngTemplateOutletContext]=\"{ $implicit: total, range: ranges }\"></ng-template>\n      </li>\n      <li\n        *ngFor=\"let page of listOfPageItem; trackBy: trackByPageItem\"\n        nz-pagination-item\n        [locale]=\"locale\"\n        [type]=\"page.type\"\n        [index]=\"page.index\"\n        [disabled]=\"!!page.disabled\"\n        [itemRender]=\"itemRender\"\n        [active]=\"pageIndex === page.index\"\n        (gotoIndex)=\"jumpPage($event)\"\n        (diffIndex)=\"jumpDiff($event)\"\n        [direction]=\"dir\"\n      ></li>\n      <div\n        nz-pagination-options\n        *ngIf=\"showQuickJumper || showSizeChanger\"\n        [total]=\"total\"\n        [locale]=\"locale\"\n        [disabled]=\"disabled\"\n        [nzSize]=\"nzSize\"\n        [showSizeChanger]=\"showSizeChanger\"\n        [showQuickJumper]=\"showQuickJumper\"\n        [pageIndex]=\"pageIndex\"\n        [pageSize]=\"pageSize\"\n        [pageSizeOptions]=\"pageSizeOptions\"\n        (pageIndexChange)=\"onPageIndexChange($event)\"\n        (pageSizeChange)=\"onPageSizeChange($event)\"\n      ></div>\n    </ng-template>\n  "
                 },] }
     ];
     NzPaginationDefaultComponent.ctorParameters = function () { return [
+        { type: core.ChangeDetectorRef },
         { type: core.Renderer2 },
-        { type: core.ElementRef }
+        { type: core.ElementRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzPaginationDefaultComponent.propDecorators = {
         template: [{ type: core.ViewChild, args: ['containerTemplate', { static: true },] }],
@@ -636,6 +680,7 @@
             this.active = false;
             this.index = null;
             this.disabled = false;
+            this.direction = 'ltr';
             this.type = null;
             this.itemRender = null;
             this.diffIndex = new core.EventEmitter();
@@ -678,7 +723,7 @@
                     preserveWhitespaces: false,
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    template: "\n    <ng-template #renderItemTemplate let-type let-page=\"page\">\n      <ng-container [ngSwitch]=\"type\">\n        <a *ngSwitchCase=\"'page'\">{{ page }}</a>\n        <button [disabled]=\"disabled\" class=\"ant-pagination-item-link\" *ngSwitchCase=\"'prev'\"><i nz-icon nzType=\"left\"></i></button>\n        <button [disabled]=\"disabled\" class=\"ant-pagination-item-link\" *ngSwitchCase=\"'next'\"><i nz-icon nzType=\"right\"></i></button>\n        <ng-container *ngSwitchDefault>\n          <a class=\"ant-pagination-item-link\" [ngSwitch]=\"type\">\n            <div class=\"ant-pagination-item-container\" *ngSwitchDefault>\n              <ng-container [ngSwitch]=\"type\">\n                <i *ngSwitchCase=\"'prev_5'\" nz-icon nzType=\"double-left\" class=\"ant-pagination-item-link-icon\"></i>\n                <i *ngSwitchCase=\"'next_5'\" nz-icon nzType=\"double-right\" class=\"ant-pagination-item-link-icon\"></i>\n              </ng-container>\n              <span class=\"ant-pagination-item-ellipsis\">\u2022\u2022\u2022</span>\n            </div>\n          </a>\n        </ng-container>\n      </ng-container>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"itemRender || renderItemTemplate\"\n      [ngTemplateOutletContext]=\"{ $implicit: type, page: index }\"\n    ></ng-template>\n  ",
+                    template: "\n    <ng-template #renderItemTemplate let-type let-page=\"page\">\n      <ng-container [ngSwitch]=\"type\">\n        <a *ngSwitchCase=\"'page'\">{{ page }}</a>\n        <button [disabled]=\"disabled\" class=\"ant-pagination-item-link\" *ngSwitchCase=\"'prev'\">\n          <ng-container [ngSwitch]=\"direction\">\n            <i *ngSwitchCase=\"'rtl'\" nz-icon nzType=\"right\"></i>\n            <i *ngSwitchDefault nz-icon nzType=\"left\"></i>\n          </ng-container>\n        </button>\n        <button [disabled]=\"disabled\" class=\"ant-pagination-item-link\" *ngSwitchCase=\"'next'\">\n          <ng-container [ngSwitch]=\"direction\">\n            <i *ngSwitchCase=\"'rtl'\" nz-icon nzType=\"left\"></i>\n            <i *ngSwitchDefault nz-icon nzType=\"right\"></i>\n          </ng-container>\n        </button>\n        <ng-container *ngSwitchDefault>\n          <a class=\"ant-pagination-item-link\" [ngSwitch]=\"type\">\n            <div class=\"ant-pagination-item-container\" *ngSwitchDefault>\n              <ng-container [ngSwitch]=\"type\">\n                <ng-container *ngSwitchCase=\"'prev_5'\" [ngSwitch]=\"direction\">\n                  <i *ngSwitchCase=\"'rtl'\" nz-icon nzType=\"double-right\" class=\"ant-pagination-item-link-icon\"></i>\n                  <i *ngSwitchDefault nz-icon nzType=\"double-left\" class=\"ant-pagination-item-link-icon\"></i>\n                </ng-container>\n                <ng-container *ngSwitchCase=\"'next_5'\" [ngSwitch]=\"direction\">\n                  <i *ngSwitchCase=\"'rtl'\" nz-icon nzType=\"double-left\" class=\"ant-pagination-item-link-icon\"></i>\n                  <i *ngSwitchDefault nz-icon nzType=\"double-right\" class=\"ant-pagination-item-link-icon\"></i>\n                </ng-container>\n              </ng-container>\n              <span class=\"ant-pagination-item-ellipsis\">\u2022\u2022\u2022</span>\n            </div>\n          </a>\n        </ng-container>\n      </ng-container>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"itemRender || renderItemTemplate\"\n      [ngTemplateOutletContext]=\"{ $implicit: type, page: index }\"\n    ></ng-template>\n  ",
                     host: {
                         '[class.ant-pagination-prev]': "type === 'prev'",
                         '[class.ant-pagination-next]': "type === 'next'",
@@ -699,6 +744,7 @@
         locale: [{ type: core.Input }],
         index: [{ type: core.Input }],
         disabled: [{ type: core.Input }],
+        direction: [{ type: core.Input }],
         type: [{ type: core.Input }],
         itemRender: [{ type: core.Input }],
         diffIndex: [{ type: core.Output }],
@@ -706,7 +752,8 @@
     };
 
     var NzPaginationOptionsComponent = /** @class */ (function () {
-        function NzPaginationOptionsComponent() {
+        function NzPaginationOptionsComponent(elementRef) {
+            this.elementRef = elementRef;
             this.nzSize = 'default';
             this.disabled = false;
             this.showSizeChanger = false;
@@ -718,6 +765,8 @@
             this.pageIndexChange = new core.EventEmitter();
             this.pageSizeChange = new core.EventEmitter();
             this.listOfPageSizeOption = [];
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-pagination-options');
         }
         NzPaginationOptionsComponent.prototype.onPageSizeChange = function (size) {
             if (this.pageSize !== size) {
@@ -753,12 +802,12 @@
                     preserveWhitespaces: false,
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    template: "\n    <nz-select\n      class=\"ant-pagination-options-size-changer\"\n      *ngIf=\"showSizeChanger\"\n      [nzDisabled]=\"disabled\"\n      [nzSize]=\"nzSize\"\n      [ngModel]=\"pageSize\"\n      (ngModelChange)=\"onPageSizeChange($event)\"\n    >\n      <nz-option\n        *ngFor=\"let option of listOfPageSizeOption; trackBy: trackByOption\"\n        [nzLabel]=\"option.label\"\n        [nzValue]=\"option.value\"\n      ></nz-option>\n    </nz-select>\n    <div class=\"ant-pagination-options-quick-jumper\" *ngIf=\"showQuickJumper\">\n      {{ locale.jump_to }}\n      <input [disabled]=\"disabled\" (keydown.enter)=\"jumpToPageViaInput($event)\" />\n      {{ locale.page }}\n    </div>\n  ",
-                    host: {
-                        '[class.ant-pagination-options]': 'true'
-                    }
+                    template: "\n    <nz-select\n      class=\"ant-pagination-options-size-changer\"\n      *ngIf=\"showSizeChanger\"\n      [nzDisabled]=\"disabled\"\n      [nzSize]=\"nzSize\"\n      [ngModel]=\"pageSize\"\n      (ngModelChange)=\"onPageSizeChange($event)\"\n    >\n      <nz-option\n        *ngFor=\"let option of listOfPageSizeOption; trackBy: trackByOption\"\n        [nzLabel]=\"option.label\"\n        [nzValue]=\"option.value\"\n      ></nz-option>\n    </nz-select>\n    <div class=\"ant-pagination-options-quick-jumper\" *ngIf=\"showQuickJumper\">\n      {{ locale.jump_to }}\n      <input [disabled]=\"disabled\" (keydown.enter)=\"jumpToPageViaInput($event)\" />\n      {{ locale.page }}\n    </div>\n  "
                 },] }
     ];
+    NzPaginationOptionsComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzPaginationOptionsComponent.propDecorators = {
         nzSize: [{ type: core.Input }],
         disabled: [{ type: core.Input }],
@@ -778,7 +827,11 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzPaginationSimpleComponent = /** @class */ (function () {
-        function NzPaginationSimpleComponent(renderer, elementRef) {
+        function NzPaginationSimpleComponent(cdr, renderer, elementRef, directionality) {
+            this.cdr = cdr;
+            this.renderer = renderer;
+            this.elementRef = elementRef;
+            this.directionality = directionality;
             this.itemRender = null;
             this.disabled = false;
             this.total = 0;
@@ -788,8 +841,33 @@
             this.lastIndex = 0;
             this.isFirstIndex = false;
             this.isLastIndex = false;
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
             renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
         }
+        NzPaginationSimpleComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.updateRtlStyle();
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+            this.updateRtlStyle();
+        };
+        NzPaginationSimpleComponent.prototype.updateRtlStyle = function () {
+            if (this.dir === 'rtl') {
+                this.renderer.addClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
+            }
+            else {
+                this.renderer.removeClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
+            }
+        };
+        NzPaginationSimpleComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
+        };
         NzPaginationSimpleComponent.prototype.jumpToPageViaInput = function ($event) {
             var target = $event.target;
             var index = util.toNumber(target.value, this.pageIndex);
@@ -824,12 +902,14 @@
                     preserveWhitespaces: false,
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    template: "\n    <ng-template #containerTemplate>\n      <li\n        nz-pagination-item\n        [attr.title]=\"locale.prev_page\"\n        [disabled]=\"isFirstIndex\"\n        (click)=\"prePage()\"\n        type=\"prev\"\n        [itemRender]=\"itemRender\"\n      ></li>\n      <li [attr.title]=\"pageIndex + '/' + lastIndex\" class=\"ant-pagination-simple-pager\">\n        <input [disabled]=\"disabled\" [value]=\"pageIndex\" (keydown.enter)=\"jumpToPageViaInput($event)\" size=\"3\" />\n        <span class=\"ant-pagination-slash\">/</span>\n        {{ lastIndex }}\n      </li>\n      <li\n        nz-pagination-item\n        [attr.title]=\"locale?.next_page\"\n        [disabled]=\"isLastIndex\"\n        (click)=\"nextPage()\"\n        type=\"next\"\n        [itemRender]=\"itemRender\"\n      ></li>\n    </ng-template>\n  "
+                    template: "\n    <ng-template #containerTemplate>\n      <li\n        nz-pagination-item\n        [attr.title]=\"locale.prev_page\"\n        [disabled]=\"isFirstIndex\"\n        [direction]=\"dir\"\n        (click)=\"prePage()\"\n        type=\"prev\"\n        [itemRender]=\"itemRender\"\n      ></li>\n      <li [attr.title]=\"pageIndex + '/' + lastIndex\" class=\"ant-pagination-simple-pager\">\n        <input [disabled]=\"disabled\" [value]=\"pageIndex\" (keydown.enter)=\"jumpToPageViaInput($event)\" size=\"3\" />\n        <span class=\"ant-pagination-slash\">/</span>\n        {{ lastIndex }}\n      </li>\n      <li\n        nz-pagination-item\n        [attr.title]=\"locale?.next_page\"\n        [disabled]=\"isLastIndex\"\n        [direction]=\"dir\"\n        (click)=\"nextPage()\"\n        type=\"next\"\n        [itemRender]=\"itemRender\"\n      ></li>\n    </ng-template>\n  "
                 },] }
     ];
     NzPaginationSimpleComponent.ctorParameters = function () { return [
+        { type: core.ChangeDetectorRef },
         { type: core.Renderer2 },
-        { type: core.ElementRef }
+        { type: core.ElementRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzPaginationSimpleComponent.propDecorators = {
         template: [{ type: core.ViewChild, args: ['containerTemplate', { static: true },] }],
@@ -861,7 +941,7 @@
                         NzPaginationDefaultComponent
                     ],
                     exports: [NzPaginationComponent],
-                    imports: [common.CommonModule, forms.FormsModule, select.NzSelectModule, i18n.NzI18nModule, icon.NzIconModule]
+                    imports: [bidi.BidiModule, common.CommonModule, forms.FormsModule, select.NzSelectModule, i18n.NzI18nModule, icon.NzIconModule]
                 },] }
     ];
 

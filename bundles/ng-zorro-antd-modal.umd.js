@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/overlay'), require('@angular/cdk/portal'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/a11y'), require('@angular/common'), require('@angular/platform-browser/animations'), require('ng-zorro-antd/i18n'), require('@angular/animations'), require('@angular/cdk/keycodes'), require('ng-zorro-antd/button'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/pipes')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/modal', ['exports', '@angular/cdk/overlay', '@angular/cdk/portal', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/a11y', '@angular/common', '@angular/platform-browser/animations', 'ng-zorro-antd/i18n', '@angular/animations', '@angular/cdk/keycodes', 'ng-zorro-antd/button', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/pipes'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].modal = {}), global.ng.cdk.overlay, global.ng.cdk.portal, global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.a11y, global.ng.common, global.ng.platformBrowser.animations, global['ng-zorro-antd'].i18n, global.ng.animations, global.ng.cdk.keycodes, global['ng-zorro-antd'].button, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].pipes));
-}(this, (function (exports, overlay, portal, core, config, logger, util, rxjs, operators, a11y, common, animations$1, i18n, animations, keycodes, button, noAnimation, outlet, icon, pipes) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/overlay'), require('@angular/cdk/portal'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/a11y'), require('@angular/common'), require('@angular/platform-browser/animations'), require('ng-zorro-antd/i18n'), require('@angular/animations'), require('@angular/cdk/keycodes'), require('ng-zorro-antd/button'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/pipes')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/modal', ['exports', '@angular/cdk/bidi', '@angular/cdk/overlay', '@angular/cdk/portal', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/a11y', '@angular/common', '@angular/platform-browser/animations', 'ng-zorro-antd/i18n', '@angular/animations', '@angular/cdk/keycodes', 'ng-zorro-antd/button', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/pipes'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].modal = {}), global.ng.cdk.bidi, global.ng.cdk.overlay, global.ng.cdk.portal, global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.a11y, global.ng.common, global.ng.platformBrowser.animations, global['ng-zorro-antd'].i18n, global.ng.animations, global.ng.cdk.keycodes, global['ng-zorro-antd'].button, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].pipes));
+}(this, (function (exports, bidi, overlay, portal, core, config, logger, util, rxjs, operators, a11y, common, animations$1, i18n, animations, keycodes, button, noAnimation, outlet, icon, pipes) { 'use strict';
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -24,6 +24,7 @@
             this.nzWidth = 520;
             this.nzCloseIcon = 'close';
             this.nzOkType = 'primary';
+            this.nzOkDanger = false;
             this.nzModalType = 'default';
             this.nzOnCancel = noopFun;
             this.nzOnOk = noopFun;
@@ -379,13 +380,13 @@
     /**
      * Assign the params into the content component instance.
      * @deprecated Should use dependency injection to get the params for user
-     * @breaking-change 11.0.0
+     * @breaking-change 12.0.0
      */
     function setContentInstanceParams(instance, params) {
         Object.assign(instance, params);
     }
     function getConfigFromComponent(component) {
-        var nzMask = component.nzMask, nzMaskClosable = component.nzMaskClosable, nzClosable = component.nzClosable, nzOkLoading = component.nzOkLoading, nzOkDisabled = component.nzOkDisabled, nzCancelDisabled = component.nzCancelDisabled, nzCancelLoading = component.nzCancelLoading, nzKeyboard = component.nzKeyboard, nzNoAnimation = component.nzNoAnimation, nzContent = component.nzContent, nzComponentParams = component.nzComponentParams, nzFooter = component.nzFooter, nzGetContainer = component.nzGetContainer, nzZIndex = component.nzZIndex, nzWidth = component.nzWidth, nzWrapClassName = component.nzWrapClassName, nzClassName = component.nzClassName, nzStyle = component.nzStyle, nzTitle = component.nzTitle, nzCloseIcon = component.nzCloseIcon, nzMaskStyle = component.nzMaskStyle, nzBodyStyle = component.nzBodyStyle, nzOkText = component.nzOkText, nzCancelText = component.nzCancelText, nzOkType = component.nzOkType, nzIconType = component.nzIconType, nzModalType = component.nzModalType, nzOnOk = component.nzOnOk, nzOnCancel = component.nzOnCancel, nzAfterOpen = component.nzAfterOpen, nzAfterClose = component.nzAfterClose, nzCloseOnNavigation = component.nzCloseOnNavigation, nzAutofocus = component.nzAutofocus;
+        var nzMask = component.nzMask, nzMaskClosable = component.nzMaskClosable, nzClosable = component.nzClosable, nzOkLoading = component.nzOkLoading, nzOkDisabled = component.nzOkDisabled, nzCancelDisabled = component.nzCancelDisabled, nzCancelLoading = component.nzCancelLoading, nzKeyboard = component.nzKeyboard, nzNoAnimation = component.nzNoAnimation, nzContent = component.nzContent, nzComponentParams = component.nzComponentParams, nzFooter = component.nzFooter, nzZIndex = component.nzZIndex, nzWidth = component.nzWidth, nzWrapClassName = component.nzWrapClassName, nzClassName = component.nzClassName, nzStyle = component.nzStyle, nzTitle = component.nzTitle, nzCloseIcon = component.nzCloseIcon, nzMaskStyle = component.nzMaskStyle, nzBodyStyle = component.nzBodyStyle, nzOkText = component.nzOkText, nzCancelText = component.nzCancelText, nzOkType = component.nzOkType, nzOkDanger = component.nzOkDanger, nzIconType = component.nzIconType, nzModalType = component.nzModalType, nzOnOk = component.nzOnOk, nzOnCancel = component.nzOnCancel, nzAfterOpen = component.nzAfterOpen, nzAfterClose = component.nzAfterClose, nzCloseOnNavigation = component.nzCloseOnNavigation, nzAutofocus = component.nzAutofocus;
         return {
             nzMask: nzMask,
             nzMaskClosable: nzMaskClosable,
@@ -399,7 +400,6 @@
             nzContent: nzContent,
             nzComponentParams: nzComponentParams,
             nzFooter: nzFooter,
-            nzGetContainer: nzGetContainer,
             nzZIndex: nzZIndex,
             nzWidth: nzWidth,
             nzWrapClassName: nzWrapClassName,
@@ -412,6 +412,7 @@
             nzOkText: nzOkText,
             nzCancelText: nzCancelText,
             nzOkType: nzOkType,
+            nzOkDanger: nzOkDanger,
             nzIconType: nzIconType,
             nzModalType: nzModalType,
             nzOnOk: nzOnOk,
@@ -444,13 +445,14 @@
             _this.okTriggered = new core.EventEmitter();
             _this.state = 'enter';
             _this.isStringContent = false;
+            _this.dir = 'ltr';
             _this.elementFocusedBeforeModalWasOpened = null;
             _this.mouseDown = false;
             _this.oldMaskStyle = null;
             _this.destroy$ = new rxjs.Subject();
             _this.document = document;
+            _this.dir = overlayRef.getDirection();
             _this.isStringContent = typeof config.nzContent === 'string';
-            _this.setContainer();
             _this.nzConfigService
                 .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
                 .pipe(operators.takeUntil(_this.destroy$))
@@ -639,34 +641,6 @@
                 }
             }
         };
-        BaseModalContainerComponent.prototype.setContainer = function () {
-            var container = this.getContainer();
-            if (container) {
-                this.render.appendChild(container, this.elementRef.nativeElement);
-            }
-        };
-        BaseModalContainerComponent.prototype.resetContainer = function () {
-            var container = this.getContainer();
-            if (container) {
-                this.render.appendChild(this.overlayRef.overlayElement, this.elementRef.nativeElement);
-            }
-        };
-        /**
-         * Set the container element.
-         * @deprecated Not supported.
-         * @breaking-change 11.0.0
-         */
-        BaseModalContainerComponent.prototype.getContainer = function () {
-            var nzGetContainer = this.config.nzGetContainer;
-            var container = typeof nzGetContainer === 'function' ? nzGetContainer() : nzGetContainer;
-            if (container instanceof HTMLElement) {
-                logger.warnDeprecation('nzGetContainer of nz-modal is not support, will be removed in 11.0.0');
-                return container;
-            }
-            else {
-                return null;
-            }
-        };
         BaseModalContainerComponent.prototype.updateMaskClassname = function () {
             var backdropElement = this.overlayRef.backdropElement;
             if (backdropElement) {
@@ -680,7 +654,6 @@
         };
         BaseModalContainerComponent.prototype.onAnimationDone = function (event) {
             if (event.toState === 'enter') {
-                this.setContainer();
                 this.trapFocus();
             }
             else if (event.toState === 'exit') {
@@ -695,7 +668,6 @@
                 this.bindBackdropStyle();
             }
             else if (event.toState === 'exit') {
-                this.resetContainer();
                 this.setExitAnimationClass();
             }
             this.animationStateChanged.emit(event);
@@ -751,7 +723,7 @@
         { type: core.Component, args: [{
                     selector: 'nz-modal-confirm-container',
                     exportAs: 'nzModalConfirmContainer',
-                    template: "\n    <div\n      #modalElement\n      role=\"document\"\n      class=\"ant-modal\"\n      (mousedown)=\"onMousedown()\"\n      [ngClass]=\"config.nzClassName!\"\n      [ngStyle]=\"config.nzStyle!\"\n      [style.width]=\"config?.nzWidth! | nzToCssUnit\"\n    >\n      <div class=\"ant-modal-content\">\n        <button *ngIf=\"config.nzClosable\" nz-modal-close (click)=\"onCloseClick()\"></button>\n        <div class=\"ant-modal-body\" [ngStyle]=\"config.nzBodyStyle!\">\n          <div class=\"ant-modal-confirm-body-wrapper\">\n            <div class=\"ant-modal-confirm-body\">\n              <i nz-icon [nzType]=\"config.nzIconType!\"></i>\n              <span class=\"ant-modal-confirm-title\">\n                <ng-container *nzStringTemplateOutlet=\"config.nzTitle\">\n                  <span [innerHTML]=\"config.nzTitle\"></span>\n                </ng-container>\n              </span>\n              <div class=\"ant-modal-confirm-content\">\n                <ng-template cdkPortalOutlet></ng-template>\n                <div *ngIf=\"isStringContent\" [innerHTML]=\"config.nzContent\"></div>\n              </div>\n            </div>\n            <div class=\"ant-modal-confirm-btns\">\n              <button\n                *ngIf=\"config.nzCancelText !== null\"\n                [attr.cdkFocusInitial]=\"config.nzAutofocus === 'cancel' || null\"\n                nz-button\n                (click)=\"onCancel()\"\n                [nzLoading]=\"!!config.nzCancelLoading\"\n                [disabled]=\"config.nzCancelDisabled\"\n              >\n                {{ config.nzCancelText || locale.cancelText }}\n              </button>\n              <button\n                *ngIf=\"config.nzOkText !== null\"\n                [attr.cdkFocusInitial]=\"config.nzAutofocus === 'ok' || null\"\n                nz-button\n                [nzType]=\"config.nzOkType!\"\n                (click)=\"onOk()\"\n                [nzLoading]=\"!!config.nzOkLoading\"\n                [disabled]=\"config.nzOkDisabled\"\n              >\n                {{ config.nzOkText || locale.okText }}\n              </button>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  ",
+                    template: "\n    <div\n      #modalElement\n      role=\"document\"\n      class=\"ant-modal\"\n      (mousedown)=\"onMousedown()\"\n      [ngClass]=\"config.nzClassName!\"\n      [ngStyle]=\"config.nzStyle!\"\n      [style.width]=\"config?.nzWidth! | nzToCssUnit\"\n    >\n      <div class=\"ant-modal-content\">\n        <button *ngIf=\"config.nzClosable\" nz-modal-close (click)=\"onCloseClick()\"></button>\n        <div class=\"ant-modal-body\" [ngStyle]=\"config.nzBodyStyle!\">\n          <div class=\"ant-modal-confirm-body-wrapper\">\n            <div class=\"ant-modal-confirm-body\">\n              <i nz-icon [nzType]=\"config.nzIconType!\"></i>\n              <span class=\"ant-modal-confirm-title\">\n                <ng-container *nzStringTemplateOutlet=\"config.nzTitle\">\n                  <span [innerHTML]=\"config.nzTitle\"></span>\n                </ng-container>\n              </span>\n              <div class=\"ant-modal-confirm-content\">\n                <ng-template cdkPortalOutlet></ng-template>\n                <div *ngIf=\"isStringContent\" [innerHTML]=\"config.nzContent\"></div>\n              </div>\n            </div>\n            <div class=\"ant-modal-confirm-btns\">\n              <button\n                *ngIf=\"config.nzCancelText !== null\"\n                [attr.cdkFocusInitial]=\"config.nzAutofocus === 'cancel' || null\"\n                nz-button\n                (click)=\"onCancel()\"\n                [nzLoading]=\"!!config.nzCancelLoading\"\n                [disabled]=\"config.nzCancelDisabled\"\n              >\n                {{ config.nzCancelText || locale.cancelText }}\n              </button>\n              <button\n                *ngIf=\"config.nzOkText !== null\"\n                [attr.cdkFocusInitial]=\"config.nzAutofocus === 'ok' || null\"\n                nz-button\n                [nzType]=\"config.nzOkType!\"\n                (click)=\"onOk()\"\n                [nzLoading]=\"!!config.nzOkLoading\"\n                [disabled]=\"config.nzOkDisabled\"\n                [nzDanger]=\"config.nzOkDanger\"\n              >\n                {{ config.nzOkText || locale.okText }}\n              </button>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  ",
                     animations: [nzModalAnimations.modalContainer],
                     // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
                     changeDetection: core.ChangeDetectionStrategy.Default,
@@ -759,6 +731,7 @@
                         tabindex: '-1',
                         role: 'dialog',
                         '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
+                        '[class.ant-modal-wrap-rtl]': "dir === 'rtl'",
                         '[style.zIndex]': 'config.nzZIndex',
                         '[@.disabled]': 'config.nzNoAnimation',
                         '[@modalContainer]': 'state',
@@ -809,6 +782,7 @@
                         tabindex: '-1',
                         role: 'dialog',
                         '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
+                        '[class.ant-modal-wrap-rtl]': "dir === 'rtl'",
                         '[style.zIndex]': 'config.nzZIndex',
                         '[@.disabled]': 'config.nzNoAnimation',
                         '[@modalContainer]': 'state',
@@ -906,14 +880,6 @@
         NzModalRef.prototype.triggerCancel = function () {
             return this.trigger("cancel" /* CANCEL */);
         };
-        /**
-         * Open the modal.
-         * @deprecated Opened when create, this method is useless.
-         * @breaking-change 11.0.0
-         */
-        NzModalRef.prototype.open = function () {
-            logger.warnDeprecation('open of NzModalRef is not support, will be removed in 11.0.0');
-        };
         NzModalRef.prototype.close = function (result) {
             var _this = this;
             this.result = result;
@@ -1000,12 +966,13 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzModalService = /** @class */ (function () {
-        function NzModalService(overlay, injector, nzConfigService, parentModal) {
+        function NzModalService(overlay, injector, nzConfigService, parentModal, directionality) {
             var _this = this;
             this.overlay = overlay;
             this.injector = injector;
             this.nzConfigService = nzConfigService;
             this.parentModal = parentModal;
+            this.directionality = directionality;
             this.openModalsAtThisLevel = [];
             this.afterAllClosedAtThisLevel = new rxjs.Subject();
             this.afterAllClose = rxjs.defer(function () { return _this.openModals.length ? _this._afterAllClosed : _this._afterAllClosed.pipe(operators.startWith(undefined)); });
@@ -1098,7 +1065,8 @@
                 hasBackdrop: true,
                 scrollStrategy: this.overlay.scrollStrategies.block(),
                 positionStrategy: this.overlay.position().global(),
-                disposeOnNavigation: getValueWithConfig(config.nzCloseOnNavigation, globalConfig.nzCloseOnNavigation, true)
+                disposeOnNavigation: getValueWithConfig(config.nzCloseOnNavigation, globalConfig.nzCloseOnNavigation, true),
+                direction: getValueWithConfig(config.nzDirection, globalConfig.nzDirection, this.directionality.value)
             });
             if (getValueWithConfig(config.nzMask, globalConfig.nzMask, true)) {
                 overlayConfig.backdropClass = MODAL_MASK_CLASS_NAME;
@@ -1176,7 +1144,28 @@
         { type: overlay.Overlay },
         { type: core.Injector },
         { type: config.NzConfigService },
-        { type: NzModalService, decorators: [{ type: core.Optional }, { type: core.SkipSelf }] }
+        { type: NzModalService, decorators: [{ type: core.Optional }, { type: core.SkipSelf }] },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
+    ]; };
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
+    var NzModalContentDirective = /** @class */ (function () {
+        function NzModalContentDirective(templateRef) {
+            this.templateRef = templateRef;
+        }
+        return NzModalContentDirective;
+    }());
+    NzModalContentDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: '[nzModalContent]',
+                    exportAs: 'nzModalContent'
+                },] }
+    ];
+    NzModalContentDirective.ctorParameters = function () { return [
+        { type: core.TemplateRef }
     ]; };
 
     /**
@@ -1227,6 +1216,7 @@
             this.nzWidth = 520;
             this.nzCloseIcon = 'close';
             this.nzOkType = 'primary';
+            this.nzOkDanger = false;
             this.nzIconType = 'question-circle'; // Confirm Modal ONLY
             this.nzModalType = 'default';
             this.nzAutofocus = 'auto';
@@ -1241,8 +1231,8 @@
         }
         Object.defineProperty(NzModalComponent.prototype, "modalFooter", {
             set: function (value) {
-                if (value && value.templateRef) {
-                    this.setFooterWithTemplate(value.templateRef);
+                if (value) {
+                    this.setFooterWithTemplate(value);
                 }
             },
             enumerable: false,
@@ -1322,8 +1312,12 @@
         NzModalComponent.prototype.getConfig = function () {
             var componentConfig = getConfigFromComponent(this);
             componentConfig.nzViewContainerRef = this.viewContainerRef;
-            if (!this.nzContent) {
+            if (!this.nzContent && !this.contentFromContentChild) {
                 componentConfig.nzContent = this.contentTemplateRef;
+                logger.warnDeprecation('Usage `<ng-content></ng-content>` is deprecated, which will be removed in 12.0.0. Please instead use `<ng-template nzModalContent></ng-template>` to declare the content of the modal.');
+            }
+            else {
+                componentConfig.nzContent = this.nzContent || this.contentFromContentChild;
             }
             return componentConfig;
         };
@@ -1375,7 +1369,6 @@
         nzContent: [{ type: core.Input }],
         nzComponentParams: [{ type: core.Input }],
         nzFooter: [{ type: core.Input }],
-        nzGetContainer: [{ type: core.Input }],
         nzZIndex: [{ type: core.Input }],
         nzWidth: [{ type: core.Input }],
         nzWrapClassName: [{ type: core.Input }],
@@ -1388,6 +1381,7 @@
         nzOkText: [{ type: core.Input }],
         nzCancelText: [{ type: core.Input }],
         nzOkType: [{ type: core.Input }],
+        nzOkDanger: [{ type: core.Input }],
         nzIconType: [{ type: core.Input }],
         nzModalType: [{ type: core.Input }],
         nzAutofocus: [{ type: core.Input }],
@@ -1397,7 +1391,8 @@
         nzAfterClose: [{ type: core.Output }],
         nzVisibleChange: [{ type: core.Output }],
         contentTemplateRef: [{ type: core.ViewChild, args: [core.TemplateRef, { static: true },] }],
-        modalFooter: [{ type: core.ContentChild, args: [NzModalFooterDirective,] }]
+        contentFromContentChild: [{ type: core.ContentChild, args: [NzModalContentDirective, { static: true, read: core.TemplateRef },] }],
+        modalFooter: [{ type: core.ContentChild, args: [NzModalFooterDirective, { static: true, read: core.TemplateRef },] }]
     };
     __decorate([
         util.InputBoolean(),
@@ -1443,6 +1438,10 @@
         util.InputBoolean(),
         __metadata("design:type", Object)
     ], NzModalComponent.prototype, "nzNoAnimation", void 0);
+    __decorate([
+        util.InputBoolean(),
+        __metadata("design:type", Boolean)
+    ], NzModalComponent.prototype, "nzOkDanger", void 0);
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -1530,7 +1529,7 @@
         { type: core.Component, args: [{
                     selector: 'div[nz-modal-footer]',
                     exportAs: 'NzModalFooterBuiltin',
-                    template: "\n    <ng-container *ngIf=\"config.nzFooter; else defaultFooterButtons\">\n      <ng-container *nzStringTemplateOutlet=\"config.nzFooter; context: { $implicit: config.nzComponentParams, modalRef: modalRef }\">\n        <div *ngIf=\"!buttonsFooter\" [innerHTML]=\"config.nzTitle\"></div>\n        <ng-container *ngIf=\"buttonsFooter\">\n          <button\n            *ngFor=\"let button of buttons\"\n            nz-button\n            (click)=\"onButtonClick(button)\"\n            [hidden]=\"!getButtonCallableProp(button, 'show')\"\n            [nzLoading]=\"getButtonCallableProp(button, 'loading')\"\n            [disabled]=\"getButtonCallableProp(button, 'disabled')\"\n            [nzType]=\"button.type!\"\n            [nzShape]=\"button.shape!\"\n            [nzSize]=\"button.size!\"\n            [nzGhost]=\"button.ghost!\"\n          >\n            {{ button.label }}\n          </button>\n        </ng-container>\n      </ng-container>\n    </ng-container>\n    <ng-template #defaultFooterButtons>\n      <button\n        *ngIf=\"config.nzCancelText !== null\"\n        [attr.cdkFocusInitial]=\"config.nzAutofocus === 'cancel' || null\"\n        nz-button\n        (click)=\"onCancel()\"\n        [nzLoading]=\"!!config.nzCancelLoading\"\n        [disabled]=\"config.nzCancelDisabled\"\n      >\n        {{ config.nzCancelText || locale.cancelText }}\n      </button>\n      <button\n        *ngIf=\"config.nzOkText !== null\"\n        [attr.cdkFocusInitial]=\"config.nzAutofocus === 'ok' || null\"\n        nz-button\n        [nzType]=\"config.nzOkType!\"\n        (click)=\"onOk()\"\n        [nzLoading]=\"!!config.nzOkLoading\"\n        [disabled]=\"config.nzOkDisabled\"\n      >\n        {{ config.nzOkText || locale.okText }}\n      </button>\n    </ng-template>\n  ",
+                    template: "\n    <ng-container *ngIf=\"config.nzFooter; else defaultFooterButtons\">\n      <ng-container *nzStringTemplateOutlet=\"config.nzFooter; context: { $implicit: config.nzComponentParams, modalRef: modalRef }\">\n        <div *ngIf=\"!buttonsFooter\" [innerHTML]=\"config.nzTitle\"></div>\n        <ng-container *ngIf=\"buttonsFooter\">\n          <button\n            *ngFor=\"let button of buttons\"\n            nz-button\n            (click)=\"onButtonClick(button)\"\n            [hidden]=\"!getButtonCallableProp(button, 'show')\"\n            [nzLoading]=\"getButtonCallableProp(button, 'loading')\"\n            [disabled]=\"getButtonCallableProp(button, 'disabled')\"\n            [nzType]=\"button.type!\"\n            [nzDanger]=\"button.danger\"\n            [nzShape]=\"button.shape!\"\n            [nzSize]=\"button.size!\"\n            [nzGhost]=\"button.ghost!\"\n          >\n            {{ button.label }}\n          </button>\n        </ng-container>\n      </ng-container>\n    </ng-container>\n    <ng-template #defaultFooterButtons>\n      <button\n        *ngIf=\"config.nzCancelText !== null\"\n        [attr.cdkFocusInitial]=\"config.nzAutofocus === 'cancel' || null\"\n        nz-button\n        (click)=\"onCancel()\"\n        [nzLoading]=\"!!config.nzCancelLoading\"\n        [disabled]=\"config.nzCancelDisabled\"\n      >\n        {{ config.nzCancelText || locale.cancelText }}\n      </button>\n      <button\n        *ngIf=\"config.nzOkText !== null\"\n        [attr.cdkFocusInitial]=\"config.nzAutofocus === 'ok' || null\"\n        nz-button\n        [nzType]=\"config.nzOkType!\"\n        [nzDanger]=\"config.nzOkDanger\"\n        (click)=\"onOk()\"\n        [nzLoading]=\"!!config.nzOkLoading\"\n        [disabled]=\"config.nzOkDisabled\"\n      >\n        {{ config.nzOkText || locale.okText }}\n      </button>\n    </ng-template>\n  ",
                     host: {
                         class: 'ant-modal-footer'
                     },
@@ -1588,6 +1587,7 @@
         { type: core.NgModule, args: [{
                     imports: [
                         common.CommonModule,
+                        bidi.BidiModule,
                         overlay.OverlayModule,
                         outlet.NzOutletModule,
                         portal.PortalModule,
@@ -1598,12 +1598,13 @@
                         noAnimation.NzNoAnimationModule,
                         pipes.NzPipesModule
                     ],
-                    exports: [NzModalComponent, NzModalFooterDirective],
+                    exports: [NzModalComponent, NzModalFooterDirective, NzModalContentDirective],
                     providers: [NzModalService],
                     entryComponents: [NzModalContainerComponent, NzModalConfirmContainerComponent],
                     declarations: [
                         NzModalComponent,
                         NzModalFooterDirective,
+                        NzModalContentDirective,
                         NzModalCloseComponent,
                         NzModalFooterComponent,
                         NzModalTitleComponent,
@@ -1642,6 +1643,7 @@
     exports.NzModalComponent = NzModalComponent;
     exports.NzModalConfirmContainerComponent = NzModalConfirmContainerComponent;
     exports.NzModalContainerComponent = NzModalContainerComponent;
+    exports.NzModalContentDirective = NzModalContentDirective;
     exports.NzModalFooterComponent = NzModalFooterComponent;
     exports.NzModalFooterDirective = NzModalFooterDirective;
     exports.NzModalLegacyAPI = NzModalLegacyAPI;

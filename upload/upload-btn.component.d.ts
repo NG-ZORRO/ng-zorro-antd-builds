@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { NzUploadFile, ZipButtonOptions } from './interface';
 export declare class NzUploadBtnComponent implements OnDestroy {
     private http;
+    private elementRef;
     reqs: {
         [key: string]: Subscription;
     };
@@ -27,6 +28,6 @@ export declare class NzUploadBtnComponent implements OnDestroy {
     private xhr;
     private clean;
     abort(file?: NzUploadFile): void;
-    constructor(http: HttpClient);
+    constructor(http: HttpClient, elementRef: ElementRef);
     ngOnDestroy(): void;
 }

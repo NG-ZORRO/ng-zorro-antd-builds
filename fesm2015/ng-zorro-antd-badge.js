@@ -1,8 +1,11 @@
 import { __decorate, __metadata } from 'tslib';
-import { Component, ViewEncapsulation, ChangeDetectionStrategy, Input, NgModule } from '@angular/core';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy, Renderer2, ChangeDetectorRef, ElementRef, Optional, Input, NgModule } from '@angular/core';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ObserversModule } from '@angular/cdk/observers';
 import { CommonModule } from '@angular/common';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -33,11 +36,17 @@ const badgePresetColors = [
  */
 const NZ_CONFIG_MODULE_NAME = 'badge';
 class NzBadgeComponent {
-    constructor(nzConfigService) {
+    constructor(nzConfigService, renderer, cdr, elementRef, directionality) {
         this.nzConfigService = nzConfigService;
+        this.renderer = renderer;
+        this.cdr = cdr;
+        this.elementRef = elementRef;
+        this.directionality = directionality;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.showSup = false;
         this.presetColor = null;
+        this.dir = 'ltr';
+        this.destroy$ = new Subject();
         this.nzShowZero = false;
         this.nzShowDot = true;
         this.nzStandalone = false;
@@ -46,6 +55,18 @@ class NzBadgeComponent {
         this.nzColor = undefined;
         this.nzStyle = null;
         this.nzText = null;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-badge');
+    }
+    ngOnInit() {
+        var _a;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.prepareBadgeForRtl();
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
+        this.prepareBadgeForRtl();
     }
     ngOnChanges(changes) {
         const { nzColor, nzShowDot, nzDot, nzCount, nzShowZero } = changes;
@@ -55,6 +76,21 @@ class NzBadgeComponent {
         if (nzShowDot || nzDot || nzCount || nzShowZero) {
             this.showSup = (this.nzShowDot && this.nzDot) || this.nzCount > 0 || (this.nzCount <= 0 && this.nzShowZero);
         }
+    }
+    prepareBadgeForRtl() {
+        if (this.isRtlLayout) {
+            this.renderer.addClass(this.elementRef.nativeElement, 'ant-badge-rtl');
+        }
+        else {
+            this.renderer.removeClass(this.elementRef.nativeElement, 'ant-badge-rtl');
+        }
+    }
+    get isRtlLayout() {
+        return this.dir === 'rtl';
+    }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
 NzBadgeComponent.decorators = [
@@ -91,14 +127,17 @@ NzBadgeComponent.decorators = [
     </ng-container>
   `,
                 host: {
-                    '[class.ant-badge]': 'true',
                     '[class.ant-badge-status]': 'nzStatus',
                     '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || nzColor)'
                 }
             },] }
 ];
 NzBadgeComponent.ctorParameters = () => [
-    { type: NzConfigService }
+    { type: NzConfigService },
+    { type: Renderer2 },
+    { type: ChangeDetectorRef },
+    { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzBadgeComponent.propDecorators = {
     nzShowZero: [{ type: Input }],
@@ -144,7 +183,8 @@ __decorate([
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzBadgeSupComponent {
-    constructor() {
+    constructor(elementRef) {
+        this.elementRef = elementRef;
         this.nzStyle = null;
         this.nzDot = false;
         this.nzOverflowCount = 99;
@@ -153,6 +193,8 @@ class NzBadgeSupComponent {
         this.countArray = [];
         this.count = 0;
         this.countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-scroll-number');
     }
     generateMaxNumberArray() {
         this.maxNumberArray = this.nzOverflowCount.toString().split('');
@@ -205,12 +247,14 @@ NzBadgeSupComponent.decorators = [
                     '[style]': `nzStyle`,
                     '[style.right.px]': `nzOffset && nzOffset[0] ? -nzOffset[0] : null`,
                     '[style.margin-top.px]': `nzOffset && nzOffset[1] ? nzOffset[1] : null`,
-                    '[class.ant-scroll-number]': 'true',
                     '[class.ant-badge-count]': `!nzDot`,
                     '[class.ant-badge-dot]': `nzDot`,
                     '[class.ant-badge-multiple-words]': `countArray.length >= 2`
                 }
             },] }
+];
+NzBadgeSupComponent.ctorParameters = () => [
+    { type: ElementRef }
 ];
 NzBadgeSupComponent.propDecorators = {
     nzOffset: [{ type: Input }],
@@ -227,10 +271,13 @@ NzBadgeSupComponent.propDecorators = {
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzRibbonComponent {
-    constructor() {
+    constructor(elementRef) {
+        this.elementRef = elementRef;
         this.nzPlacement = 'end';
         this.nzText = null;
         this.presetColor = null;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-ribbon-wrapper');
     }
     ngOnChanges(changes) {
         const { nzColor } = changes;
@@ -258,11 +305,11 @@ NzRibbonComponent.decorators = [
       <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
       <div class="ant-ribbon-corner" [style.color]="!presetColor && nzColor"></div>
     </div>
-  `,
-                host: {
-                    '[class.ant-ribbon-wrapper]': 'true'
-                }
+  `
             },] }
+];
+NzRibbonComponent.ctorParameters = () => [
+    { type: ElementRef }
 ];
 NzRibbonComponent.propDecorators = {
     nzColor: [{ type: Input }],
@@ -280,7 +327,7 @@ NzBadgeModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NzBadgeComponent, NzBadgeSupComponent, NzRibbonComponent],
                 exports: [NzBadgeComponent, NzRibbonComponent],
-                imports: [CommonModule, ObserversModule, NzOutletModule]
+                imports: [BidiModule, CommonModule, ObserversModule, NzOutletModule]
             },] }
 ];
 

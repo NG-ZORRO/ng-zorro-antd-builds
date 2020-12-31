@@ -9,6 +9,7 @@ import { CompatibleValue } from 'ng-zorro-antd/core/time';
 import { BooleanInput, FunctionProp, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { DatePickerService } from './date-picker.service';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzPickerComponent } from './picker.component';
 import { CompatibleDate, DisabledTimeFn, NzDateMode, PresetRanges, SupportTimeOptions } from './standard-types';
@@ -24,6 +25,7 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     private renderer;
     private elementRef;
     protected dateHelper: DateHelperService;
+    private directionality;
     noAnimation?: NzNoAnimationDirective | undefined;
     readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzAllowClear: BooleanInput;
@@ -33,24 +35,23 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     static ngAcceptInputType_nzInputReadOnly: BooleanInput;
     static ngAcceptInputType_nzOpen: BooleanInput;
     static ngAcceptInputType_nzShowToday: BooleanInput;
+    static ngAcceptInputType_nzShowNow: BooleanInput;
     static ngAcceptInputType_nzMode: NzDateMode | NzDateMode[] | string | string[] | null | undefined;
     static ngAcceptInputType_nzShowTime: BooleanInput | SupportTimeOptions | null | undefined;
     isRange: boolean;
     focused: boolean;
     extraFooter?: TemplateRef<NzSafeAny> | string;
+    dir: Direction;
     panelMode: NzDateMode | NzDateMode[];
     private destroyed$;
     private isCustomPlaceHolder;
+    private isCustomFormat;
     private showTime;
     nzAllowClear: boolean;
     nzAutoFocus: boolean;
     nzDisabled: boolean;
     nzBorderless: boolean;
     nzInputReadOnly: boolean;
-    /**
-     * @deprecated use method `open` or `close` instead.
-     * @breaking-change 11.0.0
-     */
     nzOpen?: boolean;
     nzDisabledDate?: (d: Date) => boolean;
     nzLocale: NzDatePickerI18nInterface;
@@ -63,7 +64,8 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     nzDisabledTime?: DisabledTimeFn;
     nzRenderExtraFooter?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<NzSafeAny> | string>;
     nzShowToday: boolean;
-    nzMode: NzDateMode | NzDateMode[];
+    nzMode: NzDateMode;
+    nzShowNow: boolean;
     nzRanges?: PresetRanges;
     nzDefaultPickerValue: CompatibleDate | null;
     nzSeparator?: string;
@@ -75,7 +77,7 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     picker: NzPickerComponent;
     get nzShowTime(): SupportTimeOptions | boolean;
     set nzShowTime(value: SupportTimeOptions | boolean);
-    constructor(nzConfigService: NzConfigService, datePickerService: DatePickerService, i18n: NzI18nService, cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef, dateHelper: DateHelperService, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(nzConfigService: NzConfigService, datePickerService: DatePickerService, i18n: NzI18nService, cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef, dateHelper: DateHelperService, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;

@@ -1,6 +1,8 @@
 import { __decorate, __metadata } from 'tslib';
-import { Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, ChangeDetectorRef, Renderer2, ContentChild, Input, NgModule } from '@angular/core';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, ChangeDetectorRef, Renderer2, Optional, ContentChild, Input, NgModule } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzIconDirective, NzIconModule } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
@@ -15,11 +17,12 @@ import { NzWaveModule } from 'ng-zorro-antd/core/wave';
  */
 const NZ_CONFIG_MODULE_NAME = 'button';
 class NzButtonComponent {
-    constructor(elementRef, cdr, renderer, nzConfigService) {
+    constructor(elementRef, cdr, renderer, nzConfigService, directionality) {
         this.elementRef = elementRef;
         this.cdr = cdr;
         this.renderer = renderer;
         this.nzConfigService = nzConfigService;
+        this.directionality = directionality;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzBlock = false;
         this.nzGhost = false;
@@ -31,8 +34,11 @@ class NzButtonComponent {
         this.nzType = null;
         this.nzShape = null;
         this.nzSize = 'default';
+        this.dir = 'ltr';
         this.destroy$ = new Subject();
         this.loading$ = new Subject();
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-btn');
         this.nzConfigService
             .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
             .pipe(takeUntil(this.destroy$))
@@ -60,10 +66,21 @@ class NzButtonComponent {
             renderer.addClass(element, 'ant-btn-icon-only');
         }
     }
+    ngOnInit() {
+        var _a;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
+    }
     ngOnChanges(changes) {
-        const { nzLoading } = changes;
+        const { nzLoading, nzType } = changes;
         if (nzLoading) {
             this.loading$.next(this.nzLoading);
+        }
+        if ((nzType === null || nzType === void 0 ? void 0 : nzType.currentValue) === 'danger') {
+            warnDeprecation(`'danger' value of 'nzType' in Button is going to be removed in 12.0.0. Please use 'nzDanger' instead.`);
         }
     }
     ngAfterViewInit() {
@@ -100,7 +117,6 @@ NzButtonComponent.decorators = [
     <ng-content></ng-content>
   `,
                 host: {
-                    '[class.ant-btn]': `true`,
                     '[class.ant-btn-primary]': `nzType === 'primary'`,
                     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
                     '[class.ant-btn-link]': `nzType === 'link'`,
@@ -115,6 +131,7 @@ NzButtonComponent.decorators = [
                     '[class.ant-btn-background-ghost]': `nzGhost`,
                     '[class.ant-btn-block]': `nzBlock`,
                     '[class.ant-input-search-button]': `nzSearch`,
+                    '[class.ant-btn-rtl]': `dir === 'rtl'`,
                     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
                     '[attr.disabled]': 'disabled || null'
                 }
@@ -124,7 +141,8 @@ NzButtonComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: ChangeDetectorRef },
     { type: Renderer2 },
-    { type: NzConfigService }
+    { type: NzConfigService },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzButtonComponent.propDecorators = {
     nzIconDirectiveElement: [{ type: ContentChild, args: [NzIconDirective, { read: ElementRef },] }],
@@ -173,8 +191,25 @@ __decorate([
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzButtonGroupComponent {
-    constructor() {
+    constructor(elementRef, directionality) {
+        this.elementRef = elementRef;
+        this.directionality = directionality;
         this.nzSize = 'default';
+        this.dir = 'ltr';
+        this.destroy$ = new Subject();
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-btn-group');
+    }
+    ngOnInit() {
+        var _a;
+        this.dir = this.directionality.value;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+        });
+    }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
 NzButtonGroupComponent.decorators = [
@@ -184,13 +219,19 @@ NzButtonGroupComponent.decorators = [
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 encapsulation: ViewEncapsulation.None,
                 host: {
-                    '[class.ant-btn-group]': `true`,
                     '[class.ant-btn-group-lg]': `nzSize === 'large'`,
-                    '[class.ant-btn-group-sm]': `nzSize === 'small'`
+                    '[class.ant-btn-group-sm]': `nzSize === 'small'`,
+                    '[class.ant-btn-group-rtl]': `dir === 'rtl'`
                 },
                 preserveWhitespaces: false,
-                template: ` <ng-content></ng-content> `
+                template: `
+    <ng-content></ng-content>
+  `
             },] }
+];
+NzButtonGroupComponent.ctorParameters = () => [
+    { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzButtonGroupComponent.propDecorators = {
     nzSize: [{ type: Input }]
@@ -206,7 +247,7 @@ NzButtonModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NzButtonComponent, NzButtonGroupComponent],
                 exports: [NzButtonComponent, NzButtonGroupComponent, ɵNzTransitionPatchModule, NzWaveModule],
-                imports: [CommonModule, NzWaveModule, NzIconModule, ɵNzTransitionPatchModule]
+                imports: [BidiModule, CommonModule, NzWaveModule, NzIconModule, ɵNzTransitionPatchModule]
             },] }
 ];
 

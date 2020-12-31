@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, Renderer2, ElementRef, Input, Directive, NgModule } from '@angular/core';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 
 /**
@@ -136,19 +137,23 @@ NzSkeletonComponent.propDecorators = {
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzSkeletonElementDirective {
-    constructor() {
+    constructor(elementRef) {
+        this.elementRef = elementRef;
         this.nzActive = false;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-skeleton', 'ant-skeleton-element');
     }
 }
 NzSkeletonElementDirective.decorators = [
     { type: Directive, args: [{
                 selector: 'nz-skeleton-element',
                 host: {
-                    '[class.ant-skeleton]': 'true',
-                    '[class.ant-skeleton-element]': 'true',
                     '[class.ant-skeleton-active]': 'nzActive'
                 }
             },] }
+];
+NzSkeletonElementDirective.ctorParameters = () => [
+    { type: ElementRef }
 ];
 NzSkeletonElementDirective.propDecorators = {
     nzActive: [{ type: Input }],
@@ -271,7 +276,7 @@ NzSkeletonModule.decorators = [
                     NzSkeletonElementImageComponent,
                     NzSkeletonElementInputComponent
                 ],
-                imports: [CommonModule],
+                imports: [BidiModule, CommonModule],
                 exports: [
                     NzSkeletonComponent,
                     NzSkeletonElementDirective,

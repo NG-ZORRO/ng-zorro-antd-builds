@@ -6,6 +6,7 @@ import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, 
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
+import { Direction } from '@angular/cdk/bidi';
 import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
@@ -33,6 +34,7 @@ export declare class NzPickerComponent implements OnInit, AfterViewInit, OnChang
     popupStyle: NgStyleInterface | null;
     dropdownClassName?: string;
     suffixIcon?: string | TemplateRef<NzSafeAny>;
+    dir: Direction;
     readonly focusChange: EventEmitter<boolean>;
     readonly valueChange: EventEmitter<CandyDate | CandyDate[] | null>;
     readonly openChange: EventEmitter<boolean>;
@@ -48,6 +50,7 @@ export declare class NzPickerComponent implements OnInit, AfterViewInit, OnChang
     destroy$: Subject<unknown>;
     prefixCls: string;
     inputValue: NzSafeAny;
+    activeBarStyle: object;
     overlayOpen: boolean;
     overlayPositions: ConnectionPositionPair[];
     currentPositionX: HorizontalConnectionPos;

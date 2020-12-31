@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('@angular/cdk/portal')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/comment', ['exports', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', '@angular/cdk/portal'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].comment = {}), global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global.ng.cdk.portal));
-}(this, (function (exports, common, core, outlet, portal) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('@angular/cdk/portal'), require('rxjs'), require('rxjs/operators')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/comment', ['exports', '@angular/cdk/bidi', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', '@angular/cdk/portal', 'rxjs', 'rxjs/operators'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].comment = {}), global.ng.cdk.bidi, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global.ng.cdk.portal, global.rxjs, global.rxjs.operators));
+}(this, (function (exports, bidi, common, core, outlet, portal, rxjs, operators) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -395,8 +395,25 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzCommentComponent = /** @class */ (function () {
-        function NzCommentComponent() {
+        function NzCommentComponent(cdr, directionality) {
+            this.cdr = cdr;
+            this.directionality = directionality;
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
         }
+        NzCommentComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+        };
+        NzCommentComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
+        };
         return NzCommentComponent;
     }());
     NzCommentComponent.decorators = [
@@ -407,11 +424,15 @@
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     host: {
-                        class: 'ant-comment'
+                        '[class.ant-comment]': "true",
+                        '[class.ant-comment-rtl]': "dir === \"rtl\""
                     }
                 },] }
     ];
-    NzCommentComponent.ctorParameters = function () { return []; };
+    NzCommentComponent.ctorParameters = function () { return [
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
+    ]; };
     NzCommentComponent.propDecorators = {
         nzAuthor: [{ type: core.Input }],
         nzDatetime: [{ type: core.Input }],
@@ -426,7 +447,7 @@
     }());
     NzCommentModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, outlet.NzOutletModule],
+                    imports: [bidi.BidiModule, common.CommonModule, outlet.NzOutletModule],
                     exports: __spread([NzCommentComponent], NZ_COMMENT_CELLS),
                     declarations: __spread([NzCommentComponent], NZ_COMMENT_CELLS)
                 },] }

@@ -1,4 +1,5 @@
 import { __decorate, __metadata } from 'tslib';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { EventEmitter, Directive, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer2, Host, Optional, Input, Output, Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, NgModule } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
@@ -93,8 +94,8 @@ __decorate([
     __metadata("design:type", Boolean)
 ], NzPopconfirmDirective.prototype, "nzPopconfirmShowArrow", void 0);
 class NzPopconfirmComponent extends NzToolTipComponent {
-    constructor(cdr, noAnimation) {
-        super(cdr, noAnimation);
+    constructor(cdr, directionality, noAnimation) {
+        super(cdr, directionality, noAnimation);
         this.noAnimation = noAnimation;
         this.nzCondition = false;
         this.nzPopconfirmShowArrow = true;
@@ -153,6 +154,7 @@ NzPopconfirmComponent.decorators = [
       <div
         class="ant-popover"
         [ngClass]="_classMap"
+        [class.ant-popover-rtl]="dir === 'rtl'"
         [ngStyle]="nzOverlayStyle"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
@@ -192,6 +194,7 @@ NzPopconfirmComponent.decorators = [
 ];
 NzPopconfirmComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 
@@ -207,6 +210,7 @@ NzPopconfirmModule.decorators = [
                 exports: [NzPopconfirmComponent, NzPopconfirmDirective],
                 entryComponents: [NzPopconfirmComponent],
                 imports: [
+                    BidiModule,
                     CommonModule,
                     NzButtonModule,
                     OverlayModule,

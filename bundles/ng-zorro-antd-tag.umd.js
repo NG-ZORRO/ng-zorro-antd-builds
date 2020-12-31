@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/color'), require('ng-zorro-antd/core/util'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/tag', ['exports', '@angular/core', 'ng-zorro-antd/core/color', 'ng-zorro-antd/core/util', '@angular/common', '@angular/forms', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].tag = {}), global.ng.core, global['ng-zorro-antd'].core.color, global['ng-zorro-antd'].core.util, global.ng.common, global.ng.forms, global['ng-zorro-antd'].icon));
-}(this, (function (exports, core, color, util, common, forms, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/core'), require('ng-zorro-antd/core/color'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('@angular/forms'), require('ng-zorro-antd/icon')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/tag', ['exports', '@angular/cdk/bidi', '@angular/core', 'ng-zorro-antd/core/color', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/common', '@angular/forms', 'ng-zorro-antd/icon'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].tag = {}), global.ng.cdk.bidi, global.ng.core, global['ng-zorro-antd'].core.color, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.common, global.ng.forms, global['ng-zorro-antd'].icon));
+}(this, (function (exports, bidi, core, color, util, rxjs, operators, common, forms, icon) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -310,14 +310,20 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzTagComponent = /** @class */ (function () {
-        function NzTagComponent(renderer, elementRef) {
+        function NzTagComponent(cdr, renderer, elementRef, directionality) {
+            this.cdr = cdr;
             this.renderer = renderer;
             this.elementRef = elementRef;
+            this.directionality = directionality;
             this.isPresetColor = false;
             this.nzMode = 'default';
             this.nzChecked = false;
             this.nzOnClose = new core.EventEmitter();
             this.nzCheckedChange = new core.EventEmitter();
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-tag');
         }
         NzTagComponent.prototype.updateCheckedStatus = function () {
             if (this.nzMode === 'checkable') {
@@ -331,6 +337,15 @@
                 this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
             }
         };
+        NzTagComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+        };
         NzTagComponent.prototype.ngOnChanges = function (changes) {
             var nzColor = changes.nzColor;
             if (nzColor) {
@@ -341,6 +356,10 @@
                     this.isPresetColor = color.isPresetColor(this.nzColor) || /^(success|processing|error|default|warning)$/.test(this.nzColor);
                 }
             }
+        };
+        NzTagComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         return NzTagComponent;
     }());
@@ -355,17 +374,19 @@
                     host: {
                         '[style.background-color]': "isPresetColor ? '' : nzColor",
                         '[class]': "isPresetColor ? ('ant-tag-' + nzColor) : ''",
-                        '[class.ant-tag]': "true",
                         '[class.ant-tag-has-color]': "nzColor && !isPresetColor",
                         '[class.ant-tag-checkable]': "nzMode === 'checkable'",
                         '[class.ant-tag-checkable-checked]': "nzChecked",
+                        '[class.ant-tag-rtl]': "dir === 'rtl'",
                         '(click)': 'updateCheckedStatus()'
                     }
                 },] }
     ];
     NzTagComponent.ctorParameters = function () { return [
+        { type: core.ChangeDetectorRef },
         { type: core.Renderer2 },
-        { type: core.ElementRef }
+        { type: core.ElementRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzTagComponent.propDecorators = {
         nzMode: [{ type: core.Input }],
@@ -390,7 +411,7 @@
     }());
     NzTagModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, forms.FormsModule, icon.NzIconModule],
+                    imports: [bidi.BidiModule, common.CommonModule, forms.FormsModule, icon.NzIconModule],
                     declarations: [NzTagComponent],
                     exports: [NzTagComponent]
                 },] }

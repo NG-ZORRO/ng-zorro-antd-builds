@@ -3,16 +3,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Overlay, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
-import { AfterViewInit, ChangeDetectorRef, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef, Type, ViewContainerRef } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef, Type, ViewContainerRef } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Observable, Subject } from 'rxjs';
 import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
 export declare const DRAWER_ANIMATE_DURATION = 300;
-export declare class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<T, R> implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
+export declare class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<T, R> implements OnInit, OnDestroy, AfterViewInit, OnChanges, AfterContentInit, NzDrawerOptionsOfComponent {
+    private cdr;
     private document;
     nzConfigService: NzConfigService;
     private renderer;
@@ -22,6 +24,7 @@ export declare class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeA
     private focusTrapFactory;
     private viewContainerRef;
     private overlayKeyboardDispatcher;
+    private directionality;
     readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzClosable: BooleanInput;
     static ngAcceptInputType_nzMaskClosable: BooleanInput;
@@ -59,6 +62,7 @@ export declare class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeA
     readonly nzVisibleChange: EventEmitter<boolean>;
     drawerTemplate: TemplateRef<void>;
     bodyPortalOutlet?: CdkPortalOutlet;
+    contentFromContentChild?: TemplateRef<NzSafeAny>;
     private destroy$;
     previouslyFocusedElement?: HTMLElement;
     placementChanging: boolean;
@@ -82,9 +86,12 @@ export declare class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeA
     get afterOpen(): Observable<void>;
     get afterClose(): Observable<R>;
     isTemplateRef(value: {}): boolean;
-    constructor(document: NzSafeAny, nzConfigService: NzConfigService, renderer: Renderer2, overlay: Overlay, injector: Injector, changeDetectorRef: ChangeDetectorRef, focusTrapFactory: FocusTrapFactory, viewContainerRef: ViewContainerRef, overlayKeyboardDispatcher: OverlayKeyboardDispatcher);
+    nzDirection?: Direction;
+    dir: Direction;
+    constructor(cdr: ChangeDetectorRef, document: NzSafeAny, nzConfigService: NzConfigService, renderer: Renderer2, overlay: Overlay, injector: Injector, changeDetectorRef: ChangeDetectorRef, focusTrapFactory: FocusTrapFactory, viewContainerRef: ViewContainerRef, overlayKeyboardDispatcher: OverlayKeyboardDispatcher, directionality: Directionality);
     ngOnInit(): void;
     ngAfterViewInit(): void;
+    ngAfterContentInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
     private getAnimationDuration;

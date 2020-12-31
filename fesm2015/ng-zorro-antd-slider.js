@@ -1,11 +1,12 @@
 import { __decorate, __metadata } from 'tslib';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { RIGHT_ARROW, UP_ARROW, LEFT_ARROW, DOWN_ARROW } from '@angular/cdk/keycodes';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
-import { Injectable, Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, ViewChild, Input, EventEmitter, forwardRef, ViewChildren, Output, NgModule } from '@angular/core';
+import { Injectable, Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, ViewChild, Input, EventEmitter, forwardRef, Optional, ViewChildren, Output, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputBoolean, ensureNumberInRange, silentEvent, getPrecision, getPercent, getElementOffset, InputNumber, arraysEqual } from 'ng-zorro-antd/core/util';
-import { fromEvent, merge } from 'rxjs';
-import { filter, tap, pluck, map, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { Subject, fromEvent, merge } from 'rxjs';
+import { takeUntil, filter, tap, pluck, map, distinctUntilChanged } from 'rxjs/operators';
 import { NzTooltipDirective, NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { CommonModule } from '@angular/common';
 
@@ -32,6 +33,7 @@ class NzSliderHandleComponent {
         this.cdr = cdr;
         this.tooltipVisible = 'default';
         this.active = false;
+        this.dir = 'ltr';
         this.style = {};
         this.enterHandle = () => {
             if (!this.sliderService.isDragging) {
@@ -48,8 +50,8 @@ class NzSliderHandleComponent {
         };
     }
     ngOnChanges(changes) {
-        const { offset, value, active, tooltipVisible, reverse } = changes;
-        if (offset || reverse) {
+        const { offset, value, active, tooltipVisible, reverse, dir } = changes;
+        if (offset || reverse || dir) {
             this.updateStyle();
         }
         if (value) {
@@ -102,13 +104,19 @@ class NzSliderHandleComponent {
                 [reverse ? 'bottom' : 'top']: 'auto',
                 transform: reverse ? null : `translateY(+50%)`
             }
-            : {
-                [reverse ? 'right' : 'left']: `${offset}%`,
-                [reverse ? 'left' : 'right']: 'auto',
-                transform: `translateX(${reverse ? '+' : '-'}50%)`
-            };
+            : Object.assign(Object.assign({}, this.getHorizontalStylePosition()), { transform: `translateX(${reverse ? (this.dir === 'rtl' ? '-' : '+') : this.dir === 'rtl' ? '+' : '-'}50%)` });
         this.style = positionStyle;
         this.cdr.markForCheck();
+    }
+    getHorizontalStylePosition() {
+        let left = this.reverse ? 'auto' : `${this.offset}%`;
+        let right = this.reverse ? `${this.offset}%` : 'auto';
+        if (this.dir === 'rtl') {
+            const tmp = left;
+            left = right;
+            right = tmp;
+        }
+        return { left, right };
     }
 }
 NzSliderHandleComponent.decorators = [
@@ -150,7 +158,8 @@ NzSliderHandleComponent.propDecorators = {
     tooltipVisible: [{ type: Input }],
     tooltipPlacement: [{ type: Input }],
     tooltipFormatter: [{ type: Input }],
-    active: [{ type: Input }]
+    active: [{ type: Input }],
+    dir: [{ type: Input }]
 };
 __decorate([
     InputBoolean(),
@@ -162,10 +171,11 @@ __decorate([
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzSliderComponent {
-    constructor(sliderService, cdr, platform) {
+    constructor(sliderService, cdr, platform, directionality) {
         this.sliderService = sliderService;
         this.cdr = cdr;
         this.platform = platform;
+        this.directionality = directionality;
         this.nzDisabled = false;
         this.nzDots = false;
         this.nzIncluded = true;
@@ -187,8 +197,18 @@ class NzSliderComponent {
         this.handles = []; // Handles' offset
         this.marksArray = null; // "steps" in array type with more data & FILTER out the invalid mark
         this.bounds = { lower: null, upper: null }; // now for nz-slider-step
+        this.dir = 'ltr';
+        this.destroy$ = new Subject();
     }
     ngOnInit() {
+        var _a;
+        this.dir = this.directionality.value;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+            this.updateTrackAndHandles();
+            this.onValueChange(this.getValue(true));
+        });
         this.handles = generateHandlers(this.nzRange ? 2 : 1);
         this.marksArray = this.nzMarks ? this.generateMarkItems(this.nzMarks) : null;
         this.bindDraggingHandlers();
@@ -211,6 +231,8 @@ class NzSliderComponent {
     }
     ngOnDestroy() {
         this.unsubscribeDrag();
+        this.destroy$.next();
+        this.destroy$.complete();
     }
     writeValue(val) {
         this.setValue(val, true);
@@ -238,7 +260,8 @@ class NzSliderComponent {
             return;
         }
         e.preventDefault();
-        const step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1);
+        let step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1);
+        step = this.dir === 'rtl' ? step * -1 : step;
         const newVal = this.nzRange ? this.value[this.activeValueIndex] + step : this.value + step;
         this.setActiveValue(ensureNumberInRange(newVal, this.nzMin, this.nzMax));
     }
@@ -332,7 +355,16 @@ class NzSliderComponent {
         this.cdr.markForCheck();
     }
     getLogicalValue(value) {
-        return this.nzReverse ? this.nzMax - value + this.nzMin : value;
+        if (this.nzReverse) {
+            if (!this.nzVertical && this.dir === 'rtl') {
+                return value;
+            }
+            return this.nzMax - value + this.nzMin;
+        }
+        if (!this.nzVertical && this.dir === 'rtl') {
+            return this.nzMax - value + this.nzMin;
+        }
+        return value;
     }
     onDragEnd() {
         this.nzOnAfterChange.emit(this.getValue(true));
@@ -518,6 +550,7 @@ NzSliderComponent.decorators = [
     <div
       #slider
       class="ant-slider"
+      [class.ant-slider-rtl]="dir === 'rtl'"
       [class.ant-slider-disabled]="nzDisabled"
       [class.ant-slider-vertical]="nzVertical"
       [class.ant-slider-with-marks]="marksArray"
@@ -529,6 +562,7 @@ NzSliderComponent.decorators = [
         [offset]="track.offset!"
         [length]="track.length!"
         [reverse]="nzReverse"
+        [dir]="dir"
       ></nz-slider-track>
       <nz-slider-step
         *ngIf="marksArray"
@@ -548,6 +582,7 @@ NzSliderComponent.decorators = [
         [tooltipFormatter]="nzTipFormatter"
         [tooltipVisible]="nzTooltipVisible"
         [tooltipPlacement]="nzTooltipPlacement"
+        [dir]="dir"
       ></nz-slider-handle>
       <nz-slider-marks
         *ngIf="marksArray"
@@ -566,7 +601,8 @@ NzSliderComponent.decorators = [
 NzSliderComponent.ctorParameters = () => [
     { type: NzSliderService },
     { type: ChangeDetectorRef },
-    { type: Platform }
+    { type: Platform },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzSliderComponent.propDecorators = {
     slider: [{ type: ViewChild, args: ['slider', { static: true },] }],
@@ -869,6 +905,7 @@ class NzSliderTrackComponent {
     constructor() {
         this.offset = 0;
         this.reverse = false;
+        this.dir = 'ltr';
         this.length = 0;
         this.vertical = false;
         this.included = false;
@@ -887,13 +924,18 @@ class NzSliderTrackComponent {
                 height: `${length}%`,
                 visibility
             }
-            : {
-                [reverse ? 'right' : 'left']: `${offset}%`,
-                [reverse ? 'left' : 'right']: 'auto',
-                width: `${length}%`,
-                visibility
-            };
+            : Object.assign(Object.assign({}, this.getHorizontalStylePosition()), { width: `${length}%`, visibility });
         this.style = positonStyle;
+    }
+    getHorizontalStylePosition() {
+        let left = this.reverse ? 'auto' : `${this.offset}%`;
+        let right = this.reverse ? `${this.offset}%` : 'auto';
+        if (this.dir === 'rtl') {
+            const tmp = left;
+            left = right;
+            right = tmp;
+        }
+        return { left, right };
     }
 }
 NzSliderTrackComponent.decorators = [
@@ -903,12 +945,15 @@ NzSliderTrackComponent.decorators = [
                 selector: 'nz-slider-track',
                 exportAs: 'nzSliderTrack',
                 preserveWhitespaces: false,
-                template: ` <div class="ant-slider-track" [ngStyle]="style"></div> `
+                template: `
+    <div class="ant-slider-track" [ngStyle]="style"></div>
+  `
             },] }
 ];
 NzSliderTrackComponent.propDecorators = {
     offset: [{ type: Input }],
     reverse: [{ type: Input }],
+    dir: [{ type: Input }],
     length: [{ type: Input }],
     vertical: [{ type: Input }],
     included: [{ type: Input }]
@@ -944,7 +989,7 @@ NzSliderModule.decorators = [
     { type: NgModule, args: [{
                 exports: [NzSliderComponent, NzSliderTrackComponent, NzSliderHandleComponent, NzSliderStepComponent, NzSliderMarksComponent],
                 declarations: [NzSliderComponent, NzSliderTrackComponent, NzSliderHandleComponent, NzSliderStepComponent, NzSliderMarksComponent],
-                imports: [CommonModule, PlatformModule, NzToolTipModule]
+                imports: [BidiModule, CommonModule, PlatformModule, NzToolTipModule]
             },] }
 ];
 

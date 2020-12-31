@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/util'), require('@angular/common')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/skeleton', ['exports', '@angular/core', 'ng-zorro-antd/core/util', '@angular/common'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].skeleton = {}), global.ng.core, global['ng-zorro-antd'].core.util, global.ng.common));
-}(this, (function (exports, core, util, common) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/util'), require('@angular/cdk/bidi'), require('@angular/common')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/skeleton', ['exports', '@angular/core', 'ng-zorro-antd/core/util', '@angular/cdk/bidi', '@angular/common'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].skeleton = {}), global.ng.core, global['ng-zorro-antd'].core.util, global.ng.cdk.bidi, global.ng.common));
+}(this, (function (exports, core, util, bidi, common) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -422,8 +422,11 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzSkeletonElementDirective = /** @class */ (function () {
-        function NzSkeletonElementDirective() {
+        function NzSkeletonElementDirective(elementRef) {
+            this.elementRef = elementRef;
             this.nzActive = false;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-skeleton', 'ant-skeleton-element');
         }
         return NzSkeletonElementDirective;
     }());
@@ -431,12 +434,13 @@
         { type: core.Directive, args: [{
                     selector: 'nz-skeleton-element',
                     host: {
-                        '[class.ant-skeleton]': 'true',
-                        '[class.ant-skeleton-element]': 'true',
                         '[class.ant-skeleton-active]': 'nzActive'
                     }
                 },] }
     ];
+    NzSkeletonElementDirective.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzSkeletonElementDirective.propDecorators = {
         nzActive: [{ type: core.Input }],
         nzType: [{ type: core.Input }]
@@ -535,7 +539,7 @@
                         NzSkeletonElementImageComponent,
                         NzSkeletonElementInputComponent
                     ],
-                    imports: [common.CommonModule],
+                    imports: [bidi.BidiModule, common.CommonModule],
                     exports: [
                         NzSkeletonComponent,
                         NzSkeletonElementDirective,

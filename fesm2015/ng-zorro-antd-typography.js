@@ -1,7 +1,8 @@
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { DOCUMENT, CommonModule } from '@angular/common';
-import { EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, ChangeDetectorRef, Input, Output, ViewChild, ViewContainerRef, Renderer2, Inject, NgModule } from '@angular/core';
+import { EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, ChangeDetectorRef, Input, Output, ViewChild, ViewContainerRef, Renderer2, Inject, Optional, NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
 import { NzI18nService, NzI18nModule } from 'ng-zorro-antd/i18n';
@@ -256,7 +257,7 @@ NzTextEditComponent.propDecorators = {
 const NZ_CONFIG_MODULE_NAME = 'typography';
 const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
 class NzTypographyComponent {
-    constructor(nzConfigService, host, cdr, viewContainerRef, renderer, platform, i18n, document, resizeService) {
+    constructor(nzConfigService, host, cdr, viewContainerRef, renderer, platform, i18n, document, resizeService, directionality) {
         this.nzConfigService = nzConfigService;
         this.host = host;
         this.cdr = cdr;
@@ -265,6 +266,7 @@ class NzTypographyComponent {
         this.platform = platform;
         this.i18n = i18n;
         this.resizeService = resizeService;
+        this.directionality = directionality;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzCopyable = false;
         this.nzEditable = false;
@@ -287,6 +289,7 @@ class NzTypographyComponent {
         this.isEllipsis = true;
         this.expanded = false;
         this.ellipsisStr = '...';
+        this.dir = 'ltr';
         this.viewInit = false;
         this.rfaId = -1;
         this.destroy$ = new Subject();
@@ -416,10 +419,16 @@ class NzTypographyComponent {
         }
     }
     ngOnInit() {
+        var _a;
         this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
             this.locale = this.i18n.getLocaleData('Text');
             this.cdr.markForCheck();
         });
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
     }
     ngAfterViewInit() {
         this.viewInit = true;
@@ -503,6 +512,7 @@ NzTypographyComponent.decorators = [
                 preserveWhitespaces: false,
                 host: {
                     '[class.ant-typography]': '!editing',
+                    '[class.ant-typography-rtl]': 'dir === "rtl"',
                     '[class.ant-typography-edit-content]': 'editing',
                     '[class.ant-typography-secondary]': 'nzType === "secondary"',
                     '[class.ant-typography-warning]': 'nzType === "warning"',
@@ -525,7 +535,8 @@ NzTypographyComponent.ctorParameters = () => [
     { type: Platform },
     { type: NzI18nService },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] },
-    { type: NzResizeService }
+    { type: NzResizeService },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzTypographyComponent.propDecorators = {
     nzCopyable: [{ type: Input }],
@@ -602,7 +613,17 @@ class NzTypographyModule {
 }
 NzTypographyModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule, NzIconModule, NzToolTipModule, NzInputModule, NzI18nModule, NzTransButtonModule, ClipboardModule, NzOutletModule],
+                imports: [
+                    BidiModule,
+                    CommonModule,
+                    NzIconModule,
+                    NzToolTipModule,
+                    NzInputModule,
+                    NzI18nModule,
+                    NzTransButtonModule,
+                    ClipboardModule,
+                    NzOutletModule
+                ],
                 exports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent, PlatformModule],
                 declarations: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent]
             },] }

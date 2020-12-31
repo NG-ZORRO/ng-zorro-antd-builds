@@ -39,9 +39,6 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
     <br />
 
     <button nz-button nzType="primary" (click)="openAndCloseAll()">Open more modals then close all after 2s</button>
-    <nz-modal [(nzVisible)]="htmlModalVisible" nzMask="false" [nzZIndex]="1001" nzTitle="Non-service html modal">
-      This is a non-service html modal
-    </nz-modal>
   `<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>,
   <% if(inlineStyle) { %>styles: [`
       button {
@@ -51,7 +48,6 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 })
 export class <%= classify(name) %>Component {
   tplModalButtonLoading = false;
-  htmlModalVisible = false;
   disabled = false;
 
   constructor(private modal: NzModalService, private viewContainerRef: ViewContainerRef) {}
@@ -134,7 +130,8 @@ export class <%= classify(name) %>Component {
         },
         {
           label: 'Change Button Status',
-          type: 'danger',
+          type: 'primary',
+          danger: true,
           loading: false,
           onClick(): void {
             this.loading = true;
@@ -167,8 +164,6 @@ export class <%= classify(name) %>Component {
         nzStyle: { position: 'absolute', top: `${pos * 70}px`, left: `${pos++ * 300}px` }
       })
     );
-
-    this.htmlModalVisible = true;
 
     this.modal.afterAllClose.subscribe(() => console.log('afterAllClose emitted!'));
 

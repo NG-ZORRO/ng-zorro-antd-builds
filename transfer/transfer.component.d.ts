@@ -2,7 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
 import { Observable } from 'rxjs';
@@ -10,6 +11,8 @@ import { TransferCanMove, TransferChange, TransferDirection, TransferItem, Trans
 export declare class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     private cdr;
     private i18n;
+    private elementRef;
+    private directionality;
     static ngAcceptInputType_nzDisabled: BooleanInput;
     static ngAcceptInputType_nzShowSelectAll: BooleanInput;
     static ngAcceptInputType_nzShowSearch: BooleanInput;
@@ -18,6 +21,7 @@ export declare class NzTransferComponent implements OnInit, OnChanges, OnDestroy
     locale: NzTransferI18nInterface;
     leftFilter: string;
     rightFilter: string;
+    dir: Direction;
     nzDisabled: boolean;
     nzDataSource: TransferItem[];
     nzTitles: string[];
@@ -59,7 +63,7 @@ export declare class NzTransferComponent implements OnInit, OnChanges, OnDestroy
     moveToRight: () => void;
     moveTo(direction: TransferDirection): void;
     private truthMoveTo;
-    constructor(cdr: ChangeDetectorRef, i18n: NzI18nService);
+    constructor(cdr: ChangeDetectorRef, i18n: NzI18nService, elementRef: ElementRef, directionality: Directionality);
     private markForCheckAllList;
     private handleNzTargetKeys;
     private handleNzSelectedKeys;

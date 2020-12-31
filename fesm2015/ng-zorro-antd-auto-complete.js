@@ -1,3 +1,4 @@
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { OverlayConfig, ConnectionPositionPair, Overlay, OverlayModule } from '@angular/cdk/overlay';
 import { DOCUMENT, CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, Input, EventEmitter, ChangeDetectorRef, ElementRef, Optional, Output, NgZone, Host, ContentChildren, ViewChildren, ViewChild, TemplateRef, forwardRef, Directive, ViewContainerRef, Inject, NgModule } from '@angular/core';
@@ -9,8 +10,8 @@ import { __decorate, __metadata } from 'tslib';
 import { scrollIntoView, InputBoolean } from 'ng-zorro-antd/core/util';
 import { UP_ARROW, DOWN_ARROW, ESCAPE, TAB, ENTER } from '@angular/cdk/keycodes';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Subscription, defer, merge, Subject } from 'rxjs';
-import { take, switchMap, filter, tap, delay, takeUntil } from 'rxjs/operators';
+import { Subject, Subscription, defer, merge } from 'rxjs';
+import { take, switchMap, takeUntil, filter, tap, delay } from 'rxjs/operators';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 /**
@@ -163,9 +164,10 @@ __decorate([
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzAutocompleteComponent {
-    constructor(changeDetectorRef, ngZone, noAnimation) {
+    constructor(changeDetectorRef, ngZone, directionality, noAnimation) {
         this.changeDetectorRef = changeDetectorRef;
         this.ngZone = ngZone;
+        this.directionality = directionality;
         this.noAnimation = noAnimation;
         this.nzOverlayClassName = '';
         this.nzOverlayStyle = {};
@@ -175,6 +177,8 @@ class NzAutocompleteComponent {
         this.selectionChange = new EventEmitter();
         this.showPanel = true;
         this.isOpen = false;
+        this.dir = 'ltr';
+        this.destroy$ = new Subject();
         this.activeItemIndex = -1;
         this.selectionChangeSubscription = Subscription.EMPTY;
         this.optionMouseEnterSubscription = Subscription.EMPTY;
@@ -205,6 +209,14 @@ class NzAutocompleteComponent {
             return this.fromContentOptions;
         }
     }
+    ngOnInit() {
+        var _a;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.changeDetectorRef.detectChanges();
+        });
+        this.dir = this.directionality.value;
+    }
     ngAfterContentInit() {
         if (!this.nzDataSource) {
             this.optionsInit();
@@ -219,6 +231,8 @@ class NzAutocompleteComponent {
         this.dataSourceChangeSubscription.unsubscribe();
         this.selectionChangeSubscription.unsubscribe();
         this.optionMouseEnterSubscription.unsubscribe();
+        this.destroy$.next();
+        this.destroy$.complete();
     }
     setVisibility() {
         this.showPanel = !!this.options.length;
@@ -309,6 +323,7 @@ NzAutocompleteComponent.decorators = [
         #panel
         class="ant-select-dropdown ant-select-dropdown-placement-bottomLeft"
         [class.ant-select-dropdown-hidden]="!showPanel"
+        [class.ant-select-dropdown-rtl]="dir === 'rtl'"
         [ngClass]="nzOverlayClassName"
         [ngStyle]="nzOverlayStyle"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
@@ -341,6 +356,7 @@ NzAutocompleteComponent.decorators = [
 NzAutocompleteComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: NgZone },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 NzAutocompleteComponent.propDecorators = {
@@ -661,7 +677,7 @@ NzAutocompleteModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
                 exports: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
-                imports: [CommonModule, OverlayModule, FormsModule, NzOutletModule, NzNoAnimationModule, NzInputModule]
+                imports: [BidiModule, CommonModule, OverlayModule, FormsModule, NzOutletModule, NzNoAnimationModule, NzInputModule]
             },] }
 ];
 

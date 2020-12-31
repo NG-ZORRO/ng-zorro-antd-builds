@@ -2,7 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ChangeDetectorRef, DebugElement, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, DebugElement, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
@@ -11,6 +11,7 @@ export declare type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
 export declare class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
     private cdr;
     dateHelper: DateHelperService;
+    private elementRef;
     static ngAcceptInputType_nzUse12Hours: BooleanInput;
     private _nzHourStep;
     private _nzMinuteStep;
@@ -53,7 +54,7 @@ export declare class NzTimePickerPanelComponent implements ControlValueAccessor,
     nzAddOn?: TemplateRef<void>;
     nzHideDisabledOptions: boolean;
     nzClearText?: string;
-    nzPlaceHolder?: string;
+    nzPlaceHolder?: string | null;
     nzUse12Hours: boolean;
     nzDefaultOpenValue?: Date;
     readonly closePanel: EventEmitter<void>;
@@ -120,11 +121,16 @@ export declare class NzTimePickerPanelComponent implements ControlValueAccessor,
         index: number;
         value: string;
     }): boolean;
-    constructor(cdr: ChangeDetectorRef, dateHelper: DateHelperService);
+    constructor(cdr: ChangeDetectorRef, dateHelper: DateHelperService, elementRef: ElementRef);
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;
     writeValue(value: Date): void;
     registerOnChange(fn: (value: Date) => void): void;
     registerOnTouched(fn: () => void): void;
+    /**
+     * Prevent input losing focus when click panel
+     * @param event
+     */
+    onMousedown(event: MouseEvent): void;
 }

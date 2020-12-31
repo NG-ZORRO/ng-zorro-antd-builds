@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Direction } from '@angular/cdk/bidi';
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { ThemeType } from '@ant-design/icons-angular';
@@ -44,6 +45,7 @@ export interface NzConfig {
     tree?: TreeConfig;
     treeSelect?: TreeSelectConfig;
     typography?: TypographyConfig;
+    image?: ImageConfig;
 }
 export interface SelectConfig {
     nzBorderless?: boolean;
@@ -128,6 +130,7 @@ export interface DrawerConfig {
     nzMask?: boolean;
     nzMaskClosable?: boolean;
     nzCloseOnNavigation?: boolean;
+    nzDirection?: Direction;
 }
 export interface EmptyConfig {
     nzDefaultEmptyContent?: Type<NzSafeAny> | TemplateRef<string> | string | undefined;
@@ -150,11 +153,13 @@ export interface MessageConfig {
     nzMaxStack?: number;
     nzPauseOnHover?: boolean;
     nzTop?: number | string;
+    nzDirection?: Direction;
 }
 export interface ModalConfig {
     nzMask?: boolean;
     nzMaskClosable?: boolean;
     nzCloseOnNavigation?: boolean;
+    nzDirection?: Direction;
 }
 export interface NotificationConfig extends MessageConfig {
     nzTop?: string | number;
@@ -242,6 +247,13 @@ export interface TypographyConfig {
     nzCopyIcons: [NzTSType, NzTSType];
     nzEditTooltip?: null | NzTSType;
     nzEditIcon: NzTSType;
+}
+export interface ImageConfig {
+    nzFallback?: string;
+    nzPlaceholder?: string;
+    nzDisablePreview?: string;
+    nzCloseOnNavigation?: boolean;
+    nzDirection?: Direction;
 }
 export declare type NzConfigKey = keyof NzConfig;
 /**

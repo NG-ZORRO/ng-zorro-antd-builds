@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('@angular/cdk/observers'), require('@angular/common'), require('ng-zorro-antd/core/outlet')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/badge', ['exports', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', '@angular/cdk/observers', '@angular/common', 'ng-zorro-antd/core/outlet'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].badge = {}), global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.ng.cdk.observers, global.ng.common, global['ng-zorro-antd'].core.outlet));
-}(this, (function (exports, core, animation, config, util, observers, common, outlet) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/observers'), require('@angular/common'), require('ng-zorro-antd/core/outlet')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/badge', ['exports', '@angular/cdk/bidi', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/observers', '@angular/common', 'ng-zorro-antd/core/outlet'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].badge = {}), global.ng.cdk.bidi, global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.observers, global.ng.common, global['ng-zorro-antd'].core.outlet));
+}(this, (function (exports, bidi, core, animation, config, util, rxjs, operators, observers, common, outlet) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -331,11 +331,17 @@
      */
     var NZ_CONFIG_MODULE_NAME = 'badge';
     var NzBadgeComponent = /** @class */ (function () {
-        function NzBadgeComponent(nzConfigService) {
+        function NzBadgeComponent(nzConfigService, renderer, cdr, elementRef, directionality) {
             this.nzConfigService = nzConfigService;
+            this.renderer = renderer;
+            this.cdr = cdr;
+            this.elementRef = elementRef;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.showSup = false;
             this.presetColor = null;
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
             this.nzShowZero = false;
             this.nzShowDot = true;
             this.nzStandalone = false;
@@ -344,7 +350,20 @@
             this.nzColor = undefined;
             this.nzStyle = null;
             this.nzText = null;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-badge');
         }
+        NzBadgeComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.prepareBadgeForRtl();
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+            this.prepareBadgeForRtl();
+        };
         NzBadgeComponent.prototype.ngOnChanges = function (changes) {
             var nzColor = changes.nzColor, nzShowDot = changes.nzShowDot, nzDot = changes.nzDot, nzCount = changes.nzCount, nzShowZero = changes.nzShowZero;
             if (nzColor) {
@@ -353,6 +372,25 @@
             if (nzShowDot || nzDot || nzCount || nzShowZero) {
                 this.showSup = (this.nzShowDot && this.nzDot) || this.nzCount > 0 || (this.nzCount <= 0 && this.nzShowZero);
             }
+        };
+        NzBadgeComponent.prototype.prepareBadgeForRtl = function () {
+            if (this.isRtlLayout) {
+                this.renderer.addClass(this.elementRef.nativeElement, 'ant-badge-rtl');
+            }
+            else {
+                this.renderer.removeClass(this.elementRef.nativeElement, 'ant-badge-rtl');
+            }
+        };
+        Object.defineProperty(NzBadgeComponent.prototype, "isRtlLayout", {
+            get: function () {
+                return this.dir === 'rtl';
+            },
+            enumerable: false,
+            configurable: true
+        });
+        NzBadgeComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         return NzBadgeComponent;
     }());
@@ -366,14 +404,17 @@
                     animations: [animation.zoomBadgeMotion],
                     template: "\n    <ng-container *ngIf=\"nzStatus || nzColor\">\n      <span\n        class=\"ant-badge-status-dot ant-badge-status-{{ nzStatus || presetColor }}\"\n        [style.background]=\"!presetColor && nzColor\"\n        [ngStyle]=\"nzStyle\"\n      ></span>\n      <span class=\"ant-badge-status-text\">\n        <ng-container *nzStringTemplateOutlet=\"nzText\">{{ nzText }}</ng-container>\n      </span>\n    </ng-container>\n    <ng-content></ng-content>\n    <ng-container *nzStringTemplateOutlet=\"nzCount\">\n      <nz-badge-sup\n        *ngIf=\"showSup\"\n        [nzOffset]=\"nzOffset\"\n        [nzTitle]=\"nzTitle\"\n        [nzStyle]=\"nzStyle\"\n        [nzDot]=\"nzDot\"\n        [nzOverflowCount]=\"nzOverflowCount\"\n        [disableAnimation]=\"!!(nzStandalone || nzStatus || nzColor)\"\n        [nzCount]=\"nzCount\"\n      ></nz-badge-sup>\n    </ng-container>\n  ",
                     host: {
-                        '[class.ant-badge]': 'true',
                         '[class.ant-badge-status]': 'nzStatus',
                         '[class.ant-badge-not-a-wrapper]': '!!(nzStandalone || nzStatus || nzColor)'
                     }
                 },] }
     ];
     NzBadgeComponent.ctorParameters = function () { return [
-        { type: config.NzConfigService }
+        { type: config.NzConfigService },
+        { type: core.Renderer2 },
+        { type: core.ChangeDetectorRef },
+        { type: core.ElementRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzBadgeComponent.propDecorators = {
         nzShowZero: [{ type: core.Input }],
@@ -419,7 +460,8 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzBadgeSupComponent = /** @class */ (function () {
-        function NzBadgeSupComponent() {
+        function NzBadgeSupComponent(elementRef) {
+            this.elementRef = elementRef;
             this.nzStyle = null;
             this.nzDot = false;
             this.nzOverflowCount = 99;
@@ -428,6 +470,8 @@
             this.countArray = [];
             this.count = 0;
             this.countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-scroll-number');
         }
         NzBadgeSupComponent.prototype.generateMaxNumberArray = function () {
             this.maxNumberArray = this.nzOverflowCount.toString().split('');
@@ -466,13 +510,15 @@
                         '[style]': "nzStyle",
                         '[style.right.px]': "nzOffset && nzOffset[0] ? -nzOffset[0] : null",
                         '[style.margin-top.px]': "nzOffset && nzOffset[1] ? nzOffset[1] : null",
-                        '[class.ant-scroll-number]': 'true',
                         '[class.ant-badge-count]': "!nzDot",
                         '[class.ant-badge-dot]': "nzDot",
                         '[class.ant-badge-multiple-words]': "countArray.length >= 2"
                     }
                 },] }
     ];
+    NzBadgeSupComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzBadgeSupComponent.propDecorators = {
         nzOffset: [{ type: core.Input }],
         nzTitle: [{ type: core.Input }],
@@ -488,10 +534,13 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzRibbonComponent = /** @class */ (function () {
-        function NzRibbonComponent() {
+        function NzRibbonComponent(elementRef) {
+            this.elementRef = elementRef;
             this.nzPlacement = 'end';
             this.nzText = null;
             this.presetColor = null;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-ribbon-wrapper');
         }
         NzRibbonComponent.prototype.ngOnChanges = function (changes) {
             var nzColor = changes.nzColor;
@@ -508,12 +557,12 @@
                     preserveWhitespaces: false,
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    template: "\n    <ng-content></ng-content>\n    <div\n      class=\"ant-ribbon\"\n      [class]=\"presetColor && 'ant-ribbon-color-' + presetColor\"\n      [class.ant-ribbon-placement-end]=\"nzPlacement === 'end'\"\n      [class.ant-ribbon-placement-start]=\"nzPlacement === 'start'\"\n      [style.background-color]=\"!presetColor && nzColor\"\n    >\n      <ng-container *nzStringTemplateOutlet=\"nzText\">{{ nzText }}</ng-container>\n      <div class=\"ant-ribbon-corner\" [style.color]=\"!presetColor && nzColor\"></div>\n    </div>\n  ",
-                    host: {
-                        '[class.ant-ribbon-wrapper]': 'true'
-                    }
+                    template: "\n    <ng-content></ng-content>\n    <div\n      class=\"ant-ribbon\"\n      [class]=\"presetColor && 'ant-ribbon-color-' + presetColor\"\n      [class.ant-ribbon-placement-end]=\"nzPlacement === 'end'\"\n      [class.ant-ribbon-placement-start]=\"nzPlacement === 'start'\"\n      [style.background-color]=\"!presetColor && nzColor\"\n    >\n      <ng-container *nzStringTemplateOutlet=\"nzText\">{{ nzText }}</ng-container>\n      <div class=\"ant-ribbon-corner\" [style.color]=\"!presetColor && nzColor\"></div>\n    </div>\n  "
                 },] }
     ];
+    NzRibbonComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzRibbonComponent.propDecorators = {
         nzColor: [{ type: core.Input }],
         nzPlacement: [{ type: core.Input }],
@@ -533,7 +582,7 @@
         { type: core.NgModule, args: [{
                     declarations: [NzBadgeComponent, NzBadgeSupComponent, NzRibbonComponent],
                     exports: [NzBadgeComponent, NzRibbonComponent],
-                    imports: [common.CommonModule, observers.ObserversModule, outlet.NzOutletModule]
+                    imports: [bidi.BidiModule, common.CommonModule, observers.ObserversModule, outlet.NzOutletModule]
                 },] }
     ];
 

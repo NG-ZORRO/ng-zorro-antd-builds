@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/observers'), require('@angular/common')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/spin', ['exports', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/observers', '@angular/common'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].spin = {}), global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.observers, global.ng.common));
-}(this, (function (exports, core, config, util, rxjs, operators, observers, common) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/observers'), require('@angular/common')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/spin', ['exports', '@angular/cdk/bidi', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/observers', '@angular/common'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].spin = {}), global.ng.cdk.bidi, global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.observers, global.ng.common));
+}(this, (function (exports, bidi, core, config, util, rxjs, operators, observers, common) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -305,15 +305,12 @@
         return value;
     }
 
-    /**
-     * Use of this source code is governed by an MIT-style license that can be
-     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
-     */
     var NZ_CONFIG_MODULE_NAME = 'spin';
     var NzSpinComponent = /** @class */ (function () {
-        function NzSpinComponent(nzConfigService, cdr) {
+        function NzSpinComponent(nzConfigService, cdr, directionality) {
             this.nzConfigService = nzConfigService;
             this.cdr = cdr;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzIndicator = null;
             this.nzSize = 'default';
@@ -325,9 +322,11 @@
             this.spinning$ = new rxjs.BehaviorSubject(this.nzSpinning);
             this.delay$ = new rxjs.ReplaySubject(1);
             this.isLoading = false;
+            this.dir = 'ltr';
         }
         NzSpinComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             var loading$ = this.delay$.pipe(operators.startWith(this.nzDelay), operators.distinctUntilChanged(), operators.switchMap(function (delay) {
                 if (delay === 0) {
                     return _this.spinning$;
@@ -342,6 +341,11 @@
                 .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
                 .pipe(operators.takeUntil(this.destroy$))
                 .subscribe(function () { return _this.cdr.markForCheck(); });
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
         };
         NzSpinComponent.prototype.ngOnChanges = function (changes) {
             var nzSpinning = changes.nzSpinning, nzDelay = changes.nzDelay;
@@ -364,7 +368,7 @@
                     exportAs: 'nzSpin',
                     preserveWhitespaces: false,
                     encapsulation: core.ViewEncapsulation.None,
-                    template: "\n    <ng-template #defaultTemplate>\n      <span class=\"ant-spin-dot ant-spin-dot-spin\">\n        <i class=\"ant-spin-dot-item\"></i>\n        <i class=\"ant-spin-dot-item\"></i>\n        <i class=\"ant-spin-dot-item\"></i>\n        <i class=\"ant-spin-dot-item\"></i>\n      </span>\n    </ng-template>\n    <div *ngIf=\"isLoading\">\n      <div\n        class=\"ant-spin\"\n        [class.ant-spin-spinning]=\"isLoading\"\n        [class.ant-spin-lg]=\"nzSize === 'large'\"\n        [class.ant-spin-sm]=\"nzSize === 'small'\"\n        [class.ant-spin-show-text]=\"nzTip\"\n      >\n        <ng-template [ngTemplateOutlet]=\"nzIndicator || defaultTemplate\"></ng-template>\n        <div class=\"ant-spin-text\" *ngIf=\"nzTip\">{{ nzTip }}</div>\n      </div>\n    </div>\n    <div *ngIf=\"!nzSimple\" class=\"ant-spin-container\" [class.ant-spin-blur]=\"isLoading\">\n      <ng-content></ng-content>\n    </div>\n  ",
+                    template: "\n    <ng-template #defaultTemplate>\n      <span class=\"ant-spin-dot ant-spin-dot-spin\">\n        <i class=\"ant-spin-dot-item\"></i>\n        <i class=\"ant-spin-dot-item\"></i>\n        <i class=\"ant-spin-dot-item\"></i>\n        <i class=\"ant-spin-dot-item\"></i>\n      </span>\n    </ng-template>\n    <div *ngIf=\"isLoading\">\n      <div\n        class=\"ant-spin\"\n        [class.ant-spin-rtl]=\"dir === 'rtl'\"\n        [class.ant-spin-spinning]=\"isLoading\"\n        [class.ant-spin-lg]=\"nzSize === 'large'\"\n        [class.ant-spin-sm]=\"nzSize === 'small'\"\n        [class.ant-spin-show-text]=\"nzTip\"\n      >\n        <ng-template [ngTemplateOutlet]=\"nzIndicator || defaultTemplate\"></ng-template>\n        <div class=\"ant-spin-text\" *ngIf=\"nzTip\">{{ nzTip }}</div>\n      </div>\n    </div>\n    <div *ngIf=\"!nzSimple\" class=\"ant-spin-container\" [class.ant-spin-blur]=\"isLoading\">\n      <ng-content></ng-content>\n    </div>\n  ",
                     host: {
                         '[class.ant-spin-nested-loading]': '!nzSimple'
                     }
@@ -372,7 +376,8 @@
     ];
     NzSpinComponent.ctorParameters = function () { return [
         { type: config.NzConfigService },
-        { type: core.ChangeDetectorRef }
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzSpinComponent.propDecorators = {
         nzIndicator: [{ type: core.Input }],
@@ -412,7 +417,7 @@
         { type: core.NgModule, args: [{
                     exports: [NzSpinComponent],
                     declarations: [NzSpinComponent],
-                    imports: [common.CommonModule, observers.ObserversModule]
+                    imports: [bidi.BidiModule, common.CommonModule, observers.ObserversModule]
                 },] }
     ];
 

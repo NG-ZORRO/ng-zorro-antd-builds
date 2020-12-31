@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/result', ['exports', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].result = {}), global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon));
-}(this, (function (exports, common, core, outlet, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('rxjs'), require('rxjs/operators')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/result', ['exports', '@angular/cdk/bidi', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'rxjs', 'rxjs/operators'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].result = {}), global.ng.cdk.bidi, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global.rxjs, global.rxjs.operators));
+}(this, (function (exports, bidi, common, core, outlet, icon, rxjs, operators) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -389,12 +389,32 @@
     };
     var ExceptionStatus = ['404', '500', '403'];
     var NzResultComponent = /** @class */ (function () {
-        function NzResultComponent() {
+        function NzResultComponent(elementRef, cdr, directionality) {
+            this.elementRef = elementRef;
+            this.cdr = cdr;
+            this.directionality = directionality;
             this.nzStatus = 'info';
             this.isException = false;
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-result');
         }
+        NzResultComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+        };
         NzResultComponent.prototype.ngOnChanges = function () {
             this.setStatusIcon();
+        };
+        NzResultComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         NzResultComponent.prototype.setStatusIcon = function () {
             var icon = this.nzIcon;
@@ -417,15 +437,19 @@
                     exportAs: 'nzResult',
                     template: "\n    <div class=\"ant-result-icon\">\n      <ng-container *ngIf=\"!isException; else exceptionTpl\">\n        <ng-container *ngIf=\"icon\">\n          <ng-container *nzStringTemplateOutlet=\"icon; let icon\">\n            <i nz-icon [nzType]=\"icon\" nzTheme=\"fill\"></i>\n          </ng-container>\n        </ng-container>\n        <ng-content *ngIf=\"!icon\" select=\"[nz-result-icon]\"></ng-content>\n      </ng-container>\n    </div>\n    <ng-container *ngIf=\"nzTitle\">\n      <div class=\"ant-result-title\" *nzStringTemplateOutlet=\"nzTitle\">\n        {{ nzTitle }}\n      </div>\n    </ng-container>\n    <ng-content *ngIf=\"!nzTitle\" select=\"div[nz-result-title]\"></ng-content>\n    <ng-container *ngIf=\"nzSubTitle\">\n      <div class=\"ant-result-subtitle\" *nzStringTemplateOutlet=\"nzSubTitle\">\n        {{ nzSubTitle }}\n      </div>\n    </ng-container>\n    <ng-content *ngIf=\"!nzSubTitle\" select=\"div[nz-result-subtitle]\"></ng-content>\n    <ng-content select=\"nz-result-content, [nz-result-content]\"></ng-content>\n    <div class=\"ant-result-extra\" *ngIf=\"nzExtra\">\n      <ng-container *nzStringTemplateOutlet=\"nzExtra\">\n        {{ nzExtra }}\n      </ng-container>\n    </div>\n    <ng-content *ngIf=\"!nzExtra\" select=\"div[nz-result-extra]\"></ng-content>\n\n    <ng-template #exceptionTpl>\n      <ng-container [ngSwitch]=\"nzStatus\">\n        <nz-result-not-found *ngSwitchCase=\"'404'\"></nz-result-not-found>\n        <nz-result-server-error *ngSwitchCase=\"'500'\"></nz-result-server-error>\n        <nz-result-unauthorized *ngSwitchCase=\"'403'\"></nz-result-unauthorized>\n      </ng-container>\n    </ng-template>\n  ",
                     host: {
-                        '[class.ant-result]': 'true',
                         '[class.ant-result-success]': "nzStatus === 'success'",
                         '[class.ant-result-error]': "nzStatus === 'error'",
                         '[class.ant-result-info]': "nzStatus === 'info'",
-                        '[class.ant-result-warning]': "nzStatus === 'warning'"
+                        '[class.ant-result-warning]': "nzStatus === 'warning'",
+                        '[class.ant-result-rtl]': "dir === 'rtl'"
                     }
                 },] }
     ];
-    NzResultComponent.ctorParameters = function () { return []; };
+    NzResultComponent.ctorParameters = function () { return [
+        { type: core.ElementRef },
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
+    ]; };
     NzResultComponent.propDecorators = {
         nzIcon: [{ type: core.Input }],
         nzTitle: [{ type: core.Input }],
@@ -506,7 +530,7 @@
     }());
     NzResultModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, outlet.NzOutletModule, icon.NzIconModule],
+                    imports: [bidi.BidiModule, common.CommonModule, outlet.NzOutletModule, icon.NzIconModule],
                     declarations: __spread([NzResultComponent], cellDirectives, partial),
                     exports: __spread([NzResultComponent], cellDirectives)
                 },] }

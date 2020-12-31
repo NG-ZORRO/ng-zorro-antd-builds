@@ -1,6 +1,7 @@
 import { __decorate, __metadata } from 'tslib';
-import { Directive, Input, Component, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, TemplateRef, ChangeDetectorRef, ContentChild, ContentChildren, NgModule } from '@angular/core';
+import { Directive, ElementRef, Input, Component, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, TemplateRef, ChangeDetectorRef, Optional, ContentChild, ContentChildren, NgModule } from '@angular/core';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,8 +13,11 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCardGridDirective {
-    constructor() {
+    constructor(elementRef) {
+        this.elementRef = elementRef;
         this.nzHoverable = true;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-card-grid');
     }
 }
 NzCardGridDirective.decorators = [
@@ -21,10 +25,12 @@ NzCardGridDirective.decorators = [
                 selector: '[nz-card-grid]',
                 exportAs: 'nzCardGrid',
                 host: {
-                    '[class.ant-card-grid]': 'true',
                     '[class.ant-card-hoverable]': 'nzHoverable'
                 }
             },] }
+];
+NzCardGridDirective.ctorParameters = () => [
+    { type: ElementRef }
 ];
 NzCardGridDirective.propDecorators = {
     nzHoverable: [{ type: Input }]
@@ -63,9 +69,11 @@ NzCardTabComponent.propDecorators = {
  */
 const NZ_CONFIG_MODULE_NAME = 'card';
 class NzCardComponent {
-    constructor(nzConfigService, cdr) {
+    constructor(nzConfigService, cdr, elementRef, directionality) {
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
+        this.elementRef = elementRef;
+        this.directionality = directionality;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzBordered = true;
         this.nzBorderless = false;
@@ -75,13 +83,24 @@ class NzCardComponent {
         this.nzActions = [];
         this.nzType = null;
         this.nzSize = 'default';
+        this.dir = 'ltr';
         this.destroy$ = new Subject();
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-card');
         this.nzConfigService
             .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
             this.cdr.markForCheck();
         });
+    }
+    ngOnInit() {
+        var _a;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
     }
     ngOnDestroy() {
         this.destroy$.next();
@@ -127,20 +146,22 @@ NzCardComponent.decorators = [
     </ul>
   `,
                 host: {
-                    '[class.ant-card]': 'true',
                     '[class.ant-card-loading]': 'nzLoading',
                     '[class.ant-card-bordered]': 'nzBorderless === false && nzBordered',
                     '[class.ant-card-hoverable]': 'nzHoverable',
                     '[class.ant-card-small]': 'nzSize === "small"',
                     '[class.ant-card-contain-grid]': 'listOfNzCardGridDirective && listOfNzCardGridDirective.length',
                     '[class.ant-card-type-inner]': 'nzType === "inner"',
-                    '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent'
+                    '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent',
+                    '[class.ant-card-rtl]': `dir === 'rtl'`
                 }
             },] }
 ];
 NzCardComponent.ctorParameters = () => [
     { type: NzConfigService },
-    { type: ChangeDetectorRef }
+    { type: ChangeDetectorRef },
+    { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzCardComponent.propDecorators = {
     nzBordered: [{ type: Input }],
@@ -186,7 +207,8 @@ __decorate([
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCardLoadingComponent {
-    constructor() {
+    constructor(elementRef) {
+        this.elementRef = elementRef;
         this.listOfLoading = [
             ['ant-col-22'],
             ['ant-col-8', 'ant-col-15'],
@@ -195,6 +217,8 @@ class NzCardLoadingComponent {
             ['ant-col-4', 'ant-col-3', 'ant-col-16'],
             ['ant-col-8', 'ant-col-6', 'ant-col-8']
         ];
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-card-loading-content');
     }
 }
 NzCardLoadingComponent.decorators = [
@@ -212,23 +236,25 @@ NzCardLoadingComponent.decorators = [
   `,
                 preserveWhitespaces: false,
                 changeDetection: ChangeDetectionStrategy.OnPush,
-                encapsulation: ViewEncapsulation.None,
-                host: {
-                    '[class.ant-card-loading-content]': 'true'
-                }
+                encapsulation: ViewEncapsulation.None
             },] }
 ];
-NzCardLoadingComponent.ctorParameters = () => [];
+NzCardLoadingComponent.ctorParameters = () => [
+    { type: ElementRef }
+];
 
 /**
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCardMetaComponent {
-    constructor() {
+    constructor(elementRef) {
+        this.elementRef = elementRef;
         this.nzTitle = null;
         this.nzDescription = null;
         this.nzAvatar = null;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-card-meta');
     }
 }
 NzCardMetaComponent.decorators = [
@@ -250,11 +276,11 @@ NzCardMetaComponent.decorators = [
         <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
       </div>
     </div>
-  `,
-                host: {
-                    '[class.ant-card-meta]': 'true'
-                }
+  `
             },] }
+];
+NzCardMetaComponent.ctorParameters = () => [
+    { type: ElementRef }
 ];
 NzCardMetaComponent.propDecorators = {
     nzTitle: [{ type: Input }],
@@ -272,7 +298,7 @@ NzCardModule.decorators = [
     { type: NgModule, args: [{
                 imports: [CommonModule, NzOutletModule],
                 declarations: [NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent],
-                exports: [NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent]
+                exports: [BidiModule, NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent]
             },] }
 ];
 

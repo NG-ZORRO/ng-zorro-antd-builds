@@ -2,19 +2,21 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnDestroy, QueryList, TemplateRef } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnDestroy, OnInit, QueryList, TemplateRef } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './autocomplete-option.component';
 export interface AutocompleteDataSourceItem {
     value: string;
     label: string;
 }
 export declare type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string | number>;
-export declare class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy {
+export declare class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnInit {
     private changeDetectorRef;
     private ngZone;
+    private directionality;
     noAnimation?: NzNoAnimationDirective | undefined;
     static ngAcceptInputType_nzDefaultActiveFirstOption: BooleanInput;
     static ngAcceptInputType_nzBackfill: BooleanInput;
@@ -31,6 +33,8 @@ export declare class NzAutocompleteComponent implements AfterContentInit, AfterV
     showPanel: boolean;
     isOpen: boolean;
     activeItem: NzAutocompleteOptionComponent;
+    dir: Direction;
+    private destroy$;
     /**
      * Options accessor, its source may be content or dataSource
      */
@@ -50,7 +54,8 @@ export declare class NzAutocompleteComponent implements AfterContentInit, AfterV
     /** Options changes listener */
     readonly optionSelectionChanges: Observable<NzOptionSelectionChange>;
     readonly optionMouseEnter: Observable<NzAutocompleteOptionComponent>;
-    constructor(changeDetectorRef: ChangeDetectorRef, ngZone: NgZone, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(changeDetectorRef: ChangeDetectorRef, ngZone: NgZone, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
+    ngOnInit(): void;
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;

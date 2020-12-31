@@ -342,13 +342,17 @@
         icons.PaperClipOutline,
         icons.QuestionCircleOutline,
         icons.RightOutline,
+        icons.RotateRightOutline,
+        icons.RotateLeftOutline,
         icons.StarFill,
         icons.SearchOutline,
         icons.StarFill,
         icons.UploadOutline,
         icons.VerticalAlignTopOutline,
         icons.UpOutline,
-        icons.SwapRightOutline
+        icons.SwapRightOutline,
+        icons.ZoomInOutline,
+        icons.ZoomOutOutline
     ];
 
     var NZ_ICONS = new i0.InjectionToken('nz_icons');

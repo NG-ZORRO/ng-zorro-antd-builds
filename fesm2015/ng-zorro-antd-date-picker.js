@@ -1,6 +1,7 @@
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { CdkOverlayOrigin, CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
 import { DOCUMENT, CommonModule } from '@angular/common';
-import { EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, Injectable, ChangeDetectorRef, ElementRef, Inject, ViewChild, ViewChildren, ContentChild, forwardRef, Renderer2, Host, Optional, Directive, NgModule } from '@angular/core';
+import { EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, Injectable, ChangeDetectorRef, ElementRef, Inject, ViewChild, ViewChildren, ContentChild, forwardRef, Renderer2, Optional, Host, Directive, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
@@ -15,7 +16,6 @@ import { __decorate, __metadata } from 'tslib';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
@@ -120,6 +120,7 @@ class CalendarFooterComponent {
     constructor(dateHelper) {
         this.dateHelper = dateHelper;
         this.showToday = false;
+        this.showNow = false;
         this.hasTimePicker = false;
         this.isRange = false;
         this.okDisabled = false;
@@ -177,7 +178,7 @@ CalendarFooterComponent.decorators = [
       </a>
       <ul *ngIf="hasTimePicker || rangeQuickSelector" class="{{ prefixCls }}-ranges">
         <ng-container *ngTemplateOutlet="rangeQuickSelector"></ng-container>
-        <li *ngIf="hasTimePicker && !isRange" class="{{ prefixCls }}-now">
+        <li *ngIf="showNow" class="{{ prefixCls }}-now">
           <a class="{{ prefixCls }}-now-btn" (click)="isTodayDisabled ? null : onClickToday()">
             {{ locale.now }}
           </a>
@@ -205,6 +206,7 @@ CalendarFooterComponent.ctorParameters = () => [
 CalendarFooterComponent.propDecorators = {
     locale: [{ type: Input }],
     showToday: [{ type: Input }],
+    showNow: [{ type: Input }],
     hasTimePicker: [{ type: Input }],
     isRange: [{ type: Input }],
     okDisabled: [{ type: Input }],
@@ -267,10 +269,8 @@ class DatePickerService {
         }
     }
     setValue(value) {
-        if (value !== this.value) {
-            this.value = value;
-            this.valueChange$.next(this.value);
-        }
+        this.value = value;
+        this.valueChange$.next(this.value);
     }
     getActiveIndex(part = this.activeInput) {
         return { left: 0, right: 1 }[part];
@@ -296,6 +296,7 @@ class DateRangePopupComponent {
         this.panelModeChange = new EventEmitter();
         this.calendarChange = new EventEmitter();
         this.resultOk = new EventEmitter(); // Emitted when done with date selecting
+        this.dir = 'ltr';
         this.prefixCls = PREFIX_CLASS;
         this.endPanelMode = 'date';
         this.timeOptions = null;
@@ -348,6 +349,13 @@ class DateRangePopupComponent {
     init() {
         this.checkedPartArr = [false, false];
         this.updateActiveDate();
+    }
+    /**
+     * Prevent input losing focus when click panel
+     * @param event
+     */
+    onMousedown(event) {
+        event.preventDefault();
     }
     onClickOk() {
         const inputIndex = { left: 0, right: 1 }[this.datePickerService.activeInput];
@@ -594,7 +602,7 @@ DateRangePopupComponent.decorators = [
           hasTimePicker ? prefixCls + '-time' : ''
         }} {{ isRange ? prefixCls + '-range' : '' }}"
       >
-        <div class="{{ prefixCls }}-panel" tabindex="-1">
+        <div class="{{ prefixCls }}-panel" [class.ant-picker-panel-rtl]="dir === 'rtl'" tabindex="-1">
           <!-- Single ONLY -->
           <ng-container *ngTemplateOutlet="tplInnerPopup"></ng-container>
           <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
@@ -633,6 +641,7 @@ DateRangePopupComponent.decorators = [
         [locale]="locale!"
         [isRange]="isRange"
         [showToday]="showToday"
+        [showNow]="showNow"
         [hasTimePicker]="hasTimePicker"
         [okDisabled]="!isAllowed($any(datePickerService?.value))"
         [extraFooter]="extraFooter"
@@ -643,7 +652,7 @@ DateRangePopupComponent.decorators = [
     </ng-template>
 
     <ng-template #tplRangePart let-partType="partType">
-      <div class="{{ prefixCls }}-panel">
+      <div class="{{ prefixCls }}-panel" [class.ant-picker-panel-rtl]="dir === 'rtl'">
         <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: partType }"></ng-container>
       </div>
     </ng-template>
@@ -660,7 +669,10 @@ DateRangePopupComponent.decorators = [
         <span class="ant-tag ant-tag-blue">{{ name }}</span>
       </li>
     </ng-template>
-  `
+  `,
+                host: {
+                    '(mousedown)': 'onMousedown($event)'
+                }
             },] }
 ];
 DateRangePopupComponent.ctorParameters = () => [
@@ -674,6 +686,7 @@ DateRangePopupComponent.propDecorators = {
     disabledDate: [{ type: Input }],
     disabledTime: [{ type: Input }],
     showToday: [{ type: Input }],
+    showNow: [{ type: Input }],
     showTime: [{ type: Input }],
     extraFooter: [{ type: Input }],
     ranges: [{ type: Input }],
@@ -682,7 +695,8 @@ DateRangePopupComponent.propDecorators = {
     defaultPickerValue: [{ type: Input }],
     panelModeChange: [{ type: Output }],
     calendarChange: [{ type: Output }],
-    resultOk: [{ type: Output }]
+    resultOk: [{ type: Output }],
+    dir: [{ type: Input }]
 };
 
 /**
@@ -703,12 +717,14 @@ class NzPickerComponent {
         this.disabled = false;
         this.inputReadOnly = false;
         this.popupStyle = null;
+        this.dir = 'ltr';
         this.focusChange = new EventEmitter();
         this.valueChange = new EventEmitter();
         this.openChange = new EventEmitter(); // Emitted when overlay's open state change
         this.inputSize = 12;
         this.destroy$ = new Subject();
         this.prefixCls = PREFIX_CLASS;
+        this.activeBarStyle = {};
         this.overlayOpen = false; // Available when "open"=undefined
         this.overlayPositions = [
             {
@@ -784,15 +800,24 @@ class NzPickerComponent {
         this.destroy$.complete();
     }
     ngOnChanges(changes) {
-        if (changes.format && changes.format.currentValue) {
+        var _a, _b;
+        if (((_a = changes.format) === null || _a === void 0 ? void 0 : _a.currentValue) !== ((_b = changes.format) === null || _b === void 0 ? void 0 : _b.previousValue)) {
             this.inputSize = Math.max(10, this.format.length) + 2;
+            this.updateInputValue();
         }
     }
     updateInputWidthAndArrowLeft() {
         var _a, _b, _c;
         this.inputWidth = ((_b = (_a = this.rangePickerInputs) === null || _a === void 0 ? void 0 : _a.first) === null || _b === void 0 ? void 0 : _b.nativeElement.offsetWidth) || 0;
+        const baseStyle = { position: 'absolute', width: `${this.inputWidth}px` };
         this.datePickerService.arrowLeft =
             this.datePickerService.activeInput === 'left' ? 0 : this.inputWidth + ((_c = this.separatorElement) === null || _c === void 0 ? void 0 : _c.nativeElement.offsetWidth) || 0;
+        if (this.dir === 'rtl') {
+            this.activeBarStyle = Object.assign(Object.assign({}, baseStyle), { right: `${this.datePickerService.arrowLeft}px` });
+        }
+        else {
+            this.activeBarStyle = Object.assign(Object.assign({}, baseStyle), { left: `${this.datePickerService.arrowLeft}px` });
+        }
         this.panel.cdr.markForCheck();
         this.cdr.markForCheck();
     }
@@ -1008,12 +1033,7 @@ NzPickerComponent.decorators = [
 
     <!-- Right operator icons -->
     <ng-template #tplRightRest>
-      <div
-        class="{{ prefixCls }}-active-bar"
-        style="position: absolute"
-        [style.width.px]="inputWidth"
-        [style.left.px]="datePickerService?.arrowLeft"
-      ></div>
+      <div class="{{ prefixCls }}-active-bar" [ngStyle]="activeBarStyle"></div>
       <span *ngIf="showClear()" class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
         <i nz-icon nzType="close-circle" nzTheme="fill"></i>
       </span>
@@ -1040,6 +1060,7 @@ NzPickerComponent.decorators = [
       <div class="ant-picker-wrapper" [nzNoAnimation]="noAnimation" [@slideMotion]="'enter'" style="position: relative;">
         <div
           class="{{ prefixCls }}-dropdown {{ dropdownClassName }}"
+          [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
           [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
           [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
           [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
@@ -1080,6 +1101,7 @@ NzPickerComponent.propDecorators = {
     popupStyle: [{ type: Input }],
     dropdownClassName: [{ type: Input }],
     suffixIcon: [{ type: Input }],
+    dir: [{ type: Input }],
     focusChange: [{ type: Output }],
     valueChange: [{ type: Output }],
     openChange: [{ type: Output }],
@@ -1100,7 +1122,7 @@ const NZ_CONFIG_MODULE_NAME = 'datePicker';
  * The base picker for all common APIs
  */
 class NzDatePickerComponent {
-    constructor(nzConfigService, datePickerService, i18n, cdr, renderer, elementRef, dateHelper, noAnimation) {
+    constructor(nzConfigService, datePickerService, i18n, cdr, renderer, elementRef, dateHelper, directionality, noAnimation) {
         this.nzConfigService = nzConfigService;
         this.datePickerService = datePickerService;
         this.i18n = i18n;
@@ -1108,13 +1130,16 @@ class NzDatePickerComponent {
         this.renderer = renderer;
         this.elementRef = elementRef;
         this.dateHelper = dateHelper;
+        this.directionality = directionality;
         this.noAnimation = noAnimation;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.isRange = false; // Indicate whether the value is a range value
         this.focused = false;
+        this.dir = 'ltr';
         this.panelMode = 'date';
         this.destroyed$ = new Subject();
         this.isCustomPlaceHolder = false;
+        this.isCustomFormat = false;
         this.showTime = false;
         // --- Common API
         this.nzAllowClear = true;
@@ -1127,6 +1152,7 @@ class NzDatePickerComponent {
         this.nzSize = 'default';
         this.nzShowToday = true;
         this.nzMode = 'date';
+        this.nzShowNow = true;
         this.nzDefaultPickerValue = null;
         this.nzSeparator = undefined;
         this.nzSuffixIcon = 'calendar';
@@ -1141,6 +1167,8 @@ class NzDatePickerComponent {
         // NOTE: onChangeFn/onTouchedFn will not be assigned if user not use as ngModel
         this.onChangeFn = () => void 0;
         this.onTouchedFn = () => void 0;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-picker');
     }
     get nzShowTime() {
         return this.showTime;
@@ -1149,6 +1177,7 @@ class NzDatePickerComponent {
         this.showTime = typeof value === 'object' ? value : toBoolean(value);
     }
     ngOnInit() {
+        var _a;
         // Subscribe the every locale change if the nzLocale is not handled by user
         if (!this.nzLocale) {
             this.i18n.localeChange.pipe(takeUntil(this.destroyed$)).subscribe(() => this.setLocale());
@@ -1182,9 +1211,14 @@ class NzDatePickerComponent {
             this.close();
         });
         this.setModeAndFormat();
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroyed$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
     }
     ngOnChanges(changes) {
-        var _a;
+        var _a, _b;
         if (changes.nzPopupStyle) {
             // Always assign the popup style patch
             this.nzPopupStyle = this.nzPopupStyle ? Object.assign(Object.assign({}, this.nzPopupStyle), POPUP_STYLE_PATCH) : POPUP_STYLE_PATCH;
@@ -1193,6 +1227,9 @@ class NzDatePickerComponent {
         if ((_a = changes.nzPlaceHolder) === null || _a === void 0 ? void 0 : _a.currentValue) {
             this.isCustomPlaceHolder = true;
         }
+        if ((_b = changes.nzFormat) === null || _b === void 0 ? void 0 : _b.currentValue) {
+            this.isCustomFormat = true;
+        }
         if (changes.nzLocale) {
             // The nzLocale is currently handled by user
             this.setDefaultPlaceHolder();
@@ -1200,10 +1237,8 @@ class NzDatePickerComponent {
         if (changes.nzRenderExtraFooter) {
             this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter);
         }
-        if (changes.nzOpen) {
-            warnDeprecation(`'nzOpen' in DatePicker is going to be removed in 11.0.0. Please use open() or close() method instead.`);
-        }
         if (changes.nzMode) {
+            this.setDefaultPlaceHolder();
             this.setModeAndFormat();
         }
     }
@@ -1221,14 +1256,9 @@ class NzDatePickerComponent {
         if (!this.nzMode) {
             this.nzMode = 'date';
         }
-        // TODO: compatible for array type
-        if (Array.isArray(this.nzMode)) {
-            warnDeprecation(`'nzMode' in DatePicker will not be string[], only can be 'decade' | 'year' | 'month' | 'week' | 'date' type in 11.0.0.`);
-            this.nzMode = this.nzMode[0];
-        }
         this.panelMode = this.isRange ? [this.nzMode, this.nzMode] : this.nzMode;
         // Default format when it's empty
-        if (!this.nzFormat) {
+        if (!this.isCustomFormat) {
             this.nzFormat = inputFormats[this.nzMode];
         }
     }
@@ -1348,6 +1378,7 @@ NzDatePickerComponent.decorators = [
       nz-picker
       [isRange]="isRange"
       [open]="nzOpen"
+      [dir]="dir"
       [separator]="nzSeparator"
       [disabled]="nzDisabled"
       [inputReadOnly]="nzInputReadOnly"
@@ -1357,6 +1388,7 @@ NzDatePickerComponent.decorators = [
       [placeholder]="nzPlaceHolder"
       style="display: inherit; align-items: center; width: 100%;"
       [dropdownClassName]="nzDropdownClassName"
+      [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
       [popupStyle]="nzPopupStyle"
       [noAnimation]="!!noAnimation?.nzNoAnimation"
       [suffixIcon]="nzSuffixIcon"
@@ -1372,22 +1404,24 @@ NzDatePickerComponent.decorators = [
         (calendarChange)="onCalendarChange($event)"
         [locale]="nzLocale?.lang!"
         [showToday]="nzMode === 'date' && nzShowToday && !isRange && !nzShowTime"
+        [showNow]="nzMode === 'date' && nzShowNow && !isRange && !!nzShowTime"
         [showTime]="nzShowTime"
         [dateRender]="nzDateRender"
         [disabledDate]="nzDisabledDate"
         [disabledTime]="nzDisabledTime"
         [extraFooter]="extraFooter"
         [ranges]="nzRanges"
+        [dir]="dir"
         (resultOk)="onResultOk()"
       ></date-range-popup>
     </div>
   `,
                 host: {
-                    '[class.ant-picker]': `true`,
                     '[class.ant-picker-range]': `isRange`,
                     '[class.ant-picker-large]': `nzSize === 'large'`,
                     '[class.ant-picker-small]': `nzSize === 'small'`,
                     '[class.ant-picker-disabled]': `nzDisabled`,
+                    '[class.ant-picker-rtl]': `dir === 'rtl'`,
                     '[class.ant-picker-borderless]': `nzBorderless`,
                     '(click)': 'picker.onClickInputBox($event)'
                 },
@@ -1409,6 +1443,7 @@ NzDatePickerComponent.ctorParameters = () => [
     { type: Renderer2 },
     { type: ElementRef },
     { type: DateHelperService },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 NzDatePickerComponent.propDecorators = {
@@ -1430,6 +1465,7 @@ NzDatePickerComponent.propDecorators = {
     nzRenderExtraFooter: [{ type: Input }],
     nzShowToday: [{ type: Input }],
     nzMode: [{ type: Input }],
+    nzShowNow: [{ type: Input }],
     nzRanges: [{ type: Input }],
     nzDefaultPickerValue: [{ type: Input }],
     nzSeparator: [{ type: Input }],
@@ -1469,6 +1505,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzDatePickerComponent.prototype, "nzShowToday", void 0);
+__decorate([
+    InputBoolean(),
+    __metadata("design:type", Boolean)
+], NzDatePickerComponent.prototype, "nzShowNow", void 0);
 __decorate([
     WithConfig(),
     __metadata("design:type", String)
@@ -1902,6 +1942,7 @@ class AbstractTable {
         }
         if (changes.disabledDate ||
             changes.locale ||
+            changes.showWeek ||
             this.isDateRealChange(changes.activeDate) ||
             this.isDateRealChange(changes.value) ||
             this.isDateRealChange(changes.selectedValue) ||
@@ -2633,6 +2674,7 @@ class NzDatePickerModule {
 NzDatePickerModule.decorators = [
     { type: NgModule, args: [{
                 imports: [
+                    BidiModule,
                     CommonModule,
                     FormsModule,
                     OverlayModule,

@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/router'), require('@angular/cdk/overlay'), require('@angular/cdk/platform'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/animation'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/menu', ['exports', '@angular/core', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/router', '@angular/cdk/overlay', '@angular/cdk/platform', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/animation', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].menu = {}), global.ng.core, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.router, global.ng.cdk.overlay, global.ng.cdk.platform, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.animation, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon));
-}(this, (function (exports, core, util, rxjs, operators, router, overlay$1, platform, noAnimation, overlay, animation, common, outlet, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/core'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/router'), require('@angular/cdk/overlay'), require('@angular/cdk/platform'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/animation'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/menu', ['exports', '@angular/cdk/bidi', '@angular/core', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/router', '@angular/cdk/overlay', '@angular/cdk/platform', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/animation', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].menu = {}), global.ng.cdk.bidi, global.ng.core, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.router, global.ng.cdk.overlay, global.ng.cdk.platform, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.animation, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon));
+}(this, (function (exports, bidi, core, util, rxjs, operators, router, overlay$1, platform, noAnimation, overlay, animation, common, outlet, icon) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -419,12 +419,13 @@
     ]; };
 
     var NzMenuItemDirective = /** @class */ (function () {
-        function NzMenuItemDirective(nzMenuService, cdr, nzSubmenuService, isMenuInsideDropDown, routerLink, routerLinkWithHref, router$1) {
+        function NzMenuItemDirective(nzMenuService, cdr, nzSubmenuService, isMenuInsideDropDown, directionality, routerLink, routerLinkWithHref, router$1) {
             var _this = this;
             this.nzMenuService = nzMenuService;
             this.cdr = cdr;
             this.nzSubmenuService = nzSubmenuService;
             this.isMenuInsideDropDown = isMenuInsideDropDown;
+            this.directionality = directionality;
             this.routerLink = routerLink;
             this.routerLinkWithHref = routerLinkWithHref;
             this.router = router$1;
@@ -432,6 +433,7 @@
             this.level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
             this.selected$ = new rxjs.Subject();
             this.inlinePaddingLeft = null;
+            this.dir = 'ltr';
             this.nzDisabled = false;
             this.nzSelected = false;
             this.nzDanger = false;
@@ -492,12 +494,17 @@
         };
         NzMenuItemDirective.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             /** store origin padding in padding */
             rxjs.combineLatest([this.nzMenuService.mode$, this.nzMenuService.inlineIndent$])
                 .pipe(operators.takeUntil(this.destroy$))
-                .subscribe(function (_a) {
-                var _b = __read(_a, 2), mode = _b[0], inlineIndent = _b[1];
+                .subscribe(function (_b) {
+                var _c = __read(_b, 2), mode = _c[0], inlineIndent = _c[1];
                 _this.inlinePaddingLeft = mode === 'inline' ? _this.level * inlineIndent : null;
+            });
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
             });
         };
         NzMenuItemDirective.prototype.ngAfterContentInit = function () {
@@ -530,7 +537,8 @@
                         '[class.ant-menu-item-selected]': "!isMenuInsideDropDown && nzSelected",
                         '[class.ant-menu-item-danger]': "!isMenuInsideDropDown && nzDanger",
                         '[class.ant-menu-item-disabled]': "!isMenuInsideDropDown && nzDisabled",
-                        '[style.paddingLeft.px]': 'nzPaddingLeft || inlinePaddingLeft',
+                        '[style.paddingLeft.px]': "dir === 'rtl' ? null : nzPaddingLeft || inlinePaddingLeft",
+                        '[style.paddingRight.px]': "dir === 'rtl' ? nzPaddingLeft || inlinePaddingLeft : null",
                         '(click)': 'clickMenuItem($event)'
                     }
                 },] }
@@ -540,6 +548,7 @@
         { type: core.ChangeDetectorRef },
         { type: NzSubmenuService, decorators: [{ type: core.Optional }] },
         { type: Boolean, decorators: [{ type: core.Inject, args: [NzIsMenuInsideDropDownToken,] }] },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
         { type: router.RouterLink, decorators: [{ type: core.Optional }] },
         { type: router.RouterLinkWithHref, decorators: [{ type: core.Optional }] },
         { type: router.Router, decorators: [{ type: core.Optional }] }
@@ -585,12 +594,13 @@
     ];
     var listOfHorizontalPositions = [overlay.POSITION_MAP.bottomLeft];
     var NzSubMenuComponent = /** @class */ (function () {
-        function NzSubMenuComponent(nzMenuService, cdr, nzSubmenuService, platform, isMenuInsideDropDown, noAnimation) {
+        function NzSubMenuComponent(nzMenuService, cdr, nzSubmenuService, platform, isMenuInsideDropDown, directionality, noAnimation) {
             this.nzMenuService = nzMenuService;
             this.cdr = cdr;
             this.nzSubmenuService = nzSubmenuService;
             this.platform = platform;
             this.isMenuInsideDropDown = isMenuInsideDropDown;
+            this.directionality = directionality;
             this.noAnimation = noAnimation;
             this.nzMenuClassName = '';
             this.nzPaddingLeft = null;
@@ -612,6 +622,7 @@
             this.overlayPositions = listOfVerticalPositions;
             this.isSelected = false;
             this.isActive = false;
+            this.dir = 'ltr';
         }
         /** set the submenu host open status directly **/
         NzSubMenuComponent.prototype.setOpenStateWithoutDebounce = function (open) {
@@ -644,6 +655,7 @@
         };
         NzSubMenuComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             /** submenu theme update **/
             this.nzMenuService.theme$.pipe(operators.takeUntil(this.destroy$)).subscribe(function (theme) {
                 _this.theme = theme;
@@ -663,8 +675,8 @@
             /** inlineIndent update **/
             rxjs.combineLatest([this.nzSubmenuService.mode$, this.nzMenuService.inlineIndent$])
                 .pipe(operators.takeUntil(this.destroy$))
-                .subscribe(function (_a) {
-                var _b = __read(_a, 2), mode = _b[0], inlineIndent = _b[1];
+                .subscribe(function (_b) {
+                var _c = __read(_b, 2), mode = _c[0], inlineIndent = _c[1];
                 _this.inlinePaddingLeft = mode === 'inline' ? _this.level * inlineIndent : null;
                 _this.cdr.markForCheck();
             });
@@ -677,6 +689,11 @@
                     _this.nzOpenChange.emit(_this.nzOpen);
                     _this.cdr.markForCheck();
                 }
+            });
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.markForCheck();
             });
         };
         NzSubMenuComponent.prototype.ngAfterContentInit = function () {
@@ -730,7 +747,8 @@
                         '[class.ant-menu-submenu-vertical]': "!isMenuInsideDropDown && mode === 'vertical'",
                         '[class.ant-menu-submenu-horizontal]': "!isMenuInsideDropDown && mode === 'horizontal'",
                         '[class.ant-menu-submenu-inline]': "!isMenuInsideDropDown && mode === 'inline'",
-                        '[class.ant-menu-submenu-active]': "!isMenuInsideDropDown && isActive"
+                        '[class.ant-menu-submenu-active]': "!isMenuInsideDropDown && isActive",
+                        '[class.ant-menu-submenu-rtl]': "dir === 'rtl'"
                     }
                 },] }
     ];
@@ -740,6 +758,7 @@
         { type: NzSubmenuService },
         { type: platform.Platform },
         { type: Boolean, decorators: [{ type: core.Inject, args: [NzIsMenuInsideDropDownToken,] }] },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
         { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] }
     ]; };
     NzSubMenuComponent.propDecorators = {
@@ -770,10 +789,11 @@
         return isMenuInsideDropDownToken ? isMenuInsideDropDownToken : false;
     }
     var NzMenuDirective = /** @class */ (function () {
-        function NzMenuDirective(nzMenuService, isMenuInsideDropDown, cdr) {
+        function NzMenuDirective(nzMenuService, isMenuInsideDropDown, cdr, directionality) {
             this.nzMenuService = nzMenuService;
             this.isMenuInsideDropDown = isMenuInsideDropDown;
             this.cdr = cdr;
+            this.directionality = directionality;
             this.nzInlineIndent = 24;
             this.nzTheme = 'light';
             this.nzMode = 'vertical';
@@ -781,6 +801,7 @@
             this.nzSelectable = !this.isMenuInsideDropDown;
             this.nzClick = new core.EventEmitter();
             this.actualMode = 'vertical';
+            this.dir = 'ltr';
             this.inlineCollapsed$ = new rxjs.BehaviorSubject(this.nzInlineCollapsed);
             this.mode$ = new rxjs.BehaviorSubject(this.nzMode);
             this.destroy$ = new rxjs.Subject();
@@ -804,10 +825,11 @@
         };
         NzMenuDirective.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             rxjs.combineLatest([this.inlineCollapsed$, this.mode$])
                 .pipe(operators.takeUntil(this.destroy$))
-                .subscribe(function (_a) {
-                var _b = __read(_a, 2), inlineCollapsed = _b[0], mode = _b[1];
+                .subscribe(function (_b) {
+                var _c = __read(_b, 2), inlineCollapsed = _c[0], mode = _c[1];
                 _this.actualMode = inlineCollapsed ? 'vertical' : mode;
                 _this.nzMenuService.setMode(_this.actualMode);
                 _this.cdr.markForCheck();
@@ -817,6 +839,12 @@
                 if (_this.nzSelectable && !menu.nzMatchRouter) {
                     _this.listOfNzMenuItemDirective.forEach(function (item) { return item.setSelectedState(item === menu); });
                 }
+            });
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.nzMenuService.setMode(_this.actualMode);
+                _this.cdr.markForCheck();
             });
         };
         NzMenuDirective.prototype.ngAfterContentInit = function () {
@@ -888,14 +916,16 @@
                         '[class.ant-menu-vertical]': "!isMenuInsideDropDown && actualMode === 'vertical'",
                         '[class.ant-menu-horizontal]': "!isMenuInsideDropDown && actualMode === 'horizontal'",
                         '[class.ant-menu-inline]': "!isMenuInsideDropDown && actualMode === 'inline'",
-                        '[class.ant-menu-inline-collapsed]': "!isMenuInsideDropDown && nzInlineCollapsed"
+                        '[class.ant-menu-inline-collapsed]': "!isMenuInsideDropDown && nzInlineCollapsed",
+                        '[class.ant-menu-rtl]': "dir === 'rtl'"
                     }
                 },] }
     ];
     NzMenuDirective.ctorParameters = function () { return [
         { type: MenuService },
         { type: Boolean, decorators: [{ type: core.Inject, args: [NzIsMenuInsideDropDownToken,] }] },
-        { type: core.ChangeDetectorRef }
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzMenuDirective.propDecorators = {
         listOfNzMenuItemDirective: [{ type: core.ContentChildren, args: [NzMenuItemDirective, { descendants: true },] }],
@@ -997,7 +1027,9 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzSubMenuTitleComponent = /** @class */ (function () {
-        function NzSubMenuTitleComponent() {
+        function NzSubMenuTitleComponent(cdr, directionality) {
+            this.cdr = cdr;
+            this.directionality = directionality;
             this.nzIcon = null;
             this.nzTitle = null;
             this.isMenuInsideDropDown = false;
@@ -1006,7 +1038,22 @@
             this.mode = 'vertical';
             this.toggleSubMenu = new core.EventEmitter();
             this.subMenuMouseState = new core.EventEmitter();
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
         }
+        NzSubMenuTitleComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+        };
+        NzSubMenuTitleComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
+        };
         NzSubMenuTitleComponent.prototype.setMouseState = function (state) {
             if (!this.nzDisabled) {
                 this.subMenuMouseState.next(state);
@@ -1025,17 +1072,22 @@
                     exportAs: 'nzSubmenuTitle',
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    template: "\n    <i nz-icon [nzType]=\"nzIcon\" *ngIf=\"nzIcon\"></i>\n    <ng-container *nzStringTemplateOutlet=\"nzTitle\">\n      <span>{{ nzTitle }}</span>\n    </ng-container>\n    <ng-content></ng-content>\n    <span *ngIf=\"isMenuInsideDropDown; else notDropdownTpl\" class=\"ant-dropdown-menu-submenu-arrow\">\n      <i nz-icon nzType=\"right\" class=\"ant-dropdown-menu-submenu-arrow-icon\"></i>\n    </span>\n    <ng-template #notDropdownTpl>\n      <i class=\"ant-menu-submenu-arrow\"></i>\n    </ng-template>\n  ",
+                    template: "\n    <i nz-icon [nzType]=\"nzIcon\" *ngIf=\"nzIcon\"></i>\n    <ng-container *nzStringTemplateOutlet=\"nzTitle\">\n      <span>{{ nzTitle }}</span>\n    </ng-container>\n    <ng-content></ng-content>\n    <span [ngSwitch]=\"dir\" *ngIf=\"isMenuInsideDropDown; else notDropdownTpl\" class=\"ant-dropdown-menu-submenu-expand-icon\">\n      <i *ngSwitchCase=\"'rtl'\" nz-icon nzType=\"left\" class=\"ant-dropdown-menu-submenu-arrow-icon\"></i>\n      <i *ngSwitchDefault nz-icon nzType=\"right\" class=\"ant-dropdown-menu-submenu-arrow-icon\"></i>\n    </span>\n    <ng-template #notDropdownTpl>\n      <i class=\"ant-menu-submenu-arrow\"></i>\n    </ng-template>\n  ",
                     host: {
                         '[class.ant-dropdown-menu-submenu-title]': 'isMenuInsideDropDown',
                         '[class.ant-menu-submenu-title]': '!isMenuInsideDropDown',
-                        '[style.paddingLeft.px]': 'paddingLeft',
+                        '[style.paddingLeft.px]': "dir === 'rtl' ? null : paddingLeft ",
+                        '[style.paddingRight.px]': "dir === 'rtl' ? paddingLeft : null",
                         '(click)': 'clickTitle()',
                         '(mouseenter)': 'setMouseState(true)',
                         '(mouseleave)': 'setMouseState(false)'
                     }
                 },] }
     ];
+    NzSubMenuTitleComponent.ctorParameters = function () { return [
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
+    ]; };
     NzSubMenuTitleComponent.propDecorators = {
         nzIcon: [{ type: core.Input }],
         nzTitle: [{ type: core.Input }],
@@ -1052,15 +1104,20 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzSubmenuInlineChildComponent = /** @class */ (function () {
-        function NzSubmenuInlineChildComponent(elementRef, renderer) {
+        function NzSubmenuInlineChildComponent(elementRef, renderer, directionality) {
             this.elementRef = elementRef;
             this.renderer = renderer;
+            this.directionality = directionality;
             this.templateOutlet = null;
             this.menuClass = '';
             this.mode = 'vertical';
             this.nzOpen = false;
             this.listOfCacheClassName = [];
             this.expandState = 'collapsed';
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-menu', 'ant-menu-inline', 'ant-menu-sub');
         }
         NzSubmenuInlineChildComponent.prototype.calcMotionState = function () {
             if (this.nzOpen) {
@@ -1071,7 +1128,13 @@
             }
         };
         NzSubmenuInlineChildComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
             this.calcMotionState();
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+            });
         };
         NzSubmenuInlineChildComponent.prototype.ngOnChanges = function (changes) {
             var _this = this;
@@ -1097,6 +1160,10 @@
                 }
             }
         };
+        NzSubmenuInlineChildComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
+        };
         return NzSubmenuInlineChildComponent;
     }());
     NzSubmenuInlineChildComponent.decorators = [
@@ -1106,18 +1173,17 @@
                     exportAs: 'nzSubmenuInlineChild',
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    template: " <ng-template [ngTemplateOutlet]=\"templateOutlet\"></ng-template> ",
+                    template: "\n    <ng-template [ngTemplateOutlet]=\"templateOutlet\"></ng-template>\n  ",
                     host: {
-                        '[class.ant-menu]': 'true',
-                        '[class.ant-menu-inline]': 'true',
-                        '[class.ant-menu-sub]': 'true',
+                        '[class.ant-menu-rtl]': "dir === 'rtl'",
                         '[@collapseMotion]': 'expandState'
                     }
                 },] }
     ];
     NzSubmenuInlineChildComponent.ctorParameters = function () { return [
         { type: core.ElementRef },
-        { type: core.Renderer2 }
+        { type: core.Renderer2 },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzSubmenuInlineChildComponent.propDecorators = {
         templateOutlet: [{ type: core.Input }],
@@ -1131,7 +1197,9 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzSubmenuNoneInlineChildComponent = /** @class */ (function () {
-        function NzSubmenuNoneInlineChildComponent() {
+        function NzSubmenuNoneInlineChildComponent(elementRef, directionality) {
+            this.elementRef = elementRef;
+            this.directionality = directionality;
             this.menuClass = '';
             this.theme = 'light';
             this.templateOutlet = null;
@@ -1142,11 +1210,19 @@
             this.nzOpen = false;
             this.subMenuMouseState = new core.EventEmitter();
             this.expandState = 'collapsed';
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-menu-submenu', 'ant-menu-submenu-popup');
         }
         NzSubmenuNoneInlineChildComponent.prototype.setMouseState = function (state) {
             if (!this.nzDisabled) {
                 this.subMenuMouseState.next(state);
             }
+        };
+        NzSubmenuNoneInlineChildComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         NzSubmenuNoneInlineChildComponent.prototype.calcMotionState = function () {
             if (this.nzOpen) {
@@ -1162,7 +1238,13 @@
             }
         };
         NzSubmenuNoneInlineChildComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
             this.calcMotionState();
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+            });
         };
         NzSubmenuNoneInlineChildComponent.prototype.ngOnChanges = function (changes) {
             var mode = changes.mode, nzOpen = changes.nzOpen;
@@ -1179,15 +1261,14 @@
                     encapsulation: core.ViewEncapsulation.None,
                     animations: [animation.zoomBigMotion, animation.slideMotion],
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    template: "\n    <div\n      [class.ant-dropdown-menu]=\"isMenuInsideDropDown\"\n      [class.ant-menu]=\"!isMenuInsideDropDown\"\n      [class.ant-dropdown-menu-vertical]=\"isMenuInsideDropDown\"\n      [class.ant-menu-vertical]=\"!isMenuInsideDropDown\"\n      [class.ant-dropdown-menu-sub]=\"isMenuInsideDropDown\"\n      [class.ant-menu-sub]=\"!isMenuInsideDropDown\"\n      [ngClass]=\"menuClass\"\n    >\n      <ng-template [ngTemplateOutlet]=\"templateOutlet\"></ng-template>\n    </div>\n  ",
+                    template: "\n    <div\n      [class.ant-dropdown-menu]=\"isMenuInsideDropDown\"\n      [class.ant-menu]=\"!isMenuInsideDropDown\"\n      [class.ant-dropdown-menu-vertical]=\"isMenuInsideDropDown\"\n      [class.ant-menu-vertical]=\"!isMenuInsideDropDown\"\n      [class.ant-dropdown-menu-sub]=\"isMenuInsideDropDown\"\n      [class.ant-menu-sub]=\"!isMenuInsideDropDown\"\n      [class.ant-menu-rtl]=\"dir === 'rtl'\"\n      [ngClass]=\"menuClass\"\n    >\n      <ng-template [ngTemplateOutlet]=\"templateOutlet\"></ng-template>\n    </div>\n  ",
                     host: {
-                        '[class.ant-menu-submenu]': 'true',
-                        '[class.ant-menu-submenu-popup]': 'true',
                         '[class.ant-menu-light]': "theme === 'light'",
                         '[class.ant-menu-dark]': "theme === 'dark'",
                         '[class.ant-menu-submenu-placement-bottom]': "mode === 'horizontal'",
                         '[class.ant-menu-submenu-placement-right]': "mode === 'vertical' && position === 'right'",
                         '[class.ant-menu-submenu-placement-left]': "mode === 'vertical' && position === 'left'",
+                        '[class.ant-menu-submenu-rtl]': 'dir ==="rtl"',
                         '[@slideMotion]': 'expandState',
                         '[@zoomBigMotion]': 'expandState',
                         '(mouseenter)': 'setMouseState(true)',
@@ -1195,6 +1276,10 @@
                     }
                 },] }
     ];
+    NzSubmenuNoneInlineChildComponent.ctorParameters = function () { return [
+        { type: core.ElementRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
+    ]; };
     NzSubmenuNoneInlineChildComponent.propDecorators = {
         menuClass: [{ type: core.Input }],
         theme: [{ type: core.Input }],
@@ -1218,7 +1303,7 @@
     }());
     NzMenuModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, platform.PlatformModule, overlay$1.OverlayModule, icon.NzIconModule, noAnimation.NzNoAnimationModule, outlet.NzOutletModule],
+                    imports: [bidi.BidiModule, common.CommonModule, platform.PlatformModule, overlay$1.OverlayModule, icon.NzIconModule, noAnimation.NzNoAnimationModule, outlet.NzOutletModule],
                     declarations: [
                         NzMenuDirective,
                         NzMenuItemDirective,

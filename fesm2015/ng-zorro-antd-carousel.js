@@ -1,3 +1,4 @@
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { Directive, ElementRef, Renderer2, InjectionToken, EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, Optional, Inject, ContentChildren, ViewChild, Input, Output, NgModule } from '@angular/core';
@@ -299,13 +300,14 @@ const NZ_CAROUSEL_CUSTOM_STRATEGIES = new InjectionToken('nz-carousel-custom-str
  */
 const NZ_CONFIG_MODULE_NAME = 'carousel';
 class NzCarouselComponent {
-    constructor(elementRef, nzConfigService, renderer, cdr, platform, resizeService, nzDragService, customStrategies) {
+    constructor(elementRef, nzConfigService, renderer, cdr, platform, resizeService, nzDragService, directionality, customStrategies) {
         this.nzConfigService = nzConfigService;
         this.renderer = renderer;
         this.cdr = cdr;
         this.platform = platform;
         this.resizeService = resizeService;
         this.nzDragService = nzDragService;
+        this.directionality = directionality;
         this.customStrategies = customStrategies;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzEffect = 'scrollx';
@@ -320,6 +322,7 @@ class NzCarouselComponent {
         this.activeIndex = 0;
         this.vertical = false;
         this.transitionInProgress = null;
+        this.dir = 'ltr';
         this.destroy$ = new Subject();
         this.gestureRect = null;
         this.pointerDelta = null;
@@ -369,6 +372,14 @@ class NzCarouselComponent {
     }
     get nzDotPosition() {
         return this._dotPosition;
+    }
+    ngOnInit() {
+        var _a;
+        this.dir = this.directionality.value;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.switchStrategy();
+        });
     }
     ngAfterContentInit() {
         this.markContentActive(0);
@@ -541,7 +552,8 @@ NzCarouselComponent.decorators = [
     </ng-template>
   `,
                 host: {
-                    '[class.ant-carousel-vertical]': 'vertical'
+                    '[class.ant-carousel-vertical]': 'vertical',
+                    '[class.ant-carousel-rtl]': `dir ==='rtl'`
                 }
             },] }
 ];
@@ -553,6 +565,7 @@ NzCarouselComponent.ctorParameters = () => [
     { type: Platform },
     { type: NzResizeService },
     { type: NzDragService },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: Array, decorators: [{ type: Optional }, { type: Inject, args: [NZ_CAROUSEL_CUSTOM_STRATEGIES,] }] }
 ];
 NzCarouselComponent.propDecorators = {
@@ -614,7 +627,7 @@ NzCarouselModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NzCarouselComponent, NzCarouselContentDirective],
                 exports: [NzCarouselComponent, NzCarouselContentDirective],
-                imports: [CommonModule, PlatformModule]
+                imports: [BidiModule, CommonModule, PlatformModule]
             },] }
 ];
 

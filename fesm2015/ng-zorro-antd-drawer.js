@@ -1,17 +1,38 @@
 import { __decorate, __metadata, __rest } from 'tslib';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayConfig, Overlay, OverlayKeyboardDispatcher, OverlayModule } from '@angular/cdk/overlay';
 import { ComponentPortal, TemplatePortal, CdkPortalOutlet, PortalModule } from '@angular/cdk/portal';
 import { DOCUMENT, CommonModule } from '@angular/common';
-import { EventEmitter, TemplateRef, Type, Injector, Component, ChangeDetectionStrategy, Optional, Inject, Renderer2, ChangeDetectorRef, ViewContainerRef, Input, Output, ViewChild, NgModule, ɵɵdefineInjectable, ɵɵinject, Injectable } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { toCssPixel, InputBoolean } from 'ng-zorro-antd/core/util';
+import { Directive, TemplateRef, EventEmitter, Type, Injector, Component, ChangeDetectionStrategy, ChangeDetectorRef, Optional, Inject, Renderer2, ViewContainerRef, Input, Output, ViewChild, ContentChild, NgModule, ɵɵdefineInjectable, ɵɵinject, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { toCssPixel, InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+class NzDrawerContentDirective {
+    constructor(templateRef) {
+        this.templateRef = templateRef;
+    }
+}
+NzDrawerContentDirective.decorators = [
+    { type: Directive, args: [{
+                selector: '[nzDrawerContent]',
+                exportAs: 'nzDrawerContent'
+            },] }
+];
+NzDrawerContentDirective.ctorParameters = () => [
+    { type: TemplateRef }
+];
 
 /**
  * Use of this source code is governed by an MIT-style license that can be
@@ -27,8 +48,11 @@ class NzDrawerRef {
 const DRAWER_ANIMATE_DURATION = 300;
 const NZ_CONFIG_MODULE_NAME = 'drawer';
 class NzDrawerComponent extends NzDrawerRef {
-    constructor(document, nzConfigService, renderer, overlay, injector, changeDetectorRef, focusTrapFactory, viewContainerRef, overlayKeyboardDispatcher) {
+    constructor(cdr, 
+    // tslint:disable-next-line:no-any
+    document, nzConfigService, renderer, overlay, injector, changeDetectorRef, focusTrapFactory, viewContainerRef, overlayKeyboardDispatcher, directionality) {
         super();
+        this.cdr = cdr;
         this.document = document;
         this.nzConfigService = nzConfigService;
         this.renderer = renderer;
@@ -38,6 +62,7 @@ class NzDrawerComponent extends NzDrawerRef {
         this.focusTrapFactory = focusTrapFactory;
         this.viewContainerRef = viewContainerRef;
         this.overlayKeyboardDispatcher = overlayKeyboardDispatcher;
+        this.directionality = directionality;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzCloseIcon = 'close';
         this.nzClosable = true;
@@ -68,6 +93,9 @@ class NzDrawerComponent extends NzDrawerRef {
         };
         this.nzAfterOpen = new Subject();
         this.nzAfterClose = new Subject();
+        // from service config
+        this.nzDirection = undefined;
+        this.dir = 'ltr';
     }
     set nzVisible(value) {
         this.isOpen = value;
@@ -124,6 +152,12 @@ class NzDrawerComponent extends NzDrawerRef {
         return value instanceof TemplateRef;
     }
     ngOnInit() {
+        var _a;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.nzDirection || this.directionality.value;
         this.attachOverlay();
         this.updateOverlayStyle();
         this.updateBodyOverflow();
@@ -135,6 +169,11 @@ class NzDrawerComponent extends NzDrawerRef {
         setTimeout(() => {
             this.nzOnViewInit.emit();
         });
+    }
+    ngAfterContentInit() {
+        if (!(this.contentFromContentChild || this.nzContent)) {
+            warnDeprecation('Usage `<ng-content></ng-content>` is deprecated, which will be removed in 12.0.0. Please instead use `<ng-template nzDrawerContent></ng-template>` to declare the content of the drawer.');
+        }
     }
     ngOnChanges(changes) {
         const { nzPlacement, nzVisible } = changes;
@@ -308,6 +347,7 @@ NzDrawerComponent.decorators = [
       <div
         class="ant-drawer"
         [nzNoAnimation]="nzNoAnimation"
+        [class.ant-drawer-rtl]="dir === 'rtl'"
         [class.ant-drawer-open]="isOpen"
         [class.no-mask]="!nzMask"
         [class.ant-drawer-top]="nzPlacement === 'top'"
@@ -340,10 +380,17 @@ NzDrawerComponent.decorators = [
               </div>
               <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
                 <ng-template cdkPortalOutlet></ng-template>
-                <ng-container *ngIf="isTemplateRef(nzContent)">
-                  <ng-container *ngTemplateOutlet="$any(nzContent); context: templateContext"></ng-container>
+                <ng-container *ngIf="nzContent; else contentElseTemp">
+                  <ng-container *ngIf="isTemplateRef(nzContent)">
+                    <ng-container *ngTemplateOutlet="$any(nzContent); context: templateContext"></ng-container>
+                  </ng-container>
                 </ng-container>
-                <ng-content *ngIf="!nzContent"></ng-content>
+                <ng-template #contentElseTemp>
+                  <ng-container *ngIf="contentFromContentChild">
+                    <ng-template [ngTemplateOutlet]="contentFromContentChild"></ng-template>
+                  </ng-container>
+                </ng-template>
+                <ng-content *ngIf="!(nzContent || contentFromContentChild)"></ng-content>
               </div>
               <div *ngIf="nzFooter" class="ant-drawer-footer">
                 <ng-container *nzStringTemplateOutlet="nzFooter"><div [innerHTML]="nzFooter"></div></ng-container>
@@ -359,6 +406,7 @@ NzDrawerComponent.decorators = [
             },] }
 ];
 NzDrawerComponent.ctorParameters = () => [
+    { type: ChangeDetectorRef },
     { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [DOCUMENT,] }] },
     { type: NzConfigService },
     { type: Renderer2 },
@@ -367,7 +415,8 @@ NzDrawerComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
     { type: FocusTrapFactory },
     { type: ViewContainerRef },
-    { type: OverlayKeyboardDispatcher }
+    { type: OverlayKeyboardDispatcher },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzDrawerComponent.propDecorators = {
     nzContent: [{ type: Input }],
@@ -394,7 +443,8 @@ NzDrawerComponent.propDecorators = {
     nzOnClose: [{ type: Output }],
     nzVisibleChange: [{ type: Output }],
     drawerTemplate: [{ type: ViewChild, args: ['drawerTemplate', { static: true },] }],
-    bodyPortalOutlet: [{ type: ViewChild, args: [CdkPortalOutlet, { static: false },] }]
+    bodyPortalOutlet: [{ type: ViewChild, args: [CdkPortalOutlet, { static: false },] }],
+    contentFromContentChild: [{ type: ContentChild, args: [NzDrawerContentDirective, { static: true, read: TemplateRef },] }]
 };
 __decorate([
     InputBoolean(),
@@ -423,6 +473,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzDrawerComponent.prototype, "nzKeyboard", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", String)
+], NzDrawerComponent.prototype, "nzDirection", void 0);
 
 /**
  * Use of this source code is governed by an MIT-style license that can be
@@ -442,9 +496,18 @@ class NzDrawerModule {
 }
 NzDrawerModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule, OverlayModule, PortalModule, NzIconModule, NzOutletModule, NzNoAnimationModule, NzDrawerServiceModule],
-                exports: [NzDrawerComponent],
-                declarations: [NzDrawerComponent],
+                imports: [
+                    BidiModule,
+                    CommonModule,
+                    OverlayModule,
+                    PortalModule,
+                    NzIconModule,
+                    NzOutletModule,
+                    NzNoAnimationModule,
+                    NzDrawerServiceModule
+                ],
+                exports: [NzDrawerComponent, NzDrawerContentDirective],
+                declarations: [NzDrawerComponent, NzDrawerContentDirective],
                 entryComponents: [NzDrawerComponent]
             },] }
 ];
@@ -520,5 +583,5 @@ NzDrawerService.ctorParameters = () => [
  * Generated bundle index. Do not edit.
  */
 
-export { DRAWER_ANIMATE_DURATION, DrawerBuilderForService, NzDrawerComponent, NzDrawerModule, NzDrawerRef, NzDrawerService, NzDrawerServiceModule };
+export { DRAWER_ANIMATE_DURATION, DrawerBuilderForService, NzDrawerComponent, NzDrawerContentDirective, NzDrawerModule, NzDrawerRef, NzDrawerService, NzDrawerServiceModule };
 //# sourceMappingURL=ng-zorro-antd-drawer.js.map

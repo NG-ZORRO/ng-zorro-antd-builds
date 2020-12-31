@@ -2,10 +2,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ChangeDetectorRef, EventEmitter, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, EventEmitter, TemplateRef } from '@angular/core';
 import { TransferDirection, TransferItem } from './interface';
 export declare class NzTransferListComponent {
     private cdr;
+    private elementRef;
     direction: TransferDirection;
     titleText: string;
     showSelectAll: boolean;
@@ -33,12 +34,13 @@ export declare class NzTransferListComponent {
         checkCount: number;
         shownCount: number;
     };
+    get validData(): TransferItem[];
     onItemSelect: (item: TransferItem) => void;
     onItemSelectAll: (status: boolean) => void;
     private updateCheckStatus;
     handleFilter(value: string): void;
     handleClear(): void;
     private matchFilter;
-    constructor(cdr: ChangeDetectorRef);
+    constructor(cdr: ChangeDetectorRef, elementRef: ElementRef);
     markForCheck(): void;
 }

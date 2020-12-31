@@ -1,3 +1,4 @@
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Renderer2, ElementRef, Input, ContentChildren, NgModule } from '@angular/core';
 import { __decorate, __metadata } from 'tslib';
@@ -124,7 +125,7 @@ NzSpaceModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NzSpaceComponent, NzSpaceItemComponent],
                 exports: [NzSpaceComponent, NzSpaceItemComponent],
-                imports: [CommonModule]
+                imports: [BidiModule, CommonModule]
             },] }
 ];
 

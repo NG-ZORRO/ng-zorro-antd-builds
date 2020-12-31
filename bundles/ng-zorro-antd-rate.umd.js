@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/keycodes'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/core/config'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/util'), require('@angular/common'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/tooltip')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/rate', ['exports', '@angular/cdk/keycodes', '@angular/core', '@angular/forms', 'ng-zorro-antd/core/config', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/util', '@angular/common', 'ng-zorro-antd/icon', 'ng-zorro-antd/tooltip'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].rate = {}), global.ng.cdk.keycodes, global.ng.core, global.ng.forms, global['ng-zorro-antd'].core.config, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.util, global.ng.common, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].tooltip));
-}(this, (function (exports, keycodes, core, forms, config, rxjs, operators, util, common, icon, tooltip) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/keycodes'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/core/config'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/util'), require('@angular/common'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/tooltip')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/rate', ['exports', '@angular/cdk/bidi', '@angular/cdk/keycodes', '@angular/core', '@angular/forms', 'ng-zorro-antd/core/config', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/util', '@angular/common', 'ng-zorro-antd/icon', 'ng-zorro-antd/tooltip'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].rate = {}), global.ng.cdk.bidi, global.ng.cdk.keycodes, global.ng.core, global.ng.forms, global['ng-zorro-antd'].core.config, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.util, global.ng.common, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].tooltip));
+}(this, (function (exports, bidi, keycodes, core, forms, config, rxjs, operators, util, common, icon, tooltip) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -311,10 +311,11 @@
      */
     var NZ_CONFIG_MODULE_NAME = 'rate';
     var NzRateComponent = /** @class */ (function () {
-        function NzRateComponent(nzConfigService, renderer, cdr) {
+        function NzRateComponent(nzConfigService, renderer, cdr, directionality) {
             this.nzConfigService = nzConfigService;
             this.renderer = renderer;
             this.cdr = cdr;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzAllowClear = true;
             this.nzAllowHalf = false;
@@ -329,6 +330,7 @@
             this.classMap = {};
             this.starArray = [];
             this.starStyleArray = [];
+            this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
             this.hasHalf = false;
             this.hoverValue = 0;
@@ -372,10 +374,16 @@
         };
         NzRateComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             this.nzConfigService
                 .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
                 .pipe(operators.takeUntil(this.destroy$))
                 .subscribe(function () { return _this.cdr.markForCheck(); });
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
         };
         NzRateComponent.prototype.ngOnDestroy = function () {
             this.destroy$.next();
@@ -451,16 +459,16 @@
         NzRateComponent.prototype.updateStarStyle = function () {
             var _this = this;
             this.starStyleArray = this.starArray.map(function (i) {
-                var _a;
+                var _b;
                 var prefix = 'ant-rate-star';
                 var value = i + 1;
-                return _a = {},
-                    _a[prefix + "-full"] = value < _this.hoverValue || (!_this.hasHalf && value === _this.hoverValue),
-                    _a[prefix + "-half"] = _this.hasHalf && value === _this.hoverValue,
-                    _a[prefix + "-active"] = _this.hasHalf && value === _this.hoverValue,
-                    _a[prefix + "-zero"] = value > _this.hoverValue,
-                    _a[prefix + "-focused"] = _this.hasHalf && value === _this.hoverValue && _this.isFocused,
-                    _a;
+                return _b = {},
+                    _b[prefix + "-full"] = value < _this.hoverValue || (!_this.hasHalf && value === _this.hoverValue),
+                    _b[prefix + "-half"] = _this.hasHalf && value === _this.hoverValue,
+                    _b[prefix + "-active"] = _this.hasHalf && value === _this.hoverValue,
+                    _b[prefix + "-zero"] = value > _this.hoverValue,
+                    _b[prefix + "-focused"] = _this.hasHalf && value === _this.hoverValue && _this.isFocused,
+                    _b;
             });
         };
         NzRateComponent.prototype.writeValue = function (value) {
@@ -486,7 +494,7 @@
                     selector: 'nz-rate',
                     exportAs: 'nzRate',
                     preserveWhitespaces: false,
-                    template: "\n    <ul\n      #ulElement\n      class=\"ant-rate\"\n      [class.ant-rate-disabled]=\"nzDisabled\"\n      [ngClass]=\"classMap\"\n      (blur)=\"onBlur($event)\"\n      (focus)=\"onFocus($event)\"\n      (keydown)=\"onKeyDown($event); $event.preventDefault()\"\n      (mouseleave)=\"onRateLeave(); $event.stopPropagation()\"\n      [tabindex]=\"nzDisabled ? -1 : 1\"\n    >\n      <li\n        *ngFor=\"let star of starArray; let i = index\"\n        class=\"ant-rate-star\"\n        [ngClass]=\"starStyleArray[i] || ''\"\n        nz-tooltip\n        [nzTooltipTitle]=\"nzTooltips[i]\"\n      >\n        <div\n          nz-rate-item\n          [allowHalf]=\"nzAllowHalf\"\n          [character]=\"nzCharacter\"\n          (itemHover)=\"onItemHover(i, $event)\"\n          (itemClick)=\"onItemClick(i, $event)\"\n        ></div>\n      </li>\n    </ul>\n  ",
+                    template: "\n    <ul\n      #ulElement\n      class=\"ant-rate\"\n      [class.ant-rate-disabled]=\"nzDisabled\"\n      [class.ant-rate-rtl]=\"dir === 'rtl'\"\n      [ngClass]=\"classMap\"\n      (blur)=\"onBlur($event)\"\n      (focus)=\"onFocus($event)\"\n      (keydown)=\"onKeyDown($event); $event.preventDefault()\"\n      (mouseleave)=\"onRateLeave(); $event.stopPropagation()\"\n      [tabindex]=\"nzDisabled ? -1 : 1\"\n    >\n      <li\n        *ngFor=\"let star of starArray; let i = index\"\n        class=\"ant-rate-star\"\n        [ngClass]=\"starStyleArray[i] || ''\"\n        nz-tooltip\n        [nzTooltipTitle]=\"nzTooltips[i]\"\n      >\n        <div\n          nz-rate-item\n          [allowHalf]=\"nzAllowHalf\"\n          [character]=\"nzCharacter\"\n          (itemHover)=\"onItemHover(i, $event)\"\n          (itemClick)=\"onItemClick(i, $event)\"\n        ></div>\n      </li>\n    </ul>\n  ",
                     providers: [
                         {
                             provide: forms.NG_VALUE_ACCESSOR,
@@ -499,7 +507,8 @@
     NzRateComponent.ctorParameters = function () { return [
         { type: config.NzConfigService },
         { type: core.Renderer2 },
-        { type: core.ChangeDetectorRef }
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzRateComponent.propDecorators = {
         ulElement: [{ type: core.ViewChild, args: ['ulElement', { static: false },] }],
@@ -589,7 +598,7 @@
         { type: core.NgModule, args: [{
                     exports: [NzRateComponent],
                     declarations: [NzRateComponent, NzRateItemComponent],
-                    imports: [common.CommonModule, icon.NzIconModule, tooltip.NzToolTipModule]
+                    imports: [bidi.BidiModule, common.CommonModule, icon.NzIconModule, tooltip.NzToolTipModule]
                 },] }
     ];
 

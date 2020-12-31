@@ -1,22 +1,23 @@
 import { __decorate, __metadata } from 'tslib';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, ElementRef, Renderer2, ChangeDetectorRef, ViewChild, Input, Output, NgModule } from '@angular/core';
+import { EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, ElementRef, Renderer2, ChangeDetectorRef, Optional, ViewChild, Input, Output, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { isValid } from 'date-fns';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { isNil, InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-import { DateHelperService, NzI18nModule } from 'ng-zorro-antd/i18n';
+import { NzI18nService, DateHelperService, NzI18nModule } from 'ng-zorro-antd/i18n';
+import { Subject, of } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 /**
  * Use of this source code is governed by an MIT-style license that can be
@@ -24,19 +25,24 @@ import { takeUntil } from 'rxjs/operators';
  */
 const NZ_CONFIG_MODULE_NAME = 'timePicker';
 class NzTimePickerComponent {
-    constructor(nzConfigService, element, renderer, cdr, dateHelper, platform) {
+    constructor(nzConfigService, i18n, element, renderer, cdr, dateHelper, platform, elementRef, directionality) {
         this.nzConfigService = nzConfigService;
+        this.i18n = i18n;
         this.element = element;
         this.renderer = renderer;
         this.cdr = cdr;
         this.dateHelper = dateHelper;
         this.platform = platform;
+        this.elementRef = elementRef;
+        this.directionality = directionality;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
+        this.destroy$ = new Subject();
         this.isInit = false;
         this.focused = false;
         this.inputValue = '';
         this.value = null;
         this.preValue = null;
+        this.i18nPlaceHolder$ = of(undefined);
         this.overlayPositions = [
             {
                 originX: 'start',
@@ -46,6 +52,7 @@ class NzTimePickerComponent {
                 offsetY: 3
             }
         ];
+        this.dir = 'ltr';
         this.nzSize = null;
         this.nzHourStep = 1;
         this.nzMinuteStep = 1;
@@ -62,6 +69,8 @@ class NzTimePickerComponent {
         this.nzAllowEmpty = true;
         this.nzDisabled = false;
         this.nzAutoFocus = false;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-picker');
     }
     emitValue(value) {
         this.setValue(value, true);
@@ -151,8 +160,18 @@ class NzTimePickerComponent {
         this.close();
     }
     ngOnInit() {
+        var _a;
         this.inputSize = Math.max(8, this.nzFormat.length) + 2;
         this.origin = new CdkOverlayOrigin(this.element);
+        this.i18nPlaceHolder$ = this.i18n.localeChange.pipe(map((nzLocale) => nzLocale.TimePicker.placeholder));
+        this.dir = this.directionality.value;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+        });
+    }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
     ngOnChanges(changes) {
         const { nzUse12Hours, nzFormat, nzDisabled, nzAutoFocus } = changes;
@@ -221,7 +240,7 @@ NzTimePickerComponent.decorators = [
         #inputElement
         type="text"
         [size]="inputSize"
-        [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
+        [placeholder]="nzPlaceHolder || (i18nPlaceHolder$ | async)"
         [(ngModel)]="inputValue"
         [disabled]="nzDisabled"
         (focus)="onFocus(true)"
@@ -263,7 +282,7 @@ NzTimePickerComponent.decorators = [
               [nzDisabledHours]="nzDisabledHours"
               [nzDisabledMinutes]="nzDisabledMinutes"
               [nzDisabledSeconds]="nzDisabledSeconds"
-              [nzPlaceHolder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
+              [nzPlaceHolder]="nzPlaceHolder || (i18nPlaceHolder$ | async)"
               [nzHideDisabledOptions]="nzHideDisabledOptions"
               [nzUse12Hours]="nzUse12Hours"
               [nzDefaultOpenValue]="nzDefaultOpenValue"
@@ -280,11 +299,11 @@ NzTimePickerComponent.decorators = [
     </ng-template>
   `,
                 host: {
-                    '[class.ant-picker]': `true`,
                     '[class.ant-picker-large]': `nzSize === 'large'`,
                     '[class.ant-picker-small]': `nzSize === 'small'`,
                     '[class.ant-picker-disabled]': `nzDisabled`,
                     '[class.ant-picker-focused]': `focused`,
+                    '[class.ant-picker-rtl]': `dir === 'rtl'`,
                     '(click)': 'open()'
                 },
                 animations: [slideMotion],
@@ -293,11 +312,14 @@ NzTimePickerComponent.decorators = [
 ];
 NzTimePickerComponent.ctorParameters = () => [
     { type: NzConfigService },
+    { type: NzI18nService },
     { type: ElementRef },
     { type: Renderer2 },
     { type: ChangeDetectorRef },
     { type: DateHelperService },
-    { type: Platform }
+    { type: Platform },
+    { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzTimePickerComponent.propDecorators = {
     inputRef: [{ type: ViewChild, args: ['inputElement', { static: true },] }],
@@ -542,9 +564,10 @@ function makeRange(length, step = 1, start = 0) {
     return new Array(Math.ceil(length / step)).fill(0).map((_, i) => (i + start) * step);
 }
 class NzTimePickerPanelComponent {
-    constructor(cdr, dateHelper) {
+    constructor(cdr, dateHelper, elementRef) {
         this.cdr = cdr;
         this.dateHelper = dateHelper;
+        this.elementRef = elementRef;
         this._nzHourStep = 1;
         this._nzMinuteStep = 1;
         this._nzSecondStep = 1;
@@ -564,6 +587,8 @@ class NzTimePickerPanelComponent {
         this.nzHideDisabledOptions = false;
         this.nzUse12Hours = false;
         this.closePanel = new EventEmitter();
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-picker-time-panel');
     }
     set nzAllowEmpty(value) {
         if (isNotNil(value)) {
@@ -906,6 +931,13 @@ class NzTimePickerPanelComponent {
     registerOnTouched(fn) {
         this.onTouch = fn;
     }
+    /**
+     * Prevent input losing focus when click panel
+     * @param event
+     */
+    onMousedown(event) {
+        event.preventDefault();
+    }
 }
 NzTimePickerPanelComponent.decorators = [
     { type: Component, args: [{
@@ -989,20 +1021,21 @@ NzTimePickerPanelComponent.decorators = [
     </div>
   `,
                 host: {
-                    '[class.ant-picker-time-panel]': `true`,
                     '[class.ant-picker-time-panel-column-0]': `enabledColumns === 0 && !nzInDatePicker`,
                     '[class.ant-picker-time-panel-column-1]': `enabledColumns === 1 && !nzInDatePicker`,
                     '[class.ant-picker-time-panel-column-2]': `enabledColumns === 2 && !nzInDatePicker`,
                     '[class.ant-picker-time-panel-column-3]': `enabledColumns === 3 && !nzInDatePicker`,
                     '[class.ant-picker-time-panel-narrow]': `enabledColumns < 3`,
-                    '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`
+                    '[class.ant-picker-time-panel-placement-bottomLeft]': `!nzInDatePicker`,
+                    '(mousedown)': 'onMousedown($event)'
                 },
                 providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }]
             },] }
 ];
 NzTimePickerPanelComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
-    { type: DateHelperService }
+    { type: DateHelperService },
+    { type: ElementRef }
 ];
 NzTimePickerPanelComponent.propDecorators = {
     hourListElement: [{ type: ViewChild, args: ['hourListElement', { static: false },] }],
@@ -1041,7 +1074,17 @@ NzTimePickerModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NzTimePickerComponent, NzTimePickerPanelComponent],
                 exports: [NzTimePickerPanelComponent, NzTimePickerComponent],
-                imports: [CommonModule, FormsModule, NzI18nModule, OverlayModule, NzIconModule, NzOverlayModule, NzOutletModule, NzButtonModule]
+                imports: [
+                    BidiModule,
+                    CommonModule,
+                    FormsModule,
+                    NzI18nModule,
+                    OverlayModule,
+                    NzIconModule,
+                    NzOverlayModule,
+                    NzOutletModule,
+                    NzButtonModule
+                ]
             },] }
 ];
 

@@ -98,6 +98,8 @@ class NzResizableDirective {
         this.ghostElement = null;
         this.sizeCache = null;
         this.destroy$ = new Subject();
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('nz-resizable');
         this.nzResizableService.handleMouseDown$.pipe(takeUntil(this.destroy$)).subscribe(event => {
             if (this.nzDisabled) {
                 return;
@@ -319,7 +321,6 @@ NzResizableDirective.decorators = [
                 exportAs: 'nzResizable',
                 providers: [NzResizableService],
                 host: {
-                    '[class.nz-resizable]': 'true',
                     '[class.nz-resizable-resizing]': 'resizing',
                     '[class.nz-resizable-disabled]': 'nzDisabled',
                     '(mouseenter)': 'onMouseenter()',
@@ -374,13 +375,16 @@ class NzResizeHandleMouseDownEvent {
     }
 }
 class NzResizeHandleComponent {
-    constructor(nzResizableService, cdr) {
+    constructor(nzResizableService, cdr, elementRef) {
         this.nzResizableService = nzResizableService;
         this.cdr = cdr;
+        this.elementRef = elementRef;
         this.nzDirection = 'bottomRight';
         this.nzMouseDown = new EventEmitter();
         this.entered = false;
         this.destroy$ = new Subject();
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('nz-resizable-handle');
     }
     ngOnInit() {
         this.nzResizableService.mouseEntered$.pipe(takeUntil(this.destroy$)).subscribe(entered => {
@@ -400,10 +404,11 @@ NzResizeHandleComponent.decorators = [
     { type: Component, args: [{
                 selector: 'nz-resize-handle, [nz-resize-handle]',
                 exportAs: 'nzResizeHandle',
-                template: ` <ng-content></ng-content> `,
+                template: `
+    <ng-content></ng-content>
+  `,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 host: {
-                    '[class.nz-resizable-handle]': 'true',
                     '[class.nz-resizable-handle-top]': `nzDirection === 'top'`,
                     '[class.nz-resizable-handle-right]': `nzDirection === 'right'`,
                     '[class.nz-resizable-handle-bottom]': `nzDirection === 'bottom'`,
@@ -420,7 +425,8 @@ NzResizeHandleComponent.decorators = [
 ];
 NzResizeHandleComponent.ctorParameters = () => [
     { type: NzResizableService },
-    { type: ChangeDetectorRef }
+    { type: ChangeDetectorRef },
+    { type: ElementRef }
 ];
 NzResizeHandleComponent.propDecorators = {
     nzDirection: [{ type: Input }],

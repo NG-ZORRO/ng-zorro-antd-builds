@@ -13,6 +13,7 @@ import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedT
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 import { Subscription } from 'rxjs';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTreeSelectService } from './tree-select.service';
 export declare function higherOrderServiceFactory(injector: Injector): NzTreeBaseService;
 export declare class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
@@ -20,6 +21,7 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     private renderer;
     private cdr;
     private elementRef;
+    private directionality;
     private focusMonitor;
     noAnimation?: NzNoAnimationDirective | undefined;
     readonly _nzModuleName: NzConfigKey;
@@ -106,11 +108,13 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     selectedNodes: NzTreeNode[];
     expandedKeys: string[];
     value: string[];
+    dir: Direction;
+    private destroy$;
     onChange: OnChangeType;
     onTouched: OnTouchedType;
     get placeHolderDisplay(): string;
     get isMultiple(): boolean;
-    constructor(nzTreeService: NzTreeSelectService, nzConfigService: NzConfigService, renderer: Renderer2, cdr: ChangeDetectorRef, elementRef: ElementRef, focusMonitor: FocusMonitor, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(nzTreeService: NzTreeSelectService, nzConfigService: NzConfigService, renderer: Renderer2, cdr: ChangeDetectorRef, elementRef: ElementRef, directionality: Directionality, focusMonitor: FocusMonitor, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnInit(): void;
     ngOnDestroy(): void;
     isComposingChange(isComposing: boolean): void;

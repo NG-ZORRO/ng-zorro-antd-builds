@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/back-top', ['exports', '@angular/cdk/platform', '@angular/common', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['back-top'] = {}), global.ng.cdk.platform, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].icon));
-}(this, (function (exports, platform, common, core, animation, config, services, util, rxjs, operators, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/icon')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/back-top', ['exports', '@angular/cdk/bidi', '@angular/cdk/platform', '@angular/common', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/icon'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['back-top'] = {}), global.ng.cdk.bidi, global.ng.cdk.platform, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].icon));
+}(this, (function (exports, bidi, platform, common, core, animation, config, services, util, rxjs, operators, icon) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -311,23 +311,35 @@
      */
     var NZ_CONFIG_MODULE_NAME = 'backTop';
     var NzBackTopComponent = /** @class */ (function () {
-        function NzBackTopComponent(doc, nzConfigService, scrollSrv, platform, cd, zone) {
+        function NzBackTopComponent(doc, nzConfigService, scrollSrv, platform, cd, zone, cdr, directionality) {
             this.doc = doc;
             this.nzConfigService = nzConfigService;
             this.scrollSrv = scrollSrv;
             this.platform = platform;
             this.cd = cd;
             this.zone = zone;
+            this.cdr = cdr;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.scrollListenerDestroy$ = new rxjs.Subject();
+            this.destroy$ = new rxjs.Subject();
             this.target = null;
             this.visible = false;
+            this.dir = 'ltr';
             this.nzVisibilityHeight = 400;
             this.nzDuration = 450;
             this.nzClick = new core.EventEmitter();
+            this.dir = this.directionality.value;
         }
         NzBackTopComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
             this.registerScrollEvent();
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
         };
         NzBackTopComponent.prototype.clickBackTop = function () {
             this.scrollSrv.scrollTo(this.getTarget(), 0, { duration: this.nzDuration });
@@ -359,6 +371,8 @@
         NzBackTopComponent.prototype.ngOnDestroy = function () {
             this.scrollListenerDestroy$.next();
             this.scrollListenerDestroy$.complete();
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         NzBackTopComponent.prototype.ngOnChanges = function (changes) {
             var nzTarget = changes.nzTarget;
@@ -374,7 +388,7 @@
                     selector: 'nz-back-top',
                     exportAs: 'nzBackTop',
                     animations: [animation.fadeMotion],
-                    template: "\n    <div class=\"ant-back-top\" (click)=\"clickBackTop()\" @fadeMotion *ngIf=\"visible\">\n      <ng-template #defaultContent>\n        <div class=\"ant-back-top-content\">\n          <div class=\"ant-back-top-icon\">\n            <i nz-icon nzType=\"vertical-align-top\"></i>\n          </div>\n        </div>\n      </ng-template>\n      <ng-template [ngTemplateOutlet]=\"nzTemplate || defaultContent\"></ng-template>\n    </div>\n  ",
+                    template: "\n    <div class=\"ant-back-top\" [class.ant-back-top-rtl]=\"dir === 'rtl'\" (click)=\"clickBackTop()\" @fadeMotion *ngIf=\"visible\">\n      <ng-template #defaultContent>\n        <div class=\"ant-back-top-content\">\n          <div class=\"ant-back-top-icon\">\n            <i nz-icon nzType=\"vertical-align-top\"></i>\n          </div>\n        </div>\n      </ng-template>\n      <ng-template [ngTemplateOutlet]=\"nzTemplate || defaultContent\"></ng-template>\n    </div>\n  ",
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     encapsulation: core.ViewEncapsulation.None,
                     preserveWhitespaces: false
@@ -386,7 +400,9 @@
         { type: services.NzScrollService },
         { type: platform.Platform },
         { type: core.ChangeDetectorRef },
-        { type: core.NgZone }
+        { type: core.NgZone },
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzBackTopComponent.propDecorators = {
         nzTemplate: [{ type: core.Input }],
@@ -418,7 +434,7 @@
         { type: core.NgModule, args: [{
                     declarations: [NzBackTopComponent],
                     exports: [NzBackTopComponent],
-                    imports: [common.CommonModule, platform.PlatformModule, icon.NzIconModule]
+                    imports: [bidi.BidiModule, common.CommonModule, platform.PlatformModule, icon.NzIconModule]
                 },] }
     ];
 

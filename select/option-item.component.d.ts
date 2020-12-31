@@ -2,9 +2,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { EventEmitter, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+import { ElementRef, EventEmitter, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export declare class NzOptionItemComponent implements OnChanges {
+    private elementRef;
     selected: boolean;
     activated: boolean;
     grouped: boolean;
@@ -20,6 +21,7 @@ export declare class NzOptionItemComponent implements OnChanges {
     compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
     readonly itemClick: EventEmitter<any>;
     readonly itemHover: EventEmitter<any>;
+    constructor(elementRef: ElementRef);
     onHostMouseEnter(): void;
     onHostClick(): void;
     ngOnChanges(changes: SimpleChanges): void;

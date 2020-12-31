@@ -1,10 +1,11 @@
-import { Directive, Injectable, Component, ViewEncapsulation, ChangeDetectionStrategy, forwardRef, ChangeDetectorRef, Input, ElementRef, Optional, ViewChild, NgModule } from '@angular/core';
+import { Directive, Injectable, Component, ViewEncapsulation, ChangeDetectionStrategy, forwardRef, ChangeDetectorRef, ElementRef, Optional, Input, ViewChild, NgModule } from '@angular/core';
 import { __decorate, __metadata } from 'tslib';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { ReplaySubject, Subject } from 'rxjs';
-import { FocusMonitor } from '@angular/cdk/a11y';
 import { takeUntil } from 'rxjs/operators';
+import { FocusMonitor } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 
 /**
@@ -52,9 +53,11 @@ NzRadioService.decorators = [
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzRadioGroupComponent {
-    constructor(cdr, nzRadioService) {
+    constructor(cdr, nzRadioService, elementRef, directionality) {
         this.cdr = cdr;
         this.nzRadioService = nzRadioService;
+        this.elementRef = elementRef;
+        this.directionality = directionality;
         this.value = null;
         this.destroy$ = new Subject();
         this.onChange = () => { };
@@ -63,8 +66,12 @@ class NzRadioGroupComponent {
         this.nzButtonStyle = 'outline';
         this.nzSize = 'default';
         this.nzName = null;
+        this.dir = 'ltr';
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-radio-group');
     }
     ngOnInit() {
+        var _a;
         this.nzRadioService.selected$.subscribe(value => {
             if (this.value !== value) {
                 this.value = value;
@@ -74,6 +81,11 @@ class NzRadioGroupComponent {
         this.nzRadioService.touched$.subscribe(() => {
             Promise.resolve().then(() => this.onTouched());
         });
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
     }
     ngOnChanges(changes) {
         const { nzDisabled, nzName } = changes;
@@ -110,7 +122,9 @@ NzRadioGroupComponent.decorators = [
                 selector: 'nz-radio-group',
                 exportAs: 'nzRadioGroup',
                 preserveWhitespaces: false,
-                template: ` <ng-content></ng-content> `,
+                template: `
+    <ng-content></ng-content>
+  `,
                 encapsulation: ViewEncapsulation.None,
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 providers: [
@@ -122,16 +136,18 @@ NzRadioGroupComponent.decorators = [
                     }
                 ],
                 host: {
-                    '[class.ant-radio-group]': `true`,
                     '[class.ant-radio-group-large]': `nzSize === 'large'`,
                     '[class.ant-radio-group-small]': `nzSize === 'small'`,
-                    '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`
+                    '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`,
+                    '[class.ant-radio-group-rtl]': `dir === 'rtl'`
                 }
             },] }
 ];
 NzRadioGroupComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
-    { type: NzRadioService }
+    { type: NzRadioService },
+    { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzRadioGroupComponent.propDecorators = {
     nzDisabled: [{ type: Input }],
@@ -149,10 +165,11 @@ __decorate([
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzRadioComponent {
-    constructor(elementRef, cdr, focusMonitor, nzRadioService, nzRadioButtonDirective) {
+    constructor(elementRef, cdr, focusMonitor, directionality, nzRadioService, nzRadioButtonDirective) {
         this.elementRef = elementRef;
         this.cdr = cdr;
         this.focusMonitor = focusMonitor;
+        this.directionality = directionality;
         this.nzRadioService = nzRadioService;
         this.nzRadioButtonDirective = nzRadioButtonDirective;
         this.isNgModel = false;
@@ -165,6 +182,7 @@ class NzRadioComponent {
         this.nzValue = null;
         this.nzDisabled = false;
         this.nzAutoFocus = false;
+        this.dir = 'ltr';
     }
     onHostClick(event) {
         /** prevent label click triggered twice. **/
@@ -202,6 +220,7 @@ class NzRadioComponent {
         this.onTouched = fn;
     }
     ngOnInit() {
+        var _a;
         if (this.nzRadioService) {
             this.nzRadioService.name$.pipe(takeUntil(this.destroy$)).subscribe(name => {
                 this.name = name;
@@ -224,6 +243,11 @@ class NzRadioComponent {
                 }
             }
         });
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
     }
     ngAfterViewInit() {
         if (this.nzAutoFocus) {
@@ -280,6 +304,8 @@ NzRadioComponent.decorators = [
                     '[class.ant-radio-button-wrapper-checked]': 'isChecked && isRadioButton',
                     '[class.ant-radio-wrapper-disabled]': 'nzDisabled && !isRadioButton',
                     '[class.ant-radio-button-wrapper-disabled]': 'nzDisabled && isRadioButton',
+                    '[class.ant-radio-wrapper-rtl]': `!isRadioButton && dir === 'rtl'`,
+                    '[class.ant-radio-button-wrapper-rtl]': `isRadioButton && dir === 'rtl'`,
                     '(click)': 'onHostClick($event)'
                 }
             },] }
@@ -288,6 +314,7 @@ NzRadioComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: ChangeDetectorRef },
     { type: FocusMonitor },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: NzRadioService, decorators: [{ type: Optional }] },
     { type: NzRadioButtonDirective, decorators: [{ type: Optional }] }
 ];
@@ -314,7 +341,7 @@ class NzRadioModule {
 }
 NzRadioModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule, FormsModule],
+                imports: [BidiModule, CommonModule, FormsModule],
                 exports: [NzRadioComponent, NzRadioButtonDirective, NzRadioGroupComponent],
                 declarations: [NzRadioComponent, NzRadioButtonDirective, NzRadioGroupComponent]
             },] }

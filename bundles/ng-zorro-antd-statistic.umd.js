@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/platform'), require('@angular/core'), require('rxjs'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/pipe')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/statistic', ['exports', '@angular/cdk/platform', '@angular/core', 'rxjs', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/pipe'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].statistic = {}), global.ng.cdk.platform, global.ng.core, global.rxjs, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.pipe));
-}(this, (function (exports, platform, core, rxjs, common, outlet, pipe) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/platform'), require('@angular/core'), require('rxjs'), require('@angular/cdk/bidi'), require('rxjs/operators'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/pipe')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/statistic', ['exports', '@angular/cdk/platform', '@angular/core', 'rxjs', '@angular/cdk/bidi', 'rxjs/operators', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/pipe'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].statistic = {}), global.ng.cdk.platform, global.ng.core, global.rxjs, global.ng.cdk.bidi, global.rxjs.operators, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.pipe));
+}(this, (function (exports, platform, core, rxjs, bidi, operators, common, outlet, pipe) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -310,9 +310,26 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzStatisticComponent = /** @class */ (function () {
-        function NzStatisticComponent() {
+        function NzStatisticComponent(cdr, directionality) {
+            this.cdr = cdr;
+            this.directionality = directionality;
             this.nzValueStyle = {};
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
         }
+        NzStatisticComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+        };
+        NzStatisticComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
+        };
         return NzStatisticComponent;
     }());
     NzStatisticComponent.decorators = [
@@ -321,9 +338,13 @@
                     encapsulation: core.ViewEncapsulation.None,
                     selector: 'nz-statistic',
                     exportAs: 'nzStatistic',
-                    template: "\n    <div class=\"ant-statistic\">\n      <div class=\"ant-statistic-title\">\n        <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n      </div>\n      <div class=\"ant-statistic-content\" [ngStyle]=\"nzValueStyle\">\n        <span *ngIf=\"nzPrefix\" class=\"ant-statistic-content-prefix\">\n          <ng-container *nzStringTemplateOutlet=\"nzPrefix\">{{ nzPrefix }}</ng-container>\n        </span>\n        <nz-statistic-number [nzValue]=\"nzValue\" [nzValueTemplate]=\"nzValueTemplate\"> </nz-statistic-number>\n        <span *ngIf=\"nzSuffix\" class=\"ant-statistic-content-suffix\">\n          <ng-container *nzStringTemplateOutlet=\"nzSuffix\">{{ nzSuffix }}</ng-container>\n        </span>\n      </div>\n    </div>\n  "
+                    template: "\n    <div class=\"ant-statistic\" [class.ant-statistic-rtl]=\"dir === 'rtl'\">\n      <div class=\"ant-statistic-title\">\n        <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n      </div>\n      <div class=\"ant-statistic-content\" [ngStyle]=\"nzValueStyle\">\n        <span *ngIf=\"nzPrefix\" class=\"ant-statistic-content-prefix\">\n          <ng-container *nzStringTemplateOutlet=\"nzPrefix\">{{ nzPrefix }}</ng-container>\n        </span>\n        <nz-statistic-number [nzValue]=\"nzValue\" [nzValueTemplate]=\"nzValueTemplate\"></nz-statistic-number>\n        <span *ngIf=\"nzSuffix\" class=\"ant-statistic-content-suffix\">\n          <ng-container *nzStringTemplateOutlet=\"nzSuffix\">{{ nzSuffix }}</ng-container>\n        </span>\n      </div>\n    </div>\n  "
                 },] }
     ];
+    NzStatisticComponent.ctorParameters = function () { return [
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
+    ]; };
     NzStatisticComponent.propDecorators = {
         nzPrefix: [{ type: core.Input }],
         nzSuffix: [{ type: core.Input }],
@@ -336,9 +357,8 @@
     var REFRESH_INTERVAL = 1000 / 30;
     var NzCountdownComponent = /** @class */ (function (_super) {
         __extends(NzCountdownComponent, _super);
-        function NzCountdownComponent(cdr, ngZone, platform) {
-            var _this = _super.call(this) || this;
-            _this.cdr = cdr;
+        function NzCountdownComponent(cdr, ngZone, platform, directionality) {
+            var _this = _super.call(this, cdr, directionality) || this;
             _this.ngZone = ngZone;
             _this.platform = platform;
             _this.nzFormat = 'HH:mm:ss';
@@ -355,6 +375,7 @@
             }
         };
         NzCountdownComponent.prototype.ngOnInit = function () {
+            _super.prototype.ngOnInit.call(this);
             this.syncTimer();
         };
         NzCountdownComponent.prototype.ngOnDestroy = function () {
@@ -404,13 +425,14 @@
                     encapsulation: core.ViewEncapsulation.None,
                     selector: 'nz-countdown',
                     exportAs: 'nzCountdown',
-                    template: "\n    <nz-statistic\n      [nzValue]=\"diff\"\n      [nzValueStyle]=\"nzValueStyle\"\n      [nzValueTemplate]=\"nzValueTemplate || countDownTpl\"\n      [nzTitle]=\"nzTitle\"\n      [nzPrefix]=\"nzPrefix\"\n      [nzSuffix]=\"nzSuffix\"\n    >\n    </nz-statistic>\n\n    <ng-template #countDownTpl>{{ diff | nzTimeRange: nzFormat }}</ng-template>\n  "
+                    template: "\n    <nz-statistic\n      [nzValue]=\"diff\"\n      [nzValueStyle]=\"nzValueStyle\"\n      [nzValueTemplate]=\"nzValueTemplate || countDownTpl\"\n      [nzTitle]=\"nzTitle\"\n      [nzPrefix]=\"nzPrefix\"\n      [nzSuffix]=\"nzSuffix\"\n    ></nz-statistic>\n\n    <ng-template #countDownTpl>{{ diff | nzTimeRange: nzFormat }}</ng-template>\n  "
                 },] }
     ];
     NzCountdownComponent.ctorParameters = function () { return [
         { type: core.ChangeDetectorRef },
         { type: core.NgZone },
-        { type: platform.Platform }
+        { type: platform.Platform },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzCountdownComponent.propDecorators = {
         nzFormat: [{ type: core.Input }],
@@ -464,7 +486,7 @@
     }());
     NzStatisticModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, platform.PlatformModule, outlet.NzOutletModule, pipe.NzPipesModule],
+                    imports: [bidi.BidiModule, common.CommonModule, platform.PlatformModule, outlet.NzOutletModule, pipe.NzPipesModule],
                     declarations: [NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent],
                     exports: [NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent]
                 },] }

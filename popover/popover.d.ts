@@ -5,6 +5,7 @@
 import { ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, ElementRef, EventEmitter, Renderer2, ViewContainerRef } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { Directionality } from '@angular/cdk/bidi';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 export declare class NzPopoverDirective extends NzTooltipBaseDirective {
     noAnimation?: NzNoAnimationDirective | undefined;
@@ -26,6 +27,6 @@ export declare class NzPopoverDirective extends NzTooltipBaseDirective {
 export declare class NzPopoverComponent extends NzToolTipComponent {
     noAnimation?: NzNoAnimationDirective | undefined;
     _prefix: string;
-    constructor(cdr: ChangeDetectorRef, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(cdr: ChangeDetectorRef, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
     protected isEmpty(): boolean;
 }

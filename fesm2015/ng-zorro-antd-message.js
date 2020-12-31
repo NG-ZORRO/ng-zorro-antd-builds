@@ -6,6 +6,7 @@ import { Overlay, OverlayModule } from '@angular/cdk/overlay';
 import { NzSingletonService } from 'ng-zorro-antd/core/services';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 import { takeUntil } from 'rxjs/operators';
+import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -209,19 +210,30 @@ const NZ_MESSAGE_DEFAULT_CONFIG = {
     nzDuration: 3000,
     nzMaxStack: 7,
     nzPauseOnHover: true,
-    nzTop: 24
+    nzTop: 24,
+    nzDirection: 'ltr'
 };
 class NzMessageContainerComponent extends NzMNContainerComponent {
     constructor(cdr, nzConfigService) {
         super(cdr, nzConfigService);
         this.destroy$ = new Subject();
+        this.dir = 'ltr';
         this.instances = [];
+        const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
+        this.dir = (config === null || config === void 0 ? void 0 : config.nzDirection) || 'ltr';
     }
     subscribeConfigChange() {
         this.nzConfigService
             .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
             .pipe(takeUntil(this.destroy$))
-            .subscribe(() => this.updateConfig());
+            .subscribe(() => {
+            this.updateConfig();
+            const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
+            if (config) {
+                const { nzDirection } = config;
+                this.dir = nzDirection || this.dir;
+            }
+        });
     }
     updateConfig() {
         this.config = Object.assign(Object.assign(Object.assign({}, NZ_MESSAGE_DEFAULT_CONFIG), this.config), this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME));
@@ -237,7 +249,7 @@ NzMessageContainerComponent.decorators = [
                 exportAs: 'nzMessageContainer',
                 preserveWhitespaces: false,
                 template: `
-    <div class="ant-message" [style.top]="top">
+    <div class="ant-message" [class.ant-message-rtl]="dir === 'rtl'" [style.top]="top">
       <nz-message *ngFor="let instance of instances" [instance]="instance" (destroyed)="remove($event.id, $event.userAction)"></nz-message>
     </div>
   `
@@ -360,7 +372,7 @@ class NzMessageModule {
 }
 NzMessageModule.decorators = [
     { type: NgModule, args: [{
-                imports: [CommonModule, OverlayModule, NzIconModule, NzOutletModule, NzMessageServiceModule],
+                imports: [BidiModule, CommonModule, OverlayModule, NzIconModule, NzOutletModule, NzMessageServiceModule],
                 declarations: [NzMessageContainerComponent, NzMessageComponent],
                 entryComponents: [NzMessageContainerComponent]
             },] }

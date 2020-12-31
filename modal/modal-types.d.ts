@@ -2,7 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { OverlayRef } from '@angular/cdk/overlay';
+import { Direction } from '@angular/cdk/bidi';
 import { EventEmitter, TemplateRef, Type, ViewContainerRef } from '@angular/core';
 import { NzButtonShape, NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -27,6 +27,7 @@ export declare class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
     nzWidth?: number | string;
     nzCloseIcon?: string | TemplateRef<void>;
     nzOkType?: NzButtonType;
+    nzOkDanger?: boolean;
     nzModalType?: ModalTypes;
     nzOnCancel?: EventEmitter<T> | OnClickCallback<T>;
     nzOnOk?: EventEmitter<T> | OnClickCallback<T>;
@@ -43,19 +44,15 @@ export declare class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
     nzContent?: string | TemplateRef<NzSafeAny> | Type<T>;
     nzCloseOnNavigation?: boolean;
     nzViewContainerRef?: ViewContainerRef;
-    /**
-     * Reset the container element.
-     * @deprecated Not supported.
-     * @breaking-change 11.0.0
-     */
-    nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
     nzAfterOpen?: EventEmitter<void>;
     nzAfterClose?: EventEmitter<R>;
     nzIconType?: string;
+    nzDirection?: Direction;
 }
 export interface ModalButtonOptions<T = NzSafeAny> {
     label: string;
     type?: NzButtonType;
+    danger?: boolean;
     shape?: NzButtonShape;
     ghost?: boolean;
     size?: NzButtonSize;

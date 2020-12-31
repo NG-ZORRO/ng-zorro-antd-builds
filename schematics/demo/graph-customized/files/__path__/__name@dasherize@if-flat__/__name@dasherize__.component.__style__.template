@@ -11,9 +11,31 @@
         height: 400px;
       }
 
-      .custom-node {
+      .graph-node {
+        border: 1px solid #8cc8ff;
+        cursor: pointer;
+        font-size: 12px;
         height: 100%;
-        min-height: 100px;
+        line-height: 1.2;
+        border-radius: 0;
+        text-align: center;
+        word-break: break-all;
         display: block;
+      }
+
+      .group-node {
+        border-width: 4px;
+      }
+
+      .leaf-node {
+        color: #1a90ff;
+        background: rgba(26, 144, 255, 0.15);
+        min-height: 30px;
+        height: fit-content;
+      }
+
+      .title {
+        padding: 4px;
+        word-break: keep-all;
       }
     

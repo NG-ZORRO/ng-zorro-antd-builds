@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/keycodes'), require('@angular/common/http'), require('@angular/core'), require('ng-zorro-antd/core/logger'), require('rxjs'), require('rxjs/operators'), require('@angular/animations'), require('@angular/cdk/platform'), require('@angular/common'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('@angular/forms'), require('ng-zorro-antd/button'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/progress'), require('ng-zorro-antd/tooltip')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/upload', ['exports', '@angular/cdk/keycodes', '@angular/common/http', '@angular/core', 'ng-zorro-antd/core/logger', 'rxjs', 'rxjs/operators', '@angular/animations', '@angular/cdk/platform', '@angular/common', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', '@angular/forms', 'ng-zorro-antd/button', 'ng-zorro-antd/icon', 'ng-zorro-antd/progress', 'ng-zorro-antd/tooltip'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].upload = {}), global.ng.cdk.keycodes, global.ng.common.http, global.ng.core, global['ng-zorro-antd'].core.logger, global.rxjs, global.rxjs.operators, global.ng.animations, global.ng.cdk.platform, global.ng.common, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.ng.forms, global['ng-zorro-antd'].button, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].progress, global['ng-zorro-antd'].tooltip));
-}(this, (function (exports, keycodes, http, core, logger, rxjs, operators, animations, platform, common, util, i18n, forms, button, icon, progress, tooltip) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/keycodes'), require('@angular/common/http'), require('@angular/core'), require('ng-zorro-antd/core/logger'), require('rxjs'), require('rxjs/operators'), require('@angular/animations'), require('@angular/cdk/platform'), require('@angular/common'), require('@angular/cdk/bidi'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/i18n'), require('@angular/forms'), require('ng-zorro-antd/button'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/progress'), require('ng-zorro-antd/tooltip')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/upload', ['exports', '@angular/cdk/keycodes', '@angular/common/http', '@angular/core', 'ng-zorro-antd/core/logger', 'rxjs', 'rxjs/operators', '@angular/animations', '@angular/cdk/platform', '@angular/common', '@angular/cdk/bidi', 'ng-zorro-antd/core/util', 'ng-zorro-antd/i18n', '@angular/forms', 'ng-zorro-antd/button', 'ng-zorro-antd/icon', 'ng-zorro-antd/progress', 'ng-zorro-antd/tooltip'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].upload = {}), global.ng.cdk.keycodes, global.ng.common.http, global.ng.core, global['ng-zorro-antd'].core.logger, global.rxjs, global.rxjs.operators, global.ng.animations, global.ng.cdk.platform, global.ng.common, global.ng.cdk.bidi, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].i18n, global.ng.forms, global['ng-zorro-antd'].button, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].progress, global['ng-zorro-antd'].tooltip));
+}(this, (function (exports, keycodes, http, core, logger, rxjs, operators, animations, platform, common, bidi, util, i18n, forms, button, icon, progress, tooltip) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -306,10 +306,13 @@
     }
 
     var NzUploadBtnComponent = /** @class */ (function () {
-        function NzUploadBtnComponent(http) {
+        function NzUploadBtnComponent(http, elementRef) {
             this.http = http;
+            this.elementRef = elementRef;
             this.reqs = {};
             this.destroy = false;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-upload');
             if (!http) {
                 throw new Error("Not found 'HttpClient', You can import 'HttpClientModule' in your root module.");
             }
@@ -620,7 +623,6 @@
                     host: {
                         '[attr.tabindex]': '"0"',
                         '[attr.role]': '"button"',
-                        '[class.ant-upload]': 'true',
                         '[class.ant-upload-disabled]': 'options.disabled',
                         '(click)': 'onClick()',
                         '(keydown)': 'onKeyDown($event)',
@@ -632,7 +634,8 @@
                 },] }
     ];
     NzUploadBtnComponent.ctorParameters = function () { return [
-        { type: http.HttpClient, decorators: [{ type: core.Optional }] }
+        { type: http.HttpClient, decorators: [{ type: core.Optional }] },
+        { type: core.ElementRef }
     ]; };
     NzUploadBtnComponent.propDecorators = {
         file: [{ type: core.ViewChild, args: ['file', { static: false },] }],
@@ -648,14 +651,18 @@
     var MEASURE_SIZE = 200;
     var NzUploadListComponent = /** @class */ (function () {
         // #endregion
-        function NzUploadListComponent(cdr, doc, ngZone, platform) {
+        function NzUploadListComponent(cdr, doc, ngZone, platform, elementRef) {
             this.cdr = cdr;
             this.doc = doc;
             this.ngZone = ngZone;
             this.platform = platform;
+            this.elementRef = elementRef;
             this.list = [];
             this.locale = {};
             this.iconRender = null;
+            this.dir = 'ltr';
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-upload-list');
         }
         Object.defineProperty(NzUploadListComponent.prototype, "showPic", {
             get: function () {
@@ -776,14 +783,6 @@
                 });
             });
         };
-        NzUploadListComponent.prototype.listItemNameCls = function (file) {
-            var _b;
-            var count = [this.showDownload(file), this.icons.showRemoveIcon].filter(function (x) { return x; }).length;
-            return _b = {},
-                _b["ant-upload-list-item-name"] = true,
-                _b["ant-upload-list-item-name-icon-count-" + count] = true,
-                _b;
-        };
         NzUploadListComponent.prototype.showDownload = function (file) {
             return !!(this.icons.showDownloadIcon && file.status === 'done');
         };
@@ -795,7 +794,6 @@
                 file.linkProps = typeof file.linkProps === 'string' ? JSON.parse(file.linkProps) : file.linkProps;
                 file.isImageUrl = _this.previewIsImage ? _this.previewIsImage(file) : _this.isImageUrl(file);
                 file.iconType = _this.getIconType(file);
-                file.listItemNameCls = _this.listItemNameCls(file);
                 file.showDownload = _this.showDownload(file);
             });
         };
@@ -835,7 +833,7 @@
         { type: core.Component, args: [{
                     selector: 'nz-upload-list',
                     exportAs: 'nzUploadList',
-                    template: "<div\n  *ngFor=\"let file of list\"\n  [class.ant-upload-list-picture-card-container]=\"listType === 'picture-card'\"\n>\n  <div\n    class=\"ant-upload-list-item ant-upload-list-item-{{\n      file.status\n    }} ant-upload-list-item-list-type-{{ listType }}\"\n    [attr.data-key]=\"file.key\"\n    @itemState\n    nz-tooltip\n    [nzTooltipTitle]=\"file.status === 'error' ? file.message : null\"\n  >\n    <ng-template #icon>\n      <ng-container [ngSwitch]=\"file.iconType\">\n        <div\n          *ngSwitchCase=\"'uploading'\"\n          class=\"ant-upload-list-item-thumbnail\"\n          [class.ant-upload-list-item-file]=\"!file.isUploading\"\n        >\n          <ng-template\n            [ngTemplateOutlet]=\"iconNode\"\n            [ngTemplateOutletContext]=\"{ $implicit: file }\"\n          ></ng-template>\n        </div>\n        <a\n          *ngSwitchCase=\"'thumbnail'\"\n          class=\"ant-upload-list-item-thumbnail\"\n          [class.ant-upload-list-item-file]=\"!file.isImageUrl\"\n          target=\"_blank\"\n          rel=\"noopener noreferrer\"\n          [href]=\"file.url || file.thumbUrl\"\n          (click)=\"handlePreview(file, $event)\"\n        >\n          <img\n            *ngIf=\"file.isImageUrl; else noImageThumbTpl\"\n            class=\"ant-upload-list-item-image\"\n            [src]=\"file.thumbUrl || file.url\"\n            [attr.alt]=\"file.name\"\n          />\n        </a>\n        <span *ngSwitchDefault class=\"ant-upload-text-icon\">\n          <ng-template\n            [ngTemplateOutlet]=\"iconNode\"\n            [ngTemplateOutletContext]=\"{ $implicit: file }\"\n          ></ng-template>\n        </span>\n      </ng-container>\n      <ng-template #noImageThumbTpl>\n        <ng-template\n          [ngTemplateOutlet]=\"iconNode\"\n          [ngTemplateOutletContext]=\"{ $implicit: file }\"\n        ></ng-template>\n      </ng-template>\n    </ng-template>\n    <ng-template #iconNode let-file>\n      <ng-container *ngIf=\"!iconRender; else iconRender\">\n        <ng-container [ngSwitch]=\"listType\">\n          <ng-container *ngSwitchCase=\"'picture'\">\n            <ng-container *ngIf=\"file.isUploading; else iconNodeFileIcon\">\n              <i nz-icon nzType=\"loading\"></i>\n            </ng-container>\n          </ng-container>\n          <ng-container *ngSwitchCase=\"'picture-card'\">\n            <ng-container *ngIf=\"file.isUploading; else iconNodeFileIcon\">\n              {{ locale.uploading }}\n            </ng-container>\n          </ng-container>\n          <i *ngSwitchDefault nz-icon [nzType]=\"file.isUploading ? 'loading' : 'paper-clip'\"></i>\n        </ng-container>\n      </ng-container>\n      <ng-template #iconNodeFileIcon>\n        <i nz-icon [nzType]=\"file.isImageUrl ? 'picture' : 'file'\" nzTheme=\"twotone\"></i>\n      </ng-template>\n    </ng-template>\n    <ng-template #downloadOrDelete>\n      <span\n        *ngIf=\"listType !== 'picture-card'\"\n        class=\"ant-upload-list-item-card-actions {{ listType === 'picture' ? 'picture' : '' }}\"\n      >\n        <button\n          nz-button\n          nzType=\"text\"\n          nzSize=\"small\"\n          *ngIf=\"file.showDownload\"\n          title=\"{{ locale.downloadFile }}\"\n        >\n          <ng-template [ngTemplateOutlet]=\"downloadIcon\"></ng-template>\n        </button>\n        <button\n          nz-button\n          nzType=\"text\"\n          nzSize=\"small\"\n          *ngIf=\"icons.showRemoveIcon\"\n          title=\"{{ locale.removeFile }}\"\n        >\n          <ng-template [ngTemplateOutlet]=\"removeIcon\"></ng-template>\n        </button>\n      </span>\n    </ng-template>\n    <ng-template #preview>\n      <a\n        *ngIf=\"file.url\"\n        target=\"_blank\"\n        rel=\"noopener noreferrer\"\n        [ngClass]=\"file.listItemNameCls!\"\n        [attr.title]=\"file.name\"\n        [href]=\"file.url\"\n        [attr.download]=\"file.linkProps && file.linkProps.download\"\n        (click)=\"handlePreview(file, $event)\"\n      >\n        {{ file.name }}\n      </a>\n      <span\n        *ngIf=\"!file.url\"\n        [ngClass]=\"file.listItemNameCls!\"\n        [attr.title]=\"file.name\"\n        (click)=\"handlePreview(file, $event)\"\n      >\n        {{ file.name }}\n      </span>\n      <ng-template [ngTemplateOutlet]=\"downloadOrDelete\"></ng-template>\n    </ng-template>\n    <ng-template #removeIcon>\n      <i\n        *ngIf=\"icons.showRemoveIcon\"\n        (click)=\"handleRemove(file, $event)\"\n        nz-icon\n        nzType=\"delete\"\n        title=\"{{ locale.removeFile }}\"\n      ></i>\n    </ng-template>\n    <ng-template #downloadIcon>\n      <i\n        *ngIf=\"file.showDownload\"\n        (click)=\"handleDownload(file)\"\n        nz-icon\n        nzType=\"download\"\n        title=\"{{ locale.downloadFile }}\"\n      ></i>\n    </ng-template>\n    <div class=\"ant-upload-list-item-info\">\n      <span>\n        <ng-template [ngTemplateOutlet]=\"icon\"></ng-template>\n        <ng-template [ngTemplateOutlet]=\"preview\"></ng-template>\n      </span>\n    </div>\n    <span\n      *ngIf=\"listType === 'picture-card' && !file.isUploading\"\n      class=\"ant-upload-list-item-actions\"\n    >\n      <a\n        *ngIf=\"icons.showPreviewIcon\"\n        [href]=\"file.url || file.thumbUrl\"\n        target=\"_blank\"\n        rel=\"noopener noreferrer\"\n        title=\"{{ locale.previewFile }}\"\n        [ngStyle]=\"!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null\"\n        (click)=\"handlePreview(file, $event)\"\n      >\n        <i nz-icon nzType=\"eye\"></i>\n      </a>\n      <ng-template [ngTemplateOutlet]=\"downloadIcon\"></ng-template>\n      <ng-template [ngTemplateOutlet]=\"removeIcon\"></ng-template>\n    </span>\n    <div *ngIf=\"file.isUploading\" class=\"ant-upload-list-item-progress\">\n      <nz-progress\n        [nzPercent]=\"file.percent!\"\n        nzType=\"line\"\n        [nzShowInfo]=\"false\"\n        [nzStrokeWidth]=\"2\"\n      ></nz-progress>\n    </div>\n  </div>\n</div>\n",
+                    template: "<div *ngFor=\"let file of list\" class=\"ant-upload-list-{{ listType }}-container\">\n  <div\n    class=\"ant-upload-list-item ant-upload-list-item-{{\n      file.status\n    }} ant-upload-list-item-list-type-{{ listType }}\"\n    [attr.data-key]=\"file.key\"\n    @itemState\n    nz-tooltip\n    [nzTooltipTitle]=\"file.status === 'error' ? file.message : null\"\n  >\n    <ng-template #icon>\n      <ng-container [ngSwitch]=\"file.iconType\">\n        <div\n          *ngSwitchCase=\"'uploading'\"\n          class=\"ant-upload-list-item-thumbnail\"\n          [class.ant-upload-list-item-file]=\"!file.isUploading\"\n        >\n          <ng-template\n            [ngTemplateOutlet]=\"iconNode\"\n            [ngTemplateOutletContext]=\"{ $implicit: file }\"\n          ></ng-template>\n        </div>\n        <a\n          *ngSwitchCase=\"'thumbnail'\"\n          class=\"ant-upload-list-item-thumbnail\"\n          [class.ant-upload-list-item-file]=\"!file.isImageUrl\"\n          target=\"_blank\"\n          rel=\"noopener noreferrer\"\n          [href]=\"file.url || file.thumbUrl\"\n          (click)=\"handlePreview(file, $event)\"\n        >\n          <img\n            *ngIf=\"file.isImageUrl; else noImageThumbTpl\"\n            class=\"ant-upload-list-item-image\"\n            [src]=\"file.thumbUrl || file.url\"\n            [attr.alt]=\"file.name\"\n          />\n        </a>\n        <div *ngSwitchDefault class=\"ant-upload-text-icon\">\n          <ng-template\n            [ngTemplateOutlet]=\"iconNode\"\n            [ngTemplateOutletContext]=\"{ $implicit: file }\"\n          ></ng-template>\n        </div>\n      </ng-container>\n      <ng-template #noImageThumbTpl>\n        <ng-template\n          [ngTemplateOutlet]=\"iconNode\"\n          [ngTemplateOutletContext]=\"{ $implicit: file }\"\n        ></ng-template>\n      </ng-template>\n    </ng-template>\n    <ng-template #iconNode let-file>\n      <ng-container *ngIf=\"!iconRender; else iconRender\">\n        <ng-container [ngSwitch]=\"listType\">\n          <ng-container *ngSwitchCase=\"'picture'\">\n            <ng-container *ngIf=\"file.isUploading; else iconNodeFileIcon\">\n              <i nz-icon nzType=\"loading\"></i>\n            </ng-container>\n          </ng-container>\n          <ng-container *ngSwitchCase=\"'picture-card'\">\n            <ng-container *ngIf=\"file.isUploading; else iconNodeFileIcon\">\n              {{ locale.uploading }}\n            </ng-container>\n          </ng-container>\n          <i *ngSwitchDefault nz-icon [nzType]=\"file.isUploading ? 'loading' : 'paper-clip'\"></i>\n        </ng-container>\n      </ng-container>\n      <ng-template #iconNodeFileIcon>\n        <i nz-icon [nzType]=\"file.isImageUrl ? 'picture' : 'file'\" nzTheme=\"twotone\"></i>\n      </ng-template>\n    </ng-template>\n    <ng-template #removeIcon>\n      <button\n        *ngIf=\"icons.showRemoveIcon\"\n        type=\"button\"\n        nz-button\n        nzType=\"text\"\n        nzSize=\"small\"\n        (click)=\"handleRemove(file, $event)\"\n        [attr.title]=\"locale.removeFile\"\n        class=\"ant-upload-list-item-card-actions-btn\"\n      >\n        <i nz-icon nzType=\"delete\"></i>\n      </button>\n    </ng-template>\n    <ng-template #downloadIcon>\n      <button\n        *ngIf=\"file.showDownload\"\n        type=\"button\"\n        nz-button\n        nzType=\"text\"\n        nzSize=\"small\"\n        (click)=\"handleDownload(file)\"\n        [attr.title]=\"locale.downloadFile\"\n        class=\"ant-upload-list-item-card-actions-btn\"\n      >\n        <i nz-icon nzType=\"download\"></i>\n      </button>\n    </ng-template>\n    <ng-template #downloadOrDelete>\n      <span\n        *ngIf=\"listType !== 'picture-card'\"\n        class=\"ant-upload-list-item-card-actions {{ listType === 'picture' ? 'picture' : '' }}\"\n      >\n        <ng-template [ngTemplateOutlet]=\"downloadIcon\"></ng-template>\n        <ng-template [ngTemplateOutlet]=\"removeIcon\"></ng-template>\n      </span>\n    </ng-template>\n    <ng-template #preview>\n      <a\n        *ngIf=\"file.url\"\n        target=\"_blank\"\n        rel=\"noopener noreferrer\"\n        class=\"ant-upload-list-item-name\"\n        [attr.title]=\"file.name\"\n        [href]=\"file.url\"\n        [attr.download]=\"file.linkProps && file.linkProps.download\"\n        (click)=\"handlePreview(file, $event)\"\n      >\n        {{ file.name }}\n      </a>\n      <span\n        *ngIf=\"!file.url\"\n        class=\"ant-upload-list-item-name\"\n        [attr.title]=\"file.name\"\n        (click)=\"handlePreview(file, $event)\"\n      >\n        {{ file.name }}\n      </span>\n      <ng-template [ngTemplateOutlet]=\"downloadOrDelete\"></ng-template>\n    </ng-template>\n    <div class=\"ant-upload-list-item-info\">\n      <span class=\"ant-upload-span\">\n        <ng-template [ngTemplateOutlet]=\"icon\"></ng-template>\n        <ng-template [ngTemplateOutlet]=\"preview\"></ng-template>\n      </span>\n    </div>\n    <span\n      *ngIf=\"listType === 'picture-card' && !file.isUploading\"\n      class=\"ant-upload-list-item-actions\"\n    >\n      <a\n        *ngIf=\"icons.showPreviewIcon\"\n        [href]=\"file.url || file.thumbUrl\"\n        target=\"_blank\"\n        rel=\"noopener noreferrer\"\n        [attr.title]=\"locale.previewFile\"\n        [ngStyle]=\"!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null\"\n        (click)=\"handlePreview(file, $event)\"\n      >\n        <i nz-icon nzType=\"eye\"></i>\n      </a>\n      <ng-container *ngIf=\"file.status === 'done'\">\n        <ng-template [ngTemplateOutlet]=\"downloadIcon\"></ng-template>\n      </ng-container>\n      <ng-template [ngTemplateOutlet]=\"removeIcon\"></ng-template>\n    </span>\n    <div *ngIf=\"file.isUploading\" class=\"ant-upload-list-item-progress\">\n      <nz-progress\n        [nzPercent]=\"file.percent!\"\n        nzType=\"line\"\n        [nzShowInfo]=\"false\"\n        [nzStrokeWidth]=\"2\"\n      ></nz-progress>\n    </div>\n  </div>\n</div>\n",
                     animations: [
                         animations.trigger('itemState', [
                             animations.transition(':enter', [animations.style({ height: '0', width: '0', opacity: 0 }), animations.animate(150, animations.style({ height: '*', width: '*', opacity: 1 }))]),
@@ -843,7 +841,7 @@
                         ])
                     ],
                     host: {
-                        '[class.ant-upload-list]': "true",
+                        '[class.ant-upload-list-rtl]': "dir === 'rtl'",
                         '[class.ant-upload-list-text]': "listType === 'text'",
                         '[class.ant-upload-list-picture]': "listType === 'picture'",
                         '[class.ant-upload-list-picture-card]': "listType === 'picture-card'"
@@ -857,7 +855,8 @@
         { type: core.ChangeDetectorRef },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] },
         { type: core.NgZone },
-        { type: platform.Platform }
+        { type: platform.Platform },
+        { type: core.ElementRef }
     ]; };
     NzUploadListComponent.propDecorators = {
         locale: [{ type: core.Input }],
@@ -869,16 +868,19 @@
         onDownload: [{ type: core.Input }],
         previewFile: [{ type: core.Input }],
         previewIsImage: [{ type: core.Input }],
-        iconRender: [{ type: core.Input }]
+        iconRender: [{ type: core.Input }],
+        dir: [{ type: core.Input }]
     };
 
     var NzUploadComponent = /** @class */ (function () {
         // #endregion
-        function NzUploadComponent(cdr, i18n) {
+        function NzUploadComponent(cdr, i18n, directionality) {
             var _this = this;
             this.cdr = cdr;
             this.i18n = i18n;
+            this.directionality = directionality;
             this.destroy$ = new rxjs.Subject();
+            this.dir = 'ltr';
             // #region fields
             this.nzType = 'select';
             this.nzLimit = 0;
@@ -1080,13 +1082,21 @@
                 this.prefixCls,
                 this.prefixCls + "-" + this.nzType
             ], subCls, [
-                (this.nzDisabled && this.prefixCls + "-disabled") || ''
+                (this.nzDisabled && this.prefixCls + "-disabled") || '',
+                (this.dir === 'rtl' && this.prefixCls + "-rtl") || ''
             ]).filter(function (item) { return !!item; });
             this.cdr.detectChanges();
         };
         // #endregion
         NzUploadComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.setClassMap();
+                _this.cdr.detectChanges();
+            });
             this.i18n.localeChange.pipe(operators.takeUntil(this.destroy$)).subscribe(function () {
                 _this.locale = _this.i18n.getLocaleData('Upload');
                 _this.detectChangesList();
@@ -1105,7 +1115,7 @@
         { type: core.Component, args: [{
                     selector: 'nz-upload',
                     exportAs: 'nzUpload',
-                    template: "<ng-template #list>\n  <nz-upload-list\n    *ngIf=\"locale && !nzFileListRender\"\n    #listComp\n    [style.display]=\"nzShowUploadList ? '' : 'none'\"\n    [locale]=\"locale\"\n    [listType]=\"nzListType\"\n    [items]=\"nzFileList || []\"\n    [icons]=\"$any(nzShowUploadList)\"\n    [iconRender]=\"nzIconRender\"\n    [previewFile]=\"nzPreviewFile\"\n    [previewIsImage]=\"nzPreviewIsImage\"\n    [onPreview]=\"nzPreview\"\n    [onRemove]=\"onRemove\"\n    [onDownload]=\"nzDownload\"\n  ></nz-upload-list>\n  <ng-container *ngIf=\"nzFileListRender\">\n    <ng-container\n      *ngTemplateOutlet=\"nzFileListRender; context: { $implicit: nzFileList }\"\n    ></ng-container>\n  </ng-container>\n</ng-template>\n<ng-template #con><ng-content></ng-content></ng-template>\n<ng-template #btn>\n  <div [ngClass]=\"classList\" [style.display]=\"nzShowButton ? '' : 'none'\">\n    <div nz-upload-btn #uploadComp [options]=\"_btnOptions!\">\n      <ng-template [ngTemplateOutlet]=\"con\"></ng-template>\n    </div>\n  </div>\n</ng-template>\n<ng-container *ngIf=\"nzType === 'drag'; else select\">\n  <div\n    [ngClass]=\"classList\"\n    (drop)=\"fileDrop($event)\"\n    (dragover)=\"fileDrop($event)\"\n    (dragleave)=\"fileDrop($event)\"\n  >\n    <div nz-upload-btn #uploadComp [options]=\"_btnOptions!\" class=\"ant-upload-btn\">\n      <div class=\"ant-upload-drag-container\">\n        <ng-template [ngTemplateOutlet]=\"con\"></ng-template>\n      </div>\n    </div>\n  </div>\n  <ng-template [ngTemplateOutlet]=\"list\"></ng-template>\n</ng-container>\n<ng-template #select>\n  <ng-container *ngIf=\"nzListType === 'picture-card'; else pic\">\n    <ng-template [ngTemplateOutlet]=\"list\"></ng-template>\n    <ng-template [ngTemplateOutlet]=\"btn\"></ng-template>\n  </ng-container>\n</ng-template>\n<ng-template #pic>\n  <ng-template [ngTemplateOutlet]=\"btn\"></ng-template>\n  <ng-template [ngTemplateOutlet]=\"list\"></ng-template>\n</ng-template>\n",
+                    template: "<ng-template #list>\n  <nz-upload-list\n    *ngIf=\"locale && !nzFileListRender\"\n    #listComp\n    [style.display]=\"nzShowUploadList ? '' : 'none'\"\n    [locale]=\"locale\"\n    [listType]=\"nzListType\"\n    [items]=\"nzFileList || []\"\n    [icons]=\"$any(nzShowUploadList)\"\n    [iconRender]=\"nzIconRender\"\n    [previewFile]=\"nzPreviewFile\"\n    [previewIsImage]=\"nzPreviewIsImage\"\n    [onPreview]=\"nzPreview\"\n    [onRemove]=\"onRemove\"\n    [onDownload]=\"nzDownload\"\n    [dir]=\"dir\"\n  ></nz-upload-list>\n  <ng-container *ngIf=\"nzFileListRender\">\n    <ng-container\n      *ngTemplateOutlet=\"nzFileListRender; context: { $implicit: nzFileList }\"\n    ></ng-container>\n  </ng-container>\n</ng-template>\n<ng-template #con><ng-content></ng-content></ng-template>\n<ng-template #btn>\n  <div [ngClass]=\"classList\" [style.display]=\"nzShowButton ? '' : 'none'\">\n    <div nz-upload-btn #uploadComp [options]=\"_btnOptions!\">\n      <ng-template [ngTemplateOutlet]=\"con\"></ng-template>\n    </div>\n  </div>\n</ng-template>\n<ng-container *ngIf=\"nzType === 'drag'; else select\">\n  <div\n    [ngClass]=\"classList\"\n    (drop)=\"fileDrop($event)\"\n    (dragover)=\"fileDrop($event)\"\n    (dragleave)=\"fileDrop($event)\"\n  >\n    <div nz-upload-btn #uploadComp [options]=\"_btnOptions!\" class=\"ant-upload-btn\">\n      <div class=\"ant-upload-drag-container\">\n        <ng-template [ngTemplateOutlet]=\"con\"></ng-template>\n      </div>\n    </div>\n  </div>\n  <ng-template [ngTemplateOutlet]=\"list\"></ng-template>\n</ng-container>\n<ng-template #select>\n  <ng-container *ngIf=\"nzListType === 'picture-card'; else pic\">\n    <ng-template [ngTemplateOutlet]=\"list\"></ng-template>\n    <ng-template [ngTemplateOutlet]=\"btn\"></ng-template>\n  </ng-container>\n</ng-template>\n<ng-template #pic>\n  <ng-template [ngTemplateOutlet]=\"btn\"></ng-template>\n  <ng-template [ngTemplateOutlet]=\"list\"></ng-template>\n</ng-template>\n",
                     preserveWhitespaces: false,
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
@@ -1116,7 +1126,8 @@
     ];
     NzUploadComponent.ctorParameters = function () { return [
         { type: core.ChangeDetectorRef },
-        { type: i18n.NzI18nService }
+        { type: i18n.NzI18nService },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzUploadComponent.propDecorators = {
         uploadComp: [{ type: core.ViewChild, args: ['uploadComp', { static: false },] }],
@@ -1197,7 +1208,17 @@
     }());
     NzUploadModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, forms.FormsModule, platform.PlatformModule, tooltip.NzToolTipModule, progress.NzProgressModule, i18n.NzI18nModule, icon.NzIconModule, button.NzButtonModule],
+                    imports: [
+                        bidi.BidiModule,
+                        common.CommonModule,
+                        forms.FormsModule,
+                        platform.PlatformModule,
+                        tooltip.NzToolTipModule,
+                        progress.NzProgressModule,
+                        i18n.NzI18nModule,
+                        icon.NzIconModule,
+                        button.NzButtonModule
+                    ],
                     declarations: [NzUploadComponent, NzUploadBtnComponent, NzUploadListComponent],
                     exports: [NzUploadComponent]
                 },] }

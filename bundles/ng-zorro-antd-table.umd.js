@@ -1,19 +1,23 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/platform'), require('@angular/cdk/scrolling'), require('@angular/common'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/button'), require('ng-zorro-antd/checkbox'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/resize-observers'), require('ng-zorro-antd/dropdown'), require('ng-zorro-antd/empty'), require('ng-zorro-antd/i18n'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/menu'), require('ng-zorro-antd/pagination'), require('ng-zorro-antd/radio'), require('ng-zorro-antd/spin'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/config')) :
-  typeof define === 'function' && define.amd ? define('ng-zorro-antd/table', ['exports', '@angular/cdk/platform', '@angular/cdk/scrolling', '@angular/common', '@angular/core', '@angular/forms', 'ng-zorro-antd/button', 'ng-zorro-antd/checkbox', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/resize-observers', 'ng-zorro-antd/dropdown', 'ng-zorro-antd/empty', 'ng-zorro-antd/i18n', 'ng-zorro-antd/icon', 'ng-zorro-antd/menu', 'ng-zorro-antd/pagination', 'ng-zorro-antd/radio', 'ng-zorro-antd/spin', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/util', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/config'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].table = {}), global.ng.cdk.platform, global.ng.cdk.scrolling, global.ng.common, global.ng.core, global.ng.forms, global['ng-zorro-antd'].button, global['ng-zorro-antd'].checkbox, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core['resize-observers'], global['ng-zorro-antd'].dropdown, global['ng-zorro-antd'].empty, global['ng-zorro-antd'].i18n, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].menu, global['ng-zorro-antd'].pagination, global['ng-zorro-antd'].radio, global['ng-zorro-antd'].spin, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.config));
-}(this, (function (exports, platform, scrolling, common, core, forms, button, checkbox, outlet, resizeObservers, dropdown, empty, i18n, icon, menu, pagination, radio, spin, rxjs, operators, util, services, config) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/platform'), require('@angular/cdk/scrolling'), require('@angular/common'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/button'), require('ng-zorro-antd/checkbox'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/resize-observers'), require('ng-zorro-antd/dropdown'), require('ng-zorro-antd/empty'), require('ng-zorro-antd/i18n'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/menu'), require('ng-zorro-antd/pagination'), require('ng-zorro-antd/radio'), require('ng-zorro-antd/spin'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/config')) :
+  typeof define === 'function' && define.amd ? define('ng-zorro-antd/table', ['exports', '@angular/cdk/bidi', '@angular/cdk/platform', '@angular/cdk/scrolling', '@angular/common', '@angular/core', '@angular/forms', 'ng-zorro-antd/button', 'ng-zorro-antd/checkbox', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/resize-observers', 'ng-zorro-antd/dropdown', 'ng-zorro-antd/empty', 'ng-zorro-antd/i18n', 'ng-zorro-antd/icon', 'ng-zorro-antd/menu', 'ng-zorro-antd/pagination', 'ng-zorro-antd/radio', 'ng-zorro-antd/spin', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/util', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/config'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].table = {}), global.ng.cdk.bidi, global.ng.cdk.platform, global.ng.cdk.scrolling, global.ng.common, global.ng.core, global.ng.forms, global['ng-zorro-antd'].button, global['ng-zorro-antd'].checkbox, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core['resize-observers'], global['ng-zorro-antd'].dropdown, global['ng-zorro-antd'].empty, global['ng-zorro-antd'].i18n, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].menu, global['ng-zorro-antd'].pagination, global['ng-zorro-antd'].radio, global['ng-zorro-antd'].spin, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.config));
+}(this, (function (exports, bidi, platform, scrolling, common, core, forms, button, checkbox, outlet, resizeObservers, dropdown, empty, i18n, icon, menu, pagination, radio, spin, rxjs, operators, util, services, config) { 'use strict';
 
   /**
    * Use of this source code is governed by an MIT-style license that can be
    * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
    */
   var NzFilterTriggerComponent = /** @class */ (function () {
-      function NzFilterTriggerComponent(cdr) {
+      function NzFilterTriggerComponent(cdr, elementRef) {
           this.cdr = cdr;
+          this.elementRef = elementRef;
           this.nzActive = false;
           this.nzVisible = false;
+          this.nzHasBackdrop = false;
           this.nzVisibleChange = new core.EventEmitter();
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-filter-trigger-container');
       }
       NzFilterTriggerComponent.prototype.onVisibleChange = function (visible) {
           this.nzVisible = visible;
@@ -39,20 +43,21 @@
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
                   preserveWhitespaces: false,
                   encapsulation: core.ViewEncapsulation.None,
-                  template: "\n    <span\n      nz-dropdown\n      class=\"ant-table-filter-trigger\"\n      nzTrigger=\"click\"\n      nzPlacement=\"bottomRight\"\n      [nzClickHide]=\"false\"\n      [nzDropdownMenu]=\"nzDropdownMenu\"\n      [class.active]=\"nzActive\"\n      [class.ant-table-filter-open]=\"nzVisible\"\n      [nzVisible]=\"nzVisible\"\n      (nzVisibleChange)=\"onVisibleChange($event)\"\n      (click)=\"onFilterClick($event)\"\n    >\n      <ng-content></ng-content>\n    </span>\n  ",
+                  template: "\n    <span\n      nz-dropdown\n      class=\"ant-table-filter-trigger\"\n      nzTrigger=\"click\"\n      nzPlacement=\"bottomRight\"\n      [nzHasBackdrop]=\"nzHasBackdrop\"\n      [nzClickHide]=\"false\"\n      [nzDropdownMenu]=\"nzDropdownMenu\"\n      [class.active]=\"nzActive\"\n      [class.ant-table-filter-open]=\"nzVisible\"\n      [nzVisible]=\"nzVisible\"\n      (nzVisibleChange)=\"onVisibleChange($event)\"\n      (click)=\"onFilterClick($event)\"\n    >\n      <ng-content></ng-content>\n    </span>\n  ",
                   host: {
-                      '[class.ant-table-filter-trigger-container]': 'true',
                       '[class.ant-table-filter-trigger-container-open]': 'nzVisible'
                   }
               },] }
   ];
   NzFilterTriggerComponent.ctorParameters = function () { return [
-      { type: core.ChangeDetectorRef }
+      { type: core.ChangeDetectorRef },
+      { type: core.ElementRef }
   ]; };
   NzFilterTriggerComponent.propDecorators = {
       nzActive: [{ type: core.Input }],
       nzDropdownMenu: [{ type: core.Input }],
       nzVisible: [{ type: core.Input }],
+      nzHasBackdrop: [{ type: core.Input }],
       nzVisibleChange: [{ type: core.Output }]
   };
 
@@ -61,9 +66,10 @@
    * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
    */
   var NzTableFilterComponent = /** @class */ (function () {
-      function NzTableFilterComponent(cdr, i18n) {
+      function NzTableFilterComponent(cdr, i18n, elementRef) {
           this.cdr = cdr;
           this.i18n = i18n;
+          this.elementRef = elementRef;
           this.contentTemplate = null;
           this.customFilter = false;
           this.extraTemplate = null;
@@ -75,6 +81,8 @@
           this.isChecked = false;
           this.isVisible = false;
           this.listOfParsedFilter = [];
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-filter-column');
       }
       NzTableFilterComponent.prototype.trackByValue = function (_, item) {
           return item.value;
@@ -163,15 +171,13 @@
                   preserveWhitespaces: false,
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
                   encapsulation: core.ViewEncapsulation.None,
-                  template: "\n    <span class=\"ant-table-filter-column-title\">\n      <ng-template [ngTemplateOutlet]=\"contentTemplate\"></ng-template>\n    </span>\n    <ng-container *ngIf=\"!customFilter; else extraTemplate\">\n      <nz-filter-trigger\n        [nzVisible]=\"isVisible\"\n        [nzActive]=\"isChecked\"\n        [nzDropdownMenu]=\"filterMenu\"\n        (nzVisibleChange)=\"onVisibleChange($event)\"\n      >\n        <i nz-icon nzType=\"filter\" nzTheme=\"fill\"></i>\n      </nz-filter-trigger>\n      <nz-dropdown-menu #filterMenu=\"nzDropdownMenu\">\n        <div class=\"ant-table-filter-dropdown\">\n          <ul nz-menu>\n            <li nz-menu-item [nzSelected]=\"f.checked\" *ngFor=\"let f of listOfParsedFilter; trackBy: trackByValue\" (click)=\"check(f)\">\n              <label nz-radio *ngIf=\"!filterMultiple\" [ngModel]=\"f.checked\" (ngModelChange)=\"check(f)\"></label>\n              <label nz-checkbox *ngIf=\"filterMultiple\" [ngModel]=\"f.checked\" (ngModelChange)=\"check(f)\"></label>\n              <span>{{ f.text }}</span>\n            </li>\n          </ul>\n          <div class=\"ant-table-filter-dropdown-btns\">\n            <button nz-button nzType=\"link\" nzSize=\"small\" (click)=\"reset()\" [disabled]=\"!isChecked\">{{ locale.filterReset }}</button>\n            <button nz-button nzType=\"primary\" nzSize=\"small\" (click)=\"confirm()\">{{ locale.filterConfirm }}</button>\n          </div>\n        </div>\n      </nz-dropdown-menu>\n    </ng-container>\n  ",
-                  host: {
-                      '[class.ant-table-filter-column]': 'true'
-                  }
+                  template: "\n    <span class=\"ant-table-filter-column-title\">\n      <ng-template [ngTemplateOutlet]=\"contentTemplate\"></ng-template>\n    </span>\n    <ng-container *ngIf=\"!customFilter; else extraTemplate\">\n      <nz-filter-trigger\n        [nzVisible]=\"isVisible\"\n        [nzActive]=\"isChecked\"\n        [nzDropdownMenu]=\"filterMenu\"\n        (nzVisibleChange)=\"onVisibleChange($event)\"\n      >\n        <i nz-icon nzType=\"filter\" nzTheme=\"fill\"></i>\n      </nz-filter-trigger>\n      <nz-dropdown-menu #filterMenu=\"nzDropdownMenu\">\n        <div class=\"ant-table-filter-dropdown\">\n          <ul nz-menu>\n            <li nz-menu-item [nzSelected]=\"f.checked\" *ngFor=\"let f of listOfParsedFilter; trackBy: trackByValue\" (click)=\"check(f)\">\n              <label nz-radio *ngIf=\"!filterMultiple\" [ngModel]=\"f.checked\" (ngModelChange)=\"check(f)\"></label>\n              <label nz-checkbox *ngIf=\"filterMultiple\" [ngModel]=\"f.checked\" (ngModelChange)=\"check(f)\"></label>\n              <span>{{ f.text }}</span>\n            </li>\n          </ul>\n          <div class=\"ant-table-filter-dropdown-btns\">\n            <button nz-button nzType=\"link\" nzSize=\"small\" (click)=\"reset()\" [disabled]=\"!isChecked\">{{ locale.filterReset }}</button>\n            <button nz-button nzType=\"primary\" nzSize=\"small\" (click)=\"confirm()\">{{ locale.filterConfirm }}</button>\n          </div>\n        </div>\n      </nz-dropdown-menu>\n    </ng-container>\n  "
               },] }
   ];
   NzTableFilterComponent.ctorParameters = function () { return [
       { type: core.ChangeDetectorRef },
-      { type: i18n.NzI18nService }
+      { type: i18n.NzI18nService },
+      { type: core.ElementRef }
   ]; };
   NzTableFilterComponent.propDecorators = {
       contentTemplate: [{ type: core.Input }],
@@ -187,10 +193,13 @@
    * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
    */
   var NzRowExpandButtonDirective = /** @class */ (function () {
-      function NzRowExpandButtonDirective() {
+      function NzRowExpandButtonDirective(elementRef) {
+          this.elementRef = elementRef;
           this.expand = false;
           this.spaceMode = false;
           this.expandChange = new core.EventEmitter();
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-row-expand-icon');
       }
       NzRowExpandButtonDirective.prototype.onHostClick = function () {
           if (!this.spaceMode) {
@@ -205,7 +214,6 @@
                   selector: 'button[nz-row-expand-button]',
                   host: {
                       '[type]': "'button'",
-                      '[class.ant-table-row-expand-icon]': 'true',
                       '[class.ant-table-row-expand-icon-expanded]': "!spaceMode && expand === true",
                       '[class.ant-table-row-expand-icon-collapsed]': "!spaceMode && expand === false",
                       '[class.ant-table-row-expand-icon-spaced]': 'spaceMode',
@@ -213,6 +221,9 @@
                   }
               },] }
   ];
+  NzRowExpandButtonDirective.ctorParameters = function () { return [
+      { type: core.ElementRef }
+  ]; };
   NzRowExpandButtonDirective.propDecorators = {
       expand: [{ type: core.Input }],
       spaceMode: [{ type: core.Input }],
@@ -224,8 +235,11 @@
    * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
    */
   var NzRowIndentDirective = /** @class */ (function () {
-      function NzRowIndentDirective() {
+      function NzRowIndentDirective(elementRef) {
+          this.elementRef = elementRef;
           this.indentSize = 0;
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-row-indent');
       }
       return NzRowIndentDirective;
   }());
@@ -233,11 +247,13 @@
       { type: core.Directive, args: [{
                   selector: 'nz-row-indent',
                   host: {
-                      '[class.ant-table-row-indent]': 'true',
                       '[style.padding-left.px]': 'indentSize'
                   }
               },] }
   ];
+  NzRowIndentDirective.ctorParameters = function () { return [
+      { type: core.ElementRef }
+  ]; };
   NzRowIndentDirective.propDecorators = {
       indentSize: [{ type: core.Input }]
   };
@@ -247,7 +263,8 @@
    * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
    */
   var NzTableSelectionComponent = /** @class */ (function () {
-      function NzTableSelectionComponent() {
+      function NzTableSelectionComponent(elementRef) {
+          this.elementRef = elementRef;
           this.listOfSelections = [];
           this.checked = false;
           this.disabled = false;
@@ -255,6 +272,8 @@
           this.showCheckbox = false;
           this.showRowSelection = false;
           this.checkedChange = new core.EventEmitter();
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-selection');
       }
       NzTableSelectionComponent.prototype.onCheckedChange = function (checked) {
           this.checked = checked;
@@ -268,12 +287,12 @@
                   preserveWhitespaces: false,
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
                   encapsulation: core.ViewEncapsulation.None,
-                  template: "\n    <label\n      *ngIf=\"showCheckbox\"\n      nz-checkbox\n      [class.ant-table-selection-select-all-custom]=\"showRowSelection\"\n      [ngModel]=\"checked\"\n      [nzDisabled]=\"disabled\"\n      [nzIndeterminate]=\"indeterminate\"\n      (ngModelChange)=\"onCheckedChange($event)\"\n    >\n    </label>\n    <div class=\"ant-table-selection-extra\" *ngIf=\"showRowSelection\">\n      <span nz-dropdown class=\"ant-table-selection-down\" nzPlacement=\"bottomLeft\" [nzDropdownMenu]=\"selectionMenu\">\n        <i nz-icon nzType=\"down\"></i>\n      </span>\n      <nz-dropdown-menu #selectionMenu=\"nzDropdownMenu\">\n        <ul nz-menu class=\"ant-table-selection-menu\">\n          <li nz-menu-item *ngFor=\"let selection of listOfSelections\" (click)=\"selection.onSelect()\">\n            {{ selection.text }}\n          </li>\n        </ul>\n      </nz-dropdown-menu>\n    </div>\n  ",
-                  host: {
-                      '[class.ant-table-selection]': 'true'
-                  }
+                  template: "\n    <label\n      *ngIf=\"showCheckbox\"\n      nz-checkbox\n      [class.ant-table-selection-select-all-custom]=\"showRowSelection\"\n      [ngModel]=\"checked\"\n      [nzDisabled]=\"disabled\"\n      [nzIndeterminate]=\"indeterminate\"\n      (ngModelChange)=\"onCheckedChange($event)\"\n    ></label>\n    <div class=\"ant-table-selection-extra\" *ngIf=\"showRowSelection\">\n      <span nz-dropdown class=\"ant-table-selection-down\" nzPlacement=\"bottomLeft\" [nzDropdownMenu]=\"selectionMenu\">\n        <i nz-icon nzType=\"down\"></i>\n      </span>\n      <nz-dropdown-menu #selectionMenu=\"nzDropdownMenu\">\n        <ul nz-menu class=\"ant-table-selection-menu\">\n          <li nz-menu-item *ngFor=\"let selection of listOfSelections\" (click)=\"selection.onSelect()\">\n            {{ selection.text }}\n          </li>\n        </ul>\n      </nz-dropdown-menu>\n    </div>\n  "
               },] }
   ];
+  NzTableSelectionComponent.ctorParameters = function () { return [
+      { type: core.ElementRef }
+  ]; };
   NzTableSelectionComponent.propDecorators = {
       listOfSelections: [{ type: core.Input }],
       checked: [{ type: core.Input }],
@@ -289,12 +308,15 @@
    * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
    */
   var NzTableSortersComponent = /** @class */ (function () {
-      function NzTableSortersComponent() {
+      function NzTableSortersComponent(elementRef) {
+          this.elementRef = elementRef;
           this.sortDirections = ['ascend', 'descend', null];
           this.sortOrder = null;
           this.contentTemplate = null;
           this.isUp = false;
           this.isDown = false;
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-column-sorters');
       }
       NzTableSortersComponent.prototype.ngOnChanges = function (changes) {
           var sortDirections = changes.sortDirections;
@@ -311,12 +333,12 @@
                   preserveWhitespaces: false,
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
                   encapsulation: core.ViewEncapsulation.None,
-                  template: "\n    <span><ng-template [ngTemplateOutlet]=\"contentTemplate\"></ng-template></span>\n    <span class=\"ant-table-column-sorter\" [class.ant-table-column-sorter-full]=\"isDown && isUp\">\n      <span class=\"ant-table-column-sorter-inner\">\n        <i nz-icon nzType=\"caret-up\" *ngIf=\"isUp\" class=\"ant-table-column-sorter-up\" [class.active]=\"sortOrder == 'ascend'\"></i>\n        <i nz-icon nzType=\"caret-down\" *ngIf=\"isDown\" class=\"ant-table-column-sorter-down\" [class.active]=\"sortOrder == 'descend'\"></i>\n      </span>\n    </span>\n  ",
-                  host: {
-                      '[class.ant-table-column-sorters]': 'true'
-                  }
+                  template: "\n    <span><ng-template [ngTemplateOutlet]=\"contentTemplate\"></ng-template></span>\n    <span class=\"ant-table-column-sorter\" [class.ant-table-column-sorter-full]=\"isDown && isUp\">\n      <span class=\"ant-table-column-sorter-inner\">\n        <i nz-icon nzType=\"caret-up\" *ngIf=\"isUp\" class=\"ant-table-column-sorter-up\" [class.active]=\"sortOrder == 'ascend'\"></i>\n        <i nz-icon nzType=\"caret-down\" *ngIf=\"isDown\" class=\"ant-table-column-sorter-down\" [class.active]=\"sortOrder == 'descend'\"></i>\n      </span>\n    </span>\n  "
               },] }
   ];
+  NzTableSortersComponent.ctorParameters = function () { return [
+      { type: core.ElementRef }
+  ]; };
   NzTableSortersComponent.propDecorators = {
       sortDirections: [{ type: core.Input }],
       sortOrder: [{ type: core.Input }],
@@ -1114,7 +1136,8 @@
   };
 
   var NzThSelectionComponent = /** @class */ (function () {
-      function NzThSelectionComponent() {
+      function NzThSelectionComponent(elementRef) {
+          this.elementRef = elementRef;
           this.nzSelections = [];
           this.nzChecked = false;
           this.nzDisabled = false;
@@ -1124,6 +1147,8 @@
           this.nzCheckedChange = new core.EventEmitter();
           this.isNzShowExpandChanged = false;
           this.isNzShowCheckboxChanged = false;
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-selection-column');
       }
       NzThSelectionComponent.prototype.onCheckedChange = function (checked) {
           this.nzChecked = checked;
@@ -1153,12 +1178,12 @@
                   preserveWhitespaces: false,
                   encapsulation: core.ViewEncapsulation.None,
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
-                  template: "\n    <nz-table-selection\n      [checked]=\"nzChecked\"\n      [disabled]=\"nzDisabled\"\n      [indeterminate]=\"nzIndeterminate\"\n      [listOfSelections]=\"nzSelections\"\n      [showCheckbox]=\"nzShowCheckbox\"\n      [showRowSelection]=\"nzShowRowSelection\"\n      (checkedChange)=\"onCheckedChange($event)\"\n    ></nz-table-selection>\n    <ng-content></ng-content>\n  ",
-                  host: {
-                      '[class.ant-table-selection-column]': 'true'
-                  }
+                  template: "\n    <nz-table-selection\n      [checked]=\"nzChecked\"\n      [disabled]=\"nzDisabled\"\n      [indeterminate]=\"nzIndeterminate\"\n      [listOfSelections]=\"nzSelections\"\n      [showCheckbox]=\"nzShowCheckbox\"\n      [showRowSelection]=\"nzShowRowSelection\"\n      (checkedChange)=\"onCheckedChange($event)\"\n    ></nz-table-selection>\n    <ng-content></ng-content>\n  "
               },] }
   ];
+  NzThSelectionComponent.ctorParameters = function () { return [
+      { type: core.ElementRef }
+  ]; };
   NzThSelectionComponent.propDecorators = {
       nzSelections: [{ type: core.Input }],
       nzChecked: [{ type: core.Input }],
@@ -1339,11 +1364,14 @@
    * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
    */
   var NzTableInnerDefaultComponent = /** @class */ (function () {
-      function NzTableInnerDefaultComponent() {
+      function NzTableInnerDefaultComponent(elementRef) {
+          this.elementRef = elementRef;
           this.tableLayout = 'auto';
           this.listOfColWidth = [];
           this.theadTemplate = null;
           this.contentTemplate = null;
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-container');
       }
       return NzTableInnerDefaultComponent;
   }());
@@ -1352,12 +1380,12 @@
                   selector: 'nz-table-inner-default',
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
                   encapsulation: core.ViewEncapsulation.None,
-                  template: "\n    <div class=\"ant-table-content\">\n      <table\n        nz-table-content\n        [contentTemplate]=\"contentTemplate\"\n        [tableLayout]=\"tableLayout\"\n        [listOfColWidth]=\"listOfColWidth\"\n        [theadTemplate]=\"theadTemplate\"\n      ></table>\n    </div>\n  ",
-                  host: {
-                      '[class.ant-table-container]': 'true'
-                  }
+                  template: "\n    <div class=\"ant-table-content\">\n      <table\n        nz-table-content\n        [contentTemplate]=\"contentTemplate\"\n        [tableLayout]=\"tableLayout\"\n        [listOfColWidth]=\"listOfColWidth\"\n        [theadTemplate]=\"theadTemplate\"\n      ></table>\n    </div>\n  "
               },] }
   ];
+  NzTableInnerDefaultComponent.ctorParameters = function () { return [
+      { type: core.ElementRef }
+  ]; };
   NzTableInnerDefaultComponent.propDecorators = {
       tableLayout: [{ type: core.Input }],
       listOfColWidth: [{ type: core.Input }],
@@ -1370,11 +1398,12 @@
    * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
    */
   var NzTableInnerScrollComponent = /** @class */ (function () {
-      function NzTableInnerScrollComponent(renderer, ngZone, platform, resizeService) {
+      function NzTableInnerScrollComponent(renderer, ngZone, platform, resizeService, elementRef) {
           this.renderer = renderer;
           this.ngZone = ngZone;
           this.platform = platform;
           this.resizeService = resizeService;
+          this.elementRef = elementRef;
           this.data = [];
           this.scrollX = null;
           this.scrollY = null;
@@ -1394,6 +1423,8 @@
           this.data$ = new rxjs.Subject();
           this.scroll$ = new rxjs.Subject();
           this.destroy$ = new rxjs.Subject();
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-container');
       }
       NzTableInnerScrollComponent.prototype.setScrollPositionClassName = function (clear) {
           if (clear === void 0) { clear = false; }
@@ -1463,17 +1494,15 @@
                   selector: 'nz-table-inner-scroll',
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
                   encapsulation: core.ViewEncapsulation.None,
-                  template: "\n    <ng-container *ngIf=\"scrollY\">\n      <div #tableHeaderElement [ngStyle]=\"headerStyleMap\" class=\"ant-table-header nz-table-hide-scrollbar\">\n        <table\n          nz-table-content\n          tableLayout=\"fixed\"\n          [scrollX]=\"scrollX\"\n          [listOfColWidth]=\"listOfColWidth\"\n          [theadTemplate]=\"theadTemplate\"\n        ></table>\n      </div>\n      <div #tableBodyElement *ngIf=\"!virtualTemplate\" class=\"ant-table-body\" [ngStyle]=\"bodyStyleMap\">\n        <table\n          nz-table-content\n          tableLayout=\"fixed\"\n          [scrollX]=\"scrollX\"\n          [listOfColWidth]=\"listOfColWidth\"\n          [contentTemplate]=\"contentTemplate\"\n        ></table>\n      </div>\n      <cdk-virtual-scroll-viewport\n        #tableBodyElement\n        *ngIf=\"virtualTemplate\"\n        [itemSize]=\"virtualItemSize\"\n        [maxBufferPx]=\"virtualMaxBufferPx\"\n        [minBufferPx]=\"virtualMinBufferPx\"\n        [style.height]=\"data.length ? scrollY : noDateVirtualHeight\"\n      >\n        <table nz-table-content tableLayout=\"fixed\" [scrollX]=\"scrollX\" [listOfColWidth]=\"listOfColWidth\">\n          <tbody>\n            <ng-container *cdkVirtualFor=\"let item of data; let i = index; trackBy: virtualForTrackBy\">\n              <ng-template [ngTemplateOutlet]=\"virtualTemplate\" [ngTemplateOutletContext]=\"{ $implicit: item, index: i }\"></ng-template>\n            </ng-container>\n          </tbody>\n        </table>\n      </cdk-virtual-scroll-viewport>\n    </ng-container>\n    <div class=\"ant-table-content\" *ngIf=\"!scrollY\">\n      <div #tableBodyElement class=\"ant-table-body\" [ngStyle]=\"bodyStyleMap\">\n        <table\n          nz-table-content\n          tableLayout=\"fixed\"\n          [scrollX]=\"scrollX\"\n          [listOfColWidth]=\"listOfColWidth\"\n          [theadTemplate]=\"theadTemplate\"\n          [contentTemplate]=\"contentTemplate\"\n        ></table>\n      </div>\n    </div>\n  ",
-                  host: {
-                      '[class.ant-table-container]': 'true'
-                  }
+                  template: "\n    <ng-container *ngIf=\"scrollY\">\n      <div #tableHeaderElement [ngStyle]=\"headerStyleMap\" class=\"ant-table-header nz-table-hide-scrollbar\">\n        <table\n          nz-table-content\n          tableLayout=\"fixed\"\n          [scrollX]=\"scrollX\"\n          [listOfColWidth]=\"listOfColWidth\"\n          [theadTemplate]=\"theadTemplate\"\n        ></table>\n      </div>\n      <div #tableBodyElement *ngIf=\"!virtualTemplate\" class=\"ant-table-body\" [ngStyle]=\"bodyStyleMap\">\n        <table\n          nz-table-content\n          tableLayout=\"fixed\"\n          [scrollX]=\"scrollX\"\n          [listOfColWidth]=\"listOfColWidth\"\n          [contentTemplate]=\"contentTemplate\"\n        ></table>\n      </div>\n      <cdk-virtual-scroll-viewport\n        #tableBodyElement\n        *ngIf=\"virtualTemplate\"\n        [itemSize]=\"virtualItemSize\"\n        [maxBufferPx]=\"virtualMaxBufferPx\"\n        [minBufferPx]=\"virtualMinBufferPx\"\n        [style.height]=\"data.length ? scrollY : noDateVirtualHeight\"\n      >\n        <table nz-table-content tableLayout=\"fixed\" [scrollX]=\"scrollX\" [listOfColWidth]=\"listOfColWidth\">\n          <tbody>\n            <ng-container *cdkVirtualFor=\"let item of data; let i = index; trackBy: virtualForTrackBy\">\n              <ng-template [ngTemplateOutlet]=\"virtualTemplate\" [ngTemplateOutletContext]=\"{ $implicit: item, index: i }\"></ng-template>\n            </ng-container>\n          </tbody>\n        </table>\n      </cdk-virtual-scroll-viewport>\n    </ng-container>\n    <div class=\"ant-table-content\" *ngIf=\"!scrollY\">\n      <div #tableBodyElement class=\"ant-table-body\" [ngStyle]=\"bodyStyleMap\">\n        <table\n          nz-table-content\n          tableLayout=\"fixed\"\n          [scrollX]=\"scrollX\"\n          [listOfColWidth]=\"listOfColWidth\"\n          [theadTemplate]=\"theadTemplate\"\n          [contentTemplate]=\"contentTemplate\"\n        ></table>\n      </div>\n    </div>\n  "
               },] }
   ];
   NzTableInnerScrollComponent.ctorParameters = function () { return [
       { type: core.Renderer2 },
       { type: core.NgZone },
       { type: platform.Platform },
-      { type: services.NzResizeService }
+      { type: services.NzResizeService },
+      { type: core.ElementRef }
   ]; };
   NzTableInnerScrollComponent.propDecorators = {
       data: [{ type: core.Input }],
@@ -1645,7 +1674,7 @@
 
   var NZ_CONFIG_MODULE_NAME = 'table';
   var NzTableComponent = /** @class */ (function () {
-      function NzTableComponent(elementRef, nzResizeObserver, nzConfigService, cdr, nzTableStyleService, nzTableDataService) {
+      function NzTableComponent(elementRef, nzResizeObserver, nzConfigService, cdr, nzTableStyleService, nzTableDataService, directionality) {
           var _this = this;
           this.elementRef = elementRef;
           this.nzResizeObserver = nzResizeObserver;
@@ -1653,6 +1682,7 @@
           this.cdr = cdr;
           this.nzTableStyleService = nzTableStyleService;
           this.nzTableDataService = nzTableDataService;
+          this.directionality = directionality;
           this._nzModuleName = NZ_CONFIG_MODULE_NAME;
           this.nzTableLayout = 'auto';
           this.nzShowTotal = null;
@@ -1698,10 +1728,14 @@
           this.listOfManualColWidth = [];
           this.hasFixLeft = false;
           this.hasFixRight = false;
+          this.showPagination = true;
           this.destroy$ = new rxjs.Subject();
           this.loading$ = new rxjs.BehaviorSubject(false);
           this.templateMode$ = new rxjs.BehaviorSubject(false);
+          this.dir = 'ltr';
           this.verticalScrollBarWidth = 0;
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-wrapper');
           this.nzConfigService
               .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
               .pipe(operators.takeUntil(this.destroy$))
@@ -1717,8 +1751,14 @@
       };
       NzTableComponent.prototype.ngOnInit = function () {
           var _this = this;
-          var _a = this.nzTableDataService, pageIndexDistinct$ = _a.pageIndexDistinct$, pageSizeDistinct$ = _a.pageSizeDistinct$, listOfCurrentPageData$ = _a.listOfCurrentPageData$, total$ = _a.total$, queryParams$ = _a.queryParams$;
-          var _b = this.nzTableStyleService, theadTemplate$ = _b.theadTemplate$, hasFixLeft$ = _b.hasFixLeft$, hasFixRight$ = _b.hasFixRight$;
+          var _a;
+          var _b = this.nzTableDataService, pageIndexDistinct$ = _b.pageIndexDistinct$, pageSizeDistinct$ = _b.pageSizeDistinct$, listOfCurrentPageData$ = _b.listOfCurrentPageData$, total$ = _b.total$, queryParams$ = _b.queryParams$;
+          var _c = this.nzTableStyleService, theadTemplate$ = _c.theadTemplate$, hasFixLeft$ = _c.hasFixLeft$, hasFixRight$ = _c.hasFixRight$;
+          this.dir = this.directionality.value;
+          (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+              _this.dir = direction;
+              _this.cdr.detectChanges();
+          });
           queryParams$.pipe(operators.takeUntil(this.destroy$)).subscribe(this.nzQueryParams);
           pageIndexDistinct$.pipe(operators.takeUntil(this.destroy$)).subscribe(function (pageIndex) {
               if (pageIndex !== _this.nzPageIndex) {
@@ -1758,8 +1798,8 @@
               _this.cdr.markForCheck();
           });
           rxjs.combineLatest([total$, this.loading$, this.templateMode$])
-              .pipe(operators.map(function (_a) {
-              var _b = __read(_a, 3), total = _b[0], loading = _b[1], templateMode = _b[2];
+              .pipe(operators.map(function (_b) {
+              var _c = __read(_b, 3), total = _c[0], loading = _c[1], templateMode = _c[2];
               return total === 0 && !loading && !templateMode;
           }), operators.takeUntil(this.destroy$))
               .subscribe(function (empty) {
@@ -1791,9 +1831,7 @@
               this.nzTableDataService.updateFrontPagination(this.nzFrontPagination);
           }
           if (nzScroll) {
-              this.scrollX = (this.nzScroll && this.nzScroll.x) || null;
-              this.scrollY = (this.nzScroll && this.nzScroll.y) || null;
-              this.nzTableStyleService.setScroll(this.scrollX, this.scrollY);
+              this.setScrollOnChanges();
           }
           if (nzWidthConfig) {
               this.nzTableStyleService.setTableWidthConfig(this.nzWidthConfig);
@@ -1807,13 +1845,14 @@
           if (nzNoResult) {
               this.nzTableStyleService.setNoResult(this.nzNoResult);
           }
+          this.updateShowPagination();
       };
       NzTableComponent.prototype.ngAfterViewInit = function () {
           var _this = this;
           this.nzResizeObserver
               .observe(this.elementRef)
-              .pipe(operators.map(function (_a) {
-              var _b = __read(_a, 1), entry = _b[0];
+              .pipe(operators.map(function (_b) {
+              var _c = __read(_b, 1), entry = _c[0];
               var width = entry.target.getBoundingClientRect().width;
               var scrollBarWidth = _this.scrollY ? _this.verticalScrollBarWidth : 0;
               return Math.floor(width - scrollBarWidth);
@@ -1827,6 +1866,17 @@
           this.destroy$.next();
           this.destroy$.complete();
       };
+      NzTableComponent.prototype.setScrollOnChanges = function () {
+          this.scrollX = (this.nzScroll && this.nzScroll.x) || null;
+          this.scrollY = (this.nzScroll && this.nzScroll.y) || null;
+          this.nzTableStyleService.setScroll(this.scrollX, this.scrollY);
+      };
+      NzTableComponent.prototype.updateShowPagination = function () {
+          this.showPagination =
+              (this.nzHideOnSinglePage && this.nzData.length > this.nzPageSize) ||
+                  (this.nzData.length > 0 && !this.nzHideOnSinglePage) ||
+                  (!this.nzFrontPagination && this.nzTotal > this.nzPageSize);
+      };
       return NzTableComponent;
   }());
   NzTableComponent.decorators = [
@@ -1837,9 +1887,9 @@
                   preserveWhitespaces: false,
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
                   encapsulation: core.ViewEncapsulation.None,
-                  template: "\n    <nz-spin [nzDelay]=\"nzLoadingDelay\" [nzSpinning]=\"nzLoading\" [nzIndicator]=\"nzLoadingIndicator\">\n      <ng-container *ngIf=\"nzPaginationPosition === 'both' || nzPaginationPosition === 'top'\">\n        <ng-template [ngTemplateOutlet]=\"paginationTemplate\"></ng-template>\n      </ng-container>\n      <div\n        #tableMainElement\n        class=\"ant-table\"\n        [class.ant-table-fixed-header]=\"nzData.length && scrollY\"\n        [class.ant-table-fixed-column]=\"scrollX\"\n        [class.ant-table-has-fix-left]=\"hasFixLeft\"\n        [class.ant-table-has-fix-right]=\"hasFixRight\"\n        [class.ant-table-bordered]=\"nzBordered\"\n        [class.nz-table-out-bordered]=\"nzOuterBordered && !nzBordered\"\n        [class.ant-table-middle]=\"nzSize === 'middle'\"\n        [class.ant-table-small]=\"nzSize === 'small'\"\n      >\n        <nz-table-title-footer [title]=\"nzTitle\" *ngIf=\"nzTitle\"></nz-table-title-footer>\n        <nz-table-inner-scroll\n          *ngIf=\"scrollY || scrollX; else defaultTemplate\"\n          [data]=\"data\"\n          [scrollX]=\"scrollX\"\n          [scrollY]=\"scrollY\"\n          [contentTemplate]=\"contentTemplate\"\n          [listOfColWidth]=\"listOfAutoColWidth\"\n          [theadTemplate]=\"theadTemplate\"\n          [verticalScrollBarWidth]=\"verticalScrollBarWidth\"\n          [virtualTemplate]=\"nzVirtualScrollDirective ? nzVirtualScrollDirective.templateRef : null\"\n          [virtualItemSize]=\"nzVirtualItemSize\"\n          [virtualMaxBufferPx]=\"nzVirtualMaxBufferPx\"\n          [virtualMinBufferPx]=\"nzVirtualMinBufferPx\"\n          [tableMainElement]=\"tableMainElement\"\n          [virtualForTrackBy]=\"nzVirtualForTrackBy\"\n        ></nz-table-inner-scroll>\n        <ng-template #defaultTemplate>\n          <nz-table-inner-default\n            [tableLayout]=\"nzTableLayout\"\n            [listOfColWidth]=\"listOfManualColWidth\"\n            [theadTemplate]=\"theadTemplate\"\n            [contentTemplate]=\"contentTemplate\"\n          ></nz-table-inner-default>\n        </ng-template>\n        <nz-table-title-footer [footer]=\"nzFooter\" *ngIf=\"nzFooter\"></nz-table-title-footer>\n      </div>\n      <ng-container *ngIf=\"nzPaginationPosition === 'both' || nzPaginationPosition === 'bottom'\">\n        <ng-template [ngTemplateOutlet]=\"paginationTemplate\"></ng-template>\n      </ng-container>\n    </nz-spin>\n    <ng-template #paginationTemplate>\n      <nz-pagination\n        *ngIf=\"nzShowPagination && data.length\"\n        class=\"ant-table-pagination ant-table-pagination-right\"\n        [nzShowSizeChanger]=\"nzShowSizeChanger\"\n        [nzPageSizeOptions]=\"nzPageSizeOptions\"\n        [nzItemRender]=\"nzItemRender!\"\n        [nzShowQuickJumper]=\"nzShowQuickJumper\"\n        [nzHideOnSinglePage]=\"nzHideOnSinglePage\"\n        [nzShowTotal]=\"nzShowTotal\"\n        [nzSize]=\"nzSize === 'default' ? 'default' : 'small'\"\n        [nzPageSize]=\"nzPageSize\"\n        [nzTotal]=\"nzTotal\"\n        [nzSimple]=\"nzSimple\"\n        [nzPageIndex]=\"nzPageIndex\"\n        (nzPageSizeChange)=\"onPageSizeChange($event)\"\n        (nzPageIndexChange)=\"onPageIndexChange($event)\"\n      ></nz-pagination>\n    </ng-template>\n    <ng-template #contentTemplate>\n      <ng-content></ng-content>\n    </ng-template>\n  ",
+                  template: "\n    <nz-spin [nzDelay]=\"nzLoadingDelay\" [nzSpinning]=\"nzLoading\" [nzIndicator]=\"nzLoadingIndicator\">\n      <ng-container *ngIf=\"nzPaginationPosition === 'both' || nzPaginationPosition === 'top'\">\n        <ng-template [ngTemplateOutlet]=\"paginationTemplate\"></ng-template>\n      </ng-container>\n      <div\n        #tableMainElement\n        class=\"ant-table\"\n        [class.ant-table-rtl]=\"dir === 'rtl'\"\n        [class.ant-table-fixed-header]=\"nzData.length && scrollY\"\n        [class.ant-table-fixed-column]=\"scrollX\"\n        [class.ant-table-has-fix-left]=\"hasFixLeft\"\n        [class.ant-table-has-fix-right]=\"hasFixRight\"\n        [class.ant-table-bordered]=\"nzBordered\"\n        [class.nz-table-out-bordered]=\"nzOuterBordered && !nzBordered\"\n        [class.ant-table-middle]=\"nzSize === 'middle'\"\n        [class.ant-table-small]=\"nzSize === 'small'\"\n      >\n        <nz-table-title-footer [title]=\"nzTitle\" *ngIf=\"nzTitle\"></nz-table-title-footer>\n        <nz-table-inner-scroll\n          *ngIf=\"scrollY || scrollX; else defaultTemplate\"\n          [data]=\"data\"\n          [scrollX]=\"scrollX\"\n          [scrollY]=\"scrollY\"\n          [contentTemplate]=\"contentTemplate\"\n          [listOfColWidth]=\"listOfAutoColWidth\"\n          [theadTemplate]=\"theadTemplate\"\n          [verticalScrollBarWidth]=\"verticalScrollBarWidth\"\n          [virtualTemplate]=\"nzVirtualScrollDirective ? nzVirtualScrollDirective.templateRef : null\"\n          [virtualItemSize]=\"nzVirtualItemSize\"\n          [virtualMaxBufferPx]=\"nzVirtualMaxBufferPx\"\n          [virtualMinBufferPx]=\"nzVirtualMinBufferPx\"\n          [tableMainElement]=\"tableMainElement\"\n          [virtualForTrackBy]=\"nzVirtualForTrackBy\"\n        ></nz-table-inner-scroll>\n        <ng-template #defaultTemplate>\n          <nz-table-inner-default\n            [tableLayout]=\"nzTableLayout\"\n            [listOfColWidth]=\"listOfManualColWidth\"\n            [theadTemplate]=\"theadTemplate\"\n            [contentTemplate]=\"contentTemplate\"\n          ></nz-table-inner-default>\n        </ng-template>\n        <nz-table-title-footer [footer]=\"nzFooter\" *ngIf=\"nzFooter\"></nz-table-title-footer>\n      </div>\n      <ng-container *ngIf=\"nzPaginationPosition === 'both' || nzPaginationPosition === 'bottom'\">\n        <ng-template [ngTemplateOutlet]=\"paginationTemplate\"></ng-template>\n      </ng-container>\n    </nz-spin>\n    <ng-template #paginationTemplate>\n      <nz-pagination\n        *ngIf=\"nzShowPagination && showPagination && data.length\"\n        class=\"ant-table-pagination ant-table-pagination-right\"\n        [nzShowSizeChanger]=\"nzShowSizeChanger\"\n        [nzPageSizeOptions]=\"nzPageSizeOptions\"\n        [nzItemRender]=\"nzItemRender!\"\n        [nzShowQuickJumper]=\"nzShowQuickJumper\"\n        [nzHideOnSinglePage]=\"nzHideOnSinglePage\"\n        [nzShowTotal]=\"nzShowTotal\"\n        [nzSize]=\"nzSize === 'default' ? 'default' : 'small'\"\n        [nzPageSize]=\"nzPageSize\"\n        [nzTotal]=\"nzTotal\"\n        [nzSimple]=\"nzSimple\"\n        [nzPageIndex]=\"nzPageIndex\"\n        (nzPageSizeChange)=\"onPageSizeChange($event)\"\n        (nzPageIndexChange)=\"onPageIndexChange($event)\"\n      ></nz-pagination>\n    </ng-template>\n    <ng-template #contentTemplate>\n      <ng-content></ng-content>\n    </ng-template>\n  ",
                   host: {
-                      '[class.ant-table-wrapper]': 'true'
+                      '[class.ant-table-wrapper-rtl]': 'dir === "rtl"'
                   }
               },] }
   ];
@@ -1849,7 +1899,8 @@
       { type: config.NzConfigService },
       { type: core.ChangeDetectorRef },
       { type: NzTableStyleService },
-      { type: NzTableDataService }
+      { type: NzTableDataService },
+      { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
   ]; };
   NzTableComponent.propDecorators = {
       nzTableLayout: [{ type: core.Input }],
@@ -2192,8 +2243,11 @@
    * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
    */
   var NzTrExpandDirective = /** @class */ (function () {
-      function NzTrExpandDirective() {
+      function NzTrExpandDirective(elementRef) {
+          this.elementRef = elementRef;
           this.nzExpand = true;
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-expanded-row');
       }
       return NzTrExpandDirective;
   }());
@@ -2201,22 +2255,27 @@
       { type: core.Directive, args: [{
                   selector: 'tr[nzExpand]',
                   host: {
-                      '[class.ant-table-expanded-row]': 'true',
                       '[hidden]': "!nzExpand"
                   }
               },] }
   ];
+  NzTrExpandDirective.ctorParameters = function () { return [
+      { type: core.ElementRef }
+  ]; };
   NzTrExpandDirective.propDecorators = {
       nzExpand: [{ type: core.Input }]
   };
 
   var NzTrMeasureComponent = /** @class */ (function () {
-      function NzTrMeasureComponent(nzResizeObserver, ngZone) {
+      function NzTrMeasureComponent(nzResizeObserver, ngZone, elementRef) {
           this.nzResizeObserver = nzResizeObserver;
           this.ngZone = ngZone;
+          this.elementRef = elementRef;
           this.listOfMeasureColumn = [];
           this.listOfAutoWidth = new core.EventEmitter();
           this.destroy$ = new rxjs.Subject();
+          // TODO: move to host after View Engine deprecation
+          this.elementRef.nativeElement.classList.add('ant-table-measure-now');
       }
       NzTrMeasureComponent.prototype.trackByFunc = function (_, key) {
           return key;
@@ -2252,15 +2311,13 @@
                   preserveWhitespaces: false,
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
                   encapsulation: core.ViewEncapsulation.None,
-                  template: "\n    <td\n      #tdElement\n      class=\"nz-disable-td\"\n      style=\"padding: 0px; border: 0px; height: 0px;\"\n      *ngFor=\"let th of listOfMeasureColumn; trackBy: trackByFunc\"\n    ></td>\n  ",
-                  host: {
-                      '[class.ant-table-measure-now]': 'true'
-                  }
+                  template: "\n    <td\n      #tdElement\n      class=\"nz-disable-td\"\n      style=\"padding: 0px; border: 0px; height: 0px;\"\n      *ngFor=\"let th of listOfMeasureColumn; trackBy: trackByFunc\"\n    ></td>\n  "
               },] }
   ];
   NzTrMeasureComponent.ctorParameters = function () { return [
       { type: resizeObservers.NzResizeObserver },
-      { type: core.NgZone }
+      { type: core.NgZone },
+      { type: core.ElementRef }
   ]; };
   NzTrMeasureComponent.propDecorators = {
       listOfMeasureColumn: [{ type: core.Input }],
@@ -2328,6 +2385,7 @@
                       NzThSelectionComponent
                   ],
                   imports: [
+                      bidi.BidiModule,
                       menu.NzMenuModule,
                       forms.FormsModule,
                       outlet.NzOutletModule,

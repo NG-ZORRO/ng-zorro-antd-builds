@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('@angular/cdk/keycodes'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/carousel', ['exports', '@angular/cdk/platform', '@angular/common', '@angular/core', '@angular/cdk/keycodes', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].carousel = {}), global.ng.cdk.platform, global.ng.common, global.ng.core, global.ng.cdk.keycodes, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators));
-}(this, (function (exports, platform, common, core, keycodes, config, services, util, rxjs, operators) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('@angular/cdk/keycodes'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/carousel', ['exports', '@angular/cdk/bidi', '@angular/cdk/platform', '@angular/common', '@angular/core', '@angular/cdk/keycodes', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].carousel = {}), global.ng.cdk.bidi, global.ng.cdk.platform, global.ng.common, global.ng.core, global.ng.cdk.keycodes, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators));
+}(this, (function (exports, bidi, platform, common, core, keycodes, config, services, util, rxjs, operators) { 'use strict';
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -623,7 +623,7 @@
      */
     var NZ_CONFIG_MODULE_NAME = 'carousel';
     var NzCarouselComponent = /** @class */ (function () {
-        function NzCarouselComponent(elementRef, nzConfigService, renderer, cdr, platform, resizeService, nzDragService, customStrategies) {
+        function NzCarouselComponent(elementRef, nzConfigService, renderer, cdr, platform, resizeService, nzDragService, directionality, customStrategies) {
             var _this = this;
             this.nzConfigService = nzConfigService;
             this.renderer = renderer;
@@ -631,6 +631,7 @@
             this.platform = platform;
             this.resizeService = resizeService;
             this.nzDragService = nzDragService;
+            this.directionality = directionality;
             this.customStrategies = customStrategies;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzEffect = 'scrollx';
@@ -645,6 +646,7 @@
             this.activeIndex = 0;
             this.vertical = false;
             this.transitionInProgress = null;
+            this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
             this.gestureRect = null;
             this.pointerDelta = null;
@@ -699,6 +701,15 @@
             enumerable: false,
             configurable: true
         });
+        NzCarouselComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.switchStrategy();
+            });
+        };
         NzCarouselComponent.prototype.ngAfterContentInit = function () {
             this.markContentActive(0);
         };
@@ -842,7 +853,8 @@
                     preserveWhitespaces: false,
                     template: "\n    <div class=\"slick-initialized slick-slider\" [class.slick-vertical]=\"nzDotPosition === 'left' || nzDotPosition === 'right'\">\n      <div\n        #slickList\n        class=\"slick-list\"\n        tabindex=\"-1\"\n        (keydown)=\"onKeyDown($event)\"\n        (mousedown)=\"pointerDown($event)\"\n        (touchstart)=\"pointerDown($event)\"\n      >\n        <!-- Render carousel items. -->\n        <div class=\"slick-track\" #slickTrack>\n          <ng-content></ng-content>\n        </div>\n      </div>\n      <!-- Render dots. -->\n      <ul\n        class=\"slick-dots\"\n        *ngIf=\"nzDots\"\n        [class.slick-dots-top]=\"nzDotPosition === 'top'\"\n        [class.slick-dots-bottom]=\"nzDotPosition === 'bottom'\"\n        [class.slick-dots-left]=\"nzDotPosition === 'left'\"\n        [class.slick-dots-right]=\"nzDotPosition === 'right'\"\n      >\n        <li *ngFor=\"let content of carouselContents; let i = index\" [class.slick-active]=\"content.isActive\" (click)=\"goTo(i)\">\n          <ng-template [ngTemplateOutlet]=\"nzDotRender || renderDotTemplate\" [ngTemplateOutletContext]=\"{ $implicit: i }\"></ng-template>\n        </li>\n      </ul>\n    </div>\n\n    <ng-template #renderDotTemplate let-index>\n      <button>{{ index + 1 }}</button>\n    </ng-template>\n  ",
                     host: {
-                        '[class.ant-carousel-vertical]': 'vertical'
+                        '[class.ant-carousel-vertical]': 'vertical',
+                        '[class.ant-carousel-rtl]': "dir ==='rtl'"
                     }
                 },] }
     ];
@@ -854,6 +866,7 @@
         { type: platform.Platform },
         { type: services.NzResizeService },
         { type: services.NzDragService },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
         { type: Array, decorators: [{ type: core.Optional }, { type: core.Inject, args: [NZ_CAROUSEL_CUSTOM_STRATEGIES,] }] }
     ]; };
     NzCarouselComponent.propDecorators = {
@@ -918,7 +931,7 @@
         { type: core.NgModule, args: [{
                     declarations: [NzCarouselComponent, NzCarouselContentDirective],
                     exports: [NzCarouselComponent, NzCarouselContentDirective],
-                    imports: [common.CommonModule, platform.PlatformModule]
+                    imports: [bidi.BidiModule, common.CommonModule, platform.PlatformModule]
                 },] }
     ];
 

@@ -38,6 +38,8 @@ export declare class NzStepComponent implements OnDestroy {
     private _currentIndex;
     constructor(cdr: ChangeDetectorRef);
     onClick(): void;
+    enable(): void;
+    disable(): void;
     markForCheck(): void;
     ngOnDestroy(): void;
 }

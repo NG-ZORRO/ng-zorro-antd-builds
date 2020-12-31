@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs'), require('@angular/cdk/scrolling'), require('ng-zorro-antd/core/util'), require('rxjs/operators'), require('@angular/cdk/a11y'), require('@angular/cdk/keycodes'), require('@angular/cdk/overlay'), require('@angular/cdk/platform'), require('@angular/forms'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/no-animation'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/transition-patch'), require('ng-zorro-antd/empty'), require('ng-zorro-antd/i18n'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/select', ['exports', '@angular/core', 'rxjs', '@angular/cdk/scrolling', 'ng-zorro-antd/core/util', 'rxjs/operators', '@angular/cdk/a11y', '@angular/cdk/keycodes', '@angular/cdk/overlay', '@angular/cdk/platform', '@angular/forms', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/no-animation', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/transition-patch', 'ng-zorro-antd/empty', 'ng-zorro-antd/i18n', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].select = {}), global.ng.core, global.rxjs, global.ng.cdk.scrolling, global['ng-zorro-antd'].core.util, global.rxjs.operators, global.ng.cdk.a11y, global.ng.cdk.keycodes, global.ng.cdk.overlay, global.ng.cdk.platform, global.ng.forms, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core['no-animation'], global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core['transition-patch'], global['ng-zorro-antd'].empty, global['ng-zorro-antd'].i18n, global['ng-zorro-antd'].icon));
-}(this, (function (exports, core, rxjs, scrolling, util, operators, a11y, keycodes, overlay, platform, forms, animation, config, noAnimation, common, outlet, overlay$1, transitionPatch, empty, i18n, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs'), require('@angular/cdk/scrolling'), require('ng-zorro-antd/core/util'), require('rxjs/operators'), require('@angular/cdk/a11y'), require('@angular/cdk/bidi'), require('@angular/cdk/keycodes'), require('@angular/cdk/overlay'), require('@angular/cdk/platform'), require('@angular/forms'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/no-animation'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/transition-patch'), require('ng-zorro-antd/empty'), require('ng-zorro-antd/i18n'), require('ng-zorro-antd/icon')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/select', ['exports', '@angular/core', 'rxjs', '@angular/cdk/scrolling', 'ng-zorro-antd/core/util', 'rxjs/operators', '@angular/cdk/a11y', '@angular/cdk/bidi', '@angular/cdk/keycodes', '@angular/cdk/overlay', '@angular/cdk/platform', '@angular/forms', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/no-animation', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/transition-patch', 'ng-zorro-antd/empty', 'ng-zorro-antd/i18n', 'ng-zorro-antd/icon'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].select = {}), global.ng.core, global.rxjs, global.ng.cdk.scrolling, global['ng-zorro-antd'].core.util, global.rxjs.operators, global.ng.cdk.a11y, global.ng.cdk.bidi, global.ng.cdk.keycodes, global.ng.cdk.overlay, global.ng.cdk.platform, global.ng.forms, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core['no-animation'], global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core['transition-patch'], global['ng-zorro-antd'].empty, global['ng-zorro-antd'].i18n, global['ng-zorro-antd'].icon));
+}(this, (function (exports, core, rxjs, scrolling, util, operators, a11y, bidi, keycodes, overlay, platform, forms, animation, config, noAnimation, common, outlet, overlay$1, transitionPatch, empty, i18n, icon) { 'use strict';
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -36,7 +36,8 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzOptionContainerComponent = /** @class */ (function () {
-        function NzOptionContainerComponent() {
+        function NzOptionContainerComponent(elementRef) {
+            this.elementRef = elementRef;
             this.notFoundContent = undefined;
             this.menuItemSelectedIcon = null;
             this.dropdownRender = null;
@@ -50,6 +51,8 @@
             this.itemClick = new core.EventEmitter();
             this.scrollToBottom = new core.EventEmitter();
             this.scrolledIndex = 0;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-select-dropdown');
         }
         NzOptionContainerComponent.prototype.onItemClick = function (value) {
             this.itemClick.emit(value);
@@ -93,12 +96,12 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     encapsulation: core.ViewEncapsulation.None,
                     preserveWhitespaces: false,
-                    template: "\n    <div>\n      <div *ngIf=\"listOfContainerItem.length === 0\" class=\"ant-select-item-empty\">\n        <nz-embed-empty nzComponentName=\"select\" [specificContent]=\"notFoundContent!\"></nz-embed-empty>\n      </div>\n      <cdk-virtual-scroll-viewport\n        [class.full-width]=\"!matchWidth\"\n        [itemSize]=\"itemSize\"\n        [maxBufferPx]=\"itemSize * maxItemLength\"\n        [minBufferPx]=\"itemSize * maxItemLength\"\n        (scrolledIndexChange)=\"onScrolledIndexChange($event)\"\n        [style.height.px]=\"listOfContainerItem.length * itemSize\"\n        [style.max-height.px]=\"itemSize * maxItemLength\"\n      >\n        <ng-template\n          cdkVirtualFor\n          [cdkVirtualForOf]=\"listOfContainerItem\"\n          [cdkVirtualForTrackBy]=\"trackValue\"\n          [cdkVirtualForTemplateCacheSize]=\"0\"\n          let-item\n        >\n          <ng-container [ngSwitch]=\"item.type\">\n            <nz-option-item-group *ngSwitchCase=\"'group'\" [nzLabel]=\"item.groupLabel\"></nz-option-item-group>\n            <nz-option-item\n              *ngSwitchCase=\"'item'\"\n              [icon]=\"menuItemSelectedIcon\"\n              [customContent]=\"item.nzCustomContent\"\n              [template]=\"item.template\"\n              [grouped]=\"!!item.groupLabel\"\n              [disabled]=\"item.nzDisabled\"\n              [showState]=\"mode === 'tags' || mode === 'multiple'\"\n              [label]=\"item.nzLabel\"\n              [compareWith]=\"compareWith\"\n              [activatedValue]=\"activatedValue\"\n              [listOfSelectedValue]=\"listOfSelectedValue\"\n              [value]=\"item.nzValue\"\n              (itemHover)=\"onItemHover($event)\"\n              (itemClick)=\"onItemClick($event)\"\n            ></nz-option-item>\n          </ng-container>\n        </ng-template>\n      </cdk-virtual-scroll-viewport>\n      <ng-template [ngTemplateOutlet]=\"dropdownRender\"></ng-template>\n    </div>\n  ",
-                    host: {
-                        '[class.ant-select-dropdown]': 'true'
-                    }
+                    template: "\n    <div>\n      <div *ngIf=\"listOfContainerItem.length === 0\" class=\"ant-select-item-empty\">\n        <nz-embed-empty nzComponentName=\"select\" [specificContent]=\"notFoundContent!\"></nz-embed-empty>\n      </div>\n      <cdk-virtual-scroll-viewport\n        [class.full-width]=\"!matchWidth\"\n        [itemSize]=\"itemSize\"\n        [maxBufferPx]=\"itemSize * maxItemLength\"\n        [minBufferPx]=\"itemSize * maxItemLength\"\n        (scrolledIndexChange)=\"onScrolledIndexChange($event)\"\n        [style.height.px]=\"listOfContainerItem.length * itemSize\"\n        [style.max-height.px]=\"itemSize * maxItemLength\"\n      >\n        <ng-template\n          cdkVirtualFor\n          [cdkVirtualForOf]=\"listOfContainerItem\"\n          [cdkVirtualForTrackBy]=\"trackValue\"\n          [cdkVirtualForTemplateCacheSize]=\"0\"\n          let-item\n        >\n          <ng-container [ngSwitch]=\"item.type\">\n            <nz-option-item-group *ngSwitchCase=\"'group'\" [nzLabel]=\"item.groupLabel\"></nz-option-item-group>\n            <nz-option-item\n              *ngSwitchCase=\"'item'\"\n              [icon]=\"menuItemSelectedIcon\"\n              [customContent]=\"item.nzCustomContent\"\n              [template]=\"item.template\"\n              [grouped]=\"!!item.groupLabel\"\n              [disabled]=\"item.nzDisabled\"\n              [showState]=\"mode === 'tags' || mode === 'multiple'\"\n              [label]=\"item.nzLabel\"\n              [compareWith]=\"compareWith\"\n              [activatedValue]=\"activatedValue\"\n              [listOfSelectedValue]=\"listOfSelectedValue\"\n              [value]=\"item.nzValue\"\n              (itemHover)=\"onItemHover($event)\"\n              (itemClick)=\"onItemClick($event)\"\n            ></nz-option-item>\n          </ng-container>\n        </ng-template>\n      </cdk-virtual-scroll-viewport>\n      <ng-template [ngTemplateOutlet]=\"dropdownRender\"></ng-template>\n    </div>\n  "
                 },] }
     ];
+    NzOptionContainerComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzOptionContainerComponent.propDecorators = {
         notFoundContent: [{ type: core.Input }],
         menuItemSelectedIcon: [{ type: core.Input }],
@@ -500,6 +503,8 @@
             this.autofocus = false;
             this.valueChange = new core.EventEmitter();
             this.isComposingChange = new core.EventEmitter();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-select-selection-search');
         }
         NzSelectSearchComponent.prototype.setCompositionState = function (isComposing) {
             this.isComposingChange.next(isComposing);
@@ -521,7 +526,7 @@
             var hostDOM = this.elementRef.nativeElement;
             var inputDOM = this.inputElement.nativeElement;
             this.renderer.removeStyle(hostDOM, 'width');
-            mirrorDOM.innerHTML = inputDOM.value + "&nbsp;";
+            mirrorDOM.innerHTML = this.renderer.createText(inputDOM.value + "&nbsp;");
             this.renderer.setStyle(hostDOM, 'width', mirrorDOM.scrollWidth + "px");
         };
         NzSelectSearchComponent.prototype.focus = function () {
@@ -562,9 +567,6 @@
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     template: "\n    <input\n      #inputElement\n      autocomplete=\"off\"\n      class=\"ant-select-selection-search-input\"\n      [ngModel]=\"value\"\n      [attr.autofocus]=\"autofocus ? 'autofocus' : null\"\n      [disabled]=\"disabled\"\n      [style.opacity]=\"showInput ? null : 0\"\n      (ngModelChange)=\"onValueChange($event)\"\n      (compositionstart)=\"setCompositionState(true)\"\n      (compositionend)=\"setCompositionState(false)\"\n    />\n    <span #mirrorElement *ngIf=\"mirrorSync\" class=\"ant-select-selection-search-mirror\"></span>\n  ",
-                    host: {
-                        '[class.ant-select-selection-search]': 'true'
-                    },
                     providers: [{ provide: forms.COMPOSITION_BUFFER_MODE, useValue: false }]
                 },] }
     ];
@@ -587,7 +589,8 @@
     };
 
     var NzSelectTopControlComponent = /** @class */ (function () {
-        function NzSelectTopControlComponent(noAnimation) {
+        function NzSelectTopControlComponent(elementRef, noAnimation) {
+            this.elementRef = elementRef;
             this.noAnimation = noAnimation;
             this.showSearch = false;
             this.placeHolder = null;
@@ -610,6 +613,8 @@
             this.isShowSingleLabel = false;
             this.isComposing = false;
             this.inputValue = null;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-select-selector');
         }
         NzSelectTopControlComponent.prototype.onHostKeydown = function (e) {
             var inputValue = e.target.value;
@@ -728,12 +733,12 @@
                     encapsulation: core.ViewEncapsulation.None,
                     template: "\n    <!--single mode-->\n    <ng-container [ngSwitch]=\"mode\">\n      <ng-container *ngSwitchCase=\"'default'\">\n        <nz-select-search\n          [disabled]=\"disabled\"\n          [value]=\"inputValue!\"\n          [showInput]=\"showSearch\"\n          [mirrorSync]=\"false\"\n          [autofocus]=\"autofocus\"\n          [focusTrigger]=\"open\"\n          (isComposingChange)=\"isComposingChange($event)\"\n          (valueChange)=\"onInputValueChange($event)\"\n        ></nz-select-search>\n        <nz-select-item\n          *ngIf=\"isShowSingleLabel\"\n          [deletable]=\"false\"\n          [disabled]=\"false\"\n          [removeIcon]=\"removeIcon\"\n          [label]=\"listOfTopItem[0].nzLabel\"\n          [contentTemplateOutlet]=\"customTemplate\"\n          [contentTemplateOutletContext]=\"listOfTopItem[0]\"\n        ></nz-select-item>\n      </ng-container>\n      <ng-container *ngSwitchDefault>\n        <!--multiple or tags mode-->\n        <nz-select-item\n          *ngFor=\"let item of listOfSlicedItem; trackBy: trackValue\"\n          [@zoomMotion]\n          [@.disabled]=\"noAnimation?.nzNoAnimation\"\n          [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n          [removeIcon]=\"removeIcon\"\n          [label]=\"item.nzLabel\"\n          [disabled]=\"item.nzDisabled || disabled\"\n          [contentTemplateOutlet]=\"item.contentTemplateOutlet\"\n          [deletable]=\"true\"\n          [contentTemplateOutletContext]=\"item.contentTemplateOutletContext\"\n          (@zoomMotion.done)=\"onAnimationEnd()\"\n          (delete)=\"onDeleteItem(item.contentTemplateOutletContext)\"\n        ></nz-select-item>\n        <nz-select-search\n          [disabled]=\"disabled\"\n          [value]=\"inputValue!\"\n          [autofocus]=\"autofocus\"\n          [showInput]=\"true\"\n          [mirrorSync]=\"true\"\n          [focusTrigger]=\"open\"\n          (isComposingChange)=\"isComposingChange($event)\"\n          (valueChange)=\"onInputValueChange($event)\"\n        ></nz-select-search>\n      </ng-container>\n    </ng-container>\n    <nz-select-placeholder *ngIf=\"isShowPlaceholder\" [placeholder]=\"placeHolder\"></nz-select-placeholder>\n  ",
                     host: {
-                        '[class.ant-select-selector]': 'true',
                         '(keydown)': 'onHostKeydown($event)'
                     }
                 },] }
     ];
     NzSelectTopControlComponent.ctorParameters = function () { return [
+        { type: core.ElementRef },
         { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] }
     ]; };
     NzSelectTopControlComponent.propDecorators = {
@@ -767,12 +772,13 @@
     var ɵ0 = defaultFilterOption;
     var NZ_CONFIG_MODULE_NAME = 'select';
     var NzSelectComponent = /** @class */ (function () {
-        function NzSelectComponent(nzConfigService, cdr, elementRef, platform, focusMonitor, noAnimation) {
+        function NzSelectComponent(nzConfigService, cdr, elementRef, platform, focusMonitor, directionality, noAnimation) {
             this.nzConfigService = nzConfigService;
             this.cdr = cdr;
             this.elementRef = elementRef;
             this.platform = platform;
             this.focusMonitor = focusMonitor;
+            this.directionality = directionality;
             this.noAnimation = noAnimation;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzSize = 'default';
@@ -826,6 +832,9 @@
             this.activatedValue = null;
             this.listOfValue = [];
             this.focused = false;
+            this.dir = 'ltr';
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-select');
         }
         Object.defineProperty(NzSelectComponent.prototype, "nzShowArrow", {
             get: function () {
@@ -904,11 +913,8 @@
                     this.activatedValue = matchedItem.nzValue;
                 }
             }
-            if (this.listOfValue.length !== 0 &&
-                listOfContainerItem.findIndex(function (item) { return _this.compareWith(item.nzValue, _this.activatedValue); }) === -1) {
-                var activatedItem = listOfContainerItem.find(function (item) { return _this.compareWith(item.nzValue, _this.listOfValue[0]); }) || listOfContainerItem[0];
-                this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
-            }
+            var activatedItem = listOfContainerItem.find(function (item) { return _this.compareWith(item.nzValue, _this.listOfValue[0]); }) || listOfContainerItem[0];
+            this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
             var listOfGroupLabel = [];
             if (this.isReactiveDriven) {
                 listOfGroupLabel = __spread(new Set(this.nzOptions.filter(function (o) { return o.groupLabel; }).map(function (o) { return o.groupLabel; })));
@@ -1138,6 +1144,7 @@
         };
         NzSelectComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             this.focusMonitor
                 .monitor(this.elementRef, true)
                 .pipe(operators.takeUntil(this.destroy$))
@@ -1158,8 +1165,8 @@
             });
             rxjs.combineLatest([this.listOfValue$, this.listOfTemplateItem$])
                 .pipe(operators.takeUntil(this.destroy$))
-                .subscribe(function (_a) {
-                var _b = __read(_a, 2), listOfSelectedValue = _b[0], listOfTemplateItem = _b[1];
+                .subscribe(function (_b) {
+                var _c = __read(_b, 2), listOfSelectedValue = _c[0], listOfTemplateItem = _c[1];
                 var listOfTagItem = listOfSelectedValue
                     .filter(function () { return _this.nzMode === 'tags'; })
                     .filter(function (value) { return listOfTemplateItem.findIndex(function (o) { return _this.compareWith(o.nzValue, value); }) === -1; })
@@ -1170,6 +1177,11 @@
                     .filter(function (item) { return !!item; });
                 _this.updateListOfContainerItem();
             });
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
         };
         NzSelectComponent.prototype.ngAfterViewInit = function () {
             this.updateCdkConnectedOverlayStatus();
@@ -1215,7 +1227,6 @@
                     animations: [animation.slideMotion],
                     template: "\n    <nz-select-top-control\n      cdkOverlayOrigin\n      #origin=\"cdkOverlayOrigin\"\n      [open]=\"nzOpen\"\n      [disabled]=\"nzDisabled\"\n      [mode]=\"nzMode\"\n      [@.disabled]=\"noAnimation?.nzNoAnimation\"\n      [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n      [maxTagPlaceholder]=\"nzMaxTagPlaceholder\"\n      [removeIcon]=\"nzRemoveIcon\"\n      [placeHolder]=\"nzPlaceHolder\"\n      [maxTagCount]=\"nzMaxTagCount\"\n      [customTemplate]=\"nzCustomTemplate\"\n      [tokenSeparators]=\"nzTokenSeparators\"\n      [showSearch]=\"nzShowSearch\"\n      [autofocus]=\"nzAutoFocus\"\n      [listOfTopItem]=\"listOfTopItem\"\n      (inputValueChange)=\"onInputValueChange($event)\"\n      (tokenize)=\"onTokenSeparate($event)\"\n      (animationEnd)=\"updateCdkConnectedOverlayPositions()\"\n      (deleteItem)=\"onItemDelete($event)\"\n      (keydown)=\"onKeyDown($event)\"\n    ></nz-select-top-control>\n    <nz-select-clear\n      *ngIf=\"nzAllowClear && !nzDisabled && listOfValue.length\"\n      [clearIcon]=\"nzClearIcon\"\n      (clear)=\"onClearSelection()\"\n    ></nz-select-clear>\n    <nz-select-arrow\n      *ngIf=\"nzShowArrow\"\n      [loading]=\"nzLoading\"\n      [search]=\"nzOpen && nzShowSearch\"\n      [suffixIcon]=\"nzSuffixIcon\"\n    ></nz-select-arrow>\n    <ng-template\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayMinWidth]=\"$any(nzDropdownMatchSelectWidth ? null : triggerWidth)\"\n      [cdkConnectedOverlayWidth]=\"$any(nzDropdownMatchSelectWidth ? triggerWidth : null)\"\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayTransformOriginOn]=\"'.ant-select-dropdown'\"\n      [cdkConnectedOverlayPanelClass]=\"nzDropdownClassName!\"\n      [cdkConnectedOverlayOpen]=\"nzOpen\"\n      (overlayKeydown)=\"onOverlayKeyDown($event)\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n      (detach)=\"setOpenState(false)\"\n      (positionChange)=\"onPositionChange($event)\"\n    >\n      <nz-option-container\n        [ngStyle]=\"nzDropdownStyle\"\n        [itemSize]=\"nzOptionHeightPx\"\n        [maxItemLength]=\"nzOptionOverflowSize\"\n        [matchWidth]=\"nzDropdownMatchSelectWidth\"\n        [class.ant-select-dropdown-placement-bottomLeft]=\"dropDownPosition === 'bottom'\"\n        [class.ant-select-dropdown-placement-topLeft]=\"dropDownPosition === 'top'\"\n        [@slideMotion]=\"'enter'\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [listOfContainerItem]=\"listOfContainerItem\"\n        [menuItemSelectedIcon]=\"nzMenuItemSelectedIcon\"\n        [notFoundContent]=\"nzNotFoundContent\"\n        [activatedValue]=\"activatedValue\"\n        [listOfSelectedValue]=\"listOfValue\"\n        [dropdownRender]=\"nzDropdownRender\"\n        [compareWith]=\"compareWith\"\n        [mode]=\"nzMode\"\n        (keydown)=\"onKeyDown($event)\"\n        (itemClick)=\"onItemClick($event)\"\n        (scrollToBottom)=\"nzScrollToBottom.emit()\"\n      ></nz-option-container>\n    </ng-template>\n  ",
                     host: {
-                        '[class.ant-select]': 'true',
                         '[class.ant-select-lg]': 'nzSize === "large"',
                         '[class.ant-select-sm]': 'nzSize === "small"',
                         '[class.ant-select-show-arrow]': "nzShowArrow",
@@ -1227,6 +1238,7 @@
                         '[class.ant-select-focused]': 'nzOpen || focused',
                         '[class.ant-select-single]': "nzMode === 'default'",
                         '[class.ant-select-multiple]': "nzMode !== 'default'",
+                        '[class.ant-select-rtl]': "dir === 'rtl'",
                         '(click)': 'onHostClick()'
                     }
                 },] }
@@ -1237,6 +1249,7 @@
         { type: core.ElementRef },
         { type: platform.Platform },
         { type: a11y.FocusMonitor },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
         { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] }
     ]; };
     NzSelectComponent.propDecorators = {
@@ -1332,23 +1345,25 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzOptionItemGroupComponent = /** @class */ (function () {
-        function NzOptionItemGroupComponent() {
+        function NzOptionItemGroupComponent(elementRef) {
+            this.elementRef = elementRef;
             this.nzLabel = null;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-select-item', 'ant-select-item-group');
         }
         return NzOptionItemGroupComponent;
     }());
     NzOptionItemGroupComponent.decorators = [
         { type: core.Component, args: [{
                     selector: 'nz-option-item-group',
-                    template: " <ng-container *nzStringTemplateOutlet=\"nzLabel\">{{ nzLabel }}</ng-container> ",
+                    template: "\n    <ng-container *nzStringTemplateOutlet=\"nzLabel\">{{ nzLabel }}</ng-container>\n  ",
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    encapsulation: core.ViewEncapsulation.None,
-                    host: {
-                        '[class.ant-select-item]': 'true',
-                        '[class.ant-select-item-group]': 'true'
-                    }
+                    encapsulation: core.ViewEncapsulation.None
                 },] }
     ];
+    NzOptionItemGroupComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzOptionItemGroupComponent.propDecorators = {
         nzLabel: [{ type: core.Input }]
     };
@@ -1358,7 +1373,8 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzOptionItemComponent = /** @class */ (function () {
-        function NzOptionItemComponent() {
+        function NzOptionItemComponent(elementRef) {
+            this.elementRef = elementRef;
             this.selected = false;
             this.activated = false;
             this.grouped = false;
@@ -1373,6 +1389,8 @@
             this.icon = null;
             this.itemClick = new core.EventEmitter();
             this.itemHover = new core.EventEmitter();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-select-item', 'ant-select-item-option');
         }
         NzOptionItemComponent.prototype.onHostMouseEnter = function () {
             if (!this.disabled) {
@@ -1404,8 +1422,6 @@
                     encapsulation: core.ViewEncapsulation.None,
                     host: {
                         '[attr.title]': 'label',
-                        '[class.ant-select-item]': 'true',
-                        '[class.ant-select-item-option]': 'true',
                         '[class.ant-select-item-option-grouped]': 'grouped',
                         '[class.ant-select-item-option-selected]': 'selected && !disabled',
                         '[class.ant-select-item-option-disabled]': 'disabled',
@@ -1415,6 +1431,9 @@
                     }
                 },] }
     ];
+    NzOptionItemComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzOptionItemComponent.propDecorators = {
         grouped: [{ type: core.Input }],
         customContent: [{ type: core.Input }],
@@ -1436,10 +1455,13 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzSelectArrowComponent = /** @class */ (function () {
-        function NzSelectArrowComponent() {
+        function NzSelectArrowComponent(elementRef) {
+            this.elementRef = elementRef;
             this.loading = false;
             this.search = false;
             this.suffixIcon = null;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-select-arrow');
         }
         return NzSelectArrowComponent;
     }());
@@ -1450,11 +1472,13 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     template: "\n    <i nz-icon nzType=\"loading\" *ngIf=\"loading; else defaultArrow\"></i>\n    <ng-template #defaultArrow>\n      <ng-container *ngIf=\"!suffixIcon; else suffixTemplate\">\n        <i nz-icon nzType=\"down\" *ngIf=\"!search\"></i>\n        <i nz-icon nzType=\"search\" *ngIf=\"search\"></i>\n      </ng-container>\n      <ng-template #suffixTemplate>\n        <ng-container *nzStringTemplateOutlet=\"suffixIcon; let suffixIcon\">\n          <i nz-icon [nzType]=\"suffixIcon\"></i>\n        </ng-container>\n      </ng-template>\n    </ng-template>\n  ",
                     host: {
-                        '[class.ant-select-arrow]': 'true',
                         '[class.ant-select-arrow-loading]': 'loading'
                     }
                 },] }
     ];
+    NzSelectArrowComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzSelectArrowComponent.propDecorators = {
         loading: [{ type: core.Input }],
         search: [{ type: core.Input }],
@@ -1466,9 +1490,12 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzSelectClearComponent = /** @class */ (function () {
-        function NzSelectClearComponent() {
+        function NzSelectClearComponent(elementRef) {
+            this.elementRef = elementRef;
             this.clearIcon = null;
             this.clear = new core.EventEmitter();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-select-clear');
         }
         NzSelectClearComponent.prototype.onClick = function (e) {
             e.preventDefault();
@@ -1482,13 +1509,15 @@
                     selector: 'nz-select-clear',
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    template: " <i nz-icon nzType=\"close-circle\" nzTheme=\"fill\" *ngIf=\"!clearIcon; else clearIcon\" class=\"ant-select-close-icon\"></i> ",
+                    template: "\n    <i nz-icon nzType=\"close-circle\" nzTheme=\"fill\" *ngIf=\"!clearIcon; else clearIcon\" class=\"ant-select-close-icon\"></i>\n  ",
                     host: {
-                        '(click)': 'onClick($event)',
-                        '[class.ant-select-clear]': 'true'
+                        '(click)': 'onClick($event)'
                     }
                 },] }
     ];
+    NzSelectClearComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzSelectClearComponent.propDecorators = {
         clearIcon: [{ type: core.Input }],
         clear: [{ type: core.Output }]
@@ -1499,7 +1528,8 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzSelectItemComponent = /** @class */ (function () {
-        function NzSelectItemComponent() {
+        function NzSelectItemComponent(elementRef) {
+            this.elementRef = elementRef;
             this.disabled = false;
             this.label = null;
             this.deletable = false;
@@ -1507,6 +1537,8 @@
             this.contentTemplateOutletContext = null;
             this.contentTemplateOutlet = null;
             this.delete = new core.EventEmitter();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-select-selection-item');
         }
         NzSelectItemComponent.prototype.onDelete = function (e) {
             e.preventDefault();
@@ -1525,11 +1557,13 @@
                     template: "\n    <ng-container *nzStringTemplateOutlet=\"contentTemplateOutlet; context: { $implicit: contentTemplateOutletContext }\">\n      <div class=\"ant-select-selection-item-content\" *ngIf=\"deletable; else labelTemplate\">{{ label }}</div>\n      <ng-template #labelTemplate>{{ label }}</ng-template>\n    </ng-container>\n    <span *ngIf=\"deletable && !disabled\" class=\"ant-select-selection-item-remove\" (click)=\"onDelete($event)\">\n      <i nz-icon nzType=\"close\" *ngIf=\"!removeIcon; else removeIcon\"></i>\n    </span>\n  ",
                     host: {
                         '[attr.title]': 'label',
-                        '[class.ant-select-selection-item]': 'true',
                         '[class.ant-select-selection-item-disabled]': 'disabled'
                     }
                 },] }
     ];
+    NzSelectItemComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzSelectItemComponent.propDecorators = {
         disabled: [{ type: core.Input }],
         label: [{ type: core.Input }],
@@ -1545,8 +1579,11 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzSelectPlaceholderComponent = /** @class */ (function () {
-        function NzSelectPlaceholderComponent() {
+        function NzSelectPlaceholderComponent(elementRef) {
+            this.elementRef = elementRef;
             this.placeholder = null;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-select-selection-placeholder');
         }
         return NzSelectPlaceholderComponent;
     }());
@@ -1555,12 +1592,12 @@
                     selector: 'nz-select-placeholder',
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    template: "\n    <ng-container *nzStringTemplateOutlet=\"placeholder\">\n      {{ placeholder }}\n    </ng-container>\n  ",
-                    host: {
-                        '[class.ant-select-selection-placeholder]': 'true'
-                    }
+                    template: "\n    <ng-container *nzStringTemplateOutlet=\"placeholder\">\n      {{ placeholder }}\n    </ng-container>\n  "
                 },] }
     ];
+    NzSelectPlaceholderComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzSelectPlaceholderComponent.propDecorators = {
         placeholder: [{ type: core.Input }]
     };
@@ -1577,6 +1614,7 @@
     NzSelectModule.decorators = [
         { type: core.NgModule, args: [{
                     imports: [
+                        bidi.BidiModule,
                         common.CommonModule,
                         i18n.NzI18nModule,
                         forms.FormsModule,

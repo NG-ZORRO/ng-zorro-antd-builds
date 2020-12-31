@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/cdk/platform'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/menu'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/layout'), require('@angular/common'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/layout', ['exports', '@angular/core', '@angular/cdk/platform', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'ng-zorro-antd/menu', 'rxjs', 'rxjs/operators', '@angular/cdk/layout', '@angular/common', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].layout = {}), global.ng.core, global.ng.cdk.platform, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].menu, global.rxjs, global.rxjs.operators, global.ng.cdk.layout, global.ng.common, global['ng-zorro-antd'].icon));
-}(this, (function (exports, core, platform, services, util, menu, rxjs, operators, layout, common, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/cdk/bidi'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/platform'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/menu'), require('@angular/cdk/layout'), require('@angular/common'), require('ng-zorro-antd/icon')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/layout', ['exports', '@angular/core', '@angular/cdk/bidi', 'rxjs', 'rxjs/operators', '@angular/cdk/platform', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'ng-zorro-antd/menu', '@angular/cdk/layout', '@angular/common', 'ng-zorro-antd/icon'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].layout = {}), global.ng.core, global.ng.cdk.bidi, global.rxjs, global.rxjs.operators, global.ng.cdk.platform, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].menu, global.ng.cdk.layout, global.ng.common, global['ng-zorro-antd'].icon));
+}(this, (function (exports, core, bidi, rxjs, operators, platform, services, util, menu, layout, common, icon) { 'use strict';
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -391,10 +391,11 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzSiderComponent = /** @class */ (function () {
-        function NzSiderComponent(platform, cdr, breakpointService) {
+        function NzSiderComponent(platform, cdr, breakpointService, elementRef) {
             this.platform = platform;
             this.cdr = cdr;
             this.breakpointService = breakpointService;
+            this.elementRef = elementRef;
             this.destroy$ = new rxjs.Subject();
             this.nzMenuDirective = null;
             this.nzCollapsedChange = new core.EventEmitter();
@@ -410,6 +411,8 @@
             this.matchBreakPoint = false;
             this.flexSetting = null;
             this.widthSetting = null;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-layout-sider');
         }
         NzSiderComponent.prototype.updateStyleMap = function () {
             this.widthSetting = this.nzCollapsed ? this.nzCollapsedWidth + "px" : util.toCssPixel(this.nzWidth);
@@ -476,7 +479,6 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     template: "\n    <div class=\"ant-layout-sider-children\">\n      <ng-content></ng-content>\n    </div>\n    <div\n      *ngIf=\"nzCollapsible && nzTrigger !== null\"\n      nz-sider-trigger\n      [matchBreakPoint]=\"matchBreakPoint\"\n      [nzCollapsedWidth]=\"nzCollapsedWidth\"\n      [nzCollapsed]=\"nzCollapsed\"\n      [nzBreakpoint]=\"nzBreakpoint\"\n      [nzReverseArrow]=\"nzReverseArrow\"\n      [nzTrigger]=\"nzTrigger\"\n      [nzZeroTrigger]=\"nzZeroTrigger\"\n      [siderWidth]=\"widthSetting\"\n      (click)=\"setCollapsed(!nzCollapsed)\"\n    ></div>\n  ",
                     host: {
-                        '[class.ant-layout-sider]': 'true',
                         '[class.ant-layout-sider-zero-width]': "nzCollapsed && nzCollapsedWidth === 0",
                         '[class.ant-layout-sider-light]': "nzTheme === 'light'",
                         '[class.ant-layout-sider-dark]': "nzTheme === 'dark'",
@@ -491,7 +493,8 @@
     NzSiderComponent.ctorParameters = function () { return [
         { type: platform.Platform },
         { type: core.ChangeDetectorRef },
-        { type: services.NzBreakpointService }
+        { type: services.NzBreakpointService },
+        { type: core.ElementRef }
     ]; };
     NzSiderComponent.propDecorators = {
         nzMenuDirective: [{ type: core.ContentChild, args: [menu.NzMenuDirective,] }],
@@ -524,8 +527,26 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzLayoutComponent = /** @class */ (function () {
-        function NzLayoutComponent() {
+        function NzLayoutComponent(elementRef, directionality) {
+            this.elementRef = elementRef;
+            this.directionality = directionality;
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-layout');
         }
+        NzLayoutComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+            });
+        };
+        NzLayoutComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
+        };
         return NzLayoutComponent;
     }());
     NzLayoutComponent.decorators = [
@@ -535,13 +556,17 @@
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     preserveWhitespaces: false,
-                    template: " <ng-content></ng-content> ",
+                    template: "\n    <ng-content></ng-content>\n  ",
                     host: {
-                        '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0',
-                        '[class.ant-layout]': 'true'
+                        '[class.ant-layout-rtl]': "dir === 'rtl'",
+                        '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0'
                     }
                 },] }
     ];
+    NzLayoutComponent.ctorParameters = function () { return [
+        { type: core.ElementRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
+    ]; };
     NzLayoutComponent.propDecorators = {
         listOfNzSiderComponent: [{ type: core.ContentChildren, args: [NzSiderComponent,] }]
     };
@@ -616,7 +641,7 @@
         { type: core.NgModule, args: [{
                     declarations: [NzLayoutComponent, NzHeaderComponent, NzContentComponent, NzFooterComponent, NzSiderComponent, NzSiderTriggerComponent],
                     exports: [NzLayoutComponent, NzHeaderComponent, NzContentComponent, NzFooterComponent, NzSiderComponent],
-                    imports: [common.CommonModule, icon.NzIconModule, layout.LayoutModule, platform.PlatformModule]
+                    imports: [bidi.BidiModule, common.CommonModule, icon.NzIconModule, layout.LayoutModule, platform.PlatformModule]
                 },] }
     ];
 

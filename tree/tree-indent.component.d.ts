@@ -4,14 +4,11 @@
  */
 import { OnChanges, OnInit, SimpleChanges } from '@angular/core';
 export declare class NzTreeIndentComponent implements OnInit, OnChanges {
-    nzTreeLevel?: number;
-    nzIsStart?: boolean[];
-    nzIsEnd?: boolean[];
+    nzTreeLevel: number;
+    nzIsStart: boolean[];
+    nzIsEnd: boolean[];
     nzSelectMode: boolean;
     listOfUnit: number[];
-    unitMapOfClass(index: number): {
-        [key: string]: boolean;
-    };
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
 }

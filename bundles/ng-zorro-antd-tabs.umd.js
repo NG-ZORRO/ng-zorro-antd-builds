@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/platform-browser/animations'), require('ng-zorro-antd/core/polyfill'), require('@angular/cdk/a11y'), require('@angular/cdk/bidi'), require('@angular/cdk/coercion'), require('@angular/cdk/keycodes'), require('@angular/cdk/overlay'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/resize-observers'), require('ng-zorro-antd/core/util'), require('@angular/router'), require('ng-zorro-antd/core/logger'), require('@angular/cdk/observers'), require('@angular/cdk/platform'), require('@angular/cdk/scrolling'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/dropdown'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/config')) :
-  typeof define === 'function' && define.amd ? define('ng-zorro-antd/tabs', ['exports', '@angular/core', '@angular/platform-browser/animations', 'ng-zorro-antd/core/polyfill', '@angular/cdk/a11y', '@angular/cdk/bidi', '@angular/cdk/coercion', '@angular/cdk/keycodes', '@angular/cdk/overlay', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/resize-observers', 'ng-zorro-antd/core/util', '@angular/router', 'ng-zorro-antd/core/logger', '@angular/cdk/observers', '@angular/cdk/platform', '@angular/cdk/scrolling', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/dropdown', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/config'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].tabs = {}), global.ng.core, global.ng.platformBrowser.animations, global['ng-zorro-antd'].core.polyfill, global.ng.cdk.a11y, global.ng.cdk.bidi, global.ng.cdk.coercion, global.ng.cdk.keycodes, global.ng.cdk.overlay, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core['resize-observers'], global['ng-zorro-antd'].core.util, global.ng.router, global['ng-zorro-antd'].core.logger, global.ng.cdk.observers, global.ng.cdk.platform, global.ng.cdk.scrolling, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].dropdown, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.config));
-}(this, (function (exports, core, animations, polyfill, a11y, bidi, coercion, keycodes, overlay, rxjs, operators, resizeObservers, util, router, logger, observers, platform, scrolling, common, outlet, dropdown, icon, config) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/platform-browser/animations'), require('ng-zorro-antd/core/polyfill'), require('@angular/cdk/a11y'), require('@angular/cdk/bidi'), require('@angular/cdk/coercion'), require('@angular/cdk/keycodes'), require('@angular/cdk/overlay'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/resize-observers'), require('ng-zorro-antd/core/util'), require('@angular/router'), require('@angular/cdk/observers'), require('@angular/cdk/platform'), require('@angular/cdk/scrolling'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/dropdown'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/logger')) :
+  typeof define === 'function' && define.amd ? define('ng-zorro-antd/tabs', ['exports', '@angular/core', '@angular/platform-browser/animations', 'ng-zorro-antd/core/polyfill', '@angular/cdk/a11y', '@angular/cdk/bidi', '@angular/cdk/coercion', '@angular/cdk/keycodes', '@angular/cdk/overlay', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/resize-observers', 'ng-zorro-antd/core/util', '@angular/router', '@angular/cdk/observers', '@angular/cdk/platform', '@angular/cdk/scrolling', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/dropdown', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/logger'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].tabs = {}), global.ng.core, global.ng.platformBrowser.animations, global['ng-zorro-antd'].core.polyfill, global.ng.cdk.a11y, global.ng.cdk.bidi, global.ng.cdk.coercion, global.ng.cdk.keycodes, global.ng.cdk.overlay, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core['resize-observers'], global['ng-zorro-antd'].core.util, global.ng.router, global.ng.cdk.observers, global.ng.cdk.platform, global.ng.cdk.scrolling, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].dropdown, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.logger));
+}(this, (function (exports, core, animations, polyfill, a11y, bidi, coercion, keycodes, overlay, rxjs, operators, resizeObservers, util, router, observers, platform, scrolling, common, outlet, dropdown, icon, config, logger) { 'use strict';
 
   /**
    * Use of this source code is governed by an MIT-style license that can be
@@ -723,7 +723,8 @@
           this.setPingStatus();
       };
       NzTabNavBarComponent.prototype.handleKeydown = function (event) {
-          if (keycodes.hasModifierKey(event)) {
+          var inNavigationList = this.navWarpRef.nativeElement.contains(event.target);
+          if (keycodes.hasModifierKey(event) || !inNavigationList) {
               return;
           }
           switch (event.keyCode) {
@@ -1280,12 +1281,9 @@
    * This component is for catching `routerLink` directive.
    */
   var NzTabLinkDirective = /** @class */ (function () {
-      function NzTabLinkDirective(routerLink, routerLinkWithHref, nzTabLinkTemplateDirective) {
+      function NzTabLinkDirective(routerLink, routerLinkWithHref) {
           this.routerLink = routerLink;
           this.routerLinkWithHref = routerLinkWithHref;
-          if (!nzTabLinkTemplateDirective) {
-              logger.warnDeprecation("'a[nz-tab-link]' is deprecated. Please use 'ng-template[nzTabLink] > a[nz-tab-link]' instead.");
-          }
       }
       return NzTabLinkDirective;
   }());
@@ -1297,8 +1295,7 @@
   ];
   NzTabLinkDirective.ctorParameters = function () { return [
       { type: router.RouterLink, decorators: [{ type: core.Optional }, { type: core.Self }] },
-      { type: router.RouterLinkWithHref, decorators: [{ type: core.Optional }, { type: core.Self }] },
-      { type: NzTabLinkTemplateDirective, decorators: [{ type: core.Optional }] }
+      { type: router.RouterLinkWithHref, decorators: [{ type: core.Optional }, { type: core.Self }] }
   ]; };
 
   /**
@@ -1354,7 +1351,7 @@
       Object.defineProperty(NzTabComponent.prototype, "label", {
           get: function () {
               var _a;
-              return this.nzTitle || ((_a = this.nzTabLinkTemplateDirective) === null || _a === void 0 ? void 0 : _a.templateRef) || this.tabLinkTemplate;
+              return this.nzTitle || ((_a = this.nzTabLinkTemplateDirective) === null || _a === void 0 ? void 0 : _a.templateRef);
           },
           enumerable: false,
           configurable: true
@@ -1368,7 +1365,6 @@
       NzTabComponent.prototype.ngOnDestroy = function () {
           this.stateChanges.complete();
       };
-      NzTabComponent.prototype.ngOnInit = function () { };
       return NzTabComponent;
   }());
   NzTabComponent.decorators = [
@@ -1394,7 +1390,6 @@
       nzDeselect: [{ type: core.Output }],
       nzClick: [{ type: core.Output }],
       nzContextmenu: [{ type: core.Output }],
-      tabLinkTemplate: [{ type: core.ViewChild, args: ['tabLinkTemplate', { static: true },] }],
       nzTabLinkTemplateDirective: [{ type: core.ContentChild, args: [NzTabLinkTemplateDirective, { static: false },] }],
       template: [{ type: core.ContentChild, args: [NzTabDirective, { static: false, read: core.TemplateRef },] }],
       linkDirective: [{ type: core.ContentChild, args: [NzTabLinkDirective, { static: false },] }],
@@ -1426,9 +1421,10 @@
   var NZ_CONFIG_MODULE_NAME = 'tabs';
   var nextId = 0;
   var NzTabSetComponent = /** @class */ (function () {
-      function NzTabSetComponent(nzConfigService, cdr, router) {
+      function NzTabSetComponent(nzConfigService, cdr, directionality, router) {
           this.nzConfigService = nzConfigService;
           this.cdr = cdr;
+          this.directionality = directionality;
           this.router = router;
           this._nzModuleName = NZ_CONFIG_MODULE_NAME;
           this.nzTabPosition = 'top';
@@ -1449,26 +1445,12 @@
           this.nzTabListScroll = new core.EventEmitter();
           this.nzClose = new core.EventEmitter();
           this.nzAdd = new core.EventEmitter();
-          /**
-           * @deprecated Not supported.
-           * @breaking-change 11.0.0
-           */
-          this.nzShowPagination = true;
-          /**
-           * @deprecated Not supported.
-           * @breaking-change 11.0.0
-           */
-          this.nzOnNextClick = new core.EventEmitter();
-          /**
-           * @deprecated Not supported.
-           * @breaking-change 11.0.0
-           */
-          this.nzOnPrevClick = new core.EventEmitter();
           // Pick up only direct descendants under ivy rendering engine
           // We filter out only the tabs that belong to this tab set in `tabs`.
           this.allTabs = new core.QueryList();
           // All the direct tabs for this tab set
           this.tabs = new core.QueryList();
+          this.dir = 'ltr';
           this.destroy$ = new rxjs.Subject();
           this.indexToSelect = 0;
           this.selectedIndex = null;
@@ -1530,12 +1512,13 @@
           configurable: true
       });
       NzTabSetComponent.prototype.ngOnInit = function () {
-          if (this.nzOnNextClick.observers.length) {
-              logger.warnDeprecation("(nzOnNextClick) of nz-tabset is not support, will be removed in 11.0.0");
-          }
-          if (this.nzOnPrevClick.observers.length) {
-              logger.warnDeprecation("(nzOnPrevClick) of nz-tabset is not support, will be removed in 11.0.0");
-          }
+          var _this = this;
+          var _a;
+          this.dir = this.directionality.value;
+          (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+              _this.dir = direction;
+              _this.cdr.detectChanges();
+          });
       };
       NzTabSetComponent.prototype.ngOnDestroy = function () {
           this.destroy$.next();
@@ -1726,10 +1709,24 @@
           var _this = this;
           return function (link) { return (link ? router.isActive(link.urlTree, _this.nzLinkExact) : false); };
       };
-      NzTabSetComponent.prototype.ngOnChanges = function (changes) {
-          if (changes.hasOwnProperty('nzShowPagination')) {
-              logger.warnDeprecation("[nzOnPrevClick] of nz-tabset is not support, will be removed in 11.0.0");
+      NzTabSetComponent.prototype.getTabContentMarginValue = function () {
+          return -(this.nzSelectedIndex || 0) * 100;
+      };
+      NzTabSetComponent.prototype.getTabContentMarginLeft = function () {
+          if (this.tabPaneAnimated) {
+              if (this.dir !== 'rtl') {
+                  return this.getTabContentMarginValue() + '%';
+              }
           }
+          return '';
+      };
+      NzTabSetComponent.prototype.getTabContentMarginRight = function () {
+          if (this.tabPaneAnimated) {
+              if (this.dir === 'rtl') {
+                  return this.getTabContentMarginValue() + '%';
+              }
+          }
+          return '';
       };
       return NzTabSetComponent;
   }());
@@ -1746,13 +1743,14 @@
                           useExisting: NzTabSetComponent
                       }
                   ],
-                  template: "\n    <nz-tabs-nav\n      *ngIf=\"tabs.length\"\n      [ngStyle]=\"nzTabBarStyle\"\n      [selectedIndex]=\"nzSelectedIndex || 0\"\n      [inkBarAnimated]=\"inkBarAnimated\"\n      [addable]=\"addable\"\n      [addIcon]=\"nzAddIcon\"\n      [hideBar]=\"nzHideAll\"\n      [position]=\"position\"\n      [extraTemplate]=\"nzTabBarExtraContent\"\n      (tabScroll)=\"nzTabListScroll.emit($event)\"\n      (selectFocusedIndex)=\"setSelectedIndex($event)\"\n      (addClicked)=\"onAdd()\"\n    >\n      <div\n        class=\"ant-tabs-tab\"\n        [style.margin-right.px]=\"position === 'horizontal' ? nzTabBarGutter : null\"\n        [style.margin-bottom.px]=\"position === 'vertical' ? nzTabBarGutter : null\"\n        [class.ant-tabs-tab-active]=\"nzSelectedIndex === i\"\n        [class.ant-tabs-tab-disabled]=\"tab.nzDisabled\"\n        (click)=\"clickNavItem(tab, i)\"\n        (contextmenu)=\"contextmenuNavItem(tab, $event)\"\n        *ngFor=\"let tab of tabs; let i = index\"\n      >\n        <div\n          role=\"tab\"\n          [attr.tabIndex]=\"getTabIndex(tab, i)\"\n          [attr.aria-disabled]=\"tab.nzDisabled\"\n          [attr.aria-selected]=\"nzSelectedIndex === i && !nzHideAll\"\n          [attr.aria-controls]=\"getTabContentId(i)\"\n          [disabled]=\"tab.nzDisabled\"\n          [tab]=\"tab\"\n          [active]=\"nzSelectedIndex === i\"\n          class=\"ant-tabs-tab-btn\"\n          nzTabNavItem\n          cdkMonitorElementFocus\n        >\n          <ng-container *nzStringTemplateOutlet=\"tab.label; context: { visible: true }\">{{ tab.label }}</ng-container>\n          <button\n            nz-tab-close-button\n            *ngIf=\"tab.nzClosable && closable && !tab.nzDisabled\"\n            [closeIcon]=\"tab.nzCloseIcon\"\n            (click)=\"onClose(i, $event)\"\n          ></button>\n        </div>\n      </div>\n    </nz-tabs-nav>\n    <div class=\"ant-tabs-content-holder\">\n      <div\n        class=\"ant-tabs-content\"\n        [class.ant-tabs-content-top]=\"nzTabPosition === 'top'\"\n        [class.ant-tabs-content-bottom]=\"nzTabPosition === 'bottom'\"\n        [class.ant-tabs-content-left]=\"nzTabPosition === 'left'\"\n        [class.ant-tabs-content-right]=\"nzTabPosition === 'right'\"\n        [class.ant-tabs-content-animated]=\"tabPaneAnimated\"\n        [style.margin-left.%]=\"tabPaneAnimated ? -(nzSelectedIndex || 0) * 100 : null\"\n      >\n        <div\n          nz-tab-body\n          *ngFor=\"let tab of tabs; let i = index\"\n          [active]=\"nzSelectedIndex == i && !nzHideAll\"\n          [content]=\"tab.content\"\n          [forceRender]=\"tab.nzForceRender\"\n          [tabPaneAnimated]=\"tabPaneAnimated\"\n        ></div>\n      </div>\n    </div>\n  ",
+                  template: "\n    <nz-tabs-nav\n      *ngIf=\"tabs.length\"\n      [ngStyle]=\"nzTabBarStyle\"\n      [selectedIndex]=\"nzSelectedIndex || 0\"\n      [inkBarAnimated]=\"inkBarAnimated\"\n      [addable]=\"addable\"\n      [addIcon]=\"nzAddIcon\"\n      [hideBar]=\"nzHideAll\"\n      [position]=\"position\"\n      [extraTemplate]=\"nzTabBarExtraContent\"\n      (tabScroll)=\"nzTabListScroll.emit($event)\"\n      (selectFocusedIndex)=\"setSelectedIndex($event)\"\n      (addClicked)=\"onAdd()\"\n    >\n      <div\n        class=\"ant-tabs-tab\"\n        [style.margin-right.px]=\"position === 'horizontal' ? nzTabBarGutter : null\"\n        [style.margin-bottom.px]=\"position === 'vertical' ? nzTabBarGutter : null\"\n        [class.ant-tabs-tab-active]=\"nzSelectedIndex === i\"\n        [class.ant-tabs-tab-disabled]=\"tab.nzDisabled\"\n        (click)=\"clickNavItem(tab, i)\"\n        (contextmenu)=\"contextmenuNavItem(tab, $event)\"\n        *ngFor=\"let tab of tabs; let i = index\"\n      >\n        <div\n          role=\"tab\"\n          [attr.tabIndex]=\"getTabIndex(tab, i)\"\n          [attr.aria-disabled]=\"tab.nzDisabled\"\n          [attr.aria-selected]=\"nzSelectedIndex === i && !nzHideAll\"\n          [attr.aria-controls]=\"getTabContentId(i)\"\n          [disabled]=\"tab.nzDisabled\"\n          [tab]=\"tab\"\n          [active]=\"nzSelectedIndex === i\"\n          class=\"ant-tabs-tab-btn\"\n          nzTabNavItem\n          cdkMonitorElementFocus\n        >\n          <ng-container *nzStringTemplateOutlet=\"tab.label; context: { visible: true }\">{{ tab.label }}</ng-container>\n          <button\n            nz-tab-close-button\n            *ngIf=\"tab.nzClosable && closable && !tab.nzDisabled\"\n            [closeIcon]=\"tab.nzCloseIcon\"\n            (click)=\"onClose(i, $event)\"\n          ></button>\n        </div>\n      </div>\n    </nz-tabs-nav>\n    <div class=\"ant-tabs-content-holder\">\n      <div\n        class=\"ant-tabs-content\"\n        [class.ant-tabs-content-top]=\"nzTabPosition === 'top'\"\n        [class.ant-tabs-content-bottom]=\"nzTabPosition === 'bottom'\"\n        [class.ant-tabs-content-left]=\"nzTabPosition === 'left'\"\n        [class.ant-tabs-content-right]=\"nzTabPosition === 'right'\"\n        [class.ant-tabs-content-animated]=\"tabPaneAnimated\"\n        [style.margin-left]=\"getTabContentMarginLeft()\"\n        [style.margin-right]=\"getTabContentMarginRight()\"\n      >\n        <div\n          nz-tab-body\n          *ngFor=\"let tab of tabs; let i = index\"\n          [active]=\"nzSelectedIndex == i && !nzHideAll\"\n          [content]=\"tab.content\"\n          [forceRender]=\"tab.nzForceRender\"\n          [tabPaneAnimated]=\"tabPaneAnimated\"\n        ></div>\n      </div>\n    </div>\n  ",
                   host: {
                       class: 'ant-tabs',
                       '[class.ant-tabs-card]': "nzType === 'card' || nzType === 'editable-card'",
                       '[class.ant-tabs-editable]': "nzType === 'editable-card'",
                       '[class.ant-tabs-editable-card]': "nzType === 'editable-card'",
                       '[class.ant-tabs-centered]': "nzCentered",
+                      '[class.ant-tabs-rtl]': "dir === 'rtl'",
                       '[class.ant-tabs-top]': "nzTabPosition === 'top'",
                       '[class.ant-tabs-bottom]': "nzTabPosition === 'bottom'",
                       '[class.ant-tabs-left]': "nzTabPosition === 'left'",
@@ -1766,6 +1764,7 @@
   NzTabSetComponent.ctorParameters = function () { return [
       { type: config.NzConfigService },
       { type: core.ChangeDetectorRef },
+      { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
       { type: router.Router, decorators: [{ type: core.Optional }] }
   ]; };
   NzTabSetComponent.propDecorators = {
@@ -1789,9 +1788,6 @@
       nzTabListScroll: [{ type: core.Output }],
       nzClose: [{ type: core.Output }],
       nzAdd: [{ type: core.Output }],
-      nzShowPagination: [{ type: core.Input }],
-      nzOnNextClick: [{ type: core.Output }],
-      nzOnPrevClick: [{ type: core.Output }],
       allTabs: [{ type: core.ContentChildren, args: [NzTabComponent, { descendants: true },] }],
       tabNavBarRef: [{ type: core.ViewChild, args: [NzTabNavBarComponent, { static: false },] }]
   };
@@ -1831,10 +1827,6 @@
       util.InputBoolean(),
       __metadata("design:type", Object)
   ], NzTabSetComponent.prototype, "nzLinkExact", void 0);
-  __decorate([
-      util.InputBoolean(),
-      __metadata("design:type", Object)
-  ], NzTabSetComponent.prototype, "nzShowPagination", void 0);
 
   /**
    * Use of this source code is governed by an MIT-style license that can be
@@ -1864,7 +1856,17 @@
       { type: core.NgModule, args: [{
                   declarations: [DIRECTIVES],
                   exports: [DIRECTIVES],
-                  imports: [common.CommonModule, observers.ObserversModule, icon.NzIconModule, outlet.NzOutletModule, platform.PlatformModule, a11y.A11yModule, scrolling.CdkScrollableModule, dropdown.NzDropDownModule]
+                  imports: [
+                      bidi.BidiModule,
+                      common.CommonModule,
+                      observers.ObserversModule,
+                      icon.NzIconModule,
+                      outlet.NzOutletModule,
+                      platform.PlatformModule,
+                      a11y.A11yModule,
+                      scrolling.CdkScrollableModule,
+                      dropdown.NzDropDownModule
+                  ]
               },] }
   ];
 

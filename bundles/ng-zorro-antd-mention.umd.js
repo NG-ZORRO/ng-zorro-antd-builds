@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/overlay'), require('@angular/common'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/icon'), require('rxjs'), require('@angular/cdk/keycodes'), require('@angular/cdk/portal'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/mention', ['exports', '@angular/cdk/overlay', '@angular/common', '@angular/core', '@angular/forms', 'ng-zorro-antd/icon', 'rxjs', '@angular/cdk/keycodes', '@angular/cdk/portal', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].mention = {}), global.ng.cdk.overlay, global.ng.common, global.ng.core, global.ng.forms, global['ng-zorro-antd'].icon, global.rxjs, global.ng.cdk.keycodes, global.ng.cdk.portal, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util));
-}(this, (function (exports, overlay$1, common, core, forms, icon, rxjs, keycodes, portal, overlay, util) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/overlay'), require('@angular/common'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/icon'), require('rxjs'), require('@angular/cdk/keycodes'), require('@angular/cdk/portal'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/mention', ['exports', '@angular/cdk/bidi', '@angular/cdk/overlay', '@angular/common', '@angular/core', '@angular/forms', 'ng-zorro-antd/icon', 'rxjs', '@angular/cdk/keycodes', '@angular/cdk/portal', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].mention = {}), global.ng.cdk.bidi, global.ng.cdk.overlay, global.ng.common, global.ng.core, global.ng.forms, global['ng-zorro-antd'].icon, global.rxjs, global.ng.cdk.keycodes, global.ng.cdk.portal, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util));
+}(this, (function (exports, bidi, overlay$1, common, core, forms, icon, rxjs, keycodes, portal, overlay, util) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -470,6 +470,18 @@
             enumerable: false,
             configurable: true
         });
+        Object.defineProperty(NzMentionComponent.prototype, "focusItemElement", {
+            get: function () {
+                var _a;
+                var itemArr = (_a = this.items) === null || _a === void 0 ? void 0 : _a.toArray();
+                if (itemArr && itemArr[this.activeIndex]) {
+                    return itemArr[this.activeIndex].nativeElement;
+                }
+                return null;
+            },
+            enumerable: false,
+            configurable: true
+        });
         NzMentionComponent.prototype.ngOnInit = function () {
             var _this = this;
             this.nzMentionService.triggerChanged().subscribe(function (trigger) {
@@ -598,10 +610,17 @@
         NzMentionComponent.prototype.setNextItemActive = function () {
             this.activeIndex = this.activeIndex + 1 <= this.filteredSuggestions.length - 1 ? this.activeIndex + 1 : 0;
             this.cdr.markForCheck();
+            this.scrollToFocusItem();
         };
         NzMentionComponent.prototype.setPreviousItemActive = function () {
             this.activeIndex = this.activeIndex - 1 < 0 ? this.filteredSuggestions.length - 1 : this.activeIndex - 1;
             this.cdr.markForCheck();
+            this.scrollToFocusItem();
+        };
+        NzMentionComponent.prototype.scrollToFocusItem = function () {
+            if (this.focusItemElement) {
+                this.focusItemElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+            }
         };
         NzMentionComponent.prototype.canOpen = function () {
             var element = this.triggerNativeElement;
@@ -693,7 +712,7 @@
         { type: core.Component, args: [{
                     selector: 'nz-mention',
                     exportAs: 'nzMention',
-                    template: "\n    <ng-content></ng-content>\n    <ng-template #suggestions>\n      <ul class=\"ant-mention-dropdown\">\n        <li\n          class=\"ant-mention-dropdown-item\"\n          *ngFor=\"let suggestion of filteredSuggestions; let i = index\"\n          [class.focus]=\"i === activeIndex\"\n          (mousedown)=\"$event.preventDefault()\"\n          (click)=\"selectSuggestion(suggestion)\"\n        >\n          <ng-container *ngIf=\"suggestionTemplate; else defaultSuggestion\">\n            <ng-container *ngTemplateOutlet=\"suggestionTemplate; context: { $implicit: suggestion }\"></ng-container>\n          </ng-container>\n          <ng-template #defaultSuggestion>{{ nzValueWith(suggestion) }}</ng-template>\n        </li>\n        <li class=\"ant-mention-dropdown-notfound ant-mention-dropdown-item\" *ngIf=\"filteredSuggestions.length === 0\">\n          <span *ngIf=\"nzLoading\"><i nz-icon nzType=\"loading\"></i></span>\n          <span *ngIf=\"!nzLoading\">{{ nzNotFoundContent }}</span>\n        </li>\n      </ul>\n    </ng-template>\n  ",
+                    template: "\n    <ng-content></ng-content>\n    <ng-template #suggestions>\n      <ul class=\"ant-mention-dropdown\">\n        <li\n          #items\n          class=\"ant-mention-dropdown-item\"\n          *ngFor=\"let suggestion of filteredSuggestions; let i = index\"\n          [class.focus]=\"i === activeIndex\"\n          (mousedown)=\"$event.preventDefault()\"\n          (click)=\"selectSuggestion(suggestion)\"\n        >\n          <ng-container *ngIf=\"suggestionTemplate; else defaultSuggestion\">\n            <ng-container *ngTemplateOutlet=\"suggestionTemplate; context: { $implicit: suggestion }\"></ng-container>\n          </ng-container>\n          <ng-template #defaultSuggestion>{{ nzValueWith(suggestion) }}</ng-template>\n        </li>\n        <li class=\"ant-mention-dropdown-notfound ant-mention-dropdown-item\" *ngIf=\"filteredSuggestions.length === 0\">\n          <span *ngIf=\"nzLoading\"><i nz-icon nzType=\"loading\"></i></span>\n          <span *ngIf=\"!nzLoading\">{{ nzNotFoundContent }}</span>\n        </li>\n      </ul>\n    </ng-template>\n  ",
                     preserveWhitespaces: false,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     providers: [NzMentionService]
@@ -716,6 +735,7 @@
         nzOnSelect: [{ type: core.Output }],
         nzOnSearchChange: [{ type: core.Output }],
         suggestionsTemp: [{ type: core.ViewChild, args: [core.TemplateRef, { static: false },] }],
+        items: [{ type: core.ViewChildren, args: ['items', { read: core.ElementRef },] }],
         suggestionChild: [{ type: core.ContentChild, args: [NzMentionSuggestionDirective, { static: false, read: core.TemplateRef },] }]
     };
     __decorate([
@@ -731,7 +751,7 @@
     }());
     NzMentionModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, forms.FormsModule, overlay$1.OverlayModule, icon.NzIconModule],
+                    imports: [bidi.BidiModule, common.CommonModule, forms.FormsModule, overlay$1.OverlayModule, icon.NzIconModule],
                     declarations: __spread(COMPONENTS),
                     exports: __spread(COMPONENTS)
                 },] }

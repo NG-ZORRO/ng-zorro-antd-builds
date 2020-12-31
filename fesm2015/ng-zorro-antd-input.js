@@ -1,8 +1,9 @@
 import { __decorate, __metadata } from 'tslib';
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { Directive, Optional, Self, Renderer2, ElementRef, Input, Component, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef, ContentChildren, NgZone, NgModule } from '@angular/core';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject, merge } from 'rxjs';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
+import { Directive, Optional, Self, Renderer2, ElementRef, Input, Component, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef, ContentChildren, NgZone, isDevMode, ContentChild, NgModule } from '@angular/core';
+import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { Subject, merge, EMPTY } from 'rxjs';
 import { filter, takeUntil, startWith, switchMap, flatMap, map } from 'rxjs/operators';
 import { NgControl } from '@angular/forms';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
@@ -16,12 +17,14 @@ import { NzResizeService } from 'ng-zorro-antd/core/services';
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzInputDirective {
-    constructor(ngControl, renderer, elementRef) {
+    constructor(ngControl, renderer, elementRef, directionality) {
         this.ngControl = ngControl;
+        this.directionality = directionality;
         this.nzBorderless = false;
         this.nzSize = 'default';
         this._disabled = false;
         this.disabled$ = new Subject();
+        this.dir = 'ltr';
         this.destroy$ = new Subject();
         renderer.addClass(elementRef.nativeElement, 'ant-input');
     }
@@ -35,12 +38,16 @@ class NzInputDirective {
         this._disabled = value != null && `${value}` !== 'false';
     }
     ngOnInit() {
-        var _a;
+        var _a, _b;
         if (this.ngControl) {
             (_a = this.ngControl.statusChanges) === null || _a === void 0 ? void 0 : _a.pipe(filter(() => this.ngControl.disabled !== null), takeUntil(this.destroy$)).subscribe(() => {
                 this.disabled$.next(this.ngControl.disabled);
             });
         }
+        this.dir = this.directionality.value;
+        (_b = this.directionality.change) === null || _b === void 0 ? void 0 : _b.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+        });
     }
     ngOnChanges(changes) {
         const { disabled } = changes;
@@ -62,14 +69,16 @@ NzInputDirective.decorators = [
                     '[class.ant-input-borderless]': 'nzBorderless',
                     '[class.ant-input-lg]': `nzSize === 'large'`,
                     '[class.ant-input-sm]': `nzSize === 'small'`,
-                    '[attr.disabled]': 'disabled || null'
+                    '[attr.disabled]': 'disabled || null',
+                    '[class.ant-input-rtl]': `dir=== 'rtl'`
                 }
             },] }
 ];
 NzInputDirective.ctorParameters = () => [
     { type: NgControl, decorators: [{ type: Optional }, { type: Self }] },
     { type: Renderer2 },
-    { type: ElementRef }
+    { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzInputDirective.propDecorators = {
     nzBorderless: [{ type: Input }],
@@ -81,10 +90,6 @@ __decorate([
     __metadata("design:type", Object)
 ], NzInputDirective.prototype, "nzBorderless", void 0);
 
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 class NzInputGroupWhitSuffixOrPrefixDirective {
     constructor(elementRef) {
         this.elementRef = elementRef;
@@ -99,10 +104,11 @@ NzInputGroupWhitSuffixOrPrefixDirective.ctorParameters = () => [
     { type: ElementRef }
 ];
 class NzInputGroupComponent {
-    constructor(focusMonitor, elementRef, cdr) {
+    constructor(focusMonitor, elementRef, cdr, directionality) {
         this.focusMonitor = focusMonitor;
         this.elementRef = elementRef;
         this.cdr = cdr;
+        this.directionality = directionality;
         this.nzAddOnBeforeIcon = null;
         this.nzAddOnAfterIcon = null;
         this.nzPrefixIcon = null;
@@ -116,6 +122,7 @@ class NzInputGroupComponent {
         this.isAddOn = false;
         this.focused = false;
         this.disabled = false;
+        this.dir = 'ltr';
         this.destroy$ = new Subject();
     }
     updateChildrenInputSize() {
@@ -124,12 +131,17 @@ class NzInputGroupComponent {
         }
     }
     ngOnInit() {
+        var _a;
         this.focusMonitor
             .monitor(this.elementRef, true)
             .pipe(takeUntil(this.destroy$))
             .subscribe(focusOrigin => {
             this.focused = !!focusOrigin;
             this.cdr.markForCheck();
+        });
+        this.dir = this.directionality.value;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
         });
     }
     ngAfterContentInit() {
@@ -178,8 +190,7 @@ NzInputGroupComponent.decorators = [
         type="addon"
         [icon]="nzAddOnBeforeIcon"
         [template]="nzAddOnBefore"
-      >
-      </span>
+      ></span>
       <span
         *ngIf="isAffix; else contentTemplate"
         class="ant-input-affix-wrapper"
@@ -214,17 +225,21 @@ NzInputGroupComponent.decorators = [
                     '[class.ant-input-group-compact]': `nzCompact`,
                     '[class.ant-input-search-enter-button]': `nzSearch`,
                     '[class.ant-input-search]': `nzSearch`,
+                    '[class.ant-input-search-rtl]': `dir === 'rtl'`,
                     '[class.ant-input-search-sm]': `nzSearch && isSmall`,
                     '[class.ant-input-search-large]': `nzSearch && isLarge`,
                     '[class.ant-input-group-wrapper]': `isAddOn`,
+                    '[class.ant-input-group-wrapper-rtl]': `dir === 'rtl'`,
                     '[class.ant-input-group-wrapper-lg]': `isAddOn && isLarge`,
                     '[class.ant-input-group-wrapper-sm]': `isAddOn && isSmall`,
                     '[class.ant-input-affix-wrapper]': `isAffix && !isAddOn`,
+                    '[class.ant-input-affix-wrapper-rtl]': `dir === 'rtl'`,
                     '[class.ant-input-affix-wrapper-focused]': `isAffix && focused`,
                     '[class.ant-input-affix-wrapper-disabled]': `isAffix && disabled`,
                     '[class.ant-input-affix-wrapper-lg]': `isAffix && !isAddOn && isLarge`,
                     '[class.ant-input-affix-wrapper-sm]': `isAffix && !isAddOn && isSmall`,
                     '[class.ant-input-group]': `!isAffix && !isAddOn`,
+                    '[class.ant-input-group-rtl]': `dir === 'rtl'`,
                     '[class.ant-input-group-lg]': `!isAffix && !isAddOn && isLarge`,
                     '[class.ant-input-group-sm]': `!isAffix && !isAddOn && isSmall`
                 }
@@ -233,7 +248,8 @@ NzInputGroupComponent.decorators = [
 NzInputGroupComponent.ctorParameters = () => [
     { type: FocusMonitor },
     { type: ElementRef },
-    { type: ChangeDetectorRef }
+    { type: ChangeDetectorRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzInputGroupComponent.propDecorators = {
     listOfNzInputDirective: [{ type: ContentChildren, args: [NzInputDirective,] }],
@@ -467,19 +483,88 @@ NzInputGroupSlotComponent.propDecorators = {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+class NzTextareaCountComponent {
+    constructor(renderer, elementRef) {
+        this.renderer = renderer;
+        this.elementRef = elementRef;
+        this.nzMaxCharacterCount = 0;
+        this.nzComputeCharacterCount = v => v.length;
+        this.nzFormatter = (c, m) => `${c}` + (m > 0 ? `/${m}` : ``);
+        this.configChange$ = new Subject();
+        this.destroy$ = new Subject();
+    }
+    ngAfterContentInit() {
+        if (!this.nzInputDirective && isDevMode()) {
+            throw new Error('[nz-textarea-count]: Could not find matching textarea[nz-input] child.');
+        }
+        if (this.nzInputDirective.ngControl) {
+            const valueChanges = this.nzInputDirective.ngControl.valueChanges || EMPTY;
+            merge(valueChanges, this.configChange$)
+                .pipe(takeUntil(this.destroy$), map(() => this.nzInputDirective.ngControl.value), startWith(this.nzInputDirective.ngControl.value))
+                .subscribe(value => {
+                this.setDataCount(value);
+            });
+        }
+    }
+    setDataCount(value) {
+        const inputValue = isNotNil(value) ? String(value) : '';
+        const currentCount = this.nzComputeCharacterCount(inputValue);
+        const dataCount = this.nzFormatter(currentCount, this.nzMaxCharacterCount);
+        this.renderer.setAttribute(this.elementRef.nativeElement, 'data-count', dataCount);
+    }
+    ngOnDestroy() {
+        this.configChange$.complete();
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+}
+NzTextareaCountComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'nz-textarea-count',
+                template: `
+    <ng-content select="textarea[nz-input]"></ng-content>
+  `,
+                host: {
+                    class: 'ant-input-textarea-show-count'
+                },
+                changeDetection: ChangeDetectionStrategy.OnPush
+            },] }
+];
+NzTextareaCountComponent.ctorParameters = () => [
+    { type: Renderer2 },
+    { type: ElementRef }
+];
+NzTextareaCountComponent.propDecorators = {
+    nzInputDirective: [{ type: ContentChild, args: [NzInputDirective, { static: true },] }],
+    nzMaxCharacterCount: [{ type: Input }],
+    nzComputeCharacterCount: [{ type: Input }],
+    nzFormatter: [{ type: Input }]
+};
+
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 class NzInputModule {
 }
 NzInputModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [
+                    NzTextareaCountComponent,
                     NzInputDirective,
                     NzInputGroupComponent,
                     NzAutosizeDirective,
                     NzInputGroupSlotComponent,
                     NzInputGroupWhitSuffixOrPrefixDirective
                 ],
-                exports: [NzInputDirective, NzInputGroupComponent, NzAutosizeDirective, NzInputGroupWhitSuffixOrPrefixDirective],
-                imports: [CommonModule, NzIconModule, PlatformModule, NzOutletModule]
+                exports: [
+                    NzTextareaCountComponent,
+                    NzInputDirective,
+                    NzInputGroupComponent,
+                    NzAutosizeDirective,
+                    NzInputGroupWhitSuffixOrPrefixDirective
+                ],
+                imports: [BidiModule, CommonModule, NzIconModule, PlatformModule, NzOutletModule]
             },] }
 ];
 
@@ -492,5 +577,5 @@ NzInputModule.decorators = [
  * Generated bundle index. Do not edit.
  */
 
-export { NzAutosizeDirective, NzInputDirective, NzInputGroupComponent, NzInputGroupSlotComponent, NzInputGroupWhitSuffixOrPrefixDirective, NzInputModule };
+export { NzAutosizeDirective, NzInputDirective, NzInputGroupComponent, NzInputGroupSlotComponent, NzInputGroupWhitSuffixOrPrefixDirective, NzInputModule, NzTextareaCountComponent };
 //# sourceMappingURL=ng-zorro-antd-input.js.map

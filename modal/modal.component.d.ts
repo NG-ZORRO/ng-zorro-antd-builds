@@ -2,12 +2,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { OverlayRef } from '@angular/cdk/overlay';
 import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, SimpleChanges, TemplateRef, Type, ViewContainerRef } from '@angular/core';
 import { NzButtonType } from 'ng-zorro-antd/button';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
-import { NzModalFooterDirective } from './modal-footer.directive';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { NzModalRef } from './modal-ref';
 import { ModalButtonOptions, ModalTypes, OnClickCallback, StyleObjectLike } from './modal-types';
@@ -27,6 +25,7 @@ export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements O
     static ngAcceptInputType_nzCancelLoading: BooleanInput;
     static ngAcceptInputType_nzKeyboard: BooleanInput;
     static ngAcceptInputType_nzNoAnimation: BooleanInput;
+    static ngAcceptInputType_nzOkDanger: BooleanInput;
     nzMask?: boolean;
     nzMaskClosable?: boolean;
     nzCloseOnNavigation?: boolean;
@@ -41,11 +40,6 @@ export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements O
     nzContent?: string | TemplateRef<{}> | Type<T>;
     nzComponentParams?: T;
     nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;
-    /**
-     * @deprecated Not supported.
-     * @breaking-change 11.0.0
-     */
-    nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
     nzZIndex: number;
     nzWidth: number | string;
     nzWrapClassName?: string;
@@ -58,6 +52,7 @@ export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements O
     nzOkText?: string | null;
     nzCancelText?: string | null;
     nzOkType: NzButtonType;
+    nzOkDanger: boolean;
     nzIconType: string;
     nzModalType: ModalTypes;
     nzAutofocus: 'ok' | 'cancel' | 'auto' | null;
@@ -67,7 +62,8 @@ export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements O
     readonly nzAfterClose: EventEmitter<R>;
     readonly nzVisibleChange: EventEmitter<boolean>;
     contentTemplateRef: TemplateRef<{}>;
-    set modalFooter(value: NzModalFooterDirective);
+    contentFromContentChild: TemplateRef<NzSafeAny>;
+    set modalFooter(value: TemplateRef<NzSafeAny>);
     private modalRef;
     get afterOpen(): Observable<void>;
     get afterClose(): Observable<R>;

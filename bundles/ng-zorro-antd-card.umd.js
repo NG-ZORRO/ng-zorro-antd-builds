@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/core/config'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('ng-zorro-antd/core/outlet')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/card', ['exports', '@angular/core', 'ng-zorro-antd/core/util', 'ng-zorro-antd/core/config', 'rxjs', 'rxjs/operators', '@angular/common', 'ng-zorro-antd/core/outlet'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].card = {}), global.ng.core, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].core.config, global.rxjs, global.rxjs.operators, global.ng.common, global['ng-zorro-antd'].core.outlet));
-}(this, (function (exports, core, util, config, rxjs, operators, common, outlet) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/util'), require('@angular/cdk/bidi'), require('ng-zorro-antd/core/config'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('ng-zorro-antd/core/outlet')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/card', ['exports', '@angular/core', 'ng-zorro-antd/core/util', '@angular/cdk/bidi', 'ng-zorro-antd/core/config', 'rxjs', 'rxjs/operators', '@angular/common', 'ng-zorro-antd/core/outlet'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].card = {}), global.ng.core, global['ng-zorro-antd'].core.util, global.ng.cdk.bidi, global['ng-zorro-antd'].core.config, global.rxjs, global.rxjs.operators, global.ng.common, global['ng-zorro-antd'].core.outlet));
+}(this, (function (exports, core, util, bidi, config, rxjs, operators, common, outlet) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -310,8 +310,11 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzCardGridDirective = /** @class */ (function () {
-        function NzCardGridDirective() {
+        function NzCardGridDirective(elementRef) {
+            this.elementRef = elementRef;
             this.nzHoverable = true;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-card-grid');
         }
         return NzCardGridDirective;
     }());
@@ -320,11 +323,13 @@
                     selector: '[nz-card-grid]',
                     exportAs: 'nzCardGrid',
                     host: {
-                        '[class.ant-card-grid]': 'true',
                         '[class.ant-card-hoverable]': 'nzHoverable'
                     }
                 },] }
     ];
+    NzCardGridDirective.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzCardGridDirective.propDecorators = {
         nzHoverable: [{ type: core.Input }]
     };
@@ -361,10 +366,12 @@
      */
     var NZ_CONFIG_MODULE_NAME = 'card';
     var NzCardComponent = /** @class */ (function () {
-        function NzCardComponent(nzConfigService, cdr) {
+        function NzCardComponent(nzConfigService, cdr, elementRef, directionality) {
             var _this = this;
             this.nzConfigService = nzConfigService;
             this.cdr = cdr;
+            this.elementRef = elementRef;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzBordered = true;
             this.nzBorderless = false;
@@ -374,7 +381,10 @@
             this.nzActions = [];
             this.nzType = null;
             this.nzSize = 'default';
+            this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-card');
             this.nzConfigService
                 .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
                 .pipe(operators.takeUntil(this.destroy$))
@@ -382,6 +392,15 @@
                 _this.cdr.markForCheck();
             });
         }
+        NzCardComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+        };
         NzCardComponent.prototype.ngOnDestroy = function () {
             this.destroy$.next();
             this.destroy$.complete();
@@ -397,20 +416,22 @@
                     encapsulation: core.ViewEncapsulation.None,
                     template: "\n    <div class=\"ant-card-head\" *ngIf=\"nzTitle || nzExtra || listOfNzCardTabComponent\">\n      <div class=\"ant-card-head-wrapper\">\n        <div class=\"ant-card-head-title\" *ngIf=\"nzTitle\">\n          <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n        </div>\n        <div class=\"ant-card-extra\" *ngIf=\"nzExtra\">\n          <ng-container *nzStringTemplateOutlet=\"nzExtra\">{{ nzExtra }}</ng-container>\n        </div>\n      </div>\n      <ng-container *ngIf=\"listOfNzCardTabComponent\">\n        <ng-template [ngTemplateOutlet]=\"listOfNzCardTabComponent.template\"></ng-template>\n      </ng-container>\n    </div>\n    <div class=\"ant-card-cover\" *ngIf=\"nzCover\">\n      <ng-template [ngTemplateOutlet]=\"nzCover\"></ng-template>\n    </div>\n    <div class=\"ant-card-body\" [ngStyle]=\"nzBodyStyle\">\n      <ng-container *ngIf=\"!nzLoading; else loadingTemplate\">\n        <ng-content></ng-content>\n      </ng-container>\n      <ng-template #loadingTemplate>\n        <nz-card-loading></nz-card-loading>\n      </ng-template>\n    </div>\n    <ul class=\"ant-card-actions\" *ngIf=\"nzActions.length\">\n      <li *ngFor=\"let action of nzActions\" [style.width.%]=\"100 / nzActions.length\">\n        <span><ng-template [ngTemplateOutlet]=\"action\"></ng-template></span>\n      </li>\n    </ul>\n  ",
                     host: {
-                        '[class.ant-card]': 'true',
                         '[class.ant-card-loading]': 'nzLoading',
                         '[class.ant-card-bordered]': 'nzBorderless === false && nzBordered',
                         '[class.ant-card-hoverable]': 'nzHoverable',
                         '[class.ant-card-small]': 'nzSize === "small"',
                         '[class.ant-card-contain-grid]': 'listOfNzCardGridDirective && listOfNzCardGridDirective.length',
                         '[class.ant-card-type-inner]': 'nzType === "inner"',
-                        '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent'
+                        '[class.ant-card-contain-tabs]': '!!listOfNzCardTabComponent',
+                        '[class.ant-card-rtl]': "dir === 'rtl'"
                     }
                 },] }
     ];
     NzCardComponent.ctorParameters = function () { return [
         { type: config.NzConfigService },
-        { type: core.ChangeDetectorRef }
+        { type: core.ChangeDetectorRef },
+        { type: core.ElementRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzCardComponent.propDecorators = {
         nzBordered: [{ type: core.Input }],
@@ -456,7 +477,8 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzCardLoadingComponent = /** @class */ (function () {
-        function NzCardLoadingComponent() {
+        function NzCardLoadingComponent(elementRef) {
+            this.elementRef = elementRef;
             this.listOfLoading = [
                 ['ant-col-22'],
                 ['ant-col-8', 'ant-col-15'],
@@ -465,6 +487,8 @@
                 ['ant-col-4', 'ant-col-3', 'ant-col-16'],
                 ['ant-col-8', 'ant-col-6', 'ant-col-8']
             ];
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-card-loading-content');
         }
         return NzCardLoadingComponent;
     }());
@@ -475,23 +499,25 @@
                     template: "\n    <div class=\"ant-card-loading-content\">\n      <div class=\"ant-row\" style=\"margin-left: -4px; margin-right: -4px;\" *ngFor=\"let listOfClassName of listOfLoading\">\n        <div *ngFor=\"let className of listOfClassName\" [ngClass]=\"className\" style=\"padding-left: 4px; padding-right: 4px;\">\n          <div class=\"ant-card-loading-block\"></div>\n        </div>\n      </div>\n    </div>\n  ",
                     preserveWhitespaces: false,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    encapsulation: core.ViewEncapsulation.None,
-                    host: {
-                        '[class.ant-card-loading-content]': 'true'
-                    }
+                    encapsulation: core.ViewEncapsulation.None
                 },] }
     ];
-    NzCardLoadingComponent.ctorParameters = function () { return []; };
+    NzCardLoadingComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzCardMetaComponent = /** @class */ (function () {
-        function NzCardMetaComponent() {
+        function NzCardMetaComponent(elementRef) {
+            this.elementRef = elementRef;
             this.nzTitle = null;
             this.nzDescription = null;
             this.nzAvatar = null;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-card-meta');
         }
         return NzCardMetaComponent;
     }());
@@ -502,12 +528,12 @@
                     preserveWhitespaces: false,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     encapsulation: core.ViewEncapsulation.None,
-                    template: "\n    <div class=\"ant-card-meta-avatar\" *ngIf=\"nzAvatar\">\n      <ng-template [ngTemplateOutlet]=\"nzAvatar\"></ng-template>\n    </div>\n    <div class=\"ant-card-meta-detail\" *ngIf=\"nzTitle || nzDescription\">\n      <div class=\"ant-card-meta-title\" *ngIf=\"nzTitle\">\n        <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n      </div>\n      <div class=\"ant-card-meta-description\" *ngIf=\"nzDescription\">\n        <ng-container *nzStringTemplateOutlet=\"nzDescription\">{{ nzDescription }}</ng-container>\n      </div>\n    </div>\n  ",
-                    host: {
-                        '[class.ant-card-meta]': 'true'
-                    }
+                    template: "\n    <div class=\"ant-card-meta-avatar\" *ngIf=\"nzAvatar\">\n      <ng-template [ngTemplateOutlet]=\"nzAvatar\"></ng-template>\n    </div>\n    <div class=\"ant-card-meta-detail\" *ngIf=\"nzTitle || nzDescription\">\n      <div class=\"ant-card-meta-title\" *ngIf=\"nzTitle\">\n        <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n      </div>\n      <div class=\"ant-card-meta-description\" *ngIf=\"nzDescription\">\n        <ng-container *nzStringTemplateOutlet=\"nzDescription\">{{ nzDescription }}</ng-container>\n      </div>\n    </div>\n  "
                 },] }
     ];
+    NzCardMetaComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzCardMetaComponent.propDecorators = {
         nzTitle: [{ type: core.Input }],
         nzDescription: [{ type: core.Input }],
@@ -527,7 +553,7 @@
         { type: core.NgModule, args: [{
                     imports: [common.CommonModule, outlet.NzOutletModule],
                     declarations: [NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent],
-                    exports: [NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent]
+                    exports: [bidi.BidiModule, NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent]
                 },] }
     ];
 

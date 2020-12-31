@@ -1,8 +1,9 @@
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { OverlayRef, OverlayConfig, Overlay, OverlayModule } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal, PortalModule } from '@angular/cdk/portal';
 import { EventEmitter, Directive, ElementRef, ChangeDetectorRef, Renderer2, Component, ChangeDetectionStrategy, Optional, Inject, ViewChild, Output, Injector, TemplateRef, Injectable, SkipSelf, ViewContainerRef, Input, ContentChild, NgModule } from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { warnDeprecation, warn } from 'ng-zorro-antd/core/logger';
+import { warn, warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { getElementOffset, isPromise, isNotNil, InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject, defer } from 'rxjs';
 import { takeUntil, filter, take, startWith } from 'rxjs/operators';
@@ -39,6 +40,7 @@ class ModalOptions {
         this.nzWidth = 520;
         this.nzCloseIcon = 'close';
         this.nzOkType = 'primary';
+        this.nzOkDanger = false;
         this.nzModalType = 'default';
         this.nzOnCancel = noopFun;
         this.nzOnOk = noopFun;
@@ -92,13 +94,13 @@ function getValueWithConfig(userValue, configValue, defaultValue) {
 /**
  * Assign the params into the content component instance.
  * @deprecated Should use dependency injection to get the params for user
- * @breaking-change 11.0.0
+ * @breaking-change 12.0.0
  */
 function setContentInstanceParams(instance, params) {
     Object.assign(instance, params);
 }
 function getConfigFromComponent(component) {
-    const { nzMask, nzMaskClosable, nzClosable, nzOkLoading, nzOkDisabled, nzCancelDisabled, nzCancelLoading, nzKeyboard, nzNoAnimation, nzContent, nzComponentParams, nzFooter, nzGetContainer, nzZIndex, nzWidth, nzWrapClassName, nzClassName, nzStyle, nzTitle, nzCloseIcon, nzMaskStyle, nzBodyStyle, nzOkText, nzCancelText, nzOkType, nzIconType, nzModalType, nzOnOk, nzOnCancel, nzAfterOpen, nzAfterClose, nzCloseOnNavigation, nzAutofocus } = component;
+    const { nzMask, nzMaskClosable, nzClosable, nzOkLoading, nzOkDisabled, nzCancelDisabled, nzCancelLoading, nzKeyboard, nzNoAnimation, nzContent, nzComponentParams, nzFooter, nzZIndex, nzWidth, nzWrapClassName, nzClassName, nzStyle, nzTitle, nzCloseIcon, nzMaskStyle, nzBodyStyle, nzOkText, nzCancelText, nzOkType, nzOkDanger, nzIconType, nzModalType, nzOnOk, nzOnCancel, nzAfterOpen, nzAfterClose, nzCloseOnNavigation, nzAutofocus } = component;
     return {
         nzMask,
         nzMaskClosable,
@@ -112,7 +114,6 @@ function getConfigFromComponent(component) {
         nzContent,
         nzComponentParams,
         nzFooter,
-        nzGetContainer,
         nzZIndex,
         nzWidth,
         nzWrapClassName,
@@ -125,6 +126,7 @@ function getConfigFromComponent(component) {
         nzOkText,
         nzCancelText,
         nzOkType,
+        nzOkDanger,
         nzIconType,
         nzModalType,
         nzOnOk,
@@ -136,10 +138,6 @@ function getConfigFromComponent(component) {
     };
 }
 
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 function throwNzModalContentAlreadyAttachedError() {
     throw Error('Attempting to attach modal content after content is already attached');
 }
@@ -160,13 +158,14 @@ class BaseModalContainerComponent extends BasePortalOutlet {
         this.okTriggered = new EventEmitter();
         this.state = 'enter';
         this.isStringContent = false;
+        this.dir = 'ltr';
         this.elementFocusedBeforeModalWasOpened = null;
         this.mouseDown = false;
         this.oldMaskStyle = null;
         this.destroy$ = new Subject();
         this.document = document;
+        this.dir = overlayRef.getDirection();
         this.isStringContent = typeof config.nzContent === 'string';
-        this.setContainer();
         this.nzConfigService
             .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
             .pipe(takeUntil(this.destroy$))
@@ -342,34 +341,6 @@ class BaseModalContainerComponent extends BasePortalOutlet {
             }
         }
     }
-    setContainer() {
-        const container = this.getContainer();
-        if (container) {
-            this.render.appendChild(container, this.elementRef.nativeElement);
-        }
-    }
-    resetContainer() {
-        const container = this.getContainer();
-        if (container) {
-            this.render.appendChild(this.overlayRef.overlayElement, this.elementRef.nativeElement);
-        }
-    }
-    /**
-     * Set the container element.
-     * @deprecated Not supported.
-     * @breaking-change 11.0.0
-     */
-    getContainer() {
-        const { nzGetContainer } = this.config;
-        const container = typeof nzGetContainer === 'function' ? nzGetContainer() : nzGetContainer;
-        if (container instanceof HTMLElement) {
-            warnDeprecation('nzGetContainer of nz-modal is not support, will be removed in 11.0.0');
-            return container;
-        }
-        else {
-            return null;
-        }
-    }
     updateMaskClassname() {
         const backdropElement = this.overlayRef.backdropElement;
         if (backdropElement) {
@@ -383,7 +354,6 @@ class BaseModalContainerComponent extends BasePortalOutlet {
     }
     onAnimationDone(event) {
         if (event.toState === 'enter') {
-            this.setContainer();
             this.trapFocus();
         }
         else if (event.toState === 'exit') {
@@ -398,7 +368,6 @@ class BaseModalContainerComponent extends BasePortalOutlet {
             this.bindBackdropStyle();
         }
         else if (event.toState === 'exit') {
-            this.resetContainer();
             this.setExitAnimationClass();
         }
         this.animationStateChanged.emit(event);
@@ -499,6 +468,7 @@ NzModalConfirmContainerComponent.decorators = [
                 (click)="onOk()"
                 [nzLoading]="!!config.nzOkLoading"
                 [disabled]="config.nzOkDisabled"
+                [nzDanger]="config.nzOkDanger"
               >
                 {{ config.nzOkText || locale.okText }}
               </button>
@@ -515,6 +485,7 @@ NzModalConfirmContainerComponent.decorators = [
                     tabindex: '-1',
                     role: 'dialog',
                     '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
+                    '[class.ant-modal-wrap-rtl]': `dir === 'rtl'`,
                     '[style.zIndex]': 'config.nzZIndex',
                     '[@.disabled]': 'config.nzNoAnimation',
                     '[@modalContainer]': 'state',
@@ -592,6 +563,7 @@ NzModalContainerComponent.decorators = [
                     tabindex: '-1',
                     role: 'dialog',
                     '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
+                    '[class.ant-modal-wrap-rtl]': `dir === 'rtl'`,
                     '[style.zIndex]': 'config.nzZIndex',
                     '[@.disabled]': 'config.nzNoAnimation',
                     '[@modalContainer]': 'state',
@@ -688,14 +660,6 @@ class NzModalRef {
     triggerCancel() {
         return this.trigger("cancel" /* CANCEL */);
     }
-    /**
-     * Open the modal.
-     * @deprecated Opened when create, this method is useless.
-     * @breaking-change 11.0.0
-     */
-    open() {
-        warnDeprecation('open of NzModalRef is not support, will be removed in 11.0.0');
-    }
     close(result) {
         this.result = result;
         this.containerInstance.animationStateChanged
@@ -769,11 +733,12 @@ class NzModalRef {
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzModalService {
-    constructor(overlay, injector, nzConfigService, parentModal) {
+    constructor(overlay, injector, nzConfigService, parentModal, directionality) {
         this.overlay = overlay;
         this.injector = injector;
         this.nzConfigService = nzConfigService;
         this.parentModal = parentModal;
+        this.directionality = directionality;
         this.openModalsAtThisLevel = [];
         this.afterAllClosedAtThisLevel = new Subject();
         this.afterAllClose = defer(() => this.openModals.length ? this._afterAllClosed : this._afterAllClosed.pipe(startWith(undefined)));
@@ -851,7 +816,8 @@ class NzModalService {
             hasBackdrop: true,
             scrollStrategy: this.overlay.scrollStrategies.block(),
             positionStrategy: this.overlay.position().global(),
-            disposeOnNavigation: getValueWithConfig(config.nzCloseOnNavigation, globalConfig.nzCloseOnNavigation, true)
+            disposeOnNavigation: getValueWithConfig(config.nzCloseOnNavigation, globalConfig.nzCloseOnNavigation, true),
+            direction: getValueWithConfig(config.nzDirection, globalConfig.nzDirection, this.directionality.value)
         });
         if (getValueWithConfig(config.nzMask, globalConfig.nzMask, true)) {
             overlayConfig.backdropClass = MODAL_MASK_CLASS_NAME;
@@ -927,7 +893,27 @@ NzModalService.ctorParameters = () => [
     { type: Overlay },
     { type: Injector },
     { type: NzConfigService },
-    { type: NzModalService, decorators: [{ type: Optional }, { type: SkipSelf }] }
+    { type: NzModalService, decorators: [{ type: Optional }, { type: SkipSelf }] },
+    { type: Directionality, decorators: [{ type: Optional }] }
+];
+
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+class NzModalContentDirective {
+    constructor(templateRef) {
+        this.templateRef = templateRef;
+    }
+}
+NzModalContentDirective.decorators = [
+    { type: Directive, args: [{
+                selector: '[nzModalContent]',
+                exportAs: 'nzModalContent'
+            },] }
+];
+NzModalContentDirective.ctorParameters = () => [
+    { type: TemplateRef }
 ];
 
 /**
@@ -977,6 +963,7 @@ class NzModalComponent {
         this.nzWidth = 520;
         this.nzCloseIcon = 'close';
         this.nzOkType = 'primary';
+        this.nzOkDanger = false;
         this.nzIconType = 'question-circle'; // Confirm Modal ONLY
         this.nzModalType = 'default';
         this.nzAutofocus = 'auto';
@@ -990,8 +977,8 @@ class NzModalComponent {
         this.modalRef = null;
     }
     set modalFooter(value) {
-        if (value && value.templateRef) {
-            this.setFooterWithTemplate(value.templateRef);
+        if (value) {
+            this.setFooterWithTemplate(value);
         }
     }
     get afterOpen() {
@@ -1059,8 +1046,12 @@ class NzModalComponent {
     getConfig() {
         const componentConfig = getConfigFromComponent(this);
         componentConfig.nzViewContainerRef = this.viewContainerRef;
-        if (!this.nzContent) {
+        if (!this.nzContent && !this.contentFromContentChild) {
             componentConfig.nzContent = this.contentTemplateRef;
+            warnDeprecation('Usage `<ng-content></ng-content>` is deprecated, which will be removed in 12.0.0. Please instead use `<ng-template nzModalContent></ng-template>` to declare the content of the modal.');
+        }
+        else {
+            componentConfig.nzContent = this.nzContent || this.contentFromContentChild;
         }
         return componentConfig;
     }
@@ -1113,7 +1104,6 @@ NzModalComponent.propDecorators = {
     nzContent: [{ type: Input }],
     nzComponentParams: [{ type: Input }],
     nzFooter: [{ type: Input }],
-    nzGetContainer: [{ type: Input }],
     nzZIndex: [{ type: Input }],
     nzWidth: [{ type: Input }],
     nzWrapClassName: [{ type: Input }],
@@ -1126,6 +1116,7 @@ NzModalComponent.propDecorators = {
     nzOkText: [{ type: Input }],
     nzCancelText: [{ type: Input }],
     nzOkType: [{ type: Input }],
+    nzOkDanger: [{ type: Input }],
     nzIconType: [{ type: Input }],
     nzModalType: [{ type: Input }],
     nzAutofocus: [{ type: Input }],
@@ -1135,7 +1126,8 @@ NzModalComponent.propDecorators = {
     nzAfterClose: [{ type: Output }],
     nzVisibleChange: [{ type: Output }],
     contentTemplateRef: [{ type: ViewChild, args: [TemplateRef, { static: true },] }],
-    modalFooter: [{ type: ContentChild, args: [NzModalFooterDirective,] }]
+    contentFromContentChild: [{ type: ContentChild, args: [NzModalContentDirective, { static: true, read: TemplateRef },] }],
+    modalFooter: [{ type: ContentChild, args: [NzModalFooterDirective, { static: true, read: TemplateRef },] }]
 };
 __decorate([
     InputBoolean(),
@@ -1181,6 +1173,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzModalComponent.prototype, "nzNoAnimation", void 0);
+__decorate([
+    InputBoolean(),
+    __metadata("design:type", Boolean)
+], NzModalComponent.prototype, "nzOkDanger", void 0);
 
 /**
  * Use of this source code is governed by an MIT-style license that can be
@@ -1284,6 +1280,7 @@ NzModalFooterComponent.decorators = [
             [nzLoading]="getButtonCallableProp(button, 'loading')"
             [disabled]="getButtonCallableProp(button, 'disabled')"
             [nzType]="button.type!"
+            [nzDanger]="button.danger"
             [nzShape]="button.shape!"
             [nzSize]="button.size!"
             [nzGhost]="button.ghost!"
@@ -1309,6 +1306,7 @@ NzModalFooterComponent.decorators = [
         [attr.cdkFocusInitial]="config.nzAutofocus === 'ok' || null"
         nz-button
         [nzType]="config.nzOkType!"
+        [nzDanger]="config.nzOkDanger"
         (click)="onOk()"
         [nzLoading]="!!config.nzOkLoading"
         [disabled]="config.nzOkDisabled"
@@ -1376,6 +1374,7 @@ NzModalModule.decorators = [
     { type: NgModule, args: [{
                 imports: [
                     CommonModule,
+                    BidiModule,
                     OverlayModule,
                     NzOutletModule,
                     PortalModule,
@@ -1386,12 +1385,13 @@ NzModalModule.decorators = [
                     NzNoAnimationModule,
                     NzPipesModule
                 ],
-                exports: [NzModalComponent, NzModalFooterDirective],
+                exports: [NzModalComponent, NzModalFooterDirective, NzModalContentDirective],
                 providers: [NzModalService],
                 entryComponents: [NzModalContainerComponent, NzModalConfirmContainerComponent],
                 declarations: [
                     NzModalComponent,
                     NzModalFooterDirective,
+                    NzModalContentDirective,
                     NzModalCloseComponent,
                     NzModalFooterComponent,
                     NzModalTitleComponent,
@@ -1418,5 +1418,5 @@ class NzModalLegacyAPI {
  * Generated bundle index. Do not edit.
  */
 
-export { BaseModalContainerComponent, FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, ModalOptions, NZ_CONFIG_MODULE_NAME, NzModalCloseComponent, NzModalComponent, NzModalConfirmContainerComponent, NzModalContainerComponent, NzModalFooterComponent, NzModalFooterDirective, NzModalLegacyAPI, NzModalModule, NzModalRef, NzModalService, NzModalTitleComponent, ZOOM_CLASS_NAME_MAP, applyConfigDefaults, getConfigFromComponent, getValueWithConfig, nzModalAnimations, setContentInstanceParams, throwNzModalContentAlreadyAttachedError, ɵ0 };
+export { BaseModalContainerComponent, FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, ModalOptions, NZ_CONFIG_MODULE_NAME, NzModalCloseComponent, NzModalComponent, NzModalConfirmContainerComponent, NzModalContainerComponent, NzModalContentDirective, NzModalFooterComponent, NzModalFooterDirective, NzModalLegacyAPI, NzModalModule, NzModalRef, NzModalService, NzModalTitleComponent, ZOOM_CLASS_NAME_MAP, applyConfigDefaults, getConfigFromComponent, getValueWithConfig, nzModalAnimations, setContentInstanceParams, throwNzModalContentAlreadyAttachedError, ɵ0 };
 //# sourceMappingURL=ng-zorro-antd-modal.js.map

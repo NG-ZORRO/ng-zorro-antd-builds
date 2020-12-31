@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/overlay'), require('@angular/common'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/input'), require('ng-zorro-antd/core/util'), require('@angular/cdk/keycodes'), require('@angular/cdk/portal'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/animation')) :
-  typeof define === 'function' && define.amd ? define('ng-zorro-antd/auto-complete', ['exports', '@angular/cdk/overlay', '@angular/common', '@angular/core', '@angular/forms', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/input', 'ng-zorro-antd/core/util', '@angular/cdk/keycodes', '@angular/cdk/portal', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/animation'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['auto-complete'] = {}), global.ng.cdk.overlay, global.ng.common, global.ng.core, global.ng.forms, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].input, global['ng-zorro-antd'].core.util, global.ng.cdk.keycodes, global.ng.cdk.portal, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.animation));
-}(this, (function (exports, overlay, common, core, forms, noAnimation, outlet, input, util, keycodes, portal, rxjs, operators, animation) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/overlay'), require('@angular/common'), require('@angular/core'), require('@angular/forms'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/input'), require('ng-zorro-antd/core/util'), require('@angular/cdk/keycodes'), require('@angular/cdk/portal'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/animation')) :
+  typeof define === 'function' && define.amd ? define('ng-zorro-antd/auto-complete', ['exports', '@angular/cdk/bidi', '@angular/cdk/overlay', '@angular/common', '@angular/core', '@angular/forms', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/input', 'ng-zorro-antd/core/util', '@angular/cdk/keycodes', '@angular/cdk/portal', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/animation'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['auto-complete'] = {}), global.ng.cdk.bidi, global.ng.cdk.overlay, global.ng.common, global.ng.core, global.ng.forms, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].input, global['ng-zorro-antd'].core.util, global.ng.cdk.keycodes, global.ng.cdk.portal, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.animation));
+}(this, (function (exports, bidi, overlay, common, core, forms, noAnimation, outlet, input, util, keycodes, portal, rxjs, operators, animation) { 'use strict';
 
   /**
    * Use of this source code is governed by an MIT-style license that can be
@@ -743,10 +743,11 @@
   };
 
   var NzAutocompleteComponent = /** @class */ (function () {
-      function NzAutocompleteComponent(changeDetectorRef, ngZone, noAnimation) {
+      function NzAutocompleteComponent(changeDetectorRef, ngZone, directionality, noAnimation) {
           var _this = this;
           this.changeDetectorRef = changeDetectorRef;
           this.ngZone = ngZone;
+          this.directionality = directionality;
           this.noAnimation = noAnimation;
           this.nzOverlayClassName = '';
           this.nzOverlayStyle = {};
@@ -756,6 +757,8 @@
           this.selectionChange = new core.EventEmitter();
           this.showPanel = true;
           this.isOpen = false;
+          this.dir = 'ltr';
+          this.destroy$ = new rxjs.Subject();
           this.activeItemIndex = -1;
           this.selectionChangeSubscription = rxjs.Subscription.EMPTY;
           this.optionMouseEnterSubscription = rxjs.Subscription.EMPTY;
@@ -790,6 +793,15 @@
           enumerable: false,
           configurable: true
       });
+      NzAutocompleteComponent.prototype.ngOnInit = function () {
+          var _this = this;
+          var _a;
+          (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+              _this.dir = direction;
+              _this.changeDetectorRef.detectChanges();
+          });
+          this.dir = this.directionality.value;
+      };
       NzAutocompleteComponent.prototype.ngAfterContentInit = function () {
           if (!this.nzDataSource) {
               this.optionsInit();
@@ -804,6 +816,8 @@
           this.dataSourceChangeSubscription.unsubscribe();
           this.selectionChangeSubscription.unsubscribe();
           this.optionMouseEnterSubscription.unsubscribe();
+          this.destroy$.next();
+          this.destroy$.complete();
       };
       NzAutocompleteComponent.prototype.setVisibility = function () {
           this.showPanel = !!this.options.length;
@@ -894,13 +908,14 @@
                   preserveWhitespaces: false,
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
                   encapsulation: core.ViewEncapsulation.None,
-                  template: "\n    <ng-template>\n      <div\n        #panel\n        class=\"ant-select-dropdown ant-select-dropdown-placement-bottomLeft\"\n        [class.ant-select-dropdown-hidden]=\"!showPanel\"\n        [ngClass]=\"nzOverlayClassName\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@slideMotion]=\"'enter'\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n      >\n        <div style=\"max-height: 256px; overflow-y: auto; overflow-anchor: none;\">\n          <div style=\"display: flex; flex-direction: column;\">\n            <ng-template *ngTemplateOutlet=\"nzDataSource ? optionsTemplate : contentTemplate\"></ng-template>\n          </div>\n        </div>\n      </div>\n      <ng-template #contentTemplate>\n        <ng-content></ng-content>\n      </ng-template>\n      <ng-template #optionsTemplate>\n        <nz-auto-option\n          *ngFor=\"let option of nzDataSource!\"\n          [nzValue]=\"option\"\n          [nzLabel]=\"option && $any(option).label ? $any(option).label : $any(option)\"\n        >\n          {{ option && $any(option).label ? $any(option).label : $any(option) }}\n        </nz-auto-option>\n      </ng-template>\n    </ng-template>\n  ",
+                  template: "\n    <ng-template>\n      <div\n        #panel\n        class=\"ant-select-dropdown ant-select-dropdown-placement-bottomLeft\"\n        [class.ant-select-dropdown-hidden]=\"!showPanel\"\n        [class.ant-select-dropdown-rtl]=\"dir === 'rtl'\"\n        [ngClass]=\"nzOverlayClassName\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@slideMotion]=\"'enter'\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n      >\n        <div style=\"max-height: 256px; overflow-y: auto; overflow-anchor: none;\">\n          <div style=\"display: flex; flex-direction: column;\">\n            <ng-template *ngTemplateOutlet=\"nzDataSource ? optionsTemplate : contentTemplate\"></ng-template>\n          </div>\n        </div>\n      </div>\n      <ng-template #contentTemplate>\n        <ng-content></ng-content>\n      </ng-template>\n      <ng-template #optionsTemplate>\n        <nz-auto-option\n          *ngFor=\"let option of nzDataSource!\"\n          [nzValue]=\"option\"\n          [nzLabel]=\"option && $any(option).label ? $any(option).label : $any(option)\"\n        >\n          {{ option && $any(option).label ? $any(option).label : $any(option) }}\n        </nz-auto-option>\n      </ng-template>\n    </ng-template>\n  ",
                   animations: [animation.slideMotion]
               },] }
   ];
   NzAutocompleteComponent.ctorParameters = function () { return [
       { type: core.ChangeDetectorRef },
       { type: core.NgZone },
+      { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
       { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] }
   ]; };
   NzAutocompleteComponent.propDecorators = {
@@ -940,7 +955,7 @@
       { type: core.NgModule, args: [{
                   declarations: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
                   exports: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
-                  imports: [common.CommonModule, overlay.OverlayModule, forms.FormsModule, outlet.NzOutletModule, noAnimation.NzNoAnimationModule, input.NzInputModule]
+                  imports: [bidi.BidiModule, common.CommonModule, overlay.OverlayModule, forms.FormsModule, outlet.NzOutletModule, noAnimation.NzNoAnimationModule, input.NzInputModule]
               },] }
   ];
 

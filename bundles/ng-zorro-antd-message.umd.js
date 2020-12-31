@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/portal'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('rxjs'), require('@angular/cdk/overlay'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('rxjs/operators'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/animation')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/message', ['exports', '@angular/cdk/portal', '@angular/core', 'ng-zorro-antd/core/config', 'rxjs', '@angular/cdk/overlay', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'rxjs/operators', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/animation'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].message = {}), global.ng.cdk.portal, global.ng.core, global['ng-zorro-antd'].core.config, global.rxjs, global.ng.cdk.overlay, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global.rxjs.operators, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.animation));
-}(this, (function (exports, portal, i0, config, rxjs, i2, i1, util, operators, common, outlet, icon, animation) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/portal'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('rxjs'), require('@angular/cdk/overlay'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util'), require('rxjs/operators'), require('@angular/cdk/bidi'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/animation')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/message', ['exports', '@angular/cdk/portal', '@angular/core', 'ng-zorro-antd/core/config', 'rxjs', '@angular/cdk/overlay', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util', 'rxjs/operators', '@angular/cdk/bidi', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/animation'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].message = {}), global.ng.cdk.portal, global.ng.core, global['ng-zorro-antd'].core.config, global.rxjs, global.ng.cdk.overlay, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util, global.rxjs.operators, global.ng.cdk.bidi, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.animation));
+}(this, (function (exports, portal, i0, config, rxjs, i2, i1, util, operators, bidi, common, outlet, icon, animation) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -504,14 +504,18 @@
         nzDuration: 3000,
         nzMaxStack: 7,
         nzPauseOnHover: true,
-        nzTop: 24
+        nzTop: 24,
+        nzDirection: 'ltr'
     };
     var NzMessageContainerComponent = /** @class */ (function (_super) {
         __extends(NzMessageContainerComponent, _super);
         function NzMessageContainerComponent(cdr, nzConfigService) {
             var _this = _super.call(this, cdr, nzConfigService) || this;
             _this.destroy$ = new rxjs.Subject();
+            _this.dir = 'ltr';
             _this.instances = [];
+            var config = _this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
+            _this.dir = (config === null || config === void 0 ? void 0 : config.nzDirection) || 'ltr';
             return _this;
         }
         NzMessageContainerComponent.prototype.subscribeConfigChange = function () {
@@ -519,7 +523,14 @@
             this.nzConfigService
                 .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
                 .pipe(operators.takeUntil(this.destroy$))
-                .subscribe(function () { return _this.updateConfig(); });
+                .subscribe(function () {
+                _this.updateConfig();
+                var config = _this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
+                if (config) {
+                    var nzDirection = config.nzDirection;
+                    _this.dir = nzDirection || _this.dir;
+                }
+            });
         };
         NzMessageContainerComponent.prototype.updateConfig = function () {
             this.config = Object.assign(Object.assign(Object.assign({}, NZ_MESSAGE_DEFAULT_CONFIG), this.config), this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME));
@@ -535,7 +546,7 @@
                     selector: 'nz-message-container',
                     exportAs: 'nzMessageContainer',
                     preserveWhitespaces: false,
-                    template: "\n    <div class=\"ant-message\" [style.top]=\"top\">\n      <nz-message *ngFor=\"let instance of instances\" [instance]=\"instance\" (destroyed)=\"remove($event.id, $event.userAction)\"></nz-message>\n    </div>\n  "
+                    template: "\n    <div class=\"ant-message\" [class.ant-message-rtl]=\"dir === 'rtl'\" [style.top]=\"top\">\n      <nz-message *ngFor=\"let instance of instances\" [instance]=\"instance\" (destroyed)=\"remove($event.id, $event.userAction)\"></nz-message>\n    </div>\n  "
                 },] }
     ];
     NzMessageContainerComponent.ctorParameters = function () { return [
@@ -642,7 +653,7 @@
     }());
     NzMessageModule.decorators = [
         { type: i0.NgModule, args: [{
-                    imports: [common.CommonModule, i2.OverlayModule, icon.NzIconModule, outlet.NzOutletModule, NzMessageServiceModule],
+                    imports: [bidi.BidiModule, common.CommonModule, i2.OverlayModule, icon.NzIconModule, outlet.NzOutletModule, NzMessageServiceModule],
                     declarations: [NzMessageContainerComponent, NzMessageComponent],
                     entryComponents: [NzMessageContainerComponent]
                 },] }

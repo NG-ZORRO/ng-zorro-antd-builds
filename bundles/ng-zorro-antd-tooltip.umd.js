@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/color'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/core/outlet')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/tooltip', ['exports', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/color', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/core/outlet'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].tooltip = {}), global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.color, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].core.outlet));
-}(this, (function (exports, core, animation, color, noAnimation, overlay, util, rxjs, operators, overlay$1, common, outlet) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/color'), require('ng-zorro-antd/core/no-animation'), require('@angular/cdk/bidi'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/core/outlet')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/tooltip', ['exports', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/color', 'ng-zorro-antd/core/no-animation', '@angular/cdk/bidi', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/core/outlet'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].tooltip = {}), global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.color, global['ng-zorro-antd'].core['no-animation'], global.ng.cdk.bidi, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].core.outlet));
+}(this, (function (exports, core, animation, color, noAnimation, bidi, overlay, util, rxjs, operators, overlay$1, common, outlet) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -549,8 +549,9 @@
     ]; };
     // tslint:disable-next-line:directive-class-suffix
     var NzTooltipBaseComponent = /** @class */ (function () {
-        function NzTooltipBaseComponent(cdr, noAnimation) {
+        function NzTooltipBaseComponent(cdr, directionality, noAnimation) {
             this.cdr = cdr;
+            this.directionality = directionality;
             this.noAnimation = noAnimation;
             this.nzTitle = null;
             this.nzContent = null;
@@ -559,10 +560,12 @@
             this._visible = false;
             this._trigger = 'hover';
             this.preferredPlacement = 'top';
+            this.dir = 'ltr';
             this._classMap = {};
             this._hasBackdrop = false;
             this._prefix = 'ant-tooltip';
             this._positions = __spread(overlay.DEFAULT_TOOLTIP_POSITIONS);
+            this.destroy$ = new rxjs.Subject();
         }
         Object.defineProperty(NzTooltipBaseComponent.prototype, "nzVisible", {
             get: function () {
@@ -596,8 +599,19 @@
             enumerable: false,
             configurable: true
         });
+        NzTooltipBaseComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+        };
         NzTooltipBaseComponent.prototype.ngOnDestroy = function () {
             this.nzVisibleChange.complete();
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         NzTooltipBaseComponent.prototype.show = function () {
             if (this.nzVisible) {
@@ -607,6 +621,10 @@
                 this.nzVisible = true;
                 this.nzVisibleChange.next(true);
                 this.cdr.detectChanges();
+            }
+            // for ltr for overlay to display tooltip in correct placement in rtl direction.
+            if (this.origin && this.overlay && this.overlay.overlayRef && this.overlay.overlayRef.getDirection() === 'rtl') {
+                this.overlay.overlayRef.setDirection('ltr');
             }
         };
         NzTooltipBaseComponent.prototype.hide = function () {
@@ -671,6 +689,7 @@
     ];
     NzTooltipBaseComponent.ctorParameters = function () { return [
         { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
         { type: noAnimation.NzNoAnimationDirective }
     ]; };
     NzTooltipBaseComponent.propDecorators = {
@@ -731,8 +750,8 @@
     };
     var NzToolTipComponent = /** @class */ (function (_super) {
         __extends(NzToolTipComponent, _super);
-        function NzToolTipComponent(cdr, noAnimation) {
-            var _this = _super.call(this, cdr, noAnimation) || this;
+        function NzToolTipComponent(cdr, directionality, noAnimation) {
+            var _this = _super.call(this, cdr, directionality, noAnimation) || this;
             _this.noAnimation = noAnimation;
             _this.nzTitle = null;
             _this._contentStyleMap = {};
@@ -762,12 +781,13 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     encapsulation: core.ViewEncapsulation.None,
                     animations: [animation.zoomBigMotion],
-                    template: "\n    <ng-template\n      #overlay=\"cdkConnectedOverlay\"\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayOpen]=\"_visible\"\n      [cdkConnectedOverlayPositions]=\"_positions\"\n      [cdkConnectedOverlayPush]=\"true\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n      (detach)=\"hide()\"\n      (positionChange)=\"onPositionChange($event)\"\n    >\n      <div\n        class=\"ant-tooltip\"\n        [ngClass]=\"_classMap\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@zoomBigMotion]=\"'active'\"\n      >\n        <div class=\"ant-tooltip-content\">\n          <div class=\"ant-tooltip-arrow\">\n            <span class=\"ant-tooltip-arrow-content\" [ngStyle]=\"_contentStyleMap\"></span>\n          </div>\n          <div class=\"ant-tooltip-inner\" [ngStyle]=\"_contentStyleMap\">\n            <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  ",
+                    template: "\n    <ng-template\n      #overlay=\"cdkConnectedOverlay\"\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayOpen]=\"_visible\"\n      [cdkConnectedOverlayPositions]=\"_positions\"\n      [cdkConnectedOverlayPush]=\"true\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n      (detach)=\"hide()\"\n      (positionChange)=\"onPositionChange($event)\"\n    >\n      <div\n        class=\"ant-tooltip\"\n        [class.ant-tooltip-rtl]=\"dir === 'rtl'\"\n        [ngClass]=\"_classMap\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@zoomBigMotion]=\"'active'\"\n      >\n        <div class=\"ant-tooltip-content\">\n          <div class=\"ant-tooltip-arrow\">\n            <span class=\"ant-tooltip-arrow-content\" [ngStyle]=\"_contentStyleMap\"></span>\n          </div>\n          <div class=\"ant-tooltip-inner\" [ngStyle]=\"_contentStyleMap\">\n            <ng-container *nzStringTemplateOutlet=\"nzTitle\">{{ nzTitle }}</ng-container>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  ",
                     preserveWhitespaces: false
                 },] }
     ];
     NzToolTipComponent.ctorParameters = function () { return [
         { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] },
         { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] }
     ]; };
 
@@ -785,7 +805,7 @@
                     declarations: [NzToolTipComponent, NzTooltipDirective],
                     exports: [NzToolTipComponent, NzTooltipDirective],
                     entryComponents: [NzToolTipComponent],
-                    imports: [common.CommonModule, overlay$1.OverlayModule, outlet.NzOutletModule, overlay.NzOverlayModule, noAnimation.NzNoAnimationModule]
+                    imports: [bidi.BidiModule, common.CommonModule, overlay$1.OverlayModule, outlet.NzOutletModule, overlay.NzOverlayModule, noAnimation.NzNoAnimationModule]
                 },] }
     ];
 

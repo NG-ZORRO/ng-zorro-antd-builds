@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/util'), require('@angular/common'), require('ng-zorro-antd/core/outlet')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/divider', ['exports', '@angular/core', 'ng-zorro-antd/core/util', '@angular/common', 'ng-zorro-antd/core/outlet'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].divider = {}), global.ng.core, global['ng-zorro-antd'].core.util, global.ng.common, global['ng-zorro-antd'].core.outlet));
-}(this, (function (exports, core, util, common, outlet) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/util'), require('@angular/cdk/bidi'), require('@angular/common'), require('ng-zorro-antd/core/outlet')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/divider', ['exports', '@angular/core', 'ng-zorro-antd/core/util', '@angular/cdk/bidi', '@angular/common', 'ng-zorro-antd/core/outlet'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].divider = {}), global.ng.core, global['ng-zorro-antd'].core.util, global.ng.cdk.bidi, global.ng.common, global['ng-zorro-antd'].core.outlet));
+}(this, (function (exports, core, util, bidi, common, outlet) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -310,11 +310,14 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzDividerComponent = /** @class */ (function () {
-        function NzDividerComponent() {
+        function NzDividerComponent(elementRef) {
+            this.elementRef = elementRef;
             this.nzType = 'horizontal';
             this.nzOrientation = 'center';
             this.nzDashed = false;
             this.nzPlain = false;
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-divider');
         }
         return NzDividerComponent;
     }());
@@ -327,7 +330,6 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     template: "\n    <span *ngIf=\"nzText\" class=\"ant-divider-inner-text\">\n      <ng-container *nzStringTemplateOutlet=\"nzText\">{{ nzText }}</ng-container>\n    </span>\n  ",
                     host: {
-                        '[class.ant-divider]': 'true',
                         '[class.ant-divider-horizontal]': "nzType === 'horizontal'",
                         '[class.ant-divider-vertical]': "nzType === 'vertical'",
                         '[class.ant-divider-with-text]': "nzText",
@@ -339,6 +341,9 @@
                     }
                 },] }
     ];
+    NzDividerComponent.ctorParameters = function () { return [
+        { type: core.ElementRef }
+    ]; };
     NzDividerComponent.propDecorators = {
         nzText: [{ type: core.Input }],
         nzType: [{ type: core.Input }],
@@ -366,7 +371,7 @@
     }());
     NzDividerModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, outlet.NzOutletModule],
+                    imports: [bidi.BidiModule, common.CommonModule, outlet.NzOutletModule],
                     declarations: [NzDividerComponent],
                     exports: [NzDividerComponent]
                 },] }

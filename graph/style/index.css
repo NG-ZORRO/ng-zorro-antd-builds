@@ -2,46 +2,6 @@
 /* stylelint-disable no-duplicate-selectors */
 /* stylelint-disable */
 /* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
-.ant-modal,
-.ant-image-preview {
-  pointer-events: none;
-}
-.ant-modal.zoom-enter,
-.ant-modal.zoom-appear,
-.ant-image-preview.zoom-enter,
-.ant-image-preview.zoom-appear {
-  transform: none;
-  opacity: 0;
-  animation-duration: 0.3s;
-  user-select: none;
-}
-.ant-modal-mask,
-.ant-image-preview-mask {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1000;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.45);
-  filter: alpha(opacity=50);
-}
-.ant-modal-mask-hidden,
-.ant-image-preview-mask-hidden {
-  display: none;
-}
-.ant-modal-wrap,
-.ant-image-preview-wrap {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow: auto;
-  outline: 0;
-  -webkit-overflow-scrolling: touch;
-}
 .nz-graph {
   display: block;
   position: relative;
@@ -49,27 +9,24 @@
   width: 100%;
   background-color: #fff;
 }
-.nz-graph-background {
-  cursor: default;
-  fill: #fff;
-}
-.nz-graph-node-rect {
-  fill: #e6f7ff;
-  stroke: none;
-}
-.nz-graph-node-text {
-  fill: rgba(0, 0, 0, 0.85);
-}
-.nz-graph-edge-line {
-  fill: none;
+.nz-graph-nodes .nz-graph-node-rect {
+  fill: transparent;
   stroke: #91d5ff;
-  stroke-linecap: round;
-  stroke-width: 2px;
+  stroke-width: 1px;
 }
-.nz-graph-edge-line:hover {
+.nz-graph-nodes .nz-graph-node-rect:hover {
   stroke: #1890ff;
 }
-.nz-graph-edge-text {
+.nz-graph-edges .nz-graph-edge path {
+  fill: none;
+  stroke: #91d5ff;
+  stroke-linecap: butt;
+  stroke-width: 1px;
+}
+.nz-graph-edges .nz-graph-edge path:hover {
+  stroke: #1890ff;
+}
+.nz-graph-edges .nz-graph-edge-text {
   fill: rgba(0, 0, 0, 0.85);
   font-size: 12px;
 }
@@ -77,56 +34,10 @@
   color: #91d5ff;
   fill: #91d5ff;
 }
-.nz-graph-node-wrapper {
-  cursor: default;
-  font-size: 12px;
-  width: 100%;
-  height: 100%;
-  text-align: left;
-  word-break: break-all;
-  background-color: #e6f7ff;
-  border: 1px solid #8cc8ff;
-  transition: background-color 0.2s ease;
-  color: rgba(0, 0, 0, 0.85);
-}
-.nz-graph-node-wrapper:hover {
-  border-color: #1890ff;
-}
-.nz-graph-node-wrapper .node-content {
-  height: 100%;
-  padding: 8px 16px;
-}
-.nz-graph-node-wrapper .title {
-  word-break: keep-all;
-  white-space: nowrap;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 24px;
-}
-.nz-graph-node-wrapper .title .action-icon {
-  position: absolute;
-  right: 16px;
-  cursor: pointer;
-}
-.nz-graph-node-wrapper .label {
-  height: calc(100% - 40px);
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.nz-graph-custom-node .nz-graph-node-rect {
-  fill: transparent;
-}
-.nz-graph .nz-graph-node-expanded .nz-graph-node-wrapper {
-  background-color: transparent;
-}
-.nz-graph.nz-graph-auto-fit .nz-graph-node-wrapper {
-  height: fit-content;
-}
-.nz-graph.nz-graph-auto-fit .nz-graph-group-node .nz-graph-node-wrapper {
-  height: 100%;
-}
 .nz-graph-minimap {
+  position: absolute;
+  right: 0;
+  bottom: 0;
   background-color: #fff;
   transition: opacity 0.3s linear;
   pointer-events: auto;
@@ -150,14 +61,11 @@
 }
 .nz-graph-minimap svg {
   position: absolute;
+  width: 100%;
+  height: 100%;
 }
 .nz-graph-minimap .buffer,
 .nz-graph-minimap .viewport {
   display: block;
   height: 100%;
-}
-.nz-graph nz-graph-minimap {
-  position: absolute;
-  right: 0;
-  bottom: 0;
 }

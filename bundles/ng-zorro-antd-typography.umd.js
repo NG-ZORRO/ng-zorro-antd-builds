@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/clipboard'), require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/trans-button'), require('ng-zorro-antd/i18n'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/input'), require('ng-zorro-antd/tooltip'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/polyfill'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/typography', ['exports', '@angular/cdk/clipboard', '@angular/cdk/platform', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/trans-button', 'ng-zorro-antd/i18n', 'ng-zorro-antd/icon', 'ng-zorro-antd/input', 'ng-zorro-antd/tooltip', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/polyfill', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].typography = {}), global.ng.cdk.clipboard, global.ng.cdk.platform, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core['trans-button'], global['ng-zorro-antd'].i18n, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].input, global['ng-zorro-antd'].tooltip, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.polyfill, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util));
-}(this, (function (exports, clipboard, platform, common, core, outlet, transButton, i18n, icon, input, tooltip, rxjs, operators, config, polyfill, services, util) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/clipboard'), require('@angular/cdk/platform'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/trans-button'), require('ng-zorro-antd/i18n'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/input'), require('ng-zorro-antd/tooltip'), require('rxjs'), require('rxjs/operators'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/polyfill'), require('ng-zorro-antd/core/services'), require('ng-zorro-antd/core/util')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/typography', ['exports', '@angular/cdk/bidi', '@angular/cdk/clipboard', '@angular/cdk/platform', '@angular/common', '@angular/core', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/trans-button', 'ng-zorro-antd/i18n', 'ng-zorro-antd/icon', 'ng-zorro-antd/input', 'ng-zorro-antd/tooltip', 'rxjs', 'rxjs/operators', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/polyfill', 'ng-zorro-antd/core/services', 'ng-zorro-antd/core/util'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].typography = {}), global.ng.cdk.bidi, global.ng.cdk.clipboard, global.ng.cdk.platform, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core['trans-button'], global['ng-zorro-antd'].i18n, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].input, global['ng-zorro-antd'].tooltip, global.rxjs, global.rxjs.operators, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.polyfill, global['ng-zorro-antd'].core.services, global['ng-zorro-antd'].core.util));
+}(this, (function (exports, bidi, clipboard, platform, common, core, outlet, transButton, i18n, icon, input, tooltip, rxjs, operators, config, polyfill, services, util) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -507,7 +507,7 @@
     var NZ_CONFIG_MODULE_NAME = 'typography';
     var EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
     var NzTypographyComponent = /** @class */ (function () {
-        function NzTypographyComponent(nzConfigService, host, cdr, viewContainerRef, renderer, platform, i18n, document, resizeService) {
+        function NzTypographyComponent(nzConfigService, host, cdr, viewContainerRef, renderer, platform, i18n, document, resizeService, directionality) {
             this.nzConfigService = nzConfigService;
             this.host = host;
             this.cdr = cdr;
@@ -516,6 +516,7 @@
             this.platform = platform;
             this.i18n = i18n;
             this.resizeService = resizeService;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzCopyable = false;
             this.nzEditable = false;
@@ -538,6 +539,7 @@
             this.isEllipsis = true;
             this.expanded = false;
             this.ellipsisStr = '...';
+            this.dir = 'ltr';
             this.viewInit = false;
             this.rfaId = -1;
             this.destroy$ = new rxjs.Subject();
@@ -634,13 +636,13 @@
             if (this.cssEllipsis) {
                 return;
             }
-            var _a = this.getOriginContentViewRef(), viewRef = _a.viewRef, removeView = _a.removeView;
+            var _b = this.getOriginContentViewRef(), viewRef = _b.viewRef, removeView = _b.removeView;
             var fixedNodes = [this.textCopyRef, this.textEditRef].filter(function (e) { return e && e.nativeElement; }).map(function (e) { return e.nativeElement; });
             var expandableBtnElement = this.getExpandableBtnElement();
             if (expandableBtnElement) {
                 fixedNodes.push(expandableBtnElement);
             }
-            var _b = util.measure(this.host.nativeElement, this.nzEllipsisRows, viewRef.rootNodes, fixedNodes, this.ellipsisStr, this.nzSuffix), contentNodes = _b.contentNodes, text = _b.text, ellipsis = _b.ellipsis;
+            var _c = util.measure(this.host.nativeElement, this.nzEllipsisRows, viewRef.rootNodes, fixedNodes, this.ellipsisStr, this.nzSuffix), contentNodes = _c.contentNodes, text = _c.text, ellipsis = _c.ellipsis;
             removeView();
             this.ellipsisText = text;
             if (ellipsis !== this.isEllipsis) {
@@ -688,10 +690,16 @@
         };
         NzTypographyComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             this.i18n.localeChange.pipe(operators.takeUntil(this.destroy$)).subscribe(function () {
                 _this.locale = _this.i18n.getLocaleData('Text');
                 _this.cdr.markForCheck();
             });
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
         };
         NzTypographyComponent.prototype.ngAfterViewInit = function () {
             this.viewInit = true;
@@ -728,6 +736,7 @@
                     preserveWhitespaces: false,
                     host: {
                         '[class.ant-typography]': '!editing',
+                        '[class.ant-typography-rtl]': 'dir === "rtl"',
                         '[class.ant-typography-edit-content]': 'editing',
                         '[class.ant-typography-secondary]': 'nzType === "secondary"',
                         '[class.ant-typography-warning]': 'nzType === "warning"',
@@ -750,7 +759,8 @@
         { type: platform.Platform },
         { type: i18n.NzI18nService },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] },
-        { type: services.NzResizeService }
+        { type: services.NzResizeService },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzTypographyComponent.propDecorators = {
         nzCopyable: [{ type: core.Input }],
@@ -830,7 +840,17 @@
     }());
     NzTypographyModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [common.CommonModule, icon.NzIconModule, tooltip.NzToolTipModule, input.NzInputModule, i18n.NzI18nModule, transButton.NzTransButtonModule, clipboard.ClipboardModule, outlet.NzOutletModule],
+                    imports: [
+                        bidi.BidiModule,
+                        common.CommonModule,
+                        icon.NzIconModule,
+                        tooltip.NzToolTipModule,
+                        input.NzInputModule,
+                        i18n.NzI18nModule,
+                        transButton.NzTransButtonModule,
+                        clipboard.ClipboardModule,
+                        outlet.NzOutletModule
+                    ],
                     exports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent, platform.PlatformModule],
                     declarations: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent]
                 },] }

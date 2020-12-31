@@ -2,12 +2,17 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { ChangeDetectorRef, ElementRef, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzBadgeStatusType } from './types';
-export declare class NzBadgeComponent implements OnChanges {
+export declare class NzBadgeComponent implements OnChanges, OnDestroy, OnInit {
     nzConfigService: NzConfigService;
+    private renderer;
+    private cdr;
+    private elementRef;
+    private directionality;
     readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzShowZero: BooleanInput;
     static ngAcceptInputType_nzShowDot: BooleanInput;
@@ -15,6 +20,8 @@ export declare class NzBadgeComponent implements OnChanges {
     static ngAcceptInputType_nzStandalone: BooleanInput;
     showSup: boolean;
     presetColor: string | null;
+    dir: Direction;
+    private destroy$;
     nzShowZero: boolean;
     nzShowDot: boolean;
     nzStandalone: boolean;
@@ -29,6 +36,10 @@ export declare class NzBadgeComponent implements OnChanges {
     nzStatus?: NzBadgeStatusType | string;
     nzCount?: number | TemplateRef<NzSafeAny>;
     nzOffset?: [number, number];
-    constructor(nzConfigService: NzConfigService);
+    constructor(nzConfigService: NzConfigService, renderer: Renderer2, cdr: ChangeDetectorRef, elementRef: ElementRef, directionality: Directionality);
+    ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
+    private prepareBadgeForRtl;
+    get isRtlLayout(): boolean;
+    ngOnDestroy(): void;
 }

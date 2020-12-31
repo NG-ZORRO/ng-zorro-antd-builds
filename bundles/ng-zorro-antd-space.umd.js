@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('rxjs'), require('rxjs/operators')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/space', ['exports', '@angular/common', '@angular/core', 'ng-zorro-antd/core/config', 'rxjs', 'rxjs/operators'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].space = {}), global.ng.common, global.ng.core, global['ng-zorro-antd'].core.config, global.rxjs, global.rxjs.operators));
-}(this, (function (exports, common, core, config, rxjs, operators) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('rxjs'), require('rxjs/operators')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/space', ['exports', '@angular/cdk/bidi', '@angular/common', '@angular/core', 'ng-zorro-antd/core/config', 'rxjs', 'rxjs/operators'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].space = {}), global.ng.cdk.bidi, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.config, global.rxjs, global.rxjs.operators));
+}(this, (function (exports, bidi, common, core, config, rxjs, operators) { 'use strict';
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -429,7 +429,7 @@
         { type: core.NgModule, args: [{
                     declarations: [NzSpaceComponent, NzSpaceItemComponent],
                     exports: [NzSpaceComponent, NzSpaceItemComponent],
-                    imports: [common.CommonModule]
+                    imports: [bidi.BidiModule, common.CommonModule]
                 },] }
     ];
 

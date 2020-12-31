@@ -11,6 +11,7 @@ export declare class CalendarFooterComponent implements OnChanges {
     private dateHelper;
     locale: NzCalendarI18nInterface;
     showToday: boolean;
+    showNow: boolean;
     hasTimePicker: boolean;
     isRange: boolean;
     okDisabled: boolean;

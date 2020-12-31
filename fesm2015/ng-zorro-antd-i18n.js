@@ -8000,7 +8000,14 @@ var uk_UA = {
     DatePicker: {
         lang: {
             placeholder: 'Оберіть дату',
+            yearPlaceholder: 'Оберіть рік',
+            quarterPlaceholder: 'Оберіть квартал',
+            monthPlaceholder: 'Оберіть місяць',
+            weekPlaceholder: 'Оберіть тиждень',
             rangePlaceholder: ['Початкова дата', 'Кінцева дата'],
+            rangeYearPlaceholder: ['Початковий рік', 'Рік закінчення'],
+            rangeMonthPlaceholder: ['Початковий місяць', 'Кінцевий місяць'],
+            rangeWeekPlaceholder: ['Початковий тиждень', 'Кінцевий тиждень'],
             locale: 'uk_UA',
             today: 'Сьогодні',
             now: 'Зараз',
@@ -8029,11 +8036,13 @@ var uk_UA = {
             nextCentury: 'Наступне століття'
         },
         timePickerLocale: {
-            placeholder: 'Оберіть час'
+            placeholder: 'Оберіть час',
+            rangePlaceholder: ['Час початку', 'Час закінчення']
         }
     },
     TimePicker: {
-        placeholder: 'Оберіть час'
+        placeholder: 'Оберіть час',
+        rangePlaceholder: ['Час початку', 'Час закінчення']
     },
     Calendar: {
         lang: {
@@ -8100,6 +8109,18 @@ var uk_UA = {
     },
     Empty: {
         description: 'Даних немає'
+    },
+    Icon: {
+        icon: 'іконка'
+    },
+    Text: {
+        edit: 'Редагувати',
+        copy: 'Копіювати',
+        copied: 'Скопійовано',
+        expand: 'Розгорнути'
+    },
+    PageHeader: {
+        back: 'Назад'
     }
 };
 

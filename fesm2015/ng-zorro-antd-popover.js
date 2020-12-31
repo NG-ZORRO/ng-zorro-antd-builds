@@ -1,6 +1,7 @@
 import { EventEmitter, Directive, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer2, Host, Optional, Input, Output, Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, NgModule } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { NzTooltipBaseDirective, NzToolTipComponent, isTooltipEmpty, NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
@@ -53,8 +54,8 @@ NzPopoverDirective.propDecorators = {
     visibleChange: [{ type: Output, args: ['nzPopoverVisibleChange',] }]
 };
 class NzPopoverComponent extends NzToolTipComponent {
-    constructor(cdr, noAnimation) {
-        super(cdr, noAnimation);
+    constructor(cdr, directionality, noAnimation) {
+        super(cdr, directionality, noAnimation);
         this.noAnimation = noAnimation;
         this._prefix = 'ant-popover';
     }
@@ -85,6 +86,7 @@ NzPopoverComponent.decorators = [
     >
       <div
         class="ant-popover"
+        [class.ant-popover-rtl]="dir === 'rtl'"
         [ngClass]="_classMap"
         [ngStyle]="nzOverlayStyle"
         [@.disabled]="noAnimation?.nzNoAnimation"
@@ -111,6 +113,7 @@ NzPopoverComponent.decorators = [
 ];
 NzPopoverComponent.ctorParameters = () => [
     { type: ChangeDetectorRef },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 
@@ -125,7 +128,7 @@ NzPopoverModule.decorators = [
                 exports: [NzPopoverDirective, NzPopoverComponent],
                 entryComponents: [NzPopoverComponent],
                 declarations: [NzPopoverDirective, NzPopoverComponent],
-                imports: [CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule, NzToolTipModule]
+                imports: [BidiModule, CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule, NzToolTipModule]
             },] }
 ];
 

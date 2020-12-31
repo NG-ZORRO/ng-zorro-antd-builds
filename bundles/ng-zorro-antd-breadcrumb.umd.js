@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/router'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/dropdown'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/breadcrumb', ['exports', '@angular/core', '@angular/router', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/dropdown', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].breadcrumb = {}), global.ng.core, global.ng.router, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].dropdown, global['ng-zorro-antd'].icon));
-}(this, (function (exports, core, router, logger, util, rxjs, operators, overlay, common, outlet, overlay$1, dropdown, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/cdk/bidi'), require('@angular/router'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/dropdown'), require('ng-zorro-antd/icon')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/breadcrumb', ['exports', '@angular/core', '@angular/cdk/bidi', '@angular/router', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/dropdown', 'ng-zorro-antd/icon'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].breadcrumb = {}), global.ng.core, global.ng.cdk.bidi, global.ng.router, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].dropdown, global['ng-zorro-antd'].icon));
+}(this, (function (exports, core, bidi, router, logger, util, rxjs, operators, overlay, common, outlet, overlay$1, dropdown, icon) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -306,22 +306,35 @@
     }
 
     var NzBreadCrumbComponent = /** @class */ (function () {
-        function NzBreadCrumbComponent(injector, ngZone, cdr, elementRef, renderer) {
+        function NzBreadCrumbComponent(injector, ngZone, cdr, elementRef, renderer, directionality) {
             this.injector = injector;
             this.ngZone = ngZone;
             this.cdr = cdr;
+            this.elementRef = elementRef;
+            this.renderer = renderer;
+            this.directionality = directionality;
             this.nzAutoGenerate = false;
             this.nzSeparator = '/';
             this.nzRouteLabel = 'breadcrumb';
             this.nzRouteLabelFn = function (label) { return label; };
             this.breadcrumbs = [];
+            this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
             renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb');
         }
         NzBreadCrumbComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
             if (this.nzAutoGenerate) {
                 this.registerRouterChange();
             }
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.prepareComponentForRtl();
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+            this.prepareComponentForRtl();
         };
         NzBreadCrumbComponent.prototype.ngOnDestroy = function () {
             this.destroy$.next();
@@ -350,7 +363,7 @@
             }
         };
         NzBreadCrumbComponent.prototype.getBreadcrumbs = function (route, url, breadcrumbs) {
-            var e_1, _a;
+            var e_1, _b;
             if (url === void 0) { url = ''; }
             if (breadcrumbs === void 0) { breadcrumbs = []; }
             var children = route.children;
@@ -387,11 +400,19 @@
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
             finally {
                 try {
-                    if (children_1_1 && !children_1_1.done && (_a = children_1.return)) _a.call(children_1);
+                    if (children_1_1 && !children_1_1.done && (_b = children_1.return)) _b.call(children_1);
                 }
                 finally { if (e_1) throw e_1.error; }
             }
             return breadcrumbs;
+        };
+        NzBreadCrumbComponent.prototype.prepareComponentForRtl = function () {
+            if (this.dir === 'rtl') {
+                this.renderer.addClass(this.elementRef.nativeElement, 'ant-breadcrumb-rtl');
+            }
+            else {
+                this.renderer.removeClass(this.elementRef.nativeElement, 'ant-breadcrumb-rtl');
+            }
         };
         return NzBreadCrumbComponent;
     }());
@@ -410,7 +431,8 @@
         { type: core.NgZone },
         { type: core.ChangeDetectorRef },
         { type: core.ElementRef },
-        { type: core.Renderer2 }
+        { type: core.Renderer2 },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzBreadCrumbComponent.propDecorators = {
         nzAutoGenerate: [{ type: core.Input }],
@@ -480,7 +502,7 @@
         { type: core.NgModule, args: [{
                     imports: [common.CommonModule, outlet.NzOutletModule, overlay.OverlayModule, overlay$1.NzOverlayModule, dropdown.NzDropDownModule, icon.NzIconModule],
                     declarations: [NzBreadCrumbComponent, NzBreadCrumbItemComponent, NzBreadCrumbSeparatorComponent],
-                    exports: [NzBreadCrumbComponent, NzBreadCrumbItemComponent, NzBreadCrumbSeparatorComponent]
+                    exports: [bidi.BidiModule, NzBreadCrumbComponent, NzBreadCrumbItemComponent, NzBreadCrumbSeparatorComponent]
                 },] }
     ];
 

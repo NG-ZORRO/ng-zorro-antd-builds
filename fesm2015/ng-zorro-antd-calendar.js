@@ -1,5 +1,6 @@
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
-import { Directive, EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, forwardRef, ChangeDetectorRef, ContentChild, TemplateRef, NgModule } from '@angular/core';
+import { Directive, EventEmitter, Component, ViewEncapsulation, ChangeDetectionStrategy, ElementRef, Input, Output, forwardRef, ChangeDetectorRef, Optional, ContentChild, TemplateRef, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { LibPackerModule } from 'ng-zorro-antd/date-picker';
 import { NzI18nService, DateHelperService, NzI18nModule } from 'ng-zorro-antd/i18n';
@@ -8,6 +9,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { __decorate, __metadata } from 'tslib';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * Use of this source code is governed by an MIT-style license that can be
@@ -51,9 +54,10 @@ NzMonthFullCellDirective.decorators = [
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCalendarHeaderComponent {
-    constructor(i18n, dateHelper) {
+    constructor(i18n, dateHelper, elementRef) {
         this.i18n = i18n;
         this.dateHelper = dateHelper;
+        this.elementRef = elementRef;
         this.mode = 'month';
         this.fullscreen = true;
         this.activeDate = new CandyDate();
@@ -65,6 +69,8 @@ class NzCalendarHeaderComponent {
         this.yearTotal = 20;
         this.years = [];
         this.months = [];
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-fullcalendar-header');
     }
     get activeYear() {
         return this.activeDate.getYear();
@@ -142,14 +148,14 @@ NzCalendarHeaderComponent.decorators = [
     </div>
   `,
                 host: {
-                    '[style.display]': `'block'`,
-                    '[class.ant-fullcalendar-header]': `true`
+                    '[style.display]': `'block'`
                 }
             },] }
 ];
 NzCalendarHeaderComponent.ctorParameters = () => [
     { type: NzI18nService },
-    { type: DateHelperService }
+    { type: DateHelperService },
+    { type: ElementRef }
 ];
 NzCalendarHeaderComponent.propDecorators = {
     mode: [{ type: Input }],
@@ -165,10 +171,14 @@ NzCalendarHeaderComponent.propDecorators = {
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzCalendarComponent {
-    constructor(cdr) {
+    constructor(cdr, elementRef, directionality) {
         this.cdr = cdr;
+        this.elementRef = elementRef;
+        this.directionality = directionality;
         this.activeDate = new CandyDate();
         this.prefixCls = 'ant-picker-calendar';
+        this.destroy$ = new Subject();
+        this.dir = 'ltr';
         this.onChangeFn = () => { };
         this.onTouchFn = () => { };
         this.nzMode = 'month';
@@ -177,6 +187,8 @@ class NzCalendarComponent {
         this.nzSelectChange = new EventEmitter();
         this.nzValueChange = new EventEmitter();
         this.nzFullscreen = true;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-picker-calendar');
     }
     get dateCell() {
         return (this.nzDateCell || this.nzDateCellChild);
@@ -189,6 +201,13 @@ class NzCalendarComponent {
     }
     get monthFullCell() {
         return (this.nzMonthFullCell || this.nzMonthFullCellChild);
+    }
+    ngOnInit() {
+        var _a;
+        this.dir = this.directionality.value;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.dir = this.directionality.value;
+        });
     }
     onModeChange(mode) {
         this.nzModeChange.emit(mode);
@@ -231,6 +250,10 @@ class NzCalendarComponent {
             this.updateDate(new CandyDate(this.nzValue), false);
         }
     }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }
 NzCalendarComponent.decorators = [
     { type: Component, args: [{
@@ -246,8 +269,7 @@ NzCalendarComponent.decorators = [
       (modeChange)="onModeChange($event)"
       (yearChange)="onYearSelect($event)"
       (monthChange)="onMonthSelect($event)"
-    >
-    </nz-calendar-header>
+    ></nz-calendar-header>
 
     <div class="ant-picker-panel">
       <div class="ant-picker-{{ nzMode === 'month' ? 'date' : 'month' }}-panel">
@@ -282,15 +304,17 @@ NzCalendarComponent.decorators = [
     </ng-template>
   `,
                 host: {
-                    '[class.ant-picker-calendar]': 'true',
                     '[class.ant-picker-calendar-full]': 'nzFullscreen',
-                    '[class.ant-picker-calendar-mini]': '!nzFullscreen'
+                    '[class.ant-picker-calendar-mini]': '!nzFullscreen',
+                    '[class.ant-picker-calendar-rtl]': `dir === 'rtl'`
                 },
                 providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
             },] }
 ];
 NzCalendarComponent.ctorParameters = () => [
-    { type: ChangeDetectorRef }
+    { type: ChangeDetectorRef },
+    { type: ElementRef },
+    { type: Directionality, decorators: [{ type: Optional }] }
 ];
 NzCalendarComponent.propDecorators = {
     nzMode: [{ type: Input }],
@@ -332,7 +356,7 @@ NzCalendarModule.decorators = [
                     NzMonthFullCellDirective
                 ],
                 exports: [NzCalendarComponent, NzDateCellDirective, NzDateFullCellDirective, NzMonthCellDirective, NzMonthFullCellDirective],
-                imports: [CommonModule, FormsModule, NzI18nModule, NzRadioModule, NzSelectModule, LibPackerModule]
+                imports: [BidiModule, CommonModule, FormsModule, NzI18nModule, NzRadioModule, NzSelectModule, LibPackerModule]
             },] }
 ];
 

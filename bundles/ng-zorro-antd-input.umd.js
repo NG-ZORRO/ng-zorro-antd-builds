@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/a11y'), require('@angular/core'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/forms'), require('@angular/cdk/platform'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/services')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/input', ['exports', '@angular/cdk/a11y', '@angular/core', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/forms', '@angular/cdk/platform', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/services'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].input = {}), global.ng.cdk.a11y, global.ng.core, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.forms, global.ng.cdk.platform, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.services));
-}(this, (function (exports, a11y, core, util, rxjs, operators, forms, platform, common, outlet, icon, services) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/a11y'), require('@angular/cdk/bidi'), require('@angular/core'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/forms'), require('@angular/cdk/platform'), require('@angular/common'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/core/services')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/input', ['exports', '@angular/cdk/a11y', '@angular/cdk/bidi', '@angular/core', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/forms', '@angular/cdk/platform', '@angular/common', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/icon', 'ng-zorro-antd/core/services'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].input = {}), global.ng.cdk.a11y, global.ng.cdk.bidi, global.ng.core, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.forms, global.ng.cdk.platform, global.ng.common, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].core.services));
+}(this, (function (exports, a11y, bidi, core, util, rxjs, operators, forms, platform, common, outlet, icon, services) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -310,12 +310,14 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzInputDirective = /** @class */ (function () {
-        function NzInputDirective(ngControl, renderer, elementRef) {
+        function NzInputDirective(ngControl, renderer, elementRef, directionality) {
             this.ngControl = ngControl;
+            this.directionality = directionality;
             this.nzBorderless = false;
             this.nzSize = 'default';
             this._disabled = false;
             this.disabled$ = new rxjs.Subject();
+            this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
             renderer.addClass(elementRef.nativeElement, 'ant-input');
         }
@@ -334,12 +336,16 @@
         });
         NzInputDirective.prototype.ngOnInit = function () {
             var _this = this;
-            var _a;
+            var _a, _b;
             if (this.ngControl) {
                 (_a = this.ngControl.statusChanges) === null || _a === void 0 ? void 0 : _a.pipe(operators.filter(function () { return _this.ngControl.disabled !== null; }), operators.takeUntil(this.destroy$)).subscribe(function () {
                     _this.disabled$.next(_this.ngControl.disabled);
                 });
             }
+            this.dir = this.directionality.value;
+            (_b = this.directionality.change) === null || _b === void 0 ? void 0 : _b.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+            });
         };
         NzInputDirective.prototype.ngOnChanges = function (changes) {
             var disabled = changes.disabled;
@@ -362,14 +368,16 @@
                         '[class.ant-input-borderless]': 'nzBorderless',
                         '[class.ant-input-lg]': "nzSize === 'large'",
                         '[class.ant-input-sm]': "nzSize === 'small'",
-                        '[attr.disabled]': 'disabled || null'
+                        '[attr.disabled]': 'disabled || null',
+                        '[class.ant-input-rtl]': "dir=== 'rtl'"
                     }
                 },] }
     ];
     NzInputDirective.ctorParameters = function () { return [
         { type: forms.NgControl, decorators: [{ type: core.Optional }, { type: core.Self }] },
         { type: core.Renderer2 },
-        { type: core.ElementRef }
+        { type: core.ElementRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzInputDirective.propDecorators = {
         nzBorderless: [{ type: core.Input }],
@@ -396,10 +404,11 @@
         { type: core.ElementRef }
     ]; };
     var NzInputGroupComponent = /** @class */ (function () {
-        function NzInputGroupComponent(focusMonitor, elementRef, cdr) {
+        function NzInputGroupComponent(focusMonitor, elementRef, cdr, directionality) {
             this.focusMonitor = focusMonitor;
             this.elementRef = elementRef;
             this.cdr = cdr;
+            this.directionality = directionality;
             this.nzAddOnBeforeIcon = null;
             this.nzAddOnAfterIcon = null;
             this.nzPrefixIcon = null;
@@ -413,6 +422,7 @@
             this.isAddOn = false;
             this.focused = false;
             this.disabled = false;
+            this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
         }
         NzInputGroupComponent.prototype.updateChildrenInputSize = function () {
@@ -423,12 +433,17 @@
         };
         NzInputGroupComponent.prototype.ngOnInit = function () {
             var _this = this;
+            var _a;
             this.focusMonitor
                 .monitor(this.elementRef, true)
                 .pipe(operators.takeUntil(this.destroy$))
                 .subscribe(function (focusOrigin) {
                 _this.focused = !!focusOrigin;
                 _this.cdr.markForCheck();
+            });
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
             });
         };
         NzInputGroupComponent.prototype.ngAfterContentInit = function () {
@@ -471,22 +486,26 @@
                     preserveWhitespaces: false,
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
-                    template: "\n    <span class=\"ant-input-wrapper ant-input-group\" *ngIf=\"isAddOn; else noAddOnTemplate\">\n      <span\n        *ngIf=\"nzAddOnBefore || nzAddOnBeforeIcon\"\n        nz-input-group-slot\n        type=\"addon\"\n        [icon]=\"nzAddOnBeforeIcon\"\n        [template]=\"nzAddOnBefore\"\n      >\n      </span>\n      <span\n        *ngIf=\"isAffix; else contentTemplate\"\n        class=\"ant-input-affix-wrapper\"\n        [class.ant-input-affix-wrapper-sm]=\"isSmall\"\n        [class.ant-input-affix-wrapper-lg]=\"isLarge\"\n      >\n        <ng-template [ngTemplateOutlet]=\"affixTemplate\"></ng-template>\n      </span>\n      <span\n        *ngIf=\"nzAddOnAfter || nzAddOnAfterIcon\"\n        nz-input-group-slot\n        type=\"addon\"\n        [icon]=\"nzAddOnAfterIcon\"\n        [template]=\"nzAddOnAfter\"\n      ></span>\n    </span>\n    <ng-template #noAddOnTemplate>\n      <ng-template [ngIf]=\"isAffix\" [ngIfElse]=\"contentTemplate\">\n        <ng-template [ngTemplateOutlet]=\"affixTemplate\"></ng-template>\n      </ng-template>\n    </ng-template>\n    <ng-template #affixTemplate>\n      <span *ngIf=\"nzPrefix || nzPrefixIcon\" nz-input-group-slot type=\"prefix\" [icon]=\"nzPrefixIcon\" [template]=\"nzPrefix\"></span>\n      <ng-template [ngTemplateOutlet]=\"contentTemplate\"></ng-template>\n      <span *ngIf=\"nzSuffix || nzSuffixIcon\" nz-input-group-slot type=\"suffix\" [icon]=\"nzSuffixIcon\" [template]=\"nzSuffix\"></span>\n    </ng-template>\n    <ng-template #contentTemplate>\n      <ng-content></ng-content>\n    </ng-template>\n  ",
+                    template: "\n    <span class=\"ant-input-wrapper ant-input-group\" *ngIf=\"isAddOn; else noAddOnTemplate\">\n      <span\n        *ngIf=\"nzAddOnBefore || nzAddOnBeforeIcon\"\n        nz-input-group-slot\n        type=\"addon\"\n        [icon]=\"nzAddOnBeforeIcon\"\n        [template]=\"nzAddOnBefore\"\n      ></span>\n      <span\n        *ngIf=\"isAffix; else contentTemplate\"\n        class=\"ant-input-affix-wrapper\"\n        [class.ant-input-affix-wrapper-sm]=\"isSmall\"\n        [class.ant-input-affix-wrapper-lg]=\"isLarge\"\n      >\n        <ng-template [ngTemplateOutlet]=\"affixTemplate\"></ng-template>\n      </span>\n      <span\n        *ngIf=\"nzAddOnAfter || nzAddOnAfterIcon\"\n        nz-input-group-slot\n        type=\"addon\"\n        [icon]=\"nzAddOnAfterIcon\"\n        [template]=\"nzAddOnAfter\"\n      ></span>\n    </span>\n    <ng-template #noAddOnTemplate>\n      <ng-template [ngIf]=\"isAffix\" [ngIfElse]=\"contentTemplate\">\n        <ng-template [ngTemplateOutlet]=\"affixTemplate\"></ng-template>\n      </ng-template>\n    </ng-template>\n    <ng-template #affixTemplate>\n      <span *ngIf=\"nzPrefix || nzPrefixIcon\" nz-input-group-slot type=\"prefix\" [icon]=\"nzPrefixIcon\" [template]=\"nzPrefix\"></span>\n      <ng-template [ngTemplateOutlet]=\"contentTemplate\"></ng-template>\n      <span *ngIf=\"nzSuffix || nzSuffixIcon\" nz-input-group-slot type=\"suffix\" [icon]=\"nzSuffixIcon\" [template]=\"nzSuffix\"></span>\n    </ng-template>\n    <ng-template #contentTemplate>\n      <ng-content></ng-content>\n    </ng-template>\n  ",
                     host: {
                         '[class.ant-input-group-compact]': "nzCompact",
                         '[class.ant-input-search-enter-button]': "nzSearch",
                         '[class.ant-input-search]': "nzSearch",
+                        '[class.ant-input-search-rtl]': "dir === 'rtl'",
                         '[class.ant-input-search-sm]': "nzSearch && isSmall",
                         '[class.ant-input-search-large]': "nzSearch && isLarge",
                         '[class.ant-input-group-wrapper]': "isAddOn",
+                        '[class.ant-input-group-wrapper-rtl]': "dir === 'rtl'",
                         '[class.ant-input-group-wrapper-lg]': "isAddOn && isLarge",
                         '[class.ant-input-group-wrapper-sm]': "isAddOn && isSmall",
                         '[class.ant-input-affix-wrapper]': "isAffix && !isAddOn",
+                        '[class.ant-input-affix-wrapper-rtl]': "dir === 'rtl'",
                         '[class.ant-input-affix-wrapper-focused]': "isAffix && focused",
                         '[class.ant-input-affix-wrapper-disabled]': "isAffix && disabled",
                         '[class.ant-input-affix-wrapper-lg]': "isAffix && !isAddOn && isLarge",
                         '[class.ant-input-affix-wrapper-sm]': "isAffix && !isAddOn && isSmall",
                         '[class.ant-input-group]': "!isAffix && !isAddOn",
+                        '[class.ant-input-group-rtl]': "dir === 'rtl'",
                         '[class.ant-input-group-lg]': "!isAffix && !isAddOn && isLarge",
                         '[class.ant-input-group-sm]': "!isAffix && !isAddOn && isSmall"
                     }
@@ -495,7 +514,8 @@
     NzInputGroupComponent.ctorParameters = function () { return [
         { type: a11y.FocusMonitor },
         { type: core.ElementRef },
-        { type: core.ChangeDetectorRef }
+        { type: core.ChangeDetectorRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzInputGroupComponent.propDecorators = {
         listOfNzInputDirective: [{ type: core.ContentChildren, args: [NzInputDirective,] }],
@@ -735,6 +755,68 @@
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
+    var NzTextareaCountComponent = /** @class */ (function () {
+        function NzTextareaCountComponent(renderer, elementRef) {
+            this.renderer = renderer;
+            this.elementRef = elementRef;
+            this.nzMaxCharacterCount = 0;
+            this.nzComputeCharacterCount = function (v) { return v.length; };
+            this.nzFormatter = function (c, m) { return "" + c + (m > 0 ? "/" + m : ""); };
+            this.configChange$ = new rxjs.Subject();
+            this.destroy$ = new rxjs.Subject();
+        }
+        NzTextareaCountComponent.prototype.ngAfterContentInit = function () {
+            var _this = this;
+            if (!this.nzInputDirective && core.isDevMode()) {
+                throw new Error('[nz-textarea-count]: Could not find matching textarea[nz-input] child.');
+            }
+            if (this.nzInputDirective.ngControl) {
+                var valueChanges = this.nzInputDirective.ngControl.valueChanges || rxjs.EMPTY;
+                rxjs.merge(valueChanges, this.configChange$)
+                    .pipe(operators.takeUntil(this.destroy$), operators.map(function () { return _this.nzInputDirective.ngControl.value; }), operators.startWith(this.nzInputDirective.ngControl.value))
+                    .subscribe(function (value) {
+                    _this.setDataCount(value);
+                });
+            }
+        };
+        NzTextareaCountComponent.prototype.setDataCount = function (value) {
+            var inputValue = util.isNotNil(value) ? String(value) : '';
+            var currentCount = this.nzComputeCharacterCount(inputValue);
+            var dataCount = this.nzFormatter(currentCount, this.nzMaxCharacterCount);
+            this.renderer.setAttribute(this.elementRef.nativeElement, 'data-count', dataCount);
+        };
+        NzTextareaCountComponent.prototype.ngOnDestroy = function () {
+            this.configChange$.complete();
+            this.destroy$.next();
+            this.destroy$.complete();
+        };
+        return NzTextareaCountComponent;
+    }());
+    NzTextareaCountComponent.decorators = [
+        { type: core.Component, args: [{
+                    selector: 'nz-textarea-count',
+                    template: "\n    <ng-content select=\"textarea[nz-input]\"></ng-content>\n  ",
+                    host: {
+                        class: 'ant-input-textarea-show-count'
+                    },
+                    changeDetection: core.ChangeDetectionStrategy.OnPush
+                },] }
+    ];
+    NzTextareaCountComponent.ctorParameters = function () { return [
+        { type: core.Renderer2 },
+        { type: core.ElementRef }
+    ]; };
+    NzTextareaCountComponent.propDecorators = {
+        nzInputDirective: [{ type: core.ContentChild, args: [NzInputDirective, { static: true },] }],
+        nzMaxCharacterCount: [{ type: core.Input }],
+        nzComputeCharacterCount: [{ type: core.Input }],
+        nzFormatter: [{ type: core.Input }]
+    };
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
     var NzInputModule = /** @class */ (function () {
         function NzInputModule() {
         }
@@ -743,14 +825,21 @@
     NzInputModule.decorators = [
         { type: core.NgModule, args: [{
                     declarations: [
+                        NzTextareaCountComponent,
                         NzInputDirective,
                         NzInputGroupComponent,
                         NzAutosizeDirective,
                         NzInputGroupSlotComponent,
                         NzInputGroupWhitSuffixOrPrefixDirective
                     ],
-                    exports: [NzInputDirective, NzInputGroupComponent, NzAutosizeDirective, NzInputGroupWhitSuffixOrPrefixDirective],
-                    imports: [common.CommonModule, icon.NzIconModule, platform.PlatformModule, outlet.NzOutletModule]
+                    exports: [
+                        NzTextareaCountComponent,
+                        NzInputDirective,
+                        NzInputGroupComponent,
+                        NzAutosizeDirective,
+                        NzInputGroupWhitSuffixOrPrefixDirective
+                    ],
+                    imports: [bidi.BidiModule, common.CommonModule, icon.NzIconModule, platform.PlatformModule, outlet.NzOutletModule]
                 },] }
     ];
 
@@ -769,6 +858,7 @@
     exports.NzInputGroupSlotComponent = NzInputGroupSlotComponent;
     exports.NzInputGroupWhitSuffixOrPrefixDirective = NzInputGroupWhitSuffixOrPrefixDirective;
     exports.NzInputModule = NzInputModule;
+    exports.NzTextareaCountComponent = NzTextareaCountComponent;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

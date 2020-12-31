@@ -1,16 +1,17 @@
 import { __decorate, __metadata } from 'tslib';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { DOWN_ARROW, UP_ARROW, LEFT_ARROW, RIGHT_ARROW, ENTER, BACKSPACE, ESCAPE } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
-import { Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, ElementRef, Renderer2, Input, Injectable, EventEmitter, forwardRef, Host, Optional, ViewChild, ViewChildren, Output, HostListener, NgModule } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, ElementRef, Renderer2, Input, Injectable, EventEmitter, forwardRef, Optional, Host, ViewChild, ViewChildren, Output, HostListener, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { isNotNil, arraysEqual, toArray, InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, startWith } from 'rxjs/operators';
-import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { CommonModule } from '@angular/common';
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -43,9 +44,18 @@ class NzCascaderOptionComponent {
         this.optionTemplate = null;
         this.activated = false;
         this.nzLabelProperty = 'label';
-        this.expandIcon = 'right';
+        this.expandIcon = '';
+        this.dir = 'ltr';
         renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
         this.nativeElement = elementRef.nativeElement;
+    }
+    ngOnInit() {
+        if (this.expandIcon === '' && this.dir === 'rtl') {
+            this.expandIcon = 'left';
+        }
+        else if (this.expandIcon === '') {
+            this.expandIcon = 'right';
+        }
     }
     get optionLabel() {
         return this.option[this.nzLabelProperty];
@@ -96,7 +106,8 @@ NzCascaderOptionComponent.propDecorators = {
     highlightText: [{ type: Input }],
     nzLabelProperty: [{ type: Input }],
     columnIndex: [{ type: Input }],
-    expandIcon: [{ type: Input }]
+    expandIcon: [{ type: Input }],
+    dir: [{ type: Input }]
 };
 
 /**
@@ -474,11 +485,12 @@ const NZ_CONFIG_MODULE_NAME = 'cascader';
 const defaultDisplayRender = (labels) => labels.join(' / ');
 const ɵ0 = defaultDisplayRender;
 class NzCascaderComponent {
-    constructor(cascaderService, nzConfigService, cdr, i18nService, elementRef, renderer, noAnimation) {
+    constructor(cascaderService, nzConfigService, cdr, i18nService, elementRef, renderer, directionality, noAnimation) {
         this.cascaderService = cascaderService;
         this.nzConfigService = nzConfigService;
         this.cdr = cdr;
         this.i18nService = i18nService;
+        this.directionality = directionality;
         this.noAnimation = noAnimation;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.nzOptionRender = null;
@@ -501,7 +513,7 @@ class NzCascaderComponent {
         this.nzTriggerAction = ['click'];
         // TODO: RTL
         this.nzSuffixIcon = 'down';
-        this.nzExpandIcon = 'right';
+        this.nzExpandIcon = '';
         this.nzVisibleChange = new EventEmitter();
         this.nzSelectionChange = new EventEmitter();
         this.nzSelect = new EventEmitter();
@@ -519,6 +531,7 @@ class NzCascaderComponent {
         this.positions = [...DEFAULT_CASCADER_POSITIONS];
         this.dropdownHeightStyle = '';
         this.isFocused = false;
+        this.dir = 'ltr';
         this.destroy$ = new Subject();
         this.inputString = '';
         this.isOpening = false;
@@ -567,6 +580,7 @@ class NzCascaderComponent {
         return !!this.nzLabelRender;
     }
     ngOnInit() {
+        var _a;
         const srv = this.cascaderService;
         srv.$redraw.pipe(takeUntil(this.destroy$)).subscribe(() => {
             // These operations would not mutate data.
@@ -609,6 +623,11 @@ class NzCascaderComponent {
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
             this.cdr.markForCheck();
+        });
+        this.dir = this.directionality.value;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.dir = this.directionality.value;
+            srv.$redraw.next();
         });
     }
     ngOnDestroy() {
@@ -655,6 +674,9 @@ class NzCascaderComponent {
         if (visible) {
             this.cascaderService.syncOptions();
             this.scrollToActivatedOptions();
+        }
+        if (!visible) {
+            this.inputValue = '';
         }
         this.menuVisible = visible;
         this.nzVisibleChange.emit(visible);
@@ -918,7 +940,7 @@ class NzCascaderComponent {
             this.labelRenderContext = { labels, selectedOptions };
         }
         else {
-            this.labelRenderText = defaultDisplayRender.call(this, labels, selectedOptions);
+            this.labelRenderText = defaultDisplayRender.call(this, labels);
         }
     }
     setDropdownStyles() {
@@ -1020,6 +1042,7 @@ NzCascaderComponent.decorators = [
       <div
         #menu
         class="ant-cascader-menus"
+        [class.ant-cascader-menu-rtl]="dir === 'rtl'"
         [class.ant-cascader-menus-hidden]="!menuVisible"
         [ngClass]="menuCls"
         [ngStyle]="nzMenuStyle"
@@ -1056,6 +1079,7 @@ NzCascaderComponent.decorators = [
               [activated]="isOptionActivated(option, i)"
               [highlightText]="inSearchingMode ? inputValue : ''"
               [option]="option"
+              [dir]="dir"
               (mouseenter)="onOptionMouseEnter(option, i, $event)"
               (mouseleave)="onOptionMouseLeave(option, i, $event)"
               (click)="onOptionClick(option, i, $event)"
@@ -1081,7 +1105,8 @@ NzCascaderComponent.decorators = [
                     '[class.ant-cascader-picker-disabled]': 'nzDisabled',
                     '[class.ant-cascader-picker-open]': 'menuVisible',
                     '[class.ant-cascader-picker-with-value]': '!!inputValue',
-                    '[class.ant-cascader-focused]': 'isFocused'
+                    '[class.ant-cascader-focused]': 'isFocused',
+                    '[class.ant-cascader-picker-rtl]': `dir ==='rtl'`
                 }
             },] }
 ];
@@ -1092,6 +1117,7 @@ NzCascaderComponent.ctorParameters = () => [
     { type: NzI18nService },
     { type: ElementRef },
     { type: Renderer2 },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 NzCascaderComponent.propDecorators = {
@@ -1172,6 +1198,7 @@ class NzCascaderModule {
 NzCascaderModule.decorators = [
     { type: NgModule, args: [{
                 imports: [
+                    BidiModule,
                     CommonModule,
                     FormsModule,
                     OverlayModule,

@@ -2,11 +2,13 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { OnChanges, SimpleChanges } from '@angular/core';
+import { ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkeletonButtonShape, NzSkeletonButtonSize, NzSkeletonInputSize } from './skeleton.type';
 export declare class NzSkeletonElementDirective {
+    private elementRef;
     nzActive: boolean;
     nzType: 'button' | 'input' | 'avatar' | 'image';
+    constructor(elementRef: ElementRef);
 }
 export declare class NzSkeletonElementButtonComponent {
     nzShape: NzSkeletonButtonShape;

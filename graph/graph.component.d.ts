@@ -2,27 +2,32 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { AfterContentChecked, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
+import { AfterContentChecked, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzGraphData } from './data-source/graph-data-source';
-import { NzGraphMinimapComponent } from './graph-minimap.component';
-import { NzGraphNodeDirective } from './graph-node.directive';
-import { NzGraphSvgContainerComponent, NzZoomTransform } from './graph-svg-container.component';
-import { NzGraphDataDef, NzGraphEdge, NzGraphEdgeDef, NzGraphGroupNode, NzGraphLayoutSetting, NzGraphNode, NzGraphNodeDef, NzGraphOption, NzRankDirection } from './interface';
+import { NzGraphNodeComponent } from './graph-node.component';
+import { NzGraphZoomDirective } from './graph-zoom.directive';
+import { NzGraphDataDef, NzGraphEdge, NzGraphEdgeDef, NzGraphGroupNode, NzGraphLayoutConfig, NzGraphNode, NzGraphNodeDef, NzGraphOption, NzRankDirection } from './interface';
 /** Checks whether an object is a data source. */
 export declare function isDataSource(value: NzSafeAny): value is NzGraphData;
 export declare class NzGraphComponent implements OnInit, OnChanges, AfterViewInit, AfterContentChecked, OnDestroy {
     private cdr;
-    private ngZone;
     private elementRef;
-    static ngAcceptInputType_nzShowMinimap: BooleanInput;
+    noAnimation?: NzNoAnimationDirective | undefined;
+    nzGraphZoom?: NzGraphZoomDirective | undefined;
     static ngAcceptInputType_nzAutoSize: BooleanInput;
-    static ngAcceptInputType_nzShowArrow: BooleanInput;
-    graphNodes: QueryList<NzGraphNodeDirective>;
-    svgContainerComponent: NzGraphSvgContainerComponent;
-    minimap: NzGraphMinimapComponent | undefined;
-    customGraphNodeTemplate?: TemplateRef<{
-        $implicit: NzGraphNode | NzGraphGroupNode;
+    listOfNodeElement: QueryList<ElementRef>;
+    listOfNodeComponent: QueryList<NzGraphNodeComponent>;
+    nodeTemplate?: TemplateRef<{
+        $implicit: NzGraphNode;
+    }>;
+    groupNodeTemplate?: TemplateRef<{
+        $implicit: NzGraphGroupNode;
+    }>;
+    customGraphEdgeTemplate?: TemplateRef<{
+        $implicit: NzGraphEdge;
     }>;
     /**
      * Provides a stream containing the latest data array to render.
@@ -30,15 +35,14 @@ export declare class NzGraphComponent implements OnInit, OnChanges, AfterViewIni
      */
     nzGraphData: NzGraphData;
     nzRankDirection: NzRankDirection;
-    nzGraphLayoutSettings?: NzGraphLayoutSetting;
-    nzShowMinimap: boolean;
-    nzShowArrow: boolean;
-    nzZoom: number;
+    nzGraphLayoutConfig?: NzGraphLayoutConfig;
     nzAutoSize: boolean;
-    readonly nzGraphInitialized: EventEmitter<void>;
-    readonly nzZoomInit: EventEmitter<void>;
-    readonly nzTransformEvent: EventEmitter<NzZoomTransform>;
+    readonly nzGraphInitialized: EventEmitter<NzGraphComponent>;
+    readonly nzGraphRendered: EventEmitter<NzGraphComponent>;
     readonly nzNodeClick: EventEmitter<NzGraphNode | NzGraphGroupNode>;
+    requestId: number;
+    transformStyle: string;
+    graphRenderedSubject$: ReplaySubject<void>;
     renderInfo: NzGraphGroupNode;
     mapOfNodeAttr: {
         [key: string]: NzGraphNodeDef;
@@ -46,6 +50,7 @@ export declare class NzGraphComponent implements OnInit, OnChanges, AfterViewIni
     mapOfEdgeAttr: {
         [key: string]: NzGraphEdgeDef;
     };
+    zoom: number;
     readonly typedNodes: (item: unknown) => (NzGraphGroupNode | NzGraphNode)[];
     private dataSource?;
     private layoutSetting;
@@ -56,33 +61,33 @@ export declare class NzGraphComponent implements OnInit, OnChanges, AfterViewIni
     edgeTrackByFun: (_: number, edge: NzGraphEdge) => string;
     subGraphTransform: (node: NzGraphGroupNode) => string;
     coreTransform: (node: NzGraphGroupNode) => string;
-    constructor(cdr: ChangeDetectorRef, ngZone: NgZone, elementRef: ElementRef);
+    constructor(cdr: ChangeDetectorRef, elementRef: ElementRef, noAnimation?: NzNoAnimationDirective | undefined, nzGraphZoom?: NzGraphZoomDirective | undefined);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
     ngAfterContentChecked(): void;
     ngOnDestroy(): void;
     /**
-     * Transform event
-     */
-    triggerTransform($event: {
-        x: number;
-        y: number;
-        k: number;
-    }): void;
-    /**
      * Emit event
      */
     clickNode(node: NzGraphNode | NzGraphGroupNode): void;
     /**
-     * Move graph to center
+     * Move graph to center and scale automatically
      */
-    autoFit(): void;
+    fitCenter(): void;
     /**
-     * Refactor
+     * re-Draw graph
+     * @param data
+     * @param options
+     * @param needResize
      */
-    toggleNode(node: string, expanded: boolean): void;
-    renderGraph(data: NzGraphDataDef, options: NzGraphOption): void;
+    drawGraph(data: NzGraphDataDef, options: NzGraphOption, needResize?: boolean): Promise<void>;
+    /**
+     * Redraw all nodes
+     * @param animate
+     */
+    drawNodes(animate?: boolean): Promise<void>;
+    private resizeNodeSize;
     /**
      * Switch to the provided data source by resetting the data and unsubscribing from the current
      * render change subscription if one exists. If the data source is null, interpret this by
@@ -91,11 +96,23 @@ export declare class NzGraphComponent implements OnInit, OnChanges, AfterViewIni
     private _switchDataSource;
     /** Set up a subscription for the data provided by the data source. */
     private observeRenderChanges;
-    private setRenderInfo;
+    /**
+     * Get renderInfo and prepare some data
+     * @param data
+     * @param options
+     * @private
+     */
     private buildGraphInfo;
-    private resizeNodes;
-    private assignRenderInfo;
+    /**
+     * Play with animation
+     * @private
+     */
     private makeNodesAnimation;
     private parseInfo;
-    private drawMinimap;
+    /**
+     * Merge config with user inputs
+     * @param config
+     * @private
+     */
+    private mergeConfig;
 }

@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/icon'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('ng-zorro-antd/core/transition-patch'), require('ng-zorro-antd/core/wave')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/button', ['exports', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', 'ng-zorro-antd/icon', 'rxjs', 'rxjs/operators', '@angular/common', 'ng-zorro-antd/core/transition-patch', 'ng-zorro-antd/core/wave'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].button = {}), global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].icon, global.rxjs, global.rxjs.operators, global.ng.common, global['ng-zorro-antd'].core['transition-patch'], global['ng-zorro-antd'].core.wave));
-}(this, (function (exports, core, config, util, icon, rxjs, operators, common, transitionPatch, wave) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/logger'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/icon'), require('rxjs'), require('rxjs/operators'), require('@angular/common'), require('ng-zorro-antd/core/transition-patch'), require('ng-zorro-antd/core/wave')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/button', ['exports', '@angular/cdk/bidi', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/logger', 'ng-zorro-antd/core/util', 'ng-zorro-antd/icon', 'rxjs', 'rxjs/operators', '@angular/common', 'ng-zorro-antd/core/transition-patch', 'ng-zorro-antd/core/wave'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].button = {}), global.ng.cdk.bidi, global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.logger, global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].icon, global.rxjs, global.rxjs.operators, global.ng.common, global['ng-zorro-antd'].core['transition-patch'], global['ng-zorro-antd'].core.wave));
+}(this, (function (exports, bidi, core, config, logger, util, icon, rxjs, operators, common, transitionPatch, wave) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -311,12 +311,13 @@
      */
     var NZ_CONFIG_MODULE_NAME = 'button';
     var NzButtonComponent = /** @class */ (function () {
-        function NzButtonComponent(elementRef, cdr, renderer, nzConfigService) {
+        function NzButtonComponent(elementRef, cdr, renderer, nzConfigService, directionality) {
             var _this = this;
             this.elementRef = elementRef;
             this.cdr = cdr;
             this.renderer = renderer;
             this.nzConfigService = nzConfigService;
+            this.directionality = directionality;
             this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             this.nzBlock = false;
             this.nzGhost = false;
@@ -328,8 +329,11 @@
             this.nzType = null;
             this.nzShape = null;
             this.nzSize = 'default';
+            this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
             this.loading$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-btn');
             this.nzConfigService
                 .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
                 .pipe(operators.takeUntil(this.destroy$))
@@ -357,10 +361,22 @@
                 renderer.addClass(element, 'ant-btn-icon-only');
             }
         };
+        NzButtonComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+                _this.cdr.detectChanges();
+            });
+            this.dir = this.directionality.value;
+        };
         NzButtonComponent.prototype.ngOnChanges = function (changes) {
-            var nzLoading = changes.nzLoading;
+            var nzLoading = changes.nzLoading, nzType = changes.nzType;
             if (nzLoading) {
                 this.loading$.next(this.nzLoading);
+            }
+            if ((nzType === null || nzType === void 0 ? void 0 : nzType.currentValue) === 'danger') {
+                logger.warnDeprecation("'danger' value of 'nzType' in Button is going to be removed in 12.0.0. Please use 'nzDanger' instead.");
             }
         };
         NzButtonComponent.prototype.ngAfterViewInit = function () {
@@ -396,7 +412,6 @@
                     encapsulation: core.ViewEncapsulation.None,
                     template: "\n    <i nz-icon nzType=\"loading\" *ngIf=\"nzLoading\"></i>\n    <ng-content></ng-content>\n  ",
                     host: {
-                        '[class.ant-btn]': "true",
                         '[class.ant-btn-primary]': "nzType === 'primary'",
                         '[class.ant-btn-dashed]': "nzType === 'dashed'",
                         '[class.ant-btn-link]': "nzType === 'link'",
@@ -411,6 +426,7 @@
                         '[class.ant-btn-background-ghost]': "nzGhost",
                         '[class.ant-btn-block]': "nzBlock",
                         '[class.ant-input-search-button]': "nzSearch",
+                        '[class.ant-btn-rtl]': "dir === 'rtl'",
                         '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
                         '[attr.disabled]': 'disabled || null'
                     }
@@ -420,7 +436,8 @@
         { type: core.ElementRef },
         { type: core.ChangeDetectorRef },
         { type: core.Renderer2 },
-        { type: config.NzConfigService }
+        { type: config.NzConfigService },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
     ]; };
     NzButtonComponent.propDecorators = {
         nzIconDirectiveElement: [{ type: core.ContentChild, args: [icon.NzIconDirective, { read: core.ElementRef },] }],
@@ -469,9 +486,27 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzButtonGroupComponent = /** @class */ (function () {
-        function NzButtonGroupComponent() {
+        function NzButtonGroupComponent(elementRef, directionality) {
+            this.elementRef = elementRef;
+            this.directionality = directionality;
             this.nzSize = 'default';
+            this.dir = 'ltr';
+            this.destroy$ = new rxjs.Subject();
+            // TODO: move to host after View Engine deprecation
+            this.elementRef.nativeElement.classList.add('ant-btn-group');
         }
+        NzButtonGroupComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a;
+            this.dir = this.directionality.value;
+            (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
+                _this.dir = direction;
+            });
+        };
+        NzButtonGroupComponent.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
+        };
         return NzButtonGroupComponent;
     }());
     NzButtonGroupComponent.decorators = [
@@ -481,14 +516,18 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     encapsulation: core.ViewEncapsulation.None,
                     host: {
-                        '[class.ant-btn-group]': "true",
                         '[class.ant-btn-group-lg]': "nzSize === 'large'",
-                        '[class.ant-btn-group-sm]': "nzSize === 'small'"
+                        '[class.ant-btn-group-sm]': "nzSize === 'small'",
+                        '[class.ant-btn-group-rtl]': "dir === 'rtl'"
                     },
                     preserveWhitespaces: false,
-                    template: " <ng-content></ng-content> "
+                    template: "\n    <ng-content></ng-content>\n  "
                 },] }
     ];
+    NzButtonGroupComponent.ctorParameters = function () { return [
+        { type: core.ElementRef },
+        { type: bidi.Directionality, decorators: [{ type: core.Optional }] }
+    ]; };
     NzButtonGroupComponent.propDecorators = {
         nzSize: [{ type: core.Input }]
     };
@@ -506,7 +545,7 @@
         { type: core.NgModule, args: [{
                     declarations: [NzButtonComponent, NzButtonGroupComponent],
                     exports: [NzButtonComponent, NzButtonGroupComponent, transitionPatch.ɵNzTransitionPatchModule, wave.NzWaveModule],
-                    imports: [common.CommonModule, wave.NzWaveModule, icon.NzIconModule, transitionPatch.ɵNzTransitionPatchModule]
+                    imports: [bidi.BidiModule, common.CommonModule, wave.NzWaveModule, icon.NzIconModule, transitionPatch.ɵNzTransitionPatchModule]
                 },] }
     ];
 

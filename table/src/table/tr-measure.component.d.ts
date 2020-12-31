@@ -7,11 +7,12 @@ import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 export declare class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
     private nzResizeObserver;
     private ngZone;
+    private elementRef;
     listOfMeasureColumn: string[];
     readonly listOfAutoWidth: EventEmitter<number[]>;
     listOfTdElement: QueryList<ElementRef>;
     private destroy$;
-    constructor(nzResizeObserver: NzResizeObserver, ngZone: NgZone);
+    constructor(nzResizeObserver: NzResizeObserver, ngZone: NgZone, elementRef: ElementRef);
     trackByFunc(_: number, key: string): string;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;

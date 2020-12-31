@@ -9,6 +9,7 @@ import { POSITION_MAP, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject, BehaviorSubject, merge, fromEvent, EMPTY, combineLatest, Subscription } from 'rxjs';
 import { mapTo, switchMap, filter, map, auditTime, distinctUntilChanged, takeUntil, take } from 'rxjs/operators';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NzButtonGroupComponent, NzButtonModule } from 'ng-zorro-antd/button';
@@ -44,10 +45,11 @@ class NzDropDownDirective {
         this.nzTrigger = 'hover';
         this.nzMatchWidthElement = null;
         /**
-         * @deprecated Not supported.
-         * @breaking-change 11.0.0
+         * @deprecated Not supported, use `nzHasBackDrop` instead.
+         * @breaking-change 12.0.0
          */
-        this.nzBackdrop = true;
+        this.nzBackdrop = false;
+        this.nzHasBackdrop = false;
         this.nzClickHide = true;
         this.nzDisabled = false;
         this.nzVisible = false;
@@ -55,6 +57,8 @@ class NzDropDownDirective {
         this.nzOverlayStyle = {};
         this.nzPlacement = 'bottomLeft';
         this.nzVisibleChange = new EventEmitter();
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-dropdown-trigger');
     }
     setDropdownMenuValue(key, value) {
         if (this.nzDropdownMenu) {
@@ -105,11 +109,10 @@ class NzDropDownDirective {
                             positionStrategy: this.positionStrategy,
                             minWidth: triggerWidth,
                             disposeOnNavigation: true,
-                            hasBackdrop: this.nzTrigger === 'click',
-                            backdropClass: this.nzBackdrop ? undefined : 'nz-overlay-transparent-backdrop',
+                            hasBackdrop: (this.nzHasBackdrop || this.nzBackdrop) && this.nzTrigger === 'click',
                             scrollStrategy: this.overlay.scrollStrategies.reposition()
                         });
-                        merge(this.overlayRef.backdropClick(), this.overlayRef.detachments(), this.overlayRef.keydownEvents().pipe(filter(e => e.keyCode === ESCAPE && !hasModifierKey(e))))
+                        merge(this.overlayRef.backdropClick(), this.overlayRef.detachments(), this.overlayRef.outsidePointerEvents().pipe(filter((e) => !this.elementRef.nativeElement.contains(e.target))), this.overlayRef.keydownEvents().pipe(filter(e => e.keyCode === ESCAPE && !hasModifierKey(e))))
                             .pipe(mapTo(false), takeUntil(this.destroy$))
                             .subscribe(this.overlayClose$);
                     }
@@ -168,17 +171,14 @@ class NzDropDownDirective {
             this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
         }
         if (nzBackdrop) {
-            warnDeprecation('`nzBackdrop` in dropdown component will be removed in 11.0.0.');
+            warnDeprecation('`nzBackdrop` in dropdown component will be removed in 12.0.0, please use `nzHasBackdrop` instead.');
         }
     }
 }
 NzDropDownDirective.decorators = [
     { type: Directive, args: [{
                 selector: '[nz-dropdown]',
-                exportAs: 'nzDropdown',
-                host: {
-                    '[class.ant-dropdown-trigger]': 'true'
-                }
+                exportAs: 'nzDropdown'
             },] }
 ];
 NzDropDownDirective.ctorParameters = () => [
@@ -193,6 +193,7 @@ NzDropDownDirective.propDecorators = {
     nzTrigger: [{ type: Input }],
     nzMatchWidthElement: [{ type: Input }],
     nzBackdrop: [{ type: Input }],
+    nzHasBackdrop: [{ type: Input }],
     nzClickHide: [{ type: Input }],
     nzDisabled: [{ type: Input }],
     nzVisible: [{ type: Input }],
@@ -205,6 +206,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzDropDownDirective.prototype, "nzBackdrop", void 0);
+__decorate([
+    InputBoolean(),
+    __metadata("design:type", Object)
+], NzDropDownDirective.prototype, "nzHasBackdrop", void 0);
 __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
@@ -233,14 +238,19 @@ NzContextMenuServiceModule.decorators = [
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDropDownADirective {
+    constructor(elementRef) {
+        this.elementRef = elementRef;
+        // TODO: move to host after View Engine deprecation
+        this.elementRef.nativeElement.classList.add('ant-dropdown-link');
+    }
 }
 NzDropDownADirective.decorators = [
     { type: Directive, args: [{
-                selector: 'a[nz-dropdown]',
-                host: {
-                    '[class.ant-dropdown-link]': 'true'
-                }
+                selector: 'a[nz-dropdown]'
             },] }
+];
+NzDropDownADirective.ctorParameters = () => [
+    { type: ElementRef }
 ];
 
 /**
@@ -276,18 +286,21 @@ NzDropdownButtonDirective.ctorParameters = () => [
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzDropdownMenuComponent {
-    constructor(cdr, elementRef, renderer, viewContainerRef, nzMenuService, noAnimation) {
+    constructor(cdr, elementRef, renderer, viewContainerRef, nzMenuService, directionality, noAnimation) {
         this.cdr = cdr;
         this.elementRef = elementRef;
         this.renderer = renderer;
         this.viewContainerRef = viewContainerRef;
         this.nzMenuService = nzMenuService;
+        this.directionality = directionality;
         this.noAnimation = noAnimation;
         this.mouseState$ = new BehaviorSubject(false);
         this.isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
         this.descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
         this.nzOverlayClassName = '';
         this.nzOverlayStyle = {};
+        this.dir = 'ltr';
+        this.destroy$ = new Subject();
     }
     setMouseState(visible) {
         this.mouseState$.next(visible);
@@ -296,8 +309,20 @@ class NzDropdownMenuComponent {
         this[key] = value;
         this.cdr.markForCheck();
     }
+    ngOnInit() {
+        var _a;
+        (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
+            this.dir = direction;
+            this.cdr.detectChanges();
+        });
+        this.dir = this.directionality.value;
+    }
     ngAfterContentInit() {
         this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
+    }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
 NzDropdownMenuComponent.decorators = [
@@ -317,6 +342,7 @@ NzDropdownMenuComponent.decorators = [
     <ng-template>
       <div
         class="ant-dropdown"
+        [class.ant-dropdown-rtl]="dir === 'rtl'"
         [ngClass]="nzOverlayClassName"
         [ngStyle]="nzOverlayStyle"
         [@slideMotion]="'enter'"
@@ -340,6 +366,7 @@ NzDropdownMenuComponent.ctorParameters = () => [
     { type: Renderer2 },
     { type: ViewContainerRef },
     { type: MenuService },
+    { type: Directionality, decorators: [{ type: Optional }] },
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 NzDropdownMenuComponent.propDecorators = {
@@ -355,6 +382,7 @@ class NzDropDownModule {
 NzDropDownModule.decorators = [
     { type: NgModule, args: [{
                 imports: [
+                    BidiModule,
                     CommonModule,
                     OverlayModule,
                     FormsModule,

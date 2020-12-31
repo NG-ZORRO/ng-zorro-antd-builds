@@ -13,6 +13,7 @@ export declare class NzTableInnerScrollComponent implements OnChanges, AfterView
     private ngZone;
     private platform;
     private resizeService;
+    private elementRef;
     data: NzTableData[];
     scrollX: string | null;
     scrollY: string | null;
@@ -37,7 +38,7 @@ export declare class NzTableInnerScrollComponent implements OnChanges, AfterView
     private scroll$;
     private destroy$;
     setScrollPositionClassName(clear?: boolean): void;
-    constructor(renderer: Renderer2, ngZone: NgZone, platform: Platform, resizeService: NzResizeService);
+    constructor(renderer: Renderer2, ngZone: NgZone, platform: Platform, resizeService: NzResizeService, elementRef: ElementRef);
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;

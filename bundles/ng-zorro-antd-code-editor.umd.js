@@ -449,6 +449,7 @@
             this.onChange = function (_value) { };
             this.onTouch = function () { };
             this.el = elementRef.nativeElement;
+            this.el.classList.add('ant-code-editor');
         }
         Object.defineProperty(NzCodeEditorComponent.prototype, "nzEditorOption", {
             set: function (value) {
@@ -629,9 +630,6 @@
                     selector: 'nz-code-editor',
                     exportAs: 'nzCodeEditor',
                     template: "\n    <div class=\"ant-code-editor-loading\" *ngIf=\"nzLoading\">\n      <nz-spin></nz-spin>\n    </div>\n\n    <div class=\"ant-code-editor-toolkit\" *ngIf=\"nzToolkit\">\n      <ng-template [ngTemplateOutlet]=\"nzToolkit\"></ng-template>\n    </div>\n  ",
-                    host: {
-                        '[class.ant-code-editor]': 'true'
-                    },
                     providers: [
                         {
                             provide: forms.NG_VALUE_ACCESSOR,
