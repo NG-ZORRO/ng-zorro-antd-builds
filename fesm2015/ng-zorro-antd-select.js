@@ -10,9 +10,10 @@ import { BACKSPACE, ESCAPE, TAB, SPACE, ENTER, DOWN_ARROW, UP_ARROW } from '@ang
 import { CdkOverlayOrigin, CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { COMPOSITION_BUFFER_MODE, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
-import { zoomMotion, slideMotion } from 'ng-zorro-antd/core/animation';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { CommonModule } from '@angular/common';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
@@ -253,6 +254,7 @@ class NzSelectSearchComponent {
         this.elementRef = elementRef;
         this.renderer = renderer;
         this.focusMonitor = focusMonitor;
+        this.nzId = null;
         this.disabled = false;
         this.mirrorSync = false;
         this.showInput = true;
@@ -326,6 +328,7 @@ NzSelectSearchComponent.decorators = [
                 template: `
     <input
       #inputElement
+      [attr.id]="nzId"
       autocomplete="off"
       class="ant-select-selection-search-input"
       [ngModel]="value"
@@ -347,6 +350,7 @@ NzSelectSearchComponent.ctorParameters = () => [
     { type: FocusMonitor }
 ];
 NzSelectSearchComponent.propDecorators = {
+    nzId: [{ type: Input }],
     disabled: [{ type: Input }],
     mirrorSync: [{ type: Input }],
     showInput: [{ type: Input }],
@@ -367,6 +371,7 @@ class NzSelectTopControlComponent {
     constructor(elementRef, noAnimation) {
         this.elementRef = elementRef;
         this.noAnimation = noAnimation;
+        this.nzId = null;
         this.showSearch = false;
         this.placeHolder = null;
         this.open = false;
@@ -381,7 +386,6 @@ class NzSelectTopControlComponent {
         this.tokenSeparators = [];
         this.tokenize = new EventEmitter();
         this.inputValueChange = new EventEmitter();
-        this.animationEnd = new EventEmitter();
         this.deleteItem = new EventEmitter();
         this.listOfSlicedItem = [];
         this.isShowPlaceholder = true;
@@ -462,9 +466,6 @@ class NzSelectTopControlComponent {
             this.deleteItem.next(item);
         }
     }
-    onAnimationEnd() {
-        this.animationEnd.next();
-    }
     ngOnChanges(changes) {
         const { listOfTopItem, maxTagCount, customTemplate, maxTagPlaceholder } = changes;
         if (listOfTopItem) {
@@ -501,7 +502,6 @@ NzSelectTopControlComponent.decorators = [
                 selector: 'nz-select-top-control',
                 exportAs: 'nzSelectTopControl',
                 preserveWhitespaces: false,
-                animations: [zoomMotion],
                 changeDetection: ChangeDetectionStrategy.OnPush,
                 encapsulation: ViewEncapsulation.None,
                 template: `
@@ -509,6 +509,7 @@ NzSelectTopControlComponent.decorators = [
     <ng-container [ngSwitch]="mode">
       <ng-container *ngSwitchCase="'default'">
         <nz-select-search
+          [nzId]="nzId"
           [disabled]="disabled"
           [value]="inputValue!"
           [showInput]="showSearch"
@@ -532,19 +533,16 @@ NzSelectTopControlComponent.decorators = [
         <!--multiple or tags mode-->
         <nz-select-item
           *ngFor="let item of listOfSlicedItem; trackBy: trackValue"
-          [@zoomMotion]
-          [@.disabled]="noAnimation?.nzNoAnimation"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation"
           [removeIcon]="removeIcon"
           [label]="item.nzLabel"
           [disabled]="item.nzDisabled || disabled"
           [contentTemplateOutlet]="item.contentTemplateOutlet"
           [deletable]="true"
           [contentTemplateOutletContext]="item.contentTemplateOutletContext"
-          (@zoomMotion.done)="onAnimationEnd()"
           (delete)="onDeleteItem(item.contentTemplateOutletContext)"
         ></nz-select-item>
         <nz-select-search
+          [nzId]="nzId"
           [disabled]="disabled"
           [value]="inputValue!"
           [autofocus]="autofocus"
@@ -568,6 +566,7 @@ NzSelectTopControlComponent.ctorParameters = () => [
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 NzSelectTopControlComponent.propDecorators = {
+    nzId: [{ type: Input }],
     showSearch: [{ type: Input }],
     placeHolder: [{ type: Input }],
     open: [{ type: Input }],
@@ -582,7 +581,6 @@ NzSelectTopControlComponent.propDecorators = {
     tokenSeparators: [{ type: Input }],
     tokenize: [{ type: Output }],
     inputValueChange: [{ type: Output }],
-    animationEnd: [{ type: Output }],
     deleteItem: [{ type: Output }],
     nzSelectSearchComponent: [{ type: ViewChild, args: [NzSelectSearchComponent,] }]
 };
@@ -611,6 +609,7 @@ class NzSelectComponent {
         this.directionality = directionality;
         this.noAnimation = noAnimation;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
+        this.nzId = null;
         this.nzSize = 'default';
         this.nzOptionHeightPx = 32;
         this.nzOptionOverflowSize = 8;
@@ -894,13 +893,17 @@ class NzSelectComponent {
     }
     updateCdkConnectedOverlayStatus() {
         if (this.platform.isBrowser && this.originElement.nativeElement) {
-            this.triggerWidth = this.originElement.nativeElement.getBoundingClientRect().width;
+            reqAnimFrame(() => {
+                this.triggerWidth = this.originElement.nativeElement.getBoundingClientRect().width;
+                this.cdr.markForCheck();
+            });
         }
     }
     updateCdkConnectedOverlayPositions() {
-        if (this.cdkConnectedOverlay.overlayRef) {
-            this.cdkConnectedOverlay.overlayRef.updatePosition();
-        }
+        reqAnimFrame(() => {
+            var _a, _b;
+            (_b = (_a = this.cdkConnectedOverlay) === null || _a === void 0 ? void 0 : _a.overlayRef) === null || _b === void 0 ? void 0 : _b.updatePosition();
+        });
     }
     writeValue(modelValue) {
         /** https://github.com/angular/angular/issues/14988 **/
@@ -1002,9 +1005,6 @@ class NzSelectComponent {
         });
         this.dir = this.directionality.value;
     }
-    ngAfterViewInit() {
-        this.updateCdkConnectedOverlayStatus();
-    }
     ngAfterContentInit() {
         if (!this.isReactiveDriven) {
             merge(this.listOfNzOptionGroupComponent.changes, this.listOfNzOptionComponent.changes)
@@ -1048,6 +1048,7 @@ NzSelectComponent.decorators = [
     <nz-select-top-control
       cdkOverlayOrigin
       #origin="cdkOverlayOrigin"
+      [nzId]="nzId"
       [open]="nzOpen"
       [disabled]="nzDisabled"
       [mode]="nzMode"
@@ -1064,21 +1065,20 @@ NzSelectComponent.decorators = [
       [listOfTopItem]="listOfTopItem"
       (inputValueChange)="onInputValueChange($event)"
       (tokenize)="onTokenSeparate($event)"
-      (animationEnd)="updateCdkConnectedOverlayPositions()"
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
     ></nz-select-top-control>
-    <nz-select-clear
-      *ngIf="nzAllowClear && !nzDisabled && listOfValue.length"
-      [clearIcon]="nzClearIcon"
-      (clear)="onClearSelection()"
-    ></nz-select-clear>
     <nz-select-arrow
       *ngIf="nzShowArrow"
       [loading]="nzLoading"
       [search]="nzOpen && nzShowSearch"
       [suffixIcon]="nzSuffixIcon"
     ></nz-select-arrow>
+    <nz-select-clear
+      *ngIf="nzAllowClear && !nzDisabled && listOfValue.length"
+      [clearIcon]="nzClearIcon"
+      (clear)="onClearSelection()"
+    ></nz-select-clear>
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
@@ -1144,6 +1144,7 @@ NzSelectComponent.ctorParameters = () => [
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 NzSelectComponent.propDecorators = {
+    nzId: [{ type: Input }],
     nzSize: [{ type: Input }],
     nzOptionHeightPx: [{ type: Input }],
     nzOptionOverflowSize: [{ type: Input }],

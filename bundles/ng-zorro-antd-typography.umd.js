@@ -28,6 +28,8 @@
         return extendStatics(d, b);
     };
     function __extends(d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -213,11 +215,13 @@
         }
         return ar;
     }
+    /** @deprecated */
     function __spread() {
         for (var ar = [], i = 0; i < arguments.length; i++)
             ar = ar.concat(__read(arguments[i]));
         return ar;
     }
+    /** @deprecated */
     function __spreadArrays() {
         for (var s = 0, i = 0, il = arguments.length; i < il; i++)
             s += arguments[i].length;
@@ -226,7 +230,11 @@
                 r[k] = a[j];
         return r;
     }
-    ;
+    function __spreadArray(to, from) {
+        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+            to[j] = from[i];
+        return to;
+    }
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
     }
@@ -416,7 +424,8 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzTextEditComponent = /** @class */ (function () {
-        function NzTextEditComponent(host, cdr, i18n) {
+        function NzTextEditComponent(zone, host, cdr, i18n) {
+            this.zone = zone;
             this.host = host;
             this.cdr = cdr;
             this.i18n = i18n;
@@ -424,7 +433,7 @@
             this.destroy$ = new rxjs.Subject();
             this.icon = 'edit';
             this.startEditing = new core.EventEmitter();
-            this.endEditing = new core.EventEmitter();
+            this.endEditing = new core.EventEmitter(true);
             this.nativeElement = this.host.nativeElement;
         }
         NzTextEditComponent.prototype.ngOnInit = function () {
@@ -464,12 +473,13 @@
         };
         NzTextEditComponent.prototype.focusAndSetValue = function () {
             var _this = this;
-            setTimeout(function () {
+            this.zone.onStable.pipe(operators.take(1), operators.takeUntil(this.destroy$)).subscribe(function () {
                 var _a;
                 if ((_a = _this.textarea) === null || _a === void 0 ? void 0 : _a.nativeElement) {
                     _this.textarea.nativeElement.focus();
                     _this.textarea.nativeElement.value = _this.currentText || '';
                     _this.autosizeDirective.resizeToFitContent();
+                    _this.cdr.markForCheck();
                 }
             });
         };
@@ -486,6 +496,7 @@
                 },] }
     ];
     NzTextEditComponent.ctorParameters = function () { return [
+        { type: core.NgZone },
         { type: core.ElementRef },
         { type: core.ChangeDetectorRef },
         { type: i18n.NzI18nService }
@@ -586,6 +597,7 @@
             if (this.nzContent === text) {
                 this.renderOnNextFrame();
             }
+            this.cdr.markForCheck();
         };
         NzTypographyComponent.prototype.onExpand = function () {
             this.isEllipsis = false;

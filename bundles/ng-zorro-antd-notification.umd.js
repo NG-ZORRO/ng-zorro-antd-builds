@@ -28,6 +28,8 @@
         return extendStatics(d, b);
     };
     function __extends(d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -213,11 +215,13 @@
         }
         return ar;
     }
+    /** @deprecated */
     function __spread() {
         for (var ar = [], i = 0; i < arguments.length; i++)
             ar = ar.concat(__read(arguments[i]));
         return ar;
     }
+    /** @deprecated */
     function __spreadArrays() {
         for (var s = 0, i = 0, il = arguments.length; i < il; i++)
             s += arguments[i].length;
@@ -226,7 +230,11 @@
                 r[k] = a[j];
         return r;
     }
-    ;
+    function __spreadArray(to, from) {
+        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+            to[j] = from[i];
+        return to;
+    }
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
     }
@@ -348,7 +356,7 @@
                     exportAs: 'nzNotification',
                     preserveWhitespaces: false,
                     animations: [animation.notificationMotion],
-                    template: "\n    <div\n      class=\"ant-notification-notice ant-notification-notice-closable\"\n      [ngStyle]=\"instance.options?.nzStyle || null\"\n      [ngClass]=\"instance.options?.nzClass || ''\"\n      [@notificationMotion]=\"state\"\n      (click)=\"onClick($event)\"\n      (mouseenter)=\"onEnter()\"\n      (mouseleave)=\"onLeave()\"\n    >\n      <div *ngIf=\"!instance.template\" class=\"ant-notification-notice-content\">\n        <div class=\"ant-notification-notice-content\" [ngClass]=\"{ 'ant-notification-notice-with-icon': instance.type !== 'blank' }\">\n          <div [class.ant-notification-notice-with-icon]=\"instance.type !== 'blank'\">\n            <ng-container [ngSwitch]=\"instance.type\">\n              <i\n                *ngSwitchCase=\"'success'\"\n                nz-icon\n                nzType=\"check-circle\"\n                class=\"ant-notification-notice-icon ant-notification-notice-icon-success\"\n              ></i>\n              <i\n                *ngSwitchCase=\"'info'\"\n                nz-icon\n                nzType=\"info-circle\"\n                class=\"ant-notification-notice-icon ant-notification-notice-icon-info\"\n              ></i>\n              <i\n                *ngSwitchCase=\"'warning'\"\n                nz-icon\n                nzType=\"exclamation-circle\"\n                class=\"ant-notification-notice-icon ant-notification-notice-icon-warning\"\n              ></i>\n              <i\n                *ngSwitchCase=\"'error'\"\n                nz-icon\n                nzType=\"close-circle\"\n                class=\"ant-notification-notice-icon ant-notification-notice-icon-error\"\n              ></i>\n            </ng-container>\n            <div class=\"ant-notification-notice-message\" [innerHTML]=\"instance.title\"></div>\n            <div class=\"ant-notification-notice-description\" [innerHTML]=\"instance.content\"></div>\n          </div>\n        </div>\n      </div>\n      <ng-template\n        [ngIf]=\"instance.template\"\n        [ngTemplateOutlet]=\"instance.template!\"\n        [ngTemplateOutletContext]=\"{ $implicit: this, data: instance.options?.nzData }\"\n      >\n      </ng-template>\n      <a tabindex=\"0\" class=\"ant-notification-notice-close\" (click)=\"close()\">\n        <span class=\"ant-notification-notice-close-x\">\n          <ng-container *ngIf=\"instance.options?.nzCloseIcon; else iconTpl\">\n            <ng-container *nzStringTemplateOutlet=\"instance.options?.nzCloseIcon; let closeIcon\">\n              <i nz-icon [nzType]=\"closeIcon\"></i>\n            </ng-container>\n          </ng-container>\n          <ng-template #iconTpl>\n            <i nz-icon nzType=\"close\" class=\"ant-notification-close-icon\"></i>\n          </ng-template>\n        </span>\n      </a>\n    </div>\n  "
+                    template: "\n    <div\n      class=\"ant-notification-notice ant-notification-notice-closable\"\n      [ngStyle]=\"instance.options?.nzStyle || null\"\n      [ngClass]=\"instance.options?.nzClass || ''\"\n      [@notificationMotion]=\"state\"\n      (@notificationMotion.done)=\"animationStateChanged.next($event)\"\n      (click)=\"onClick($event)\"\n      (mouseenter)=\"onEnter()\"\n      (mouseleave)=\"onLeave()\"\n    >\n      <div *ngIf=\"!instance.template\" class=\"ant-notification-notice-content\">\n        <div class=\"ant-notification-notice-content\" [ngClass]=\"{ 'ant-notification-notice-with-icon': instance.type !== 'blank' }\">\n          <div [class.ant-notification-notice-with-icon]=\"instance.type !== 'blank'\">\n            <ng-container [ngSwitch]=\"instance.type\">\n              <i\n                *ngSwitchCase=\"'success'\"\n                nz-icon\n                nzType=\"check-circle\"\n                class=\"ant-notification-notice-icon ant-notification-notice-icon-success\"\n              ></i>\n              <i\n                *ngSwitchCase=\"'info'\"\n                nz-icon\n                nzType=\"info-circle\"\n                class=\"ant-notification-notice-icon ant-notification-notice-icon-info\"\n              ></i>\n              <i\n                *ngSwitchCase=\"'warning'\"\n                nz-icon\n                nzType=\"exclamation-circle\"\n                class=\"ant-notification-notice-icon ant-notification-notice-icon-warning\"\n              ></i>\n              <i\n                *ngSwitchCase=\"'error'\"\n                nz-icon\n                nzType=\"close-circle\"\n                class=\"ant-notification-notice-icon ant-notification-notice-icon-error\"\n              ></i>\n            </ng-container>\n            <div class=\"ant-notification-notice-message\" [innerHTML]=\"instance.title\"></div>\n            <div class=\"ant-notification-notice-description\" [innerHTML]=\"instance.content\"></div>\n          </div>\n        </div>\n      </div>\n      <ng-template\n        [ngIf]=\"instance.template\"\n        [ngTemplateOutlet]=\"instance.template!\"\n        [ngTemplateOutletContext]=\"{ $implicit: this, data: instance.options?.nzData }\"\n      ></ng-template>\n      <a tabindex=\"0\" class=\"ant-notification-notice-close\" (click)=\"close()\">\n        <span class=\"ant-notification-notice-close-x\">\n          <ng-container *ngIf=\"instance.options?.nzCloseIcon; else iconTpl\">\n            <ng-container *nzStringTemplateOutlet=\"instance.options?.nzCloseIcon; let closeIcon\">\n              <i nz-icon [nzType]=\"closeIcon\"></i>\n            </ng-container>\n          </ng-container>\n          <ng-template #iconTpl>\n            <i nz-icon nzType=\"close\" class=\"ant-notification-close-icon\"></i>\n          </ng-template>\n        </span>\n      </a>\n    </div>\n  "
                 },] }
     ];
     NzNotificationComponent.ctorParameters = function () { return [

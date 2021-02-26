@@ -53,11 +53,14 @@ class NzTimePickerComponent {
             }
         ];
         this.dir = 'ltr';
+        this.nzId = null;
         this.nzSize = null;
         this.nzHourStep = 1;
         this.nzMinuteStep = 1;
         this.nzSecondStep = 1;
         this.nzClearText = 'clear';
+        this.nzNowText = '';
+        this.nzOkText = '';
         this.nzPopupClassName = '';
         this.nzPlaceHolder = '';
         this.nzFormat = 'HH:mm:ss';
@@ -238,6 +241,7 @@ NzTimePickerComponent.decorators = [
     <div class="ant-picker-input">
       <input
         #inputElement
+        [attr.id]="nzId"
         type="text"
         [size]="inputSize"
         [placeholder]="nzPlaceHolder || (i18nPlaceHolder$ | async)"
@@ -288,6 +292,8 @@ NzTimePickerComponent.decorators = [
               [nzDefaultOpenValue]="nzDefaultOpenValue"
               [nzAddOn]="nzAddOn"
               [nzClearText]="nzClearText"
+              [nzNowText]="nzNowText"
+              [nzOkText]="nzOkText"
               [nzAllowEmpty]="nzAllowEmpty"
               [(ngModel)]="value"
               (ngModelChange)="onPanelValueChange($event)"
@@ -323,11 +329,14 @@ NzTimePickerComponent.ctorParameters = () => [
 ];
 NzTimePickerComponent.propDecorators = {
     inputRef: [{ type: ViewChild, args: ['inputElement', { static: true },] }],
+    nzId: [{ type: Input }],
     nzSize: [{ type: Input }],
     nzHourStep: [{ type: Input }],
     nzMinuteStep: [{ type: Input }],
     nzSecondStep: [{ type: Input }],
     nzClearText: [{ type: Input }],
+    nzNowText: [{ type: Input }],
+    nzOkText: [{ type: Input }],
     nzPopupClassName: [{ type: Input }],
     nzPlaceHolder: [{ type: Input }],
     nzAddOn: [{ type: Input }],
@@ -361,6 +370,14 @@ __decorate([
     WithConfig(),
     __metadata("design:type", String)
 ], NzTimePickerComponent.prototype, "nzClearText", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", String)
+], NzTimePickerComponent.prototype, "nzNowText", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", String)
+], NzTimePickerComponent.prototype, "nzOkText", void 0);
 __decorate([
     WithConfig(),
     __metadata("design:type", String)
@@ -677,6 +694,9 @@ class NzTimePickerPanelComponent {
     get nzSecondStep() {
         return this._nzSecondStep;
     }
+    trackByFn(index) {
+        return index;
+    }
     buildHours() {
         var _a;
         let hourRanges = 24;
@@ -951,7 +971,7 @@ NzTimePickerPanelComponent.decorators = [
     </div>
     <div class="ant-picker-content">
       <ul *ngIf="hourEnabled" #hourListElement class="ant-picker-time-panel-column" style="position: relative;">
-        <ng-container *ngFor="let hour of hourRange">
+        <ng-container *ngFor="let hour of hourRange; trackBy: trackByFn">
           <li
             *ngIf="!(nzHideDisabledOptions && hour.disabled)"
             class="ant-picker-time-panel-cell"
@@ -964,7 +984,7 @@ NzTimePickerPanelComponent.decorators = [
         </ng-container>
       </ul>
       <ul *ngIf="minuteEnabled" #minuteListElement class="ant-picker-time-panel-column" style="position: relative;">
-        <ng-container *ngFor="let minute of minuteRange">
+        <ng-container *ngFor="let minute of minuteRange; trackBy: trackByFn">
           <li
             *ngIf="!(nzHideDisabledOptions && minute.disabled)"
             class="ant-picker-time-panel-cell"
@@ -977,7 +997,7 @@ NzTimePickerPanelComponent.decorators = [
         </ng-container>
       </ul>
       <ul *ngIf="secondEnabled" #secondListElement class="ant-picker-time-panel-column" style="position: relative;">
-        <ng-container *ngFor="let second of secondRange">
+        <ng-container *ngFor="let second of secondRange; trackBy: trackByFn">
           <li
             *ngIf="!(nzHideDisabledOptions && second.disabled)"
             class="ant-picker-time-panel-cell"
@@ -1009,12 +1029,12 @@ NzTimePickerPanelComponent.decorators = [
       <ul class="ant-picker-ranges">
         <li class="ant-picker-now">
           <a (click)="onClickNow()">
-            {{ 'Calendar.lang.now' | nzI18n }}
+            {{ nzNowText || ('Calendar.lang.now' | nzI18n) }}
           </a>
         </li>
         <li class="ant-picker-ok">
           <button nz-button type="button" nzSize="small" nzType="primary" (click)="onClickOk()">
-            {{ 'Calendar.lang.ok' | nzI18n }}
+            {{ nzOkText || ('Calendar.lang.ok' | nzI18n) }}
           </button>
         </li>
       </ul>
@@ -1046,6 +1066,8 @@ NzTimePickerPanelComponent.propDecorators = {
     nzAddOn: [{ type: Input }],
     nzHideDisabledOptions: [{ type: Input }],
     nzClearText: [{ type: Input }],
+    nzNowText: [{ type: Input }],
+    nzOkText: [{ type: Input }],
     nzPlaceHolder: [{ type: Input }],
     nzUse12Hours: [{ type: Input }],
     nzDefaultOpenValue: [{ type: Input }],

@@ -740,10 +740,11 @@ class NzImageModule {
 }
 NzImageModule.decorators = [
     { type: NgModule, args: [{
-                declarations: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent],
-                exports: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent],
                 imports: [BidiModule, OverlayModule, PortalModule, DragDropModule, CommonModule, NzIconModule, NzPipesModule],
-                providers: [NzImageService]
+                exports: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent],
+                providers: [NzImageService],
+                entryComponents: [NzImagePreviewComponent],
+                declarations: [NzImageDirective, NzImagePreviewComponent, NzImageGroupComponent]
             },] }
 ];
 

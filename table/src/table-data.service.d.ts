@@ -24,12 +24,12 @@ export declare class NzTableDataService implements OnDestroy {
     queryParams$: Observable<NzTableQueryParams>;
     private listOfDataAfterCalc$;
     private listOfFrontEndCurrentPageData$;
-    listOfCurrentPageData$: Observable<any[]>;
+    listOfCurrentPageData$: Observable<any[] | readonly any[]>;
     total$: Observable<number>;
     updatePageSize(size: number): void;
     updateFrontPagination(pagination: boolean): void;
     updatePageIndex(index: number): void;
-    updateListOfData(list: NzTableData[]): void;
+    updateListOfData(list: ReadonlyArray<NzTableData>): void;
     constructor();
     ngOnDestroy(): void;
 }

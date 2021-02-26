@@ -28,6 +28,8 @@
         return extendStatics(d, b);
     };
     function __extends(d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -213,11 +215,13 @@
         }
         return ar;
     }
+    /** @deprecated */
     function __spread() {
         for (var ar = [], i = 0; i < arguments.length; i++)
             ar = ar.concat(__read(arguments[i]));
         return ar;
     }
+    /** @deprecated */
     function __spreadArrays() {
         for (var s = 0, i = 0, il = arguments.length; i < il; i++)
             s += arguments[i].length;
@@ -226,7 +230,11 @@
                 r[k] = a[j];
         return r;
     }
-    ;
+    function __spreadArray(to, from) {
+        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+            to[j] = from[i];
+        return to;
+    }
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
     }
@@ -372,6 +380,7 @@
             /** submenu title & overlay mouse enter status **/
             this.isMouseEnterTitleOrOverlay$ = new rxjs.Subject();
             this.childMenuItemClick$ = new rxjs.Subject();
+            this.destroy$ = new rxjs.Subject();
             if (this.nzHostSubmenuService) {
                 this.level = this.nzHostSubmenuService.level + 1;
             }
@@ -382,7 +391,7 @@
             var isSubMenuOpenWithDebounce$ = rxjs.combineLatest([this.isChildSubMenuOpen$, isCurrentSubmenuOpen$]).pipe(operators.map(function (_a) {
                 var _b = __read(_a, 2), isChildSubMenuOpen = _b[0], isCurrentSubmenuOpen = _b[1];
                 return isChildSubMenuOpen || isCurrentSubmenuOpen;
-            }), operators.auditTime(150), operators.distinctUntilChanged());
+            }), operators.auditTime(150), operators.distinctUntilChanged(), operators.takeUntil(this.destroy$));
             isSubMenuOpenWithDebounce$.pipe(operators.distinctUntilChanged()).subscribe(function (data) {
                 _this.setOpenStateWithoutDebounce(data);
                 if (_this.nzHostSubmenuService) {
@@ -406,6 +415,10 @@
         };
         NzSubmenuService.prototype.setMouseEnterTitleOrOverlayState = function (value) {
             this.isMouseEnterTitleOrOverlay$.next(value);
+        };
+        NzSubmenuService.prototype.ngOnDestroy = function () {
+            this.destroy$.next();
+            this.destroy$.complete();
         };
         return NzSubmenuService;
     }());

@@ -6,7 +6,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
+import { AfterContentInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -16,7 +16,7 @@ import { NzOptionComponent } from './option.component';
 import { NzSelectTopControlComponent } from './select-top-control.component';
 import { NzFilterOptionType, NzSelectItemInterface, NzSelectModeType, NzSelectOptionInterface } from './select.types';
 export declare type NzSelectSizeType = 'large' | 'default' | 'small';
-export declare class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit, OnChanges {
+export declare class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestroy, AfterContentInit, OnChanges {
     nzConfigService: NzConfigService;
     private cdr;
     private elementRef;
@@ -34,6 +34,7 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     static ngAcceptInputType_nzServerSearch: BooleanInput;
     static ngAcceptInputType_nzDisabled: BooleanInput;
     static ngAcceptInputType_nzOpen: BooleanInput;
+    nzId: string | null;
     nzSize: NzSelectSizeType;
     nzOptionHeightPx: number;
     nzOptionOverflowSize: number;
@@ -130,7 +131,6 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     setDisabledState(disabled: boolean): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
-    ngAfterViewInit(): void;
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
 }

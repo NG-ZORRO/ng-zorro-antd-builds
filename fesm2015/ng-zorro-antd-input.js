@@ -4,7 +4,7 @@ import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { Directive, Optional, Self, Renderer2, ElementRef, Input, Component, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef, ContentChildren, NgZone, isDevMode, ContentChild, NgModule } from '@angular/core';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject, merge, EMPTY } from 'rxjs';
-import { filter, takeUntil, startWith, switchMap, flatMap, map } from 'rxjs/operators';
+import { filter, takeUntil, startWith, switchMap, mergeMap, map } from 'rxjs/operators';
 import { NgControl } from '@angular/forms';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
@@ -150,7 +150,7 @@ class NzInputGroupComponent {
         listOfInputChange$
             .pipe(switchMap(list => {
             return merge(...[listOfInputChange$, ...list.map((input) => input.disabled$)]);
-        }), flatMap(() => listOfInputChange$), map(list => list.some((input) => input.disabled)), takeUntil(this.destroy$))
+        }), mergeMap(() => listOfInputChange$), map(list => list.some((input) => input.disabled)), takeUntil(this.destroy$))
             .subscribe(disabled => {
             this.disabled = disabled;
             this.cdr.markForCheck();
@@ -295,11 +295,11 @@ class NzAutosizeDirective {
         const isAutoSizeType = (data) => {
             return typeof data !== 'string' && typeof data !== 'boolean' && (!!data.maxRows || !!data.minRows);
         };
-        if (typeof value === 'string') {
+        if (typeof value === 'string' || value === true) {
             this.autosize = true;
         }
         else if (isAutoSizeType(value)) {
-            this.autosize = value;
+            this.autosize = true;
             this.minRows = value.minRows;
             this.maxRows = value.maxRows;
             this.maxHeight = this.setMaxHeight();

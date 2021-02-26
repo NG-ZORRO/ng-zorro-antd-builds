@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { ChangeDetectorRef, ElementRef, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
@@ -13,7 +14,6 @@ import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedT
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 import { Subscription } from 'rxjs';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTreeSelectService } from './tree-select.service';
 export declare function higherOrderServiceFactory(injector: Injector): NzTreeBaseService;
 export declare class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
@@ -38,6 +38,7 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     static ngAcceptInputType_nzMultiple: BooleanInput;
     static ngAcceptInputType_nzDefaultExpandAll: BooleanInput;
     static ngAcceptInputType_nzCheckStrictly: BooleanInput;
+    nzId: string | null;
     nzAllowClear: boolean;
     nzShowExpand: boolean;
     nzShowLine: boolean;

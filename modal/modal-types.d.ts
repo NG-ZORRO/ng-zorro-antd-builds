@@ -13,6 +13,7 @@ export interface StyleObjectLike {
     [key: string]: string;
 }
 export declare class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
+    nzCentered?: boolean;
     nzClosable?: boolean;
     nzOkLoading?: boolean;
     nzOkDisabled?: boolean;

@@ -4,10 +4,10 @@
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { Observable, Subscription } from 'rxjs';
 import { NzI18nService, NzUploadI18nInterface } from 'ng-zorro-antd/i18n';
-import { NzShowUploadList, NzUploadChangeParam, NzUploadFile, NzUploadListType, NzUploadTransformFileType, NzUploadType, NzUploadXHRArgs, UploadFilter, ZipButtonOptions } from './interface';
+import { NzIconRenderTemplate, NzShowUploadList, NzUploadChangeParam, NzUploadFile, NzUploadListType, NzUploadTransformFileType, NzUploadType, NzUploadXHRArgs, UploadFilter, ZipButtonOptions } from './interface';
 import { NzUploadBtnComponent } from './upload-btn.component';
 import { NzUploadListComponent } from './upload-list.component';
 export declare class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
@@ -57,7 +57,7 @@ export declare class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     nzPreviewIsImage?: (file: NzUploadFile) => boolean;
     nzTransformFile?: (file: NzUploadFile) => NzUploadTransformFileType;
     nzDownload?: (file: NzUploadFile) => void;
-    nzIconRender: TemplateRef<NzSafeAny> | null;
+    nzIconRender: NzIconRenderTemplate | null;
     nzFileListRender: TemplateRef<void> | null;
     readonly nzChange: EventEmitter<NzUploadChangeParam>;
     readonly nzFileListChange: EventEmitter<NzUploadFile[]>;

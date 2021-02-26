@@ -139,6 +139,8 @@
       return extendStatics(d, b);
   };
   function __extends(d, b) {
+      if (typeof b !== "function" && b !== null)
+          throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
       extendStatics(d, b);
       function __() { this.constructor = d; }
       d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -324,11 +326,13 @@
       }
       return ar;
   }
+  /** @deprecated */
   function __spread() {
       for (var ar = [], i = 0; i < arguments.length; i++)
           ar = ar.concat(__read(arguments[i]));
       return ar;
   }
+  /** @deprecated */
   function __spreadArrays() {
       for (var s = 0, i = 0, il = arguments.length; i < il; i++)
           s += arguments[i].length;
@@ -337,7 +341,11 @@
               r[k] = a[j];
       return r;
   }
-  ;
+  function __spreadArray(to, from) {
+      for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+          to[j] = from[i];
+      return to;
+  }
   function __await(v) {
       return this instanceof __await ? (this.v = v, this) : new __await(v);
   }
@@ -1281,7 +1289,8 @@
    * This component is for catching `routerLink` directive.
    */
   var NzTabLinkDirective = /** @class */ (function () {
-      function NzTabLinkDirective(routerLink, routerLinkWithHref) {
+      function NzTabLinkDirective(elementRef, routerLink, routerLinkWithHref) {
+          this.elementRef = elementRef;
           this.routerLink = routerLink;
           this.routerLinkWithHref = routerLinkWithHref;
       }
@@ -1294,6 +1303,7 @@
               },] }
   ];
   NzTabLinkDirective.ctorParameters = function () { return [
+      { type: core.ElementRef },
       { type: router.RouterLink, decorators: [{ type: core.Optional }, { type: core.Self }] },
       { type: router.RouterLinkWithHref, decorators: [{ type: core.Optional }, { type: core.Self }] }
   ]; };
@@ -1640,11 +1650,23 @@
               return rxjs.of(true);
           }
       };
-      NzTabSetComponent.prototype.clickNavItem = function (tab, index) {
+      NzTabSetComponent.prototype.clickNavItem = function (tab, index, e) {
           if (!tab.nzDisabled) {
               // ignore nzCanDeactivate
               tab.nzClick.emit();
-              this.setSelectedIndex(index);
+              if (!this.isRouterLinkClickEvent(index, e)) {
+                  this.setSelectedIndex(index);
+              }
+          }
+      };
+      NzTabSetComponent.prototype.isRouterLinkClickEvent = function (index, event) {
+          var _a, _b;
+          var target = event.target;
+          if (this.nzLinkRouter) {
+              return !!((_b = (_a = this.tabs.toArray()[index]) === null || _a === void 0 ? void 0 : _a.linkDirective) === null || _b === void 0 ? void 0 : _b.elementRef.nativeElement.contains(target));
+          }
+          else {
+              return false;
           }
       };
       NzTabSetComponent.prototype.contextmenuNavItem = function (tab, e) {
@@ -1692,7 +1714,6 @@
               var index = this.findShouldActiveTabIndex();
               if (index !== this.selectedIndex) {
                   this.setSelectedIndex(index);
-                  this.nzSelectedIndexChange.emit(index);
               }
               this.nzHideAll = index === -1;
           }
@@ -1743,7 +1764,7 @@
                           useExisting: NzTabSetComponent
                       }
                   ],
-                  template: "\n    <nz-tabs-nav\n      *ngIf=\"tabs.length\"\n      [ngStyle]=\"nzTabBarStyle\"\n      [selectedIndex]=\"nzSelectedIndex || 0\"\n      [inkBarAnimated]=\"inkBarAnimated\"\n      [addable]=\"addable\"\n      [addIcon]=\"nzAddIcon\"\n      [hideBar]=\"nzHideAll\"\n      [position]=\"position\"\n      [extraTemplate]=\"nzTabBarExtraContent\"\n      (tabScroll)=\"nzTabListScroll.emit($event)\"\n      (selectFocusedIndex)=\"setSelectedIndex($event)\"\n      (addClicked)=\"onAdd()\"\n    >\n      <div\n        class=\"ant-tabs-tab\"\n        [style.margin-right.px]=\"position === 'horizontal' ? nzTabBarGutter : null\"\n        [style.margin-bottom.px]=\"position === 'vertical' ? nzTabBarGutter : null\"\n        [class.ant-tabs-tab-active]=\"nzSelectedIndex === i\"\n        [class.ant-tabs-tab-disabled]=\"tab.nzDisabled\"\n        (click)=\"clickNavItem(tab, i)\"\n        (contextmenu)=\"contextmenuNavItem(tab, $event)\"\n        *ngFor=\"let tab of tabs; let i = index\"\n      >\n        <div\n          role=\"tab\"\n          [attr.tabIndex]=\"getTabIndex(tab, i)\"\n          [attr.aria-disabled]=\"tab.nzDisabled\"\n          [attr.aria-selected]=\"nzSelectedIndex === i && !nzHideAll\"\n          [attr.aria-controls]=\"getTabContentId(i)\"\n          [disabled]=\"tab.nzDisabled\"\n          [tab]=\"tab\"\n          [active]=\"nzSelectedIndex === i\"\n          class=\"ant-tabs-tab-btn\"\n          nzTabNavItem\n          cdkMonitorElementFocus\n        >\n          <ng-container *nzStringTemplateOutlet=\"tab.label; context: { visible: true }\">{{ tab.label }}</ng-container>\n          <button\n            nz-tab-close-button\n            *ngIf=\"tab.nzClosable && closable && !tab.nzDisabled\"\n            [closeIcon]=\"tab.nzCloseIcon\"\n            (click)=\"onClose(i, $event)\"\n          ></button>\n        </div>\n      </div>\n    </nz-tabs-nav>\n    <div class=\"ant-tabs-content-holder\">\n      <div\n        class=\"ant-tabs-content\"\n        [class.ant-tabs-content-top]=\"nzTabPosition === 'top'\"\n        [class.ant-tabs-content-bottom]=\"nzTabPosition === 'bottom'\"\n        [class.ant-tabs-content-left]=\"nzTabPosition === 'left'\"\n        [class.ant-tabs-content-right]=\"nzTabPosition === 'right'\"\n        [class.ant-tabs-content-animated]=\"tabPaneAnimated\"\n        [style.margin-left]=\"getTabContentMarginLeft()\"\n        [style.margin-right]=\"getTabContentMarginRight()\"\n      >\n        <div\n          nz-tab-body\n          *ngFor=\"let tab of tabs; let i = index\"\n          [active]=\"nzSelectedIndex == i && !nzHideAll\"\n          [content]=\"tab.content\"\n          [forceRender]=\"tab.nzForceRender\"\n          [tabPaneAnimated]=\"tabPaneAnimated\"\n        ></div>\n      </div>\n    </div>\n  ",
+                  template: "\n    <nz-tabs-nav\n      *ngIf=\"tabs.length\"\n      [ngStyle]=\"nzTabBarStyle\"\n      [selectedIndex]=\"nzSelectedIndex || 0\"\n      [inkBarAnimated]=\"inkBarAnimated\"\n      [addable]=\"addable\"\n      [addIcon]=\"nzAddIcon\"\n      [hideBar]=\"nzHideAll\"\n      [position]=\"position\"\n      [extraTemplate]=\"nzTabBarExtraContent\"\n      (tabScroll)=\"nzTabListScroll.emit($event)\"\n      (selectFocusedIndex)=\"setSelectedIndex($event)\"\n      (addClicked)=\"onAdd()\"\n    >\n      <div\n        class=\"ant-tabs-tab\"\n        [style.margin-right.px]=\"position === 'horizontal' ? nzTabBarGutter : null\"\n        [style.margin-bottom.px]=\"position === 'vertical' ? nzTabBarGutter : null\"\n        [class.ant-tabs-tab-active]=\"nzSelectedIndex === i\"\n        [class.ant-tabs-tab-disabled]=\"tab.nzDisabled\"\n        (click)=\"clickNavItem(tab, i, $event)\"\n        (contextmenu)=\"contextmenuNavItem(tab, $event)\"\n        *ngFor=\"let tab of tabs; let i = index\"\n      >\n        <div\n          role=\"tab\"\n          [attr.tabIndex]=\"getTabIndex(tab, i)\"\n          [attr.aria-disabled]=\"tab.nzDisabled\"\n          [attr.aria-selected]=\"nzSelectedIndex === i && !nzHideAll\"\n          [attr.aria-controls]=\"getTabContentId(i)\"\n          [disabled]=\"tab.nzDisabled\"\n          [tab]=\"tab\"\n          [active]=\"nzSelectedIndex === i\"\n          class=\"ant-tabs-tab-btn\"\n          nzTabNavItem\n          cdkMonitorElementFocus\n        >\n          <ng-container *nzStringTemplateOutlet=\"tab.label; context: { visible: true }\">{{ tab.label }}</ng-container>\n          <button\n            nz-tab-close-button\n            *ngIf=\"tab.nzClosable && closable && !tab.nzDisabled\"\n            [closeIcon]=\"tab.nzCloseIcon\"\n            (click)=\"onClose(i, $event)\"\n          ></button>\n        </div>\n      </div>\n    </nz-tabs-nav>\n    <div class=\"ant-tabs-content-holder\">\n      <div\n        class=\"ant-tabs-content\"\n        [class.ant-tabs-content-top]=\"nzTabPosition === 'top'\"\n        [class.ant-tabs-content-bottom]=\"nzTabPosition === 'bottom'\"\n        [class.ant-tabs-content-left]=\"nzTabPosition === 'left'\"\n        [class.ant-tabs-content-right]=\"nzTabPosition === 'right'\"\n        [class.ant-tabs-content-animated]=\"tabPaneAnimated\"\n        [style.margin-left]=\"getTabContentMarginLeft()\"\n        [style.margin-right]=\"getTabContentMarginRight()\"\n      >\n        <div\n          nz-tab-body\n          *ngFor=\"let tab of tabs; let i = index\"\n          [active]=\"nzSelectedIndex == i && !nzHideAll\"\n          [content]=\"tab.content\"\n          [forceRender]=\"tab.nzForceRender\"\n          [tabPaneAnimated]=\"tabPaneAnimated\"\n        ></div>\n      </div>\n    </div>\n  ",
                   host: {
                       class: 'ant-tabs',
                       '[class.ant-tabs-card]': "nzType === 'card' || nzType === 'editable-card'",

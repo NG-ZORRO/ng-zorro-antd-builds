@@ -26,6 +26,7 @@ export declare class NzPickerComponent implements OnInit, AfterViewInit, OnChang
     open: boolean | undefined;
     disabled: boolean;
     inputReadOnly: boolean;
+    inline: boolean;
     placeholder: string | string[];
     allowClear?: boolean;
     autoFocus?: boolean;
@@ -35,6 +36,7 @@ export declare class NzPickerComponent implements OnInit, AfterViewInit, OnChang
     dropdownClassName?: string;
     suffixIcon?: string | TemplateRef<NzSafeAny>;
     dir: Direction;
+    nzId: string | null;
     readonly focusChange: EventEmitter<boolean>;
     readonly valueChange: EventEmitter<CandyDate | CandyDate[] | null>;
     readonly openChange: EventEmitter<boolean>;

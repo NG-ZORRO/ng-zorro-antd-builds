@@ -2,7 +2,7 @@ import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard';
 import { Platform, PlatformModule } from '@angular/cdk/platform';
 import { DOCUMENT, CommonModule } from '@angular/common';
-import { EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, ChangeDetectorRef, Input, Output, ViewChild, ViewContainerRef, Renderer2, Inject, Optional, NgModule } from '@angular/core';
+import { EventEmitter, Component, ChangeDetectionStrategy, ViewEncapsulation, ElementRef, ChangeDetectorRef, Input, Output, NgZone, ViewChild, ViewContainerRef, Renderer2, Inject, Optional, NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
 import { NzI18nService, NzI18nModule } from 'ng-zorro-antd/i18n';
@@ -10,7 +10,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzAutosizeDirective, NzInputModule } from 'ng-zorro-antd/input';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { __decorate, __metadata } from 'tslib';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
@@ -142,7 +142,8 @@ NzTextCopyComponent.propDecorators = {
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzTextEditComponent {
-    constructor(host, cdr, i18n) {
+    constructor(zone, host, cdr, i18n) {
+        this.zone = zone;
         this.host = host;
         this.cdr = cdr;
         this.i18n = i18n;
@@ -150,7 +151,7 @@ class NzTextEditComponent {
         this.destroy$ = new Subject();
         this.icon = 'edit';
         this.startEditing = new EventEmitter();
-        this.endEditing = new EventEmitter();
+        this.endEditing = new EventEmitter(true);
         this.nativeElement = this.host.nativeElement;
     }
     ngOnInit() {
@@ -188,12 +189,13 @@ class NzTextEditComponent {
         this.confirm();
     }
     focusAndSetValue() {
-        setTimeout(() => {
+        this.zone.onStable.pipe(take(1), takeUntil(this.destroy$)).subscribe(() => {
             var _a;
             if ((_a = this.textarea) === null || _a === void 0 ? void 0 : _a.nativeElement) {
                 this.textarea.nativeElement.focus();
                 this.textarea.nativeElement.value = this.currentText || '';
                 this.autosizeDirective.resizeToFitContent();
+                this.cdr.markForCheck();
             }
         });
     }
@@ -236,6 +238,7 @@ NzTextEditComponent.decorators = [
             },] }
 ];
 NzTextEditComponent.ctorParameters = () => [
+    { type: NgZone },
     { type: ElementRef },
     { type: ChangeDetectorRef },
     { type: NzI18nService }
@@ -320,6 +323,7 @@ class NzTypographyComponent {
         if (this.nzContent === text) {
             this.renderOnNextFrame();
         }
+        this.cdr.markForCheck();
     }
     onExpand() {
         this.isEllipsis = false;

@@ -19,7 +19,7 @@ export declare class DatePickerService implements OnDestroy {
     initValue(): void;
     hasValue(value?: CompatibleValue): boolean;
     makeValue(value?: CompatibleDate): CompatibleValue;
-    setActiveDate(value: CompatibleValue, allowSameInTwoPanel?: boolean, mode?: NormalizedMode): void;
+    setActiveDate(value: CompatibleValue, hasTimePicker?: boolean, mode?: NormalizedMode): void;
     setValue(value: CompatibleValue): void;
     getActiveIndex(part?: RangePartType): number;
     ngOnDestroy(): void;

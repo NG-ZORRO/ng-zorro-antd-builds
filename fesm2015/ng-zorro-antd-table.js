@@ -16,10 +16,10 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { arraysEqual, InputBoolean, isNil, measureScrollbar } from 'ng-zorro-antd/core/util';
 import { Subject, ReplaySubject, BehaviorSubject, combineLatest, merge, fromEvent, EMPTY, of } from 'rxjs';
-import { takeUntil, map, startWith, delay, switchMap, filter, distinctUntilChanged, debounceTime, skip, flatMap, mergeMap } from 'rxjs/operators';
+import { takeUntil, map, startWith, delay, switchMap, filter, distinctUntilChanged, debounceTime, skip, mergeMap } from 'rxjs/operators';
 import { __decorate, __metadata } from 'tslib';
-import { InputBoolean, isNil, measureScrollbar } from 'ng-zorro-antd/core/util';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 
@@ -112,10 +112,10 @@ class NzTableFilterComponent {
         this.listOfFilter = [];
         this.filterChange = new EventEmitter();
         this.destroy$ = new Subject();
-        this.isChanged = false;
         this.isChecked = false;
         this.isVisible = false;
         this.listOfParsedFilter = [];
+        this.listOfChecked = [];
         // TODO: move to host after View Engine deprecation
         this.elementRef.nativeElement.classList.add('ant-table-filter-column');
     }
@@ -123,7 +123,6 @@ class NzTableFilterComponent {
         return item.value;
     }
     check(filter) {
-        this.isChanged = true;
         if (this.filterMultiple) {
             this.listOfParsedFilter = this.listOfParsedFilter.map(item => {
                 if (item === filter) {
@@ -147,7 +146,6 @@ class NzTableFilterComponent {
         this.emitFilterData();
     }
     reset() {
-        this.isChanged = true;
         this.isVisible = false;
         this.listOfParsedFilter = this.parseListOfFilter(this.listOfFilter, true);
         this.isChecked = this.getCheckedStatus(this.listOfParsedFilter);
@@ -158,17 +156,19 @@ class NzTableFilterComponent {
         if (!value) {
             this.emitFilterData();
         }
+        else {
+            this.listOfChecked = this.listOfParsedFilter.filter(item => item.checked).map(item => item.value);
+        }
     }
     emitFilterData() {
-        if (this.isChanged) {
-            const listOfChecked = this.listOfParsedFilter.filter(item => item.checked).map(item => item.value);
+        const listOfChecked = this.listOfParsedFilter.filter(item => item.checked).map(item => item.value);
+        if (!arraysEqual(this.listOfChecked, listOfChecked)) {
             if (this.filterMultiple) {
                 this.filterChange.emit(listOfChecked);
             }
             else {
                 this.filterChange.emit(listOfChecked.length > 0 ? listOfChecked[0] : null);
             }
-            this.isChanged = false;
         }
     }
     parseListOfFilter(listOfFilter, reset) {
@@ -1158,7 +1158,7 @@ class NzTableFixedRowComponent {
     ngOnInit() {
         if (this.nzTableStyleService) {
             const { enableAutoMeasure$, hostWidth$ } = this.nzTableStyleService;
-            enableAutoMeasure$.subscribe(this.enableAutoMeasure$);
+            enableAutoMeasure$.pipe(takeUntil(this.destroy$)).subscribe(this.enableAutoMeasure$);
             hostWidth$.subscribe(this.hostWidth$);
         }
     }
@@ -1378,17 +1378,15 @@ NzTableInnerScrollComponent.decorators = [
         </table>
       </cdk-virtual-scroll-viewport>
     </ng-container>
-    <div class="ant-table-content" *ngIf="!scrollY">
-      <div #tableBodyElement class="ant-table-body" [ngStyle]="bodyStyleMap">
-        <table
-          nz-table-content
-          tableLayout="fixed"
-          [scrollX]="scrollX"
-          [listOfColWidth]="listOfColWidth"
-          [theadTemplate]="theadTemplate"
-          [contentTemplate]="contentTemplate"
-        ></table>
-      </div>
+    <div class="ant-table-content" #tableBodyElement *ngIf="!scrollY" [ngStyle]="bodyStyleMap">
+      <table
+        nz-table-content
+        tableLayout="fixed"
+        [scrollX]="scrollX"
+        [listOfColWidth]="listOfColWidth"
+        [theadTemplate]="theadTemplate"
+        [contentTemplate]="contentTemplate"
+      ></table>
     </div>
   `
             },] }
@@ -1575,6 +1573,7 @@ class NzTableComponent {
         this.nzData = [];
         this.nzPaginationPosition = 'bottom';
         this.nzScroll = { x: null, y: null };
+        this.nzPaginationType = 'default';
         this.nzFrontPagination = true;
         this.nzTemplateMode = false;
         this.nzShowPagination = true;
@@ -1803,7 +1802,8 @@ NzTableComponent.decorators = [
     </nz-spin>
     <ng-template #paginationTemplate>
       <nz-pagination
-        *ngIf="nzShowPagination && showPagination && data.length"
+        *ngIf="nzShowPagination && data.length"
+        [hidden]="!showPagination"
         class="ant-table-pagination ant-table-pagination-right"
         [nzShowSizeChanger]="nzShowSizeChanger"
         [nzPageSizeOptions]="nzPageSizeOptions"
@@ -1811,7 +1811,7 @@ NzTableComponent.decorators = [
         [nzShowQuickJumper]="nzShowQuickJumper"
         [nzHideOnSinglePage]="nzHideOnSinglePage"
         [nzShowTotal]="nzShowTotal"
-        [nzSize]="nzSize === 'default' ? 'default' : 'small'"
+        [nzSize]="nzPaginationType === 'small' ? 'small' : nzSize === 'default' ? 'default' : 'small'"
         [nzPageSize]="nzPageSize"
         [nzTotal]="nzTotal"
         [nzSimple]="nzSimple"
@@ -1858,6 +1858,7 @@ NzTableComponent.propDecorators = {
     nzData: [{ type: Input }],
     nzPaginationPosition: [{ type: Input }],
     nzScroll: [{ type: Input }],
+    nzPaginationType: [{ type: Input }],
     nzFrontPagination: [{ type: Input }],
     nzTemplateMode: [{ type: Input }],
     nzShowPagination: [{ type: Input }],
@@ -1942,16 +1943,21 @@ class NzTbodyComponent {
         this.showEmpty$ = new BehaviorSubject(false);
         this.noResult$ = new BehaviorSubject(undefined);
         this.listOfMeasureColumn$ = new BehaviorSubject([]);
+        this.destroy$ = new Subject();
         this.isInsideTable = !!this.nzTableStyleService;
         if (this.nzTableStyleService) {
             const { showEmpty$, noResult$, listOfMeasureColumn$ } = this.nzTableStyleService;
-            noResult$.subscribe(this.noResult$);
-            listOfMeasureColumn$.subscribe(this.listOfMeasureColumn$);
-            showEmpty$.subscribe(this.showEmpty$);
+            noResult$.pipe(takeUntil(this.destroy$)).subscribe(this.noResult$);
+            listOfMeasureColumn$.pipe(takeUntil(this.destroy$)).subscribe(this.listOfMeasureColumn$);
+            showEmpty$.pipe(takeUntil(this.destroy$)).subscribe(this.showEmpty$);
         }
     }
     onListOfAutoWidthChange(listOfAutoWidth) {
         this.nzTableStyleService.setListOfAutoWidth(listOfAutoWidth);
+    }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
 NzTbodyComponent.decorators = [
@@ -1993,10 +1999,10 @@ class NzTrDirective {
         this.destroy$ = new Subject();
         this.listOfFixedColumns$ = new ReplaySubject(1);
         this.listOfColumns$ = new ReplaySubject(1);
-        this.listOfFixedColumnsChanges$ = this.listOfFixedColumns$.pipe(switchMap(list => merge(...[this.listOfFixedColumns$, ...list.map((c) => c.changes$)]).pipe(flatMap(() => this.listOfFixedColumns$))), takeUntil(this.destroy$));
+        this.listOfFixedColumnsChanges$ = this.listOfFixedColumns$.pipe(switchMap(list => merge(...[this.listOfFixedColumns$, ...list.map((c) => c.changes$)]).pipe(mergeMap(() => this.listOfFixedColumns$))), takeUntil(this.destroy$));
         this.listOfFixedLeftColumnChanges$ = this.listOfFixedColumnsChanges$.pipe(map(list => list.filter(item => item.nzLeft !== false)));
         this.listOfFixedRightColumnChanges$ = this.listOfFixedColumnsChanges$.pipe(map(list => list.filter(item => item.nzRight !== false)));
-        this.listOfColumnsChanges$ = this.listOfColumns$.pipe(switchMap(list => merge(...[this.listOfColumns$, ...list.map((c) => c.changes$)]).pipe(flatMap(() => this.listOfColumns$))), takeUntil(this.destroy$));
+        this.listOfColumnsChanges$ = this.listOfColumns$.pipe(switchMap(list => merge(...[this.listOfColumns$, ...list.map((c) => c.changes$)]).pipe(mergeMap(() => this.listOfColumns$))), takeUntil(this.destroy$));
         this.isInsideTable = false;
         this.isInsideTable = !!nzTableStyleService;
     }
@@ -2014,7 +2020,9 @@ class NzTrDirective {
                 listOfFixedRight.forEach(cell => cell.setIsFirstRight(cell === listOfFixedRight[0]));
             });
             /** calculate fixed nzLeft and nzRight **/
-            combineLatest([this.nzTableStyleService.listOfListOfThWidth$, this.listOfFixedLeftColumnChanges$]).subscribe(([listOfAutoWidth, listOfLeftCell]) => {
+            combineLatest([this.nzTableStyleService.listOfListOfThWidth$, this.listOfFixedLeftColumnChanges$])
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(([listOfAutoWidth, listOfLeftCell]) => {
                 listOfLeftCell.forEach((cell, index) => {
                     if (cell.isAutoLeft) {
                         const currentArray = listOfLeftCell.slice(0, index);
@@ -2024,7 +2032,9 @@ class NzTrDirective {
                     }
                 });
             });
-            combineLatest([this.nzTableStyleService.listOfListOfThWidth$, this.listOfFixedRightColumnChanges$]).subscribe(([listOfAutoWidth, listOfRightCell]) => {
+            combineLatest([this.nzTableStyleService.listOfListOfThWidth$, this.listOfFixedRightColumnChanges$])
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(([listOfAutoWidth, listOfRightCell]) => {
                 listOfRightCell.forEach((_, index) => {
                     const cell = listOfRightCell[listOfRightCell.length - index - 1];
                     if (cell.isAutoRight) {
@@ -2123,7 +2133,7 @@ class NzTheadComponent {
                 };
             })), 
             // TODO: after checked error here
-            delay(0));
+            delay(0), takeUntil(this.destroy$));
             listOfCalcOperator$.subscribe(list => {
                 this.nzTableDataService.listOfCalcOperator$.next(list);
             });

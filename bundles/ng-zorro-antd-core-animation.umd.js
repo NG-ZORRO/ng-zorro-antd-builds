@@ -192,22 +192,6 @@
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
-    var zoomMotion = animations.trigger('zoomMotion', [
-        animations.transition(':enter', [
-            animations.style({ opacity: 0, transform: 'scale(0.2)' }),
-            animations.animate(AnimationDuration.BASE + " " + AnimationCurves.EASE_OUT_CIRC, animations.style({
-                opacity: 1,
-                transform: 'scale(1)'
-            }))
-        ]),
-        animations.transition(':leave', [
-            animations.style({ opacity: 1, transform: 'scale(1)' }),
-            animations.animate(AnimationDuration.BASE + " " + AnimationCurves.EASE_IN_OUT_CIRC, animations.style({
-                opacity: 0,
-                transform: 'scale(0.2)'
-            }))
-        ])
-    ]);
     var zoomBigMotion = animations.trigger('zoomBigMotion', [
         animations.transition('void => active', [
             animations.style({ opacity: 0, transform: 'scale(0.8)' }),
@@ -262,7 +246,6 @@
     exports.treeCollapseMotion = treeCollapseMotion;
     exports.zoomBadgeMotion = zoomBadgeMotion;
     exports.zoomBigMotion = zoomBigMotion;
-    exports.zoomMotion = zoomMotion;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

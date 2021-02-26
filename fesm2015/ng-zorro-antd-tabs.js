@@ -155,7 +155,8 @@ NzTabLinkTemplateDirective.ctorParameters = () => [
  * This component is for catching `routerLink` directive.
  */
 class NzTabLinkDirective {
-    constructor(routerLink, routerLinkWithHref) {
+    constructor(elementRef, routerLink, routerLinkWithHref) {
+        this.elementRef = elementRef;
         this.routerLink = routerLink;
         this.routerLinkWithHref = routerLinkWithHref;
     }
@@ -167,6 +168,7 @@ NzTabLinkDirective.decorators = [
             },] }
 ];
 NzTabLinkDirective.ctorParameters = () => [
+    { type: ElementRef },
     { type: RouterLink, decorators: [{ type: Optional }, { type: Self }] },
     { type: RouterLinkWithHref, decorators: [{ type: Optional }, { type: Self }] }
 ];
@@ -1342,11 +1344,23 @@ class NzTabSetComponent {
             return of(true);
         }
     }
-    clickNavItem(tab, index) {
+    clickNavItem(tab, index, e) {
         if (!tab.nzDisabled) {
             // ignore nzCanDeactivate
             tab.nzClick.emit();
-            this.setSelectedIndex(index);
+            if (!this.isRouterLinkClickEvent(index, e)) {
+                this.setSelectedIndex(index);
+            }
+        }
+    }
+    isRouterLinkClickEvent(index, event) {
+        var _a, _b;
+        const target = event.target;
+        if (this.nzLinkRouter) {
+            return !!((_b = (_a = this.tabs.toArray()[index]) === null || _a === void 0 ? void 0 : _a.linkDirective) === null || _b === void 0 ? void 0 : _b.elementRef.nativeElement.contains(target));
+        }
+        else {
+            return false;
         }
     }
     contextmenuNavItem(tab, e) {
@@ -1392,7 +1406,6 @@ class NzTabSetComponent {
             const index = this.findShouldActiveTabIndex();
             if (index !== this.selectedIndex) {
                 this.setSelectedIndex(index);
-                this.nzSelectedIndexChange.emit(index);
             }
             this.nzHideAll = index === -1;
         }
@@ -1462,7 +1475,7 @@ NzTabSetComponent.decorators = [
         [style.margin-bottom.px]="position === 'vertical' ? nzTabBarGutter : null"
         [class.ant-tabs-tab-active]="nzSelectedIndex === i"
         [class.ant-tabs-tab-disabled]="tab.nzDisabled"
-        (click)="clickNavItem(tab, i)"
+        (click)="clickNavItem(tab, i, $event)"
         (contextmenu)="contextmenuNavItem(tab, $event)"
         *ngFor="let tab of tabs; let i = index"
       >

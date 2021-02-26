@@ -1608,7 +1608,14 @@ var de_DE = {
     DatePicker: {
         lang: {
             placeholder: 'Datum auswählen',
+            yearPlaceholder: 'Jahr auswählen',
+            quarterPlaceholder: 'Quartal auswählen',
+            monthPlaceholder: 'Monat auswählen',
+            weekPlaceholder: 'Woche auswählen',
             rangePlaceholder: ['Startdatum', 'Enddatum'],
+            rangeYearPlaceholder: ['Startjahr', 'Endjahr'],
+            rangeMonthPlaceholder: ['Startmonat', 'Endmonat'],
+            rangeWeekPlaceholder: ['Startwoche', 'Endwoche'],
             locale: 'de_DE',
             today: 'Heute',
             now: 'Jetzt',
@@ -1619,6 +1626,7 @@ var de_DE = {
             year: 'Jahr',
             timeSelect: 'Zeit wählen',
             dateSelect: 'Datum wählen',
+            weekSelect: 'Woche wählen',
             monthSelect: 'Wähle einen Monat',
             yearSelect: 'Wähle ein Jahr',
             decadeSelect: 'Wähle ein Jahrzehnt',
@@ -1637,7 +1645,8 @@ var de_DE = {
             nextCentury: 'Nächstes Jahrhundert'
         },
         timePickerLocale: {
-            placeholder: 'Zeit auswählen'
+            placeholder: 'Zeit auswählen',
+            rangePlaceholder: ['Startzeit', 'Endzeit']
         }
     },
     TimePicker: {
@@ -1646,7 +1655,14 @@ var de_DE = {
     Calendar: {
         lang: {
             placeholder: 'Datum auswählen',
+            yearPlaceholder: 'Jahr auswählen',
+            quarterPlaceholder: 'Quartal auswählen',
+            monthPlaceholder: 'Monat auswählen',
+            weekPlaceholder: 'Woche auswählen',
             rangePlaceholder: ['Startdatum', 'Enddatum'],
+            rangeYearPlaceholder: ['Startjahr', 'Endjahr'],
+            rangeMonthPlaceholder: ['Startmonat', 'Endmonat'],
+            rangeWeekPlaceholder: ['Startwoche', 'Endwoche'],
             locale: 'de_DE',
             today: 'Heute',
             now: 'Jetzt',
@@ -1657,6 +1673,7 @@ var de_DE = {
             year: 'Jahr',
             timeSelect: 'Zeit wählen',
             dateSelect: 'Datum wählen',
+            weekSelect: 'Woche wählen',
             monthSelect: 'Wähle einen Monat',
             yearSelect: 'Wähle ein Jahr',
             decadeSelect: 'Wähle ein Jahrzehnt',
@@ -1675,7 +1692,8 @@ var de_DE = {
             nextCentury: 'Nächstes Jahrhundert'
         },
         timePickerLocale: {
-            placeholder: 'Zeit auswählen'
+            placeholder: 'Zeit auswählen',
+            rangePlaceholder: ['Startzeit', 'Endzeit']
         }
     },
     global: {
@@ -1685,6 +1703,8 @@ var de_DE = {
         filterTitle: 'Filter-Menü',
         filterConfirm: 'OK',
         filterReset: 'Zurücksetzen',
+        filterEmptyText: 'Keine Filter',
+        emptyText: 'Keine Daten',
         selectAll: 'Selektiere Alle',
         selectInvert: 'Selektion Invertieren',
         selectionAll: 'Wählen Sie alle Daten aus',
@@ -1705,9 +1725,16 @@ var de_DE = {
         cancelText: 'Abbrechen'
     },
     Transfer: {
+        titles: ['', ''],
         searchPlaceholder: 'Suchen',
         itemUnit: 'Eintrag',
-        itemsUnit: 'Einträge'
+        itemsUnit: 'Einträge',
+        remove: 'Entfernen',
+        selectCurrent: 'Aktuelle Seite auswählen',
+        removeCurrent: 'Aktuelle Seite abwählen',
+        selectAll: 'Alle Daten auswählen',
+        removeAll: 'Alle Daten abwählen',
+        selectInvert: 'Aktuelle Auswahl invertieren'
     },
     Upload: {
         uploading: 'Hochladen...',
@@ -1999,7 +2026,14 @@ var es_ES = {
     DatePicker: {
         lang: {
             placeholder: 'Seleccionar fecha',
+            yearPlaceholder: 'Seleccionar año',
+            quarterPlaceholder: 'Seleccionar trimestre',
+            monthPlaceholder: 'Seleccionar mes',
+            weekPlaceholder: 'Seleccionar semana',
             rangePlaceholder: ['Fecha inicial', 'Fecha final'],
+            rangeYearPlaceholder: ['Año inicial', 'Año final'],
+            rangeMonthPlaceholder: ['Mes inicial', 'Mes final'],
+            rangeWeekPlaceholder: ['Semana inicial', 'Semana final'],
             locale: 'es_ES',
             today: 'Hoy',
             now: 'Ahora',
@@ -2010,6 +2044,7 @@ var es_ES = {
             year: 'Año',
             timeSelect: 'Seleccionar hora',
             dateSelect: 'Seleccionar fecha',
+            weekSelect: 'Elegir una semana',
             monthSelect: 'Elegir un mes',
             yearSelect: 'Elegir un año',
             decadeSelect: 'Elegir una década',
@@ -2028,16 +2063,25 @@ var es_ES = {
             nextCentury: 'Siglo siguiente'
         },
         timePickerLocale: {
-            placeholder: 'Seleccionar hora'
+            placeholder: 'Seleccionar hora',
+            rangePlaceholder: ['Hora inicial', 'Hora final']
         }
     },
     TimePicker: {
-        placeholder: 'Seleccionar hora'
+        placeholder: 'Seleccionar hora',
+        rangePlaceholder: ['Hora inicial', 'Hora final']
     },
     Calendar: {
         lang: {
             placeholder: 'Seleccionar fecha',
+            yearPlaceholder: 'Seleccionar año',
+            quarterPlaceholder: 'Seleccionar trimestre',
+            monthPlaceholder: 'Seleccionar mes',
+            weekPlaceholder: 'Seleccionar semana',
             rangePlaceholder: ['Fecha inicial', 'Fecha final'],
+            rangeYearPlaceholder: ['Año inicial', 'Año final'],
+            rangeMonthPlaceholder: ['Mes inicial', 'Mes final'],
+            rangeWeekPlaceholder: ['Semana inicial', 'Semana final'],
             locale: 'es_ES',
             today: 'Hoy',
             now: 'Ahora',
@@ -2048,6 +2092,7 @@ var es_ES = {
             year: 'Año',
             timeSelect: 'Seleccionar hora',
             dateSelect: 'Seleccionar fecha',
+            weekSelect: 'Elegir una semana',
             monthSelect: 'Elegir un mes',
             yearSelect: 'Elegir un año',
             decadeSelect: 'Elegir una década',
@@ -2066,7 +2111,8 @@ var es_ES = {
             nextCentury: 'Siglo siguiente'
         },
         timePickerLocale: {
-            placeholder: 'Seleccionar hora'
+            placeholder: 'Seleccionar hora',
+            rangePlaceholder: ['Hora inicial', 'Hora final']
         }
     },
     global: {
@@ -2076,9 +2122,17 @@ var es_ES = {
         filterTitle: 'Filtrar menú',
         filterConfirm: 'Aceptar',
         filterReset: 'Reiniciar',
+        filterEmptyText: 'Sin filtros',
+        emptyText: 'Sin datos',
         selectAll: 'Seleccionar todo',
         selectInvert: 'Invertir selección',
-        sortTitle: 'Ordenar'
+        selectionAll: 'Seleccionar todos los datos',
+        sortTitle: 'Ordenar',
+        expand: 'Expandir fila',
+        collapse: 'Ocultar fila',
+        triggerDesc: 'Clic para ordenar descendentemente',
+        triggerAsc: 'Clic para ordenar ascedentemente',
+        cancelSort: 'Clic para cancelar ordenación'
     },
     Modal: {
         okText: 'Aceptar',
@@ -2090,9 +2144,16 @@ var es_ES = {
         cancelText: 'Cancelar'
     },
     Transfer: {
+        titles: ['', ''],
         searchPlaceholder: 'Buscar aquí',
         itemUnit: 'elemento',
-        itemsUnit: 'elementos'
+        itemsUnit: 'elementos',
+        remove: 'Eliminar',
+        selectCurrent: 'Seleccionar página actual',
+        removeCurrent: 'Quitar página actual',
+        selectAll: 'Seleccionar todos los datos',
+        removeAll: 'Eliminar todos los datos',
+        selectInvert: 'Invertir página actual'
     },
     Upload: {
         uploading: 'Subiendo...',

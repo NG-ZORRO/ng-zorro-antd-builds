@@ -78,7 +78,8 @@ export declare class NzTabSetComponent implements OnInit, AfterContentChecked, O
     private subscribeToTabLabels;
     private subscribeToAllTabChanges;
     canDeactivateFun(pre: number, next: number): Observable<boolean>;
-    clickNavItem(tab: NzTabComponent, index: number): void;
+    clickNavItem(tab: NzTabComponent, index: number, e: MouseEvent): void;
+    private isRouterLinkClickEvent;
     contextmenuNavItem(tab: NzTabComponent, e: MouseEvent): void;
     setSelectedIndex(index: number): void;
     getTabIndex(tab: NzTabComponent, index: number): number | null;

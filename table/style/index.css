@@ -802,9 +802,6 @@ cdk-virtual-scroll-viewport.ant-table-body {
   height: 100%;
   margin: auto;
 }
-.ant-empty-description {
-  margin: 0;
-}
 .ant-empty-footer {
   margin-top: 16px;
 }
@@ -910,7 +907,7 @@ nz-empty {
   display: inline-block;
   line-height: 1;
   white-space: nowrap;
-  vertical-align: sub;
+  vertical-align: text-bottom;
   outline: none;
   cursor: pointer;
 }
@@ -1160,11 +1157,6 @@ span.ant-radio + * {
   100% {
     transform: scale(1.6);
     opacity: 0;
-  }
-}
-@supports (-moz-appearance: meterbar) and (background-blend-mode: difference, normal) {
-  .ant-radio {
-    vertical-align: text-bottom;
   }
 }
 .ant-radio-group.ant-radio-group-rtl {
@@ -1622,6 +1614,22 @@ span.ant-radio + * {
   color: rgba(0, 0, 0, 0.25);
   background-color: #fff;
   cursor: not-allowed;
+}
+.ant-dropdown-menu-item-disabled > a,
+.ant-dropdown-menu-submenu-title-disabled > a {
+  position: relative;
+  color: rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+.ant-dropdown-menu-item-disabled > a::after,
+.ant-dropdown-menu-submenu-title-disabled > a::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: not-allowed;
+  content: '';
 }
 .ant-dropdown-menu-item-divider,
 .ant-dropdown-menu-submenu-title-divider {
@@ -4493,6 +4501,17 @@ textarea.ant-pagination-options-quick-jumper input {
  * Do not merge `height` & `line-height` under style with `selection` & `search`,
  * since chrome may update to redesign with its align logic.
  */
+.ant-select-selection-overflow {
+  position: relative;
+  display: flex;
+  flex: auto;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+.ant-select-selection-overflow-item {
+  flex: none;
+  max-width: 100%;
+}
 .ant-select-multiple .ant-select-selector {
   display: flex;
   flex-wrap: wrap;
@@ -4525,9 +4544,10 @@ textarea.ant-pagination-options-quick-jumper input {
   max-width: 100%;
   height: 24px;
   margin-top: 2px;
-  margin-right: 4px;
+  margin-inline-end: 4px;
   margin-bottom: 2px;
-  padding: 0 4px 0 8px;
+  padding-inline-start: 8px;
+  padding-inline-end: 4px;
   line-height: 22px;
   background: #f5f5f5;
   border: 1px solid #f0f0f0;
@@ -4583,14 +4603,21 @@ textarea.ant-pagination-options-quick-jumper input {
 .ant-select-multiple .ant-select-selection-item-remove:hover {
   color: rgba(0, 0, 0, 0.75);
 }
+.ant-select-multiple .ant-select-selection-overflow-item + .ant-select-selection-overflow-item .ant-select-selection-search {
+  margin-inline-start: 0;
+}
 .ant-select-multiple .ant-select-selection-search {
   position: relative;
-  margin-left: 0.5px;
+  max-width: 100%;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-inline-start: 7px;
 }
 .ant-select-multiple .ant-select-selection-search-input,
 .ant-select-multiple .ant-select-selection-search-mirror {
+  height: 24px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  line-height: 1.5715;
+  line-height: 24px;
   transition: all 0.3s;
 }
 .ant-select-multiple .ant-select-selection-search-input {
@@ -4604,9 +4631,6 @@ textarea.ant-pagination-options-quick-jumper input {
   z-index: 999;
   white-space: pre;
   visibility: hidden;
-}
-.ant-select-multiple .ant-select-selection-search:first-child > .ant-select-selection-search-input {
-  margin-left: 6.5px !important;
 }
 .ant-select-multiple .ant-select-selection-placeholder {
   position: absolute;
@@ -4740,6 +4764,7 @@ textarea.ant-pagination-options-quick-jumper input {
   color: #bfbfbf;
   white-space: nowrap;
   text-overflow: ellipsis;
+  pointer-events: none;
 }
 @media all and (-ms-high-contrast: none) {
   .ant-select-selection-placeholder *::-ms-backdrop,
@@ -4956,19 +4981,12 @@ textarea.ant-pagination-options-quick-jumper input {
   padding-left: 24px;
 }
 .ant-select-rtl.ant-select-multiple .ant-select-selection-item {
-  margin-right: 0;
-  margin-left: 4px;
-  padding: 0 8px 0 4px;
   text-align: right;
 }
 .ant-select-rtl.ant-select-multiple .ant-select-selection-item-content {
   margin-right: 0;
   margin-left: 4px;
   text-align: right;
-}
-.ant-select-rtl.ant-select-multiple .ant-select-selection-search {
-  margin-right: 0.5px;
-  margin-left: 4px;
 }
 .ant-select-rtl.ant-select-multiple .ant-select-selection-search-mirror {
   right: 0;

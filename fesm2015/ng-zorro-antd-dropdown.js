@@ -8,7 +8,7 @@ import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { POSITION_MAP, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject, BehaviorSubject, merge, fromEvent, EMPTY, combineLatest, Subscription } from 'rxjs';
-import { mapTo, switchMap, filter, map, auditTime, distinctUntilChanged, takeUntil, take } from 'rxjs/operators';
+import { mapTo, map, switchMap, filter, auditTime, distinctUntilChanged, takeUntil, take } from 'rxjs/operators';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -76,7 +76,7 @@ class NzDropDownDirective {
             /** merged mouse state **/
             const mergedMouseState$ = merge(menuMouseState$, hostMouseState$);
             /** host click state **/
-            const hostClickState$ = fromEvent(nativeElement, 'click').pipe(mapTo(true));
+            const hostClickState$ = fromEvent(nativeElement, 'click').pipe(map(() => !this.nzVisible));
             /** visible state switch by nzTrigger **/
             const visibleStateByTrigger$ = this.nzTrigger$.pipe(switchMap(trigger => {
                 if (trigger === 'hover') {

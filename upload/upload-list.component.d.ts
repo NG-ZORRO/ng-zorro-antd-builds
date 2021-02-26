@@ -4,10 +4,10 @@
  */
 import { Direction } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { ChangeDetectorRef, ElementRef, NgZone, OnChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, NgZone, OnChanges } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
-import { NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
+import { NzIconRenderTemplate, NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
 declare type UploadListIconType = '' | 'uploading' | 'thumbnail';
 interface UploadListFile extends NzUploadFile {
     isImageUrl?: boolean;
@@ -32,7 +32,7 @@ export declare class NzUploadListComponent implements OnChanges {
     onDownload?: (file: NzUploadFile) => void;
     previewFile?: (file: NzUploadFile) => Observable<string>;
     previewIsImage?: (file: NzUploadFile) => boolean;
-    iconRender: TemplateRef<NzSafeAny> | null;
+    iconRender: NzIconRenderTemplate | null;
     dir: Direction;
     private genErr;
     private extname;

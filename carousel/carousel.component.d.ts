@@ -7,7 +7,7 @@ import { Platform } from '@angular/cdk/platform';
 import { AfterContentInit, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 import { FromToInterface, NzCarouselDotPosition, NzCarouselEffects, NzCarouselStrategyRegistryItem } from './typings';
@@ -38,6 +38,10 @@ export declare class NzCarouselComponent implements AfterContentInit, AfterViewI
     nzAutoPlay: boolean;
     nzAutoPlaySpeed: number;
     nzTransitionSpeed: number;
+    /**
+     * this property is passed directly to an NzCarouselBaseStrategy
+     */
+    nzStrategyOptions: NzSafeAny;
     set nzDotPosition(value: NzCarouselDotPosition);
     get nzDotPosition(): NzCarouselDotPosition;
     private _dotPosition;
@@ -63,6 +67,7 @@ export declare class NzCarouselComponent implements AfterContentInit, AfterViewI
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
     onKeyDown(e: KeyboardEvent): void;
+    onLiClick: (index: number) => void;
     next(): void;
     pre(): void;
     goTo(index: number): void;

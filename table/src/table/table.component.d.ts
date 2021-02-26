@@ -11,7 +11,7 @@ import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
-import { NzTableData, NzTableLayout, NzTablePaginationPosition, NzTableQueryParams, NzTableSize } from '../table.types';
+import { NzTableData, NzTableLayout, NzTablePaginationPosition, NzTablePaginationType, NzTableQueryParams, NzTableSize } from '../table.types';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
 export declare class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
@@ -51,13 +51,14 @@ export declare class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestro
     nzPageIndex: number;
     nzPageSize: number;
     nzTotal: number;
-    nzWidthConfig: Array<string | null>;
-    nzData: T[];
+    nzWidthConfig: ReadonlyArray<string | null>;
+    nzData: ReadonlyArray<T>;
     nzPaginationPosition: NzTablePaginationPosition;
     nzScroll: {
         x?: string | null;
         y?: string | null;
     };
+    nzPaginationType: NzTablePaginationType;
     nzFrontPagination: boolean;
     nzTemplateMode: boolean;
     nzShowPagination: boolean;
@@ -73,15 +74,15 @@ export declare class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestro
     readonly nzPageSizeChange: EventEmitter<number>;
     readonly nzPageIndexChange: EventEmitter<number>;
     readonly nzQueryParams: EventEmitter<NzTableQueryParams>;
-    readonly nzCurrentPageDataChange: EventEmitter<any[]>;
+    readonly nzCurrentPageDataChange: EventEmitter<readonly any[]>;
     /** public data for ngFor tr */
-    data: T[];
+    data: ReadonlyArray<T>;
     cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
     scrollX: string | null;
     scrollY: string | null;
     theadTemplate: TemplateRef<NzSafeAny> | null;
-    listOfAutoColWidth: Array<string | null>;
-    listOfManualColWidth: Array<string | null>;
+    listOfAutoColWidth: ReadonlyArray<string | null>;
+    listOfManualColWidth: ReadonlyArray<string | null>;
     hasFixLeft: boolean;
     hasFixRight: boolean;
     showPagination: boolean;

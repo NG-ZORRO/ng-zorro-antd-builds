@@ -14,6 +14,7 @@ export declare class DateRangePopupComponent implements OnInit, OnChanges, OnDes
     datePickerService: DatePickerService;
     cdr: ChangeDetectorRef;
     isRange: boolean;
+    inline: boolean;
     showWeek: boolean;
     locale: NzCalendarI18nInterface | undefined;
     disabledDate?: DisabledDateFn;

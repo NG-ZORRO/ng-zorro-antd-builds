@@ -12,6 +12,7 @@
     var ɵ0 = noopFun;
     var ModalOptions = /** @class */ (function () {
         function ModalOptions() {
+            this.nzCentered = false;
             this.nzClosable = true;
             this.nzOkLoading = false;
             this.nzOkDisabled = false;
@@ -77,6 +78,8 @@
         return extendStatics(d, b);
     };
     function __extends(d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -262,11 +265,13 @@
         }
         return ar;
     }
+    /** @deprecated */
     function __spread() {
         for (var ar = [], i = 0; i < arguments.length; i++)
             ar = ar.concat(__read(arguments[i]));
         return ar;
     }
+    /** @deprecated */
     function __spreadArrays() {
         for (var s = 0, i = 0, il = arguments.length; i < il; i++)
             s += arguments[i].length;
@@ -275,7 +280,11 @@
                 r[k] = a[j];
         return r;
     }
-    ;
+    function __spreadArray(to, from) {
+        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+            to[j] = from[i];
+        return to;
+    }
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
     }
@@ -386,8 +395,9 @@
         Object.assign(instance, params);
     }
     function getConfigFromComponent(component) {
-        var nzMask = component.nzMask, nzMaskClosable = component.nzMaskClosable, nzClosable = component.nzClosable, nzOkLoading = component.nzOkLoading, nzOkDisabled = component.nzOkDisabled, nzCancelDisabled = component.nzCancelDisabled, nzCancelLoading = component.nzCancelLoading, nzKeyboard = component.nzKeyboard, nzNoAnimation = component.nzNoAnimation, nzContent = component.nzContent, nzComponentParams = component.nzComponentParams, nzFooter = component.nzFooter, nzZIndex = component.nzZIndex, nzWidth = component.nzWidth, nzWrapClassName = component.nzWrapClassName, nzClassName = component.nzClassName, nzStyle = component.nzStyle, nzTitle = component.nzTitle, nzCloseIcon = component.nzCloseIcon, nzMaskStyle = component.nzMaskStyle, nzBodyStyle = component.nzBodyStyle, nzOkText = component.nzOkText, nzCancelText = component.nzCancelText, nzOkType = component.nzOkType, nzOkDanger = component.nzOkDanger, nzIconType = component.nzIconType, nzModalType = component.nzModalType, nzOnOk = component.nzOnOk, nzOnCancel = component.nzOnCancel, nzAfterOpen = component.nzAfterOpen, nzAfterClose = component.nzAfterClose, nzCloseOnNavigation = component.nzCloseOnNavigation, nzAutofocus = component.nzAutofocus;
+        var nzCentered = component.nzCentered, nzMask = component.nzMask, nzMaskClosable = component.nzMaskClosable, nzClosable = component.nzClosable, nzOkLoading = component.nzOkLoading, nzOkDisabled = component.nzOkDisabled, nzCancelDisabled = component.nzCancelDisabled, nzCancelLoading = component.nzCancelLoading, nzKeyboard = component.nzKeyboard, nzNoAnimation = component.nzNoAnimation, nzContent = component.nzContent, nzComponentParams = component.nzComponentParams, nzFooter = component.nzFooter, nzZIndex = component.nzZIndex, nzWidth = component.nzWidth, nzWrapClassName = component.nzWrapClassName, nzClassName = component.nzClassName, nzStyle = component.nzStyle, nzTitle = component.nzTitle, nzCloseIcon = component.nzCloseIcon, nzMaskStyle = component.nzMaskStyle, nzBodyStyle = component.nzBodyStyle, nzOkText = component.nzOkText, nzCancelText = component.nzCancelText, nzOkType = component.nzOkType, nzOkDanger = component.nzOkDanger, nzIconType = component.nzIconType, nzModalType = component.nzModalType, nzOnOk = component.nzOnOk, nzOnCancel = component.nzOnCancel, nzAfterOpen = component.nzAfterOpen, nzAfterClose = component.nzAfterClose, nzCloseOnNavigation = component.nzCloseOnNavigation, nzAutofocus = component.nzAutofocus;
         return {
+            nzCentered: nzCentered,
             nzMask: nzMask,
             nzMaskClosable: nzMaskClosable,
             nzClosable: nzClosable,
@@ -504,7 +514,7 @@
                 throwNzModalContentAlreadyAttachedError();
             }
             this.savePreviouslyFocusedElement();
-            this.setModalTransformOrigin();
+            this.setZIndexForBackdrop();
             return this.portalOutlet.attachComponentPortal(portal);
         };
         BaseModalContainerComponent.prototype.attachTemplatePortal = function (portal) {
@@ -512,10 +522,12 @@
                 throwNzModalContentAlreadyAttachedError();
             }
             this.savePreviouslyFocusedElement();
+            this.setZIndexForBackdrop();
             return this.portalOutlet.attachTemplatePortal(portal);
         };
         BaseModalContainerComponent.prototype.attachStringContent = function () {
             this.savePreviouslyFocusedElement();
+            this.setZIndexForBackdrop();
         };
         BaseModalContainerComponent.prototype.getNativeElement = function () {
             return this.elementRef.nativeElement;
@@ -621,6 +633,14 @@
             modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.leave);
             modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.leaveActive);
         };
+        BaseModalContainerComponent.prototype.setZIndexForBackdrop = function () {
+            var backdropElement = this.overlayRef.backdropElement;
+            if (backdropElement) {
+                if (util.isNotNil(this.config.nzZIndex)) {
+                    this.render.setStyle(backdropElement, 'z-index', this.config.nzZIndex);
+                }
+            }
+        };
         BaseModalContainerComponent.prototype.bindBackdropStyle = function () {
             var _this = this;
             var backdropElement = this.overlayRef.backdropElement;
@@ -632,6 +652,7 @@
                     });
                     this.oldMaskStyle = null;
                 }
+                this.setZIndexForBackdrop();
                 if (typeof this.config.nzMaskStyle === 'object' && Object.keys(this.config.nzMaskStyle).length) {
                     var styles_1 = Object.assign({}, this.config.nzMaskStyle);
                     Object.keys(styles_1).forEach(function (key) {
@@ -732,6 +753,7 @@
                         role: 'dialog',
                         '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
                         '[class.ant-modal-wrap-rtl]': "dir === 'rtl'",
+                        '[class.ant-modal-centered]': 'config.nzCentered',
                         '[style.zIndex]': 'config.nzZIndex',
                         '[@.disabled]': 'config.nzNoAnimation',
                         '[@modalContainer]': 'state',
@@ -783,6 +805,7 @@
                         role: 'dialog',
                         '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
                         '[class.ant-modal-wrap-rtl]': "dir === 'rtl'",
+                        '[class.ant-modal-centered]': 'config.nzCentered',
                         '[style.zIndex]': 'config.nzZIndex',
                         '[@.disabled]': 'config.nzNoAnimation',
                         '[@modalContainer]': 'state',
@@ -1212,6 +1235,7 @@
             this.nzCancelLoading = false;
             this.nzKeyboard = true;
             this.nzNoAnimation = false;
+            this.nzCentered = false;
             this.nzZIndex = 1000;
             this.nzWidth = 520;
             this.nzCloseIcon = 'close';
@@ -1366,6 +1390,7 @@
         nzCancelLoading: [{ type: core.Input }],
         nzKeyboard: [{ type: core.Input }],
         nzNoAnimation: [{ type: core.Input }],
+        nzCentered: [{ type: core.Input }],
         nzContent: [{ type: core.Input }],
         nzComponentParams: [{ type: core.Input }],
         nzFooter: [{ type: core.Input }],
@@ -1438,6 +1463,10 @@
         util.InputBoolean(),
         __metadata("design:type", Object)
     ], NzModalComponent.prototype, "nzNoAnimation", void 0);
+    __decorate([
+        util.InputBoolean(),
+        __metadata("design:type", Object)
+    ], NzModalComponent.prototype, "nzCentered", void 0);
     __decorate([
         util.InputBoolean(),
         __metadata("design:type", Boolean)

@@ -83,6 +83,7 @@ class NzSubmenuService {
         /** submenu title & overlay mouse enter status **/
         this.isMouseEnterTitleOrOverlay$ = new Subject();
         this.childMenuItemClick$ = new Subject();
+        this.destroy$ = new Subject();
         if (this.nzHostSubmenuService) {
             this.level = this.nzHostSubmenuService.level + 1;
         }
@@ -90,7 +91,7 @@ class NzSubmenuService {
         const isClosedByMenuItemClick = this.childMenuItemClick$.pipe(mergeMap(() => this.mode$), filter(mode => mode !== 'inline' || this.isMenuInsideDropDown), mapTo(false));
         const isCurrentSubmenuOpen$ = merge(this.isMouseEnterTitleOrOverlay$, isClosedByMenuItemClick);
         /** combine the child submenu status with current submenu status to calculate host submenu open **/
-        const isSubMenuOpenWithDebounce$ = combineLatest([this.isChildSubMenuOpen$, isCurrentSubmenuOpen$]).pipe(map(([isChildSubMenuOpen, isCurrentSubmenuOpen]) => isChildSubMenuOpen || isCurrentSubmenuOpen), auditTime(150), distinctUntilChanged());
+        const isSubMenuOpenWithDebounce$ = combineLatest([this.isChildSubMenuOpen$, isCurrentSubmenuOpen$]).pipe(map(([isChildSubMenuOpen, isCurrentSubmenuOpen]) => isChildSubMenuOpen || isCurrentSubmenuOpen), auditTime(150), distinctUntilChanged(), takeUntil(this.destroy$));
         isSubMenuOpenWithDebounce$.pipe(distinctUntilChanged()).subscribe(data => {
             this.setOpenStateWithoutDebounce(data);
             if (this.nzHostSubmenuService) {
@@ -114,6 +115,10 @@ class NzSubmenuService {
     }
     setMouseEnterTitleOrOverlayState(value) {
         this.isMouseEnterTitleOrOverlay$.next(value);
+    }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
 NzSubmenuService.decorators = [

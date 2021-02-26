@@ -68,6 +68,8 @@
         return extendStatics(d, b);
     };
     function __extends(d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -253,11 +255,13 @@
         }
         return ar;
     }
+    /** @deprecated */
     function __spread() {
         for (var ar = [], i = 0; i < arguments.length; i++)
             ar = ar.concat(__read(arguments[i]));
         return ar;
     }
+    /** @deprecated */
     function __spreadArrays() {
         for (var s = 0, i = 0, il = arguments.length; i < il; i++)
             s += arguments[i].length;
@@ -266,7 +270,11 @@
                 r[k] = a[j];
         return r;
     }
-    ;
+    function __spreadArray(to, from) {
+        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+            to[j] = from[i];
+        return to;
+    }
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
     }
@@ -350,10 +358,11 @@
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
     var NzCarouselBaseStrategy = /** @class */ (function () {
-        function NzCarouselBaseStrategy(carouselComponent, cdr, renderer, platform) {
+        function NzCarouselBaseStrategy(carouselComponent, cdr, renderer, platform, options) {
             this.cdr = cdr;
             this.renderer = renderer;
             this.platform = platform;
+            this.options = options;
             this.carouselComponent = carouselComponent;
         }
         Object.defineProperty(NzCarouselBaseStrategy.prototype, "maxIndex", {
@@ -465,8 +474,8 @@
 
     var NzCarouselTransformStrategy = /** @class */ (function (_super) {
         __extends(NzCarouselTransformStrategy, _super);
-        function NzCarouselTransformStrategy() {
-            var _this = _super.apply(this, __spread(arguments)) || this;
+        function NzCarouselTransformStrategy(carouselComponent, cdr, renderer, platform, options) {
+            var _this = _super.call(this, carouselComponent, cdr, renderer, platform, options) || this;
             _this.isDragging = false;
             _this.isTransitioning = false;
             return _this;
@@ -640,6 +649,10 @@
             this.nzAutoPlay = false;
             this.nzAutoPlaySpeed = 3000;
             this.nzTransitionSpeed = 500;
+            /**
+             * this property is passed directly to an NzCarouselBaseStrategy
+             */
+            this.nzStrategyOptions = undefined;
             this._dotPosition = 'bottom';
             this.nzBeforeChange = new core.EventEmitter();
             this.nzAfterChange = new core.EventEmitter();
@@ -652,6 +665,14 @@
             this.pointerDelta = null;
             this.isTransiting = false;
             this.isDragging = false;
+            this.onLiClick = function (index) {
+                if (_this.dir === 'rtl') {
+                    _this.goTo(_this.carouselContents.length - 1 - index);
+                }
+                else {
+                    _this.goTo(index);
+                }
+            };
             /**
              * Drag carousel.
              */
@@ -707,7 +728,8 @@
             this.dir = this.directionality.value;
             (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {
                 _this.dir = direction;
-                _this.switchStrategy();
+                _this.markContentActive(_this.activeIndex);
+                _this.cdr.detectChanges();
             });
         };
         NzCarouselComponent.prototype.ngAfterContentInit = function () {
@@ -829,10 +851,16 @@
             }
         };
         NzCarouselComponent.prototype.markContentActive = function (index) {
+            var _this = this;
             this.activeIndex = index;
             if (this.carouselContents) {
                 this.carouselContents.forEach(function (slide, i) {
-                    slide.isActive = index === i;
+                    if (_this.dir === 'rtl') {
+                        slide.isActive = index === _this.carouselContents.length - 1 - i;
+                    }
+                    else {
+                        slide.isActive = index === i;
+                    }
                 });
             }
             this.cdr.markForCheck();
@@ -851,7 +879,7 @@
                     selector: 'nz-carousel',
                     exportAs: 'nzCarousel',
                     preserveWhitespaces: false,
-                    template: "\n    <div class=\"slick-initialized slick-slider\" [class.slick-vertical]=\"nzDotPosition === 'left' || nzDotPosition === 'right'\">\n      <div\n        #slickList\n        class=\"slick-list\"\n        tabindex=\"-1\"\n        (keydown)=\"onKeyDown($event)\"\n        (mousedown)=\"pointerDown($event)\"\n        (touchstart)=\"pointerDown($event)\"\n      >\n        <!-- Render carousel items. -->\n        <div class=\"slick-track\" #slickTrack>\n          <ng-content></ng-content>\n        </div>\n      </div>\n      <!-- Render dots. -->\n      <ul\n        class=\"slick-dots\"\n        *ngIf=\"nzDots\"\n        [class.slick-dots-top]=\"nzDotPosition === 'top'\"\n        [class.slick-dots-bottom]=\"nzDotPosition === 'bottom'\"\n        [class.slick-dots-left]=\"nzDotPosition === 'left'\"\n        [class.slick-dots-right]=\"nzDotPosition === 'right'\"\n      >\n        <li *ngFor=\"let content of carouselContents; let i = index\" [class.slick-active]=\"content.isActive\" (click)=\"goTo(i)\">\n          <ng-template [ngTemplateOutlet]=\"nzDotRender || renderDotTemplate\" [ngTemplateOutletContext]=\"{ $implicit: i }\"></ng-template>\n        </li>\n      </ul>\n    </div>\n\n    <ng-template #renderDotTemplate let-index>\n      <button>{{ index + 1 }}</button>\n    </ng-template>\n  ",
+                    template: "\n    <div class=\"slick-initialized slick-slider\" [class.slick-vertical]=\"nzDotPosition === 'left' || nzDotPosition === 'right'\">\n      <div\n        #slickList\n        class=\"slick-list\"\n        tabindex=\"-1\"\n        (keydown)=\"onKeyDown($event)\"\n        (mousedown)=\"pointerDown($event)\"\n        (touchstart)=\"pointerDown($event)\"\n      >\n        <!-- Render carousel items. -->\n        <div class=\"slick-track\" #slickTrack>\n          <ng-content></ng-content>\n        </div>\n      </div>\n      <!-- Render dots. -->\n      <ul\n        class=\"slick-dots\"\n        *ngIf=\"nzDots\"\n        [class.slick-dots-top]=\"nzDotPosition === 'top'\"\n        [class.slick-dots-bottom]=\"nzDotPosition === 'bottom'\"\n        [class.slick-dots-left]=\"nzDotPosition === 'left'\"\n        [class.slick-dots-right]=\"nzDotPosition === 'right'\"\n      >\n        <li *ngFor=\"let content of carouselContents; let i = index\" [class.slick-active]=\"content.isActive\" (click)=\"onLiClick(i)\">\n          <ng-template [ngTemplateOutlet]=\"nzDotRender || renderDotTemplate\" [ngTemplateOutletContext]=\"{ $implicit: i }\"></ng-template>\n        </li>\n      </ul>\n    </div>\n\n    <ng-template #renderDotTemplate let-index>\n      <button>{{ index + 1 }}</button>\n    </ng-template>\n  ",
                     host: {
                         '[class.ant-carousel-vertical]': 'vertical',
                         '[class.ant-carousel-rtl]': "dir ==='rtl'"
@@ -880,6 +908,7 @@
         nzAutoPlay: [{ type: core.Input }],
         nzAutoPlaySpeed: [{ type: core.Input }],
         nzTransitionSpeed: [{ type: core.Input }],
+        nzStrategyOptions: [{ type: core.Input }],
         nzDotPosition: [{ type: core.Input }],
         nzBeforeChange: [{ type: core.Output }],
         nzAfterChange: [{ type: core.Output }]

@@ -182,22 +182,6 @@ const slideAlertMotion = trigger('slideAlertMotion', [
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-const zoomMotion = trigger('zoomMotion', [
-    transition(':enter', [
-        style({ opacity: 0, transform: 'scale(0.2)' }),
-        animate(`${AnimationDuration.BASE} ${AnimationCurves.EASE_OUT_CIRC}`, style({
-            opacity: 1,
-            transform: 'scale(1)'
-        }))
-    ]),
-    transition(':leave', [
-        style({ opacity: 1, transform: 'scale(1)' }),
-        animate(`${AnimationDuration.BASE} ${AnimationCurves.EASE_IN_OUT_CIRC}`, style({
-            opacity: 0,
-            transform: 'scale(0.2)'
-        }))
-    ])
-]);
 const zoomBigMotion = trigger('zoomBigMotion', [
     transition('void => active', [
         style({ opacity: 0, transform: 'scale(0.8)' }),
@@ -240,5 +224,5 @@ const zoomBadgeMotion = trigger('zoomBadgeMotion', [
  * Generated bundle index. Do not edit.
  */
 
-export { AnimationCurves, AnimationDuration, collapseMotion, fadeMotion, helpMotion, moveUpMotion, notificationMotion, slideAlertMotion, slideMotion, treeCollapseMotion, zoomBadgeMotion, zoomBigMotion, zoomMotion };
+export { AnimationCurves, AnimationDuration, collapseMotion, fadeMotion, helpMotion, moveUpMotion, notificationMotion, slideAlertMotion, slideMotion, treeCollapseMotion, zoomBadgeMotion, zoomBigMotion };
 //# sourceMappingURL=ng-zorro-antd-core-animation.js.map

@@ -58,6 +58,7 @@ NzNotificationComponent.decorators = [
       [ngStyle]="instance.options?.nzStyle || null"
       [ngClass]="instance.options?.nzClass || ''"
       [@notificationMotion]="state"
+      (@notificationMotion.done)="animationStateChanged.next($event)"
       (click)="onClick($event)"
       (mouseenter)="onEnter()"
       (mouseleave)="onLeave()"
@@ -100,8 +101,7 @@ NzNotificationComponent.decorators = [
         [ngIf]="instance.template"
         [ngTemplateOutlet]="instance.template!"
         [ngTemplateOutletContext]="{ $implicit: this, data: instance.options?.nzData }"
-      >
-      </ng-template>
+      ></ng-template>
       <a tabindex="0" class="ant-notification-notice-close" (click)="close()">
         <span class="ant-notification-notice-close-x">
           <ng-container *ngIf="instance.options?.nzCloseIcon; else iconTpl">

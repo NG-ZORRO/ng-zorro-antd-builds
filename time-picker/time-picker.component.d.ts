@@ -41,11 +41,14 @@ export declare class NzTimePickerComponent implements ControlValueAccessor, OnIn
     overlayPositions: ConnectionPositionPair[];
     dir: Direction;
     inputRef: ElementRef<HTMLInputElement>;
+    nzId: string | null;
     nzSize: string | null;
     nzHourStep: number;
     nzMinuteStep: number;
     nzSecondStep: number;
     nzClearText: string;
+    nzNowText: string;
+    nzOkText: string;
     nzPopupClassName: string;
     nzPlaceHolder: string;
     nzAddOn?: TemplateRef<void>;

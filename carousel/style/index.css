@@ -292,6 +292,3 @@ nz-carousel {
 .slick-list {
   direction: ltr;
 }
-.slick-list .slick-slide {
-  float: right;
-}

@@ -3,11 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
 import { Observable } from 'rxjs';
 import { TransferCanMove, TransferChange, TransferDirection, TransferItem, TransferSearchChange, TransferSelectChange } from './interface';
+import { NzTransferListComponent } from './transfer-list.component';
 export declare class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     private cdr;
     private i18n;
@@ -17,7 +18,7 @@ export declare class NzTransferComponent implements OnInit, OnChanges, OnDestroy
     static ngAcceptInputType_nzShowSelectAll: BooleanInput;
     static ngAcceptInputType_nzShowSearch: BooleanInput;
     private unsubscribe$;
-    private lists;
+    lists: QueryList<NzTransferListComponent>;
     locale: NzTransferI18nInterface;
     leftFilter: string;
     rightFilter: string;

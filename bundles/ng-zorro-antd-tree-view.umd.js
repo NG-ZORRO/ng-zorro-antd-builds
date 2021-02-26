@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/scrolling'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/tree'), require('@angular/cdk/coercion'), require('ng-zorro-antd/core/animation'), require('@angular/cdk/collections')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/tree-view', ['exports', '@angular/cdk/bidi', '@angular/cdk/scrolling', '@angular/common', '@angular/core', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/tree', '@angular/cdk/coercion', 'ng-zorro-antd/core/animation', '@angular/cdk/collections'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['tree-view'] = {}), global.ng.cdk.bidi, global.ng.cdk.scrolling, global.ng.common, global.ng.core, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.tree, global.ng.cdk.coercion, global['ng-zorro-antd'].core.animation, global.ng.cdk.collections));
-}(this, (function (exports, bidi, scrolling, common, core, noAnimation, util, rxjs, operators, tree, coercion, animation, collections) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/cdk/scrolling'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/tree'), require('@angular/cdk/coercion'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/logger'), require('@angular/cdk/collections')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/tree-view', ['exports', '@angular/cdk/bidi', '@angular/cdk/scrolling', '@angular/common', '@angular/core', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/tree', '@angular/cdk/coercion', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/logger', '@angular/cdk/collections'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd']['tree-view'] = {}), global.ng.cdk.bidi, global.ng.cdk.scrolling, global.ng.common, global.ng.core, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.tree, global.ng.cdk.coercion, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.logger, global.ng.cdk.collections));
+}(this, (function (exports, bidi, scrolling, common, core, noAnimation, util, rxjs, operators, tree, coercion, animation, logger, collections) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -28,6 +28,8 @@
         return extendStatics(d, b);
     };
     function __extends(d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -213,11 +215,13 @@
         }
         return ar;
     }
+    /** @deprecated */
     function __spread() {
         for (var ar = [], i = 0; i < arguments.length; i++)
             ar = ar.concat(__read(arguments[i]));
         return ar;
     }
+    /** @deprecated */
     function __spreadArrays() {
         for (var s = 0, i = 0, il = arguments.length; i < il; i++)
             s += arguments[i].length;
@@ -226,7 +230,11 @@
                 r[k] = a[j];
         return r;
     }
-    ;
+    function __spreadArray(to, from) {
+        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+            to[j] = from[i];
+        return to;
+    }
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
     }
@@ -1008,13 +1016,20 @@
         nodeOutlet: [{ type: core.ViewChild, args: [NzTreeNodeOutletDirective, { static: true },] }]
     };
 
+    var DEFAULT_SIZE = 28;
     var NzTreeVirtualScrollViewComponent = /** @class */ (function (_super) {
         __extends(NzTreeVirtualScrollViewComponent, _super);
         function NzTreeVirtualScrollViewComponent() {
             var _this = _super.apply(this, __spread(arguments)) || this;
-            _this.nzNodeWidth = 28;
-            _this.nzMinBufferPx = 28 * 5;
-            _this.nzMaxBufferPx = 28 * 10;
+            _this.itemSize = DEFAULT_SIZE;
+            /**
+             * @deprecated use `nzItemSize` instead
+             * @breaking-change 12.0.0
+             */
+            _this.nzNodeWidth = DEFAULT_SIZE;
+            _this.nzItemSize = DEFAULT_SIZE;
+            _this.nzMinBufferPx = DEFAULT_SIZE * 5;
+            _this.nzMaxBufferPx = DEFAULT_SIZE * 10;
             _this.nodes = [];
             return _this;
         }
@@ -1037,13 +1052,23 @@
                 nodeDef: node
             };
         };
+        NzTreeVirtualScrollViewComponent.prototype.ngOnChanges = function (changes) {
+            var nzNodeWidth = changes.nzNodeWidth, nzItemSize = changes.nzItemSize;
+            if (nzNodeWidth) {
+                logger.warnDeprecation('`nzNodeWidth` in nz-tree-virtual-scroll-view will be removed in 12.0.0, please use `nzItemSize` instead.');
+                this.itemSize = nzNodeWidth.currentValue;
+            }
+            if (nzItemSize) {
+                this.itemSize = nzItemSize.currentValue;
+            }
+        };
         return NzTreeVirtualScrollViewComponent;
     }(NzTreeView));
     NzTreeVirtualScrollViewComponent.decorators = [
         { type: core.Component, args: [{
                     selector: 'nz-tree-virtual-scroll-view',
                     exportAs: 'nzTreeVirtualScrollView',
-                    template: "\n    <div class=\"ant-tree-list\">\n      <cdk-virtual-scroll-viewport\n        class=\"ant-tree-list-holder\"\n        [itemSize]=\"nzNodeWidth\"\n        [minBufferPx]=\"nzMinBufferPx\"\n        [maxBufferPx]=\"nzMaxBufferPx\"\n      >\n        <ng-container *cdkVirtualFor=\"let item of nodes; let i = index\">\n          <ng-template nzTreeVirtualScrollNodeOutlet [data]=\"item\"></ng-template>\n        </ng-container>\n      </cdk-virtual-scroll-viewport>\n    </div>\n    <ng-container nzTreeNodeOutlet></ng-container>\n  ",
+                    template: "\n    <div class=\"ant-tree-list\">\n      <cdk-virtual-scroll-viewport\n        class=\"ant-tree-list-holder\"\n        [itemSize]=\"itemSize\"\n        [minBufferPx]=\"nzMinBufferPx\"\n        [maxBufferPx]=\"nzMaxBufferPx\"\n      >\n        <ng-container *cdkVirtualFor=\"let item of nodes; let i = index\">\n          <ng-template nzTreeVirtualScrollNodeOutlet [data]=\"item\"></ng-template>\n        </ng-container>\n      </cdk-virtual-scroll-viewport>\n    </div>\n    <ng-container nzTreeNodeOutlet></ng-container>\n  ",
                     encapsulation: core.ViewEncapsulation.None,
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     providers: [
@@ -1062,6 +1087,7 @@
         nodeOutlet: [{ type: core.ViewChild, args: [NzTreeNodeOutletDirective, { static: true },] }],
         virtualScrollViewport: [{ type: core.ViewChild, args: [scrolling.CdkVirtualScrollViewport, { static: true },] }],
         nzNodeWidth: [{ type: core.Input }],
+        nzItemSize: [{ type: core.Input }],
         nzMinBufferPx: [{ type: core.Input }],
         nzMaxBufferPx: [{ type: core.Input }]
     };

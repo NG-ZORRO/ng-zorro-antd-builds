@@ -21,7 +21,7 @@ export declare class NzRowDirective implements OnInit, OnChanges, AfterViewInit,
     private directionality;
     nzAlign: NzAlign | null;
     nzJustify: NzJustify | null;
-    nzGutter: number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null;
+    nzGutter: string | number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null;
     readonly actualGutter$: ReplaySubject<[number | null, number | null]>;
     dir: Direction;
     private readonly destroy$;

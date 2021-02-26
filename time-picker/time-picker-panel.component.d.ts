@@ -54,6 +54,8 @@ export declare class NzTimePickerPanelComponent implements ControlValueAccessor,
     nzAddOn?: TemplateRef<void>;
     nzHideDisabledOptions: boolean;
     nzClearText?: string;
+    nzNowText?: string;
+    nzOkText?: string;
     nzPlaceHolder?: string | null;
     nzUse12Hours: boolean;
     nzDefaultOpenValue?: Date;
@@ -74,6 +76,7 @@ export declare class NzTimePickerPanelComponent implements ControlValueAccessor,
     get nzMinuteStep(): number;
     set nzSecondStep(value: number);
     get nzSecondStep(): number;
+    trackByFn(index: number): number;
     buildHours(): void;
     buildMinutes(): void;
     buildSeconds(): void;

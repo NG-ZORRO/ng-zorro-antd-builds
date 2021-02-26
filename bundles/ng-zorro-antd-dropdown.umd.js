@@ -28,6 +28,8 @@
         return extendStatics(d, b);
     };
     function __extends(d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -213,11 +215,13 @@
         }
         return ar;
     }
+    /** @deprecated */
     function __spread() {
         for (var ar = [], i = 0; i < arguments.length; i++)
             ar = ar.concat(__read(arguments[i]));
         return ar;
     }
+    /** @deprecated */
     function __spreadArrays() {
         for (var s = 0, i = 0, il = arguments.length; i < il; i++)
             s += arguments[i].length;
@@ -226,7 +230,11 @@
                 r[k] = a[j];
         return r;
     }
-    ;
+    function __spreadArray(to, from) {
+        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+            to[j] = from[i];
+        return to;
+    }
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
     }
@@ -359,7 +367,7 @@
                 /** merged mouse state **/
                 var mergedMouseState$_1 = rxjs.merge(menuMouseState$, hostMouseState$);
                 /** host click state **/
-                var hostClickState$_1 = rxjs.fromEvent(nativeElement_1, 'click').pipe(operators.mapTo(true));
+                var hostClickState$_1 = rxjs.fromEvent(nativeElement_1, 'click').pipe(operators.map(function () { return !_this.nzVisible; }));
                 /** visible state switch by nzTrigger **/
                 var visibleStateByTrigger$ = this.nzTrigger$.pipe(operators.switchMap(function (trigger) {
                     if (trigger === 'hover') {

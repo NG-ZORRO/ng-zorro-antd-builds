@@ -26,6 +26,7 @@ export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements O
     static ngAcceptInputType_nzKeyboard: BooleanInput;
     static ngAcceptInputType_nzNoAnimation: BooleanInput;
     static ngAcceptInputType_nzOkDanger: BooleanInput;
+    static ngAcceptInputType_nzCentered: BooleanInput;
     nzMask?: boolean;
     nzMaskClosable?: boolean;
     nzCloseOnNavigation?: boolean;
@@ -37,6 +38,7 @@ export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements O
     nzCancelLoading: boolean;
     nzKeyboard: boolean;
     nzNoAnimation: boolean;
+    nzCentered: boolean;
     nzContent?: string | TemplateRef<{}> | Type<T>;
     nzComponentParams?: T;
     nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;

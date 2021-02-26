@@ -176,8 +176,6 @@
   0% {
     max-height: 150px;
     margin-bottom: 16px;
-    padding-top: 16px;
-    padding-bottom: 16px;
     opacity: 1;
   }
   100% {

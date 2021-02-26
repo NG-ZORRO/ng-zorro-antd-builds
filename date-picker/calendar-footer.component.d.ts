@@ -25,7 +25,6 @@ export declare class CalendarFooterComponent implements OnChanges {
     isNonEmptyString: typeof isNonEmptyString;
     isTodayDisabled: boolean;
     todayTitle: string;
-    private now;
     constructor(dateHelper: DateHelperService);
     ngOnChanges(changes: SimpleChanges): void;
     onClickToday(): void;

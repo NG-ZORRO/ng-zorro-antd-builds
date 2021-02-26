@@ -28,6 +28,8 @@
         return extendStatics(d, b);
     };
     function __extends(d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -213,11 +215,13 @@
         }
         return ar;
     }
+    /** @deprecated */
     function __spread() {
         for (var ar = [], i = 0; i < arguments.length; i++)
             ar = ar.concat(__read(arguments[i]));
         return ar;
     }
+    /** @deprecated */
     function __spreadArrays() {
         for (var s = 0, i = 0, il = arguments.length; i < il; i++)
             s += arguments[i].length;
@@ -226,7 +230,11 @@
                 r[k] = a[j];
         return r;
     }
-    ;
+    function __spreadArray(to, from) {
+        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+            to[j] = from[i];
+        return to;
+    }
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
     }
@@ -844,7 +852,7 @@
                     host: {
                         '(keydown)': 'onKeyDown($event)'
                     },
-                    template: "\n    <div\n      #slider\n      class=\"ant-slider\"\n      [class.ant-slider-rtl]=\"dir === 'rtl'\"\n      [class.ant-slider-disabled]=\"nzDisabled\"\n      [class.ant-slider-vertical]=\"nzVertical\"\n      [class.ant-slider-with-marks]=\"marksArray\"\n    >\n      <div class=\"ant-slider-rail\"></div>\n      <nz-slider-track\n        [vertical]=\"nzVertical\"\n        [included]=\"nzIncluded\"\n        [offset]=\"track.offset!\"\n        [length]=\"track.length!\"\n        [reverse]=\"nzReverse\"\n        [dir]=\"dir\"\n      ></nz-slider-track>\n      <nz-slider-step\n        *ngIf=\"marksArray\"\n        [vertical]=\"nzVertical\"\n        [lowerBound]=\"$any(bounds.lower)\"\n        [upperBound]=\"$any(bounds.upper)\"\n        [marksArray]=\"marksArray\"\n        [included]=\"nzIncluded\"\n      ></nz-slider-step>\n      <nz-slider-handle\n        *ngFor=\"let handle of handles\"\n        [vertical]=\"nzVertical\"\n        [reverse]=\"nzReverse\"\n        [offset]=\"handle.offset!\"\n        [value]=\"handle.value!\"\n        [active]=\"handle.active\"\n        [tooltipFormatter]=\"nzTipFormatter\"\n        [tooltipVisible]=\"nzTooltipVisible\"\n        [tooltipPlacement]=\"nzTooltipPlacement\"\n        [dir]=\"dir\"\n      ></nz-slider-handle>\n      <nz-slider-marks\n        *ngIf=\"marksArray\"\n        [vertical]=\"nzVertical\"\n        [min]=\"nzMin\"\n        [max]=\"nzMax\"\n        [lowerBound]=\"$any(bounds.lower)\"\n        [upperBound]=\"$any(bounds.upper)\"\n        [marksArray]=\"marksArray\"\n        [included]=\"nzIncluded\"\n      ></nz-slider-marks>\n    </div>\n  "
+                    template: "\n    <div\n      #slider\n      class=\"ant-slider\"\n      [class.ant-slider-rtl]=\"dir === 'rtl'\"\n      [class.ant-slider-disabled]=\"nzDisabled\"\n      [class.ant-slider-vertical]=\"nzVertical\"\n      [class.ant-slider-with-marks]=\"marksArray\"\n    >\n      <div class=\"ant-slider-rail\"></div>\n      <nz-slider-track\n        [vertical]=\"nzVertical\"\n        [included]=\"nzIncluded\"\n        [offset]=\"track.offset!\"\n        [length]=\"track.length!\"\n        [reverse]=\"nzReverse\"\n        [dir]=\"dir\"\n      ></nz-slider-track>\n      <nz-slider-step\n        *ngIf=\"marksArray\"\n        [vertical]=\"nzVertical\"\n        [min]=\"nzMin\"\n        [max]=\"nzMax\"\n        [lowerBound]=\"$any(bounds.lower)\"\n        [upperBound]=\"$any(bounds.upper)\"\n        [marksArray]=\"marksArray\"\n        [included]=\"nzIncluded\"\n        [reverse]=\"nzReverse\"\n      ></nz-slider-step>\n      <nz-slider-handle\n        *ngFor=\"let handle of handles\"\n        [vertical]=\"nzVertical\"\n        [reverse]=\"nzReverse\"\n        [offset]=\"handle.offset!\"\n        [value]=\"handle.value!\"\n        [active]=\"handle.active\"\n        [tooltipFormatter]=\"nzTipFormatter\"\n        [tooltipVisible]=\"nzTooltipVisible\"\n        [tooltipPlacement]=\"nzTooltipPlacement\"\n        [dir]=\"dir\"\n      ></nz-slider-handle>\n      <nz-slider-marks\n        *ngIf=\"marksArray\"\n        [vertical]=\"nzVertical\"\n        [min]=\"nzMin\"\n        [max]=\"nzMax\"\n        [lowerBound]=\"$any(bounds.lower)\"\n        [upperBound]=\"$any(bounds.upper)\"\n        [marksArray]=\"marksArray\"\n        [included]=\"nzIncluded\"\n        [reverse]=\"nzReverse\"\n      ></nz-slider-marks>\n    </div>\n  "
                 },] }
     ];
     NzSliderComponent.ctorParameters = function () { return [
@@ -964,11 +972,11 @@
             this.marks = [];
         }
         NzSliderMarksComponent.prototype.ngOnChanges = function (changes) {
-            var marksArray = changes.marksArray, lowerBound = changes.lowerBound, upperBound = changes.upperBound;
-            if (marksArray) {
+            var marksArray = changes.marksArray, lowerBound = changes.lowerBound, upperBound = changes.upperBound, reverse = changes.reverse;
+            if (marksArray || reverse) {
                 this.buildMarks();
             }
-            if (marksArray || lowerBound || upperBound) {
+            if (marksArray || lowerBound || upperBound || reverse) {
                 this.togglePointActive();
             }
         };
@@ -994,16 +1002,17 @@
         };
         NzSliderMarksComponent.prototype.getMarkStyles = function (value, range, config) {
             var style;
+            var markValue = this.reverse ? this.max + this.min - value : value;
             if (this.vertical) {
                 style = {
                     marginBottom: '-50%',
-                    bottom: ((value - this.min) / range) * 100 + "%"
+                    bottom: ((markValue - this.min) / range) * 100 + "%"
                 };
             }
             else {
                 style = {
                     transform: "translate3d(-50%, 0, 0)",
-                    left: ((value - this.min) / range) * 100 + "%"
+                    left: ((markValue - this.min) / range) * 100 + "%"
                 };
             }
             if (isConfigObject(config) && config.style) {
@@ -1030,7 +1039,7 @@
                     preserveWhitespaces: false,
                     selector: 'nz-slider-marks',
                     exportAs: 'nzSliderMarks',
-                    template: "\n    <div class=\"ant-slider-mark\">\n      <span\n        class=\"ant-slider-mark-text\"\n        *ngFor=\"let attr of marks; trackBy: trackById\"\n        [class.ant-slider-mark-active]=\"attr.active\"\n        [ngStyle]=\"attr.style!\"\n        [innerHTML]=\"attr.label\"\n      >\n      </span>\n    </div>\n  "
+                    template: "\n    <div class=\"ant-slider-mark\">\n      <span\n        class=\"ant-slider-mark-text\"\n        *ngFor=\"let attr of marks; trackBy: trackById\"\n        [class.ant-slider-mark-active]=\"attr.active\"\n        [ngStyle]=\"attr.style!\"\n        [innerHTML]=\"attr.label\"\n      ></span>\n    </div>\n  "
                 },] }
     ];
     NzSliderMarksComponent.propDecorators = {
@@ -1040,7 +1049,8 @@
         min: [{ type: core.Input }],
         max: [{ type: core.Input }],
         vertical: [{ type: core.Input }],
-        included: [{ type: core.Input }]
+        included: [{ type: core.Input }],
+        reverse: [{ type: core.Input }]
     };
     __decorate([
         util.InputBoolean(),
@@ -1068,10 +1078,11 @@
             this.steps = [];
         }
         NzSliderStepComponent.prototype.ngOnChanges = function (changes) {
-            if (changes.marksArray) {
+            var marksArray = changes.marksArray, lowerBound = changes.lowerBound, upperBound = changes.upperBound, reverse = changes.reverse;
+            if (marksArray || reverse) {
                 this.buildSteps();
             }
-            if (changes.marksArray || changes.lowerBound || changes.upperBound) {
+            if (marksArray || lowerBound || upperBound || reverse) {
                 this.togglePointActive();
             }
         };
@@ -1079,10 +1090,16 @@
             return step.value;
         };
         NzSliderStepComponent.prototype.buildSteps = function () {
+            var _this = this;
             var orient = this.vertical ? 'bottom' : 'left';
             this.steps = this.marksArray.map(function (mark) {
                 var _a;
-                var value = mark.value, offset = mark.offset, config = mark.config;
+                var value = mark.value, config = mark.config;
+                var offset = mark.offset;
+                var range = _this.max - _this.min;
+                if (_this.reverse) {
+                    offset = ((_this.max - value) / range) * 100;
+                }
                 return {
                     value: value,
                     offset: offset,
@@ -1113,15 +1130,18 @@
                     selector: 'nz-slider-step',
                     exportAs: 'nzSliderStep',
                     preserveWhitespaces: false,
-                    template: "\n    <div class=\"ant-slider-step\">\n      <span\n        class=\"ant-slider-dot\"\n        *ngFor=\"let mark of steps; trackBy: trackById\"\n        [class.ant-slider-dot-active]=\"mark.active\"\n        [ngStyle]=\"mark.style!\"\n      >\n      </span>\n    </div>\n  "
+                    template: "\n    <div class=\"ant-slider-step\">\n      <span\n        class=\"ant-slider-dot\"\n        *ngFor=\"let mark of steps; trackBy: trackById\"\n        [class.ant-slider-dot-active]=\"mark.active\"\n        [ngStyle]=\"mark.style!\"\n      ></span>\n    </div>\n  "
                 },] }
     ];
     NzSliderStepComponent.propDecorators = {
         lowerBound: [{ type: core.Input }],
         upperBound: [{ type: core.Input }],
         marksArray: [{ type: core.Input }],
+        min: [{ type: core.Input }],
+        max: [{ type: core.Input }],
         vertical: [{ type: core.Input }],
-        included: [{ type: core.Input }]
+        included: [{ type: core.Input }],
+        reverse: [{ type: core.Input }]
     };
     __decorate([
         util.InputBoolean(),

@@ -60,6 +60,7 @@ export declare class BaseModalContainerComponent extends BasePortalOutlet implem
     private setExitAnimationClass;
     private setMaskExitAnimationClass;
     private cleanAnimationClass;
+    private setZIndexForBackdrop;
     bindBackdropStyle(): void;
     updateMaskClassname(): void;
     onAnimationDone(event: AnimationEvent): void;

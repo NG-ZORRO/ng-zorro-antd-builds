@@ -21,6 +21,7 @@ const core_1 = require("@angular-devkit/core");
 const schematics_1 = require("@angular-devkit/schematics");
 const schematics_2 = require("@angular/cdk/schematics");
 const schema_1 = require("@schematics/angular/component/schema");
+const ts = require("@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript");
 const ast_utils_1 = require("@schematics/angular/utility/ast-utils");
 const change_1 = require("@schematics/angular/utility/change");
 const find_module_1 = require("@schematics/angular/utility/find-module");
@@ -30,7 +31,27 @@ const workspace_1 = require("@schematics/angular/utility/workspace");
 const workspace_models_1 = require("@schematics/angular/utility/workspace-models");
 const fs_1 = require("fs");
 const path_1 = require("path");
-const ts = require("typescript");
+function findClassDeclarationParent(node) {
+    if (ts.isClassDeclaration(node)) {
+        return node;
+    }
+    return node.parent && findClassDeclarationParent(node.parent);
+}
+function getFirstNgModuleName(source) {
+    // First, find the @NgModule decorators.
+    const ngModulesMetadata = ast_utils_1.getDecoratorMetadata(source, 'NgModule', '@angular/core');
+    if (ngModulesMetadata.length === 0) {
+        return undefined;
+    }
+    // Then walk parent pointers up the AST, looking for the ClassDeclaration parent of the NgModule
+    // metadata.
+    const moduleClass = findClassDeclarationParent(ngModulesMetadata[0]);
+    if (!moduleClass || !moduleClass.name) {
+        return undefined;
+    }
+    // Get the class name of the module ClassDeclaration.
+    return moduleClass.name.text;
+}
 /**
  * Build a default project path for generating.
  * @param project The project to build the path for.
@@ -58,7 +79,7 @@ function readIntoSourceFile(host, modulePath) {
 // tslint:disable-next-line no-any
 function getModuleClassnamePrefix(source) {
     var _a;
-    const className = ast_utils_1.getFirstNgModuleName(source);
+    const className = getFirstNgModuleName(source);
     if (className) {
         const execArray = /(\w+)Module/gi.exec(className);
         return (_a = execArray === null || execArray === void 0 ? void 0 : execArray[1]) !== null && _a !== void 0 ? _a : null;

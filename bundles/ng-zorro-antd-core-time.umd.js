@@ -54,6 +54,8 @@
         return extendStatics(d, b);
     };
     function __extends(d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -239,11 +241,13 @@
         }
         return ar;
     }
+    /** @deprecated */
     function __spread() {
         for (var ar = [], i = 0; i < arguments.length; i++)
             ar = ar.concat(__read(arguments[i]));
         return ar;
     }
+    /** @deprecated */
     function __spreadArrays() {
         for (var s = 0, i = 0, il = arguments.length; i < il; i++)
             s += arguments[i].length;
@@ -252,7 +256,11 @@
                 r[k] = a[j];
         return r;
     }
-    ;
+    function __spreadArray(to, from) {
+        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+            to[j] = from[i];
+        return to;
+    }
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
     }
@@ -335,21 +343,27 @@
         var _a = __read(rangeValue, 2), start = _a[0], end = _a[1];
         return !!start && !!end && end.isBeforeDay(start);
     }
-    function normalizeRangeValue(value, allowSameInTwoPanel, type) {
+    function normalizeRangeValue(value, hasTimePicker, type, activePart) {
         if (type === void 0) { type = 'month'; }
+        if (activePart === void 0) { activePart = 'left'; }
         var _a = __read(value, 2), start = _a[0], end = _a[1];
         var newStart = start || new CandyDate();
-        var newEnd = end || new CandyDate();
+        var newEnd = end || (hasTimePicker ? newStart : newStart.add(1, type));
         if (start && !end) {
             newStart = start;
-            newEnd = start.add(1, type);
+            newEnd = hasTimePicker ? start : start.add(1, type);
         }
         else if (!start && end) {
-            newStart = end.add(-1, type);
+            newStart = hasTimePicker ? end : end.add(-1, type);
             newEnd = end;
         }
-        if (newEnd.isSame(newStart, type) && !allowSameInTwoPanel) {
-            newEnd = newStart.add(1, type);
+        else if (start && end && !hasTimePicker) {
+            if (activePart === 'left') {
+                newEnd = newStart.add(1, type);
+            }
+            else {
+                newStart = newEnd.add(-1, type);
+            }
         }
         return [newStart, newEnd];
     }
@@ -426,7 +440,8 @@
             return new CandyDate(new Date(this.nativeDate));
         };
         CandyDate.prototype.setHms = function (hour, minute, second) {
-            return new CandyDate(this.nativeDate.setHours(hour, minute, second));
+            var newDate = new Date(this.nativeDate.setHours(hour, minute, second));
+            return new CandyDate(newDate);
         };
         CandyDate.prototype.setYear = function (year) {
             return new CandyDate(setYear__default['default'](this.nativeDate, year));

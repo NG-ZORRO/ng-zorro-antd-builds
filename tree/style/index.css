@@ -292,6 +292,10 @@
 .ant-tree .ant-tree-treenode-active .ant-tree-node-content-wrapper {
   background: #f5f5f5;
 }
+.ant-tree .ant-tree-treenode.filter-node .ant-tree-title {
+  color: #d4380d;
+  font-weight: 500;
+}
 .ant-tree-indent {
   align-self: stretch;
   white-space: nowrap;

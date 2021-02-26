@@ -1,19 +1,20 @@
 import { __decorate, __metadata } from 'tslib';
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { TAB, ESCAPE, BACKSPACE } from '@angular/cdk/keycodes';
 import { CdkOverlayOrigin, CdkConnectedOverlay, OverlayModule } from '@angular/cdk/overlay';
 import { Injectable, EventEmitter, Component, Self, Injector, forwardRef, Renderer2, ChangeDetectorRef, ElementRef, Optional, Host, Input, Output, ViewChild, ContentChild, NgModule } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
-import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzTreeBaseService, NzTreeBase, NzTreeHigherOrderServiceToken } from 'ng-zorro-antd/core/tree';
 import { isNotNil, InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent, NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { Subject, merge, of } from 'rxjs';
 import { takeUntil, tap, filter } from 'rxjs/operators';
-import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
@@ -49,6 +50,7 @@ class NzTreeSelectComponent extends NzTreeBase {
         this.focusMonitor = focusMonitor;
         this.noAnimation = noAnimation;
         this._nzModuleName = NZ_CONFIG_MODULE_NAME;
+        this.nzId = null;
         this.nzAllowClear = true;
         this.nzShowExpand = true;
         this.nzShowLine = false;
@@ -319,10 +321,9 @@ class NzTreeSelectComponent extends NzTreeBase {
         this.selectedNodes = [...(this.nzCheckable ? this.getCheckedNodeList() : this.getSelectedNodeList())];
     }
     updatePosition() {
-        setTimeout(() => {
-            if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
-                this.cdkConnectedOverlay.overlayRef.updatePosition();
-            }
+        reqAnimFrame(() => {
+            var _a, _b;
+            (_b = (_a = this.cdkConnectedOverlay) === null || _a === void 0 ? void 0 : _a.overlayRef) === null || _b === void 0 ? void 0 : _b.updatePosition();
         });
     }
     onPositionChange(position) {
@@ -355,7 +356,7 @@ NzTreeSelectComponent.decorators = [
     { type: Component, args: [{
                 selector: 'nz-tree-select',
                 exportAs: 'nzTreeSelect',
-                animations: [slideMotion, zoomMotion],
+                animations: [slideMotion],
                 template: `
     <ng-template
       cdkConnectedOverlay
@@ -423,22 +424,14 @@ NzTreeSelectComponent.decorators = [
       <ng-container *ngIf="isMultiple">
         <nz-select-item
           *ngFor="let node of selectedNodes | slice: 0:nzMaxTagCount; trackBy: trackValue"
-          [@zoomMotion]
-          [@.disabled]="noAnimation?.nzNoAnimation"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation"
           [deletable]="true"
           [disabled]="node.isDisabled || nzDisabled"
           [label]="nzDisplayWith(node)"
-          (@zoomMotion.done)="updatePosition()"
           (delete)="removeSelected(node, true)"
         ></nz-select-item>
 
         <nz-select-item
           *ngIf="selectedNodes.length > nzMaxTagCount"
-          [@zoomMotion]
-          (@zoomMotion.done)="updatePosition()"
-          [@.disabled]="noAnimation?.nzNoAnimation"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation"
           [contentTemplateOutlet]="nzMaxTagPlaceholder"
           [contentTemplateOutletContext]="selectedNodes | slice: nzMaxTagCount"
           [deletable]="false"
@@ -448,6 +441,7 @@ NzTreeSelectComponent.decorators = [
       </ng-container>
 
       <nz-select-search
+        [nzId]="nzId"
         [showInput]="nzShowSearch"
         (keydown)="onKeyDownInput($event)"
         (isComposingChange)="isComposing = $event"
@@ -517,6 +511,7 @@ NzTreeSelectComponent.ctorParameters = () => [
     { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
 ];
 NzTreeSelectComponent.propDecorators = {
+    nzId: [{ type: Input }],
     nzAllowClear: [{ type: Input }],
     nzShowExpand: [{ type: Input }],
     nzShowLine: [{ type: Input }],

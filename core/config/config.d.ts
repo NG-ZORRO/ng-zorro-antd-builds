@@ -119,7 +119,7 @@ export interface DatePickerConfig {
     nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
 }
 export interface DescriptionsConfig {
-    nzBorder?: boolean;
+    nzBordered?: boolean;
     nzColumn?: {
         [key in NzBreakpointEnum]?: number;
     } | number;
@@ -221,6 +221,8 @@ export interface TabsConfig {
 export interface TimePickerConfig {
     nzAllowEmpty?: boolean;
     nzClearText?: string;
+    nzNowText?: string;
+    nzOkText?: string;
     nzFormat?: string;
     nzHourStep?: number;
     nzMinuteStep?: number;

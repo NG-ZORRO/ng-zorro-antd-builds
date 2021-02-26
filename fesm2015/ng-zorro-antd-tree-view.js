@@ -10,6 +10,7 @@ import { takeUntil, auditTime, take, map } from 'rxjs/operators';
 import { CdkTree, CdkTreeNode, CdkTreeNodeDef, CdkTreeNodeOutlet, CDK_TREE_NODE_OUTLET_NODE, CdkTreeNodePadding, CdkTreeNodeToggle, CdkTreeNodeOutletContext } from '@angular/cdk/tree';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { DataSource } from '@angular/cdk/collections';
 
 /**
@@ -678,12 +679,19 @@ NzTreeViewComponent.propDecorators = {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+const DEFAULT_SIZE = 28;
 class NzTreeVirtualScrollViewComponent extends NzTreeView {
     constructor() {
         super(...arguments);
-        this.nzNodeWidth = 28;
-        this.nzMinBufferPx = 28 * 5;
-        this.nzMaxBufferPx = 28 * 10;
+        this.itemSize = DEFAULT_SIZE;
+        /**
+         * @deprecated use `nzItemSize` instead
+         * @breaking-change 12.0.0
+         */
+        this.nzNodeWidth = DEFAULT_SIZE;
+        this.nzItemSize = DEFAULT_SIZE;
+        this.nzMinBufferPx = DEFAULT_SIZE * 5;
+        this.nzMaxBufferPx = DEFAULT_SIZE * 10;
         this.nodes = [];
     }
     renderNodeChanges(data) {
@@ -704,6 +712,16 @@ class NzTreeVirtualScrollViewComponent extends NzTreeView {
             nodeDef: node
         };
     }
+    ngOnChanges(changes) {
+        const { nzNodeWidth, nzItemSize } = changes;
+        if (nzNodeWidth) {
+            warnDeprecation('`nzNodeWidth` in nz-tree-virtual-scroll-view will be removed in 12.0.0, please use `nzItemSize` instead.');
+            this.itemSize = nzNodeWidth.currentValue;
+        }
+        if (nzItemSize) {
+            this.itemSize = nzItemSize.currentValue;
+        }
+    }
 }
 NzTreeVirtualScrollViewComponent.decorators = [
     { type: Component, args: [{
@@ -713,7 +731,7 @@ NzTreeVirtualScrollViewComponent.decorators = [
     <div class="ant-tree-list">
       <cdk-virtual-scroll-viewport
         class="ant-tree-list-holder"
-        [itemSize]="nzNodeWidth"
+        [itemSize]="itemSize"
         [minBufferPx]="nzMinBufferPx"
         [maxBufferPx]="nzMaxBufferPx"
       >
@@ -742,6 +760,7 @@ NzTreeVirtualScrollViewComponent.propDecorators = {
     nodeOutlet: [{ type: ViewChild, args: [NzTreeNodeOutletDirective, { static: true },] }],
     virtualScrollViewport: [{ type: ViewChild, args: [CdkVirtualScrollViewport, { static: true },] }],
     nzNodeWidth: [{ type: Input }],
+    nzItemSize: [{ type: Input }],
     nzMinBufferPx: [{ type: Input }],
     nzMaxBufferPx: [{ type: Input }]
 };

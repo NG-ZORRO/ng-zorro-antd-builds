@@ -49,6 +49,7 @@
 .ant-badge-dot {
   z-index: auto;
   width: 6px;
+  min-width: 6px;
   height: 6px;
   background: #ff4d4f;
   border-radius: 100%;

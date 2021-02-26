@@ -4,7 +4,7 @@ import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal, Por
 import { EventEmitter, Directive, ElementRef, ChangeDetectorRef, Renderer2, Component, ChangeDetectionStrategy, Optional, Inject, ViewChild, Output, Injector, TemplateRef, Injectable, SkipSelf, ViewContainerRef, Input, ContentChild, NgModule } from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn, warnDeprecation } from 'ng-zorro-antd/core/logger';
-import { getElementOffset, isPromise, isNotNil, InputBoolean } from 'ng-zorro-antd/core/util';
+import { getElementOffset, isNotNil, isPromise, InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject, defer } from 'rxjs';
 import { takeUntil, filter, take, startWith } from 'rxjs/operators';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
@@ -28,6 +28,7 @@ const noopFun = () => void 0;
 const ɵ0 = noopFun;
 class ModalOptions {
     constructor() {
+        this.nzCentered = false;
         this.nzClosable = true;
         this.nzOkLoading = false;
         this.nzOkDisabled = false;
@@ -100,8 +101,9 @@ function setContentInstanceParams(instance, params) {
     Object.assign(instance, params);
 }
 function getConfigFromComponent(component) {
-    const { nzMask, nzMaskClosable, nzClosable, nzOkLoading, nzOkDisabled, nzCancelDisabled, nzCancelLoading, nzKeyboard, nzNoAnimation, nzContent, nzComponentParams, nzFooter, nzZIndex, nzWidth, nzWrapClassName, nzClassName, nzStyle, nzTitle, nzCloseIcon, nzMaskStyle, nzBodyStyle, nzOkText, nzCancelText, nzOkType, nzOkDanger, nzIconType, nzModalType, nzOnOk, nzOnCancel, nzAfterOpen, nzAfterClose, nzCloseOnNavigation, nzAutofocus } = component;
+    const { nzCentered, nzMask, nzMaskClosable, nzClosable, nzOkLoading, nzOkDisabled, nzCancelDisabled, nzCancelLoading, nzKeyboard, nzNoAnimation, nzContent, nzComponentParams, nzFooter, nzZIndex, nzWidth, nzWrapClassName, nzClassName, nzStyle, nzTitle, nzCloseIcon, nzMaskStyle, nzBodyStyle, nzOkText, nzCancelText, nzOkType, nzOkDanger, nzIconType, nzModalType, nzOnOk, nzOnCancel, nzAfterOpen, nzAfterClose, nzCloseOnNavigation, nzAutofocus } = component;
     return {
+        nzCentered,
         nzMask,
         nzMaskClosable,
         nzClosable,
@@ -207,7 +209,7 @@ class BaseModalContainerComponent extends BasePortalOutlet {
             throwNzModalContentAlreadyAttachedError();
         }
         this.savePreviouslyFocusedElement();
-        this.setModalTransformOrigin();
+        this.setZIndexForBackdrop();
         return this.portalOutlet.attachComponentPortal(portal);
     }
     attachTemplatePortal(portal) {
@@ -215,10 +217,12 @@ class BaseModalContainerComponent extends BasePortalOutlet {
             throwNzModalContentAlreadyAttachedError();
         }
         this.savePreviouslyFocusedElement();
+        this.setZIndexForBackdrop();
         return this.portalOutlet.attachTemplatePortal(portal);
     }
     attachStringContent() {
         this.savePreviouslyFocusedElement();
+        this.setZIndexForBackdrop();
     }
     getNativeElement() {
         return this.elementRef.nativeElement;
@@ -322,6 +326,14 @@ class BaseModalContainerComponent extends BasePortalOutlet {
         modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.leave);
         modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.leaveActive);
     }
+    setZIndexForBackdrop() {
+        const backdropElement = this.overlayRef.backdropElement;
+        if (backdropElement) {
+            if (isNotNil(this.config.nzZIndex)) {
+                this.render.setStyle(backdropElement, 'z-index', this.config.nzZIndex);
+            }
+        }
+    }
     bindBackdropStyle() {
         const backdropElement = this.overlayRef.backdropElement;
         if (backdropElement) {
@@ -332,6 +344,7 @@ class BaseModalContainerComponent extends BasePortalOutlet {
                 });
                 this.oldMaskStyle = null;
             }
+            this.setZIndexForBackdrop();
             if (typeof this.config.nzMaskStyle === 'object' && Object.keys(this.config.nzMaskStyle).length) {
                 const styles = Object.assign({}, this.config.nzMaskStyle);
                 Object.keys(styles).forEach(key => {
@@ -486,6 +499,7 @@ NzModalConfirmContainerComponent.decorators = [
                     role: 'dialog',
                     '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
                     '[class.ant-modal-wrap-rtl]': `dir === 'rtl'`,
+                    '[class.ant-modal-centered]': 'config.nzCentered',
                     '[style.zIndex]': 'config.nzZIndex',
                     '[@.disabled]': 'config.nzNoAnimation',
                     '[@modalContainer]': 'state',
@@ -564,6 +578,7 @@ NzModalContainerComponent.decorators = [
                     role: 'dialog',
                     '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
                     '[class.ant-modal-wrap-rtl]': `dir === 'rtl'`,
+                    '[class.ant-modal-centered]': 'config.nzCentered',
                     '[style.zIndex]': 'config.nzZIndex',
                     '[@.disabled]': 'config.nzNoAnimation',
                     '[@modalContainer]': 'state',
@@ -959,6 +974,7 @@ class NzModalComponent {
         this.nzCancelLoading = false;
         this.nzKeyboard = true;
         this.nzNoAnimation = false;
+        this.nzCentered = false;
         this.nzZIndex = 1000;
         this.nzWidth = 520;
         this.nzCloseIcon = 'close';
@@ -1101,6 +1117,7 @@ NzModalComponent.propDecorators = {
     nzCancelLoading: [{ type: Input }],
     nzKeyboard: [{ type: Input }],
     nzNoAnimation: [{ type: Input }],
+    nzCentered: [{ type: Input }],
     nzContent: [{ type: Input }],
     nzComponentParams: [{ type: Input }],
     nzFooter: [{ type: Input }],
@@ -1173,6 +1190,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzModalComponent.prototype, "nzNoAnimation", void 0);
+__decorate([
+    InputBoolean(),
+    __metadata("design:type", Object)
+], NzModalComponent.prototype, "nzCentered", void 0);
 __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)

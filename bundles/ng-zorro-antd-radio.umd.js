@@ -43,6 +43,8 @@
         return extendStatics(d, b);
     };
     function __extends(d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -228,11 +230,13 @@
         }
         return ar;
     }
+    /** @deprecated */
     function __spread() {
         for (var ar = [], i = 0; i < arguments.length; i++)
             ar = ar.concat(__read(arguments[i]));
         return ar;
     }
+    /** @deprecated */
     function __spreadArrays() {
         for (var s = 0, i = 0, il = arguments.length; i < il; i++)
             s += arguments[i].length;
@@ -241,7 +245,11 @@
                 r[k] = a[j];
         return r;
     }
-    ;
+    function __spreadArray(to, from) {
+        for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+            to[j] = from[i];
+        return to;
+    }
     function __await(v) {
         return this instanceof __await ? (this.v = v, this) : new __await(v);
     }
@@ -374,13 +382,13 @@
         NzRadioGroupComponent.prototype.ngOnInit = function () {
             var _this = this;
             var _a;
-            this.nzRadioService.selected$.subscribe(function (value) {
+            this.nzRadioService.selected$.pipe(operators.takeUntil(this.destroy$)).subscribe(function (value) {
                 if (_this.value !== value) {
                     _this.value = value;
                     _this.onChange(_this.value);
                 }
             });
-            this.nzRadioService.touched$.subscribe(function () {
+            this.nzRadioService.touched$.pipe(operators.takeUntil(this.destroy$)).subscribe(function () {
                 Promise.resolve().then(function () { return _this.onTouched(); });
             });
             (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(operators.takeUntil(this.destroy$)).subscribe(function (direction) {

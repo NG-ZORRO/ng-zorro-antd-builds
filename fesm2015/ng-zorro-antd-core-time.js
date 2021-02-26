@@ -33,20 +33,25 @@ function wrongSortOrder(rangeValue) {
     const [start, end] = rangeValue;
     return !!start && !!end && end.isBeforeDay(start);
 }
-function normalizeRangeValue(value, allowSameInTwoPanel, type = 'month') {
+function normalizeRangeValue(value, hasTimePicker, type = 'month', activePart = 'left') {
     const [start, end] = value;
     let newStart = start || new CandyDate();
-    let newEnd = end || new CandyDate();
+    let newEnd = end || (hasTimePicker ? newStart : newStart.add(1, type));
     if (start && !end) {
         newStart = start;
-        newEnd = start.add(1, type);
+        newEnd = hasTimePicker ? start : start.add(1, type);
     }
     else if (!start && end) {
-        newStart = end.add(-1, type);
+        newStart = hasTimePicker ? end : end.add(-1, type);
         newEnd = end;
     }
-    if (newEnd.isSame(newStart, type) && !allowSameInTwoPanel) {
-        newEnd = newStart.add(1, type);
+    else if (start && end && !hasTimePicker) {
+        if (activePart === 'left') {
+            newEnd = newStart.add(1, type);
+        }
+        else {
+            newStart = newEnd.add(-1, type);
+        }
     }
     return [newStart, newEnd];
 }
@@ -123,7 +128,8 @@ class CandyDate {
         return new CandyDate(new Date(this.nativeDate));
     }
     setHms(hour, minute, second) {
-        return new CandyDate(this.nativeDate.setHours(hour, minute, second));
+        const newDate = new Date(this.nativeDate.setHours(hour, minute, second));
+        return new CandyDate(newDate);
     }
     setYear(year) {
         return new CandyDate(setYear(this.nativeDate, year));

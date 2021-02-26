@@ -45,7 +45,7 @@ class NzRowDirective {
                 });
             }
             else {
-                results[index] = g || null;
+                results[index] = Number(g) || null;
             }
         });
         return results;
@@ -202,7 +202,7 @@ class NzColDirective {
     }
     ngOnInit() {
         this.dir = this.directionality.value;
-        this.directionality.change.subscribe((direction) => {
+        this.directionality.change.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
             this.dir = direction;
             this.setHostClassMap();
         });

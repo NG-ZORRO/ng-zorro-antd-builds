@@ -132,20 +132,21 @@ class CalendarFooterComponent {
         this.isNonEmptyString = isNonEmptyString;
         this.isTodayDisabled = false;
         this.todayTitle = '';
-        this.now = new CandyDate();
     }
     ngOnChanges(changes) {
+        const now = new Date();
         if (changes.disabledDate) {
-            this.isTodayDisabled = !!(this.disabledDate && this.disabledDate(this.now.nativeDate));
+            this.isTodayDisabled = !!(this.disabledDate && this.disabledDate(now));
         }
         if (changes.locale) {
             // NOTE: Compat for DatePipe formatting rules
             const dateFormat = transCompatFormat(this.locale.dateFormat);
-            this.todayTitle = this.dateHelper.format(this.now.nativeDate, dateFormat);
+            this.todayTitle = this.dateHelper.format(now, dateFormat);
         }
     }
     onClickToday() {
-        this.clickToday.emit(this.now.clone()); // To prevent the "now" being modified from outside, we use clone
+        const now = new CandyDate();
+        this.clickToday.emit(now.clone()); // To prevent the "now" being modified from outside, we use clone
     }
 }
 CalendarFooterComponent.decorators = [
@@ -232,12 +233,12 @@ class DatePickerService {
     }
     initValue() {
         if (this.isRange) {
-            this.setActiveDate([]);
-            this.value = this.initialValue = [];
+            this.initialValue = [];
         }
         else {
-            this.value = this.initialValue = null;
+            this.initialValue = null;
         }
+        this.setValue(this.initialValue);
     }
     hasValue(value = this.value) {
         if (Array.isArray(value)) {
@@ -255,14 +256,14 @@ class DatePickerService {
             return value ? new CandyDate(value) : null;
         }
     }
-    setActiveDate(value, allowSameInTwoPanel = false, mode = 'month') {
+    setActiveDate(value, hasTimePicker = false, mode = 'month') {
         const parentPanels = {
             date: 'month',
             month: 'year',
             year: 'decade'
         };
         if (this.isRange) {
-            this.activeDate = normalizeRangeValue(value, allowSameInTwoPanel, parentPanels[mode]);
+            this.activeDate = normalizeRangeValue(value, hasTimePicker, parentPanels[mode], this.activeInput);
         }
         else {
             this.activeDate = cloneDate(value);
@@ -293,6 +294,7 @@ class DateRangePopupComponent {
     constructor(datePickerService, cdr) {
         this.datePickerService = datePickerService;
         this.cdr = cdr;
+        this.inline = false;
         this.panelModeChange = new EventEmitter();
         this.calendarChange = new EventEmitter();
         this.resultOk = new EventEmitter(); // Emitted when done with date selecting
@@ -431,27 +433,43 @@ class DateRangePopupComponent {
             this.checkedPartArr[this.datePickerService.getActiveIndex(checkedPart)] = true;
             this.hoverValue = selectedValue;
             if (emitValue) {
-                /**
-                 * if sort order is wrong, clear the other part's value
-                 */
-                if (wrongSortOrder(selectedValue)) {
+                if (this.inline) {
+                    // For UE, Should always be reversed, and clear vaue when next part is right
                     nextPart = this.reversedPart(checkedPart);
-                    selectedValue[this.datePickerService.getActiveIndex(nextPart)] = null;
-                    this.checkedPartArr[this.datePickerService.getActiveIndex(nextPart)] = false;
-                }
-                this.datePickerService.setValue(selectedValue);
-                /**
-                 * range date usually selected paired,
-                 * so we emit the date value only both date is allowed and both part are checked
-                 */
-                if (this.isBothAllowed(selectedValue) && this.checkedPartArr[0] && this.checkedPartArr[1]) {
+                    if (nextPart === 'right') {
+                        selectedValue[this.datePickerService.getActiveIndex(nextPart)] = null;
+                        this.checkedPartArr[this.datePickerService.getActiveIndex(nextPart)] = false;
+                    }
+                    this.datePickerService.setValue(selectedValue);
                     this.calendarChange.emit(selectedValue);
-                    this.clearHoverValue();
-                    this.datePickerService.emitValue$.next();
+                    if (this.isBothAllowed(selectedValue) && this.checkedPartArr[0] && this.checkedPartArr[1]) {
+                        this.clearHoverValue();
+                        this.datePickerService.emitValue$.next();
+                    }
                 }
-                else if (this.isAllowed(selectedValue)) {
-                    nextPart = this.reversedPart(checkedPart);
-                    this.calendarChange.emit([value.clone()]);
+                else {
+                    /**
+                     * if sort order is wrong, clear the other part's value
+                     */
+                    if (wrongSortOrder(selectedValue)) {
+                        nextPart = this.reversedPart(checkedPart);
+                        selectedValue[this.datePickerService.getActiveIndex(nextPart)] = null;
+                        this.checkedPartArr[this.datePickerService.getActiveIndex(nextPart)] = false;
+                    }
+                    this.datePickerService.setValue(selectedValue);
+                    /**
+                     * range date usually selected paired,
+                     * so we emit the date value only both date is allowed and both part are checked
+                     */
+                    if (this.isBothAllowed(selectedValue) && this.checkedPartArr[0] && this.checkedPartArr[1]) {
+                        this.calendarChange.emit(selectedValue);
+                        this.clearHoverValue();
+                        this.datePickerService.emitValue$.next();
+                    }
+                    else if (this.isAllowed(selectedValue)) {
+                        nextPart = this.reversedPart(checkedPart);
+                        this.calendarChange.emit([value.clone()]);
+                    }
                 }
             }
             else {
@@ -589,8 +607,8 @@ DateRangePopupComponent.decorators = [
         <div class="{{ prefixCls }}-range-arrow" [style.left.px]="datePickerService?.arrowLeft"></div>
         <div class="{{ prefixCls }}-panel-container">
           <div class="{{ prefixCls }}-panels">
-            <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'left' }"></ng-container>
-            <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'right' }"></ng-container>
+            <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'left' }"></ng-container>
+            <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: 'right' }"></ng-container>
           </div>
           <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
         </div>
@@ -611,28 +629,29 @@ DateRangePopupComponent.decorators = [
     </ng-template>
 
     <ng-template #tplInnerPopup let-partType="partType">
-      <!-- TODO(@wenqi73) [selectedValue] [hoverValue] types-->
-      <inner-popup
-        *ngIf="show(partType)"
-        [showWeek]="showWeek"
-        [endPanelMode]="getPanelMode(endPanelMode, partType)"
-        [partType]="partType"
-        [locale]="locale!"
-        [showTimePicker]="hasTimePicker"
-        [timeOptions]="getTimeOptions(partType)"
-        [panelMode]="getPanelMode(panelMode, partType)"
-        (panelModeChange)="onPanelModeChange($event, partType)"
-        [activeDate]="getActiveDate(partType)"
-        [value]="getValue(partType)"
-        [disabledDate]="disabledDate"
-        [dateRender]="dateRender"
-        [selectedValue]="$any(datePickerService?.value)"
-        [hoverValue]="$any(hoverValue)"
-        (cellHover)="onCellHover($event)"
-        (selectDate)="changeValueFromSelect($event, !showTime)"
-        (selectTime)="onSelectTime($event, partType)"
-        (headerChange)="onActiveDateChange($event, partType)"
-      ></inner-popup>
+      <div class="{{ prefixCls }}-panel" [class.ant-picker-panel-rtl]="dir === 'rtl'" [style.display]="show(partType) ? 'block' : 'none'">
+        <!-- TODO(@wenqi73) [selectedValue] [hoverValue] types-->
+        <inner-popup
+          [showWeek]="showWeek"
+          [endPanelMode]="getPanelMode(endPanelMode, partType)"
+          [partType]="partType"
+          [locale]="locale!"
+          [showTimePicker]="hasTimePicker"
+          [timeOptions]="getTimeOptions(partType)"
+          [panelMode]="getPanelMode(panelMode, partType)"
+          (panelModeChange)="onPanelModeChange($event, partType)"
+          [activeDate]="getActiveDate(partType)"
+          [value]="getValue(partType)"
+          [disabledDate]="disabledDate"
+          [dateRender]="dateRender"
+          [selectedValue]="$any(datePickerService?.value)"
+          [hoverValue]="$any(hoverValue)"
+          (cellHover)="onCellHover($event)"
+          (selectDate)="changeValueFromSelect($event, !showTime)"
+          (selectTime)="onSelectTime($event, partType)"
+          (headerChange)="onActiveDateChange($event, partType)"
+        ></inner-popup>
+      </div>
     </ng-template>
 
     <ng-template #tplFooter>
@@ -649,12 +668,6 @@ DateRangePopupComponent.decorators = [
         (clickOk)="onClickOk()"
         (clickToday)="onClickToday($event)"
       ></calendar-footer>
-    </ng-template>
-
-    <ng-template #tplRangePart let-partType="partType">
-      <div class="{{ prefixCls }}-panel" [class.ant-picker-panel-rtl]="dir === 'rtl'">
-        <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: partType }"></ng-container>
-      </div>
     </ng-template>
 
     <!-- Range ONLY: Range Quick Selector -->
@@ -681,6 +694,7 @@ DateRangePopupComponent.ctorParameters = () => [
 ];
 DateRangePopupComponent.propDecorators = {
     isRange: [{ type: Input }],
+    inline: [{ type: Input }],
     showWeek: [{ type: Input }],
     locale: [{ type: Input }],
     disabledDate: [{ type: Input }],
@@ -716,8 +730,10 @@ class NzPickerComponent {
         this.open = undefined;
         this.disabled = false;
         this.inputReadOnly = false;
+        this.inline = false;
         this.popupStyle = null;
         this.dir = 'ltr';
+        this.nzId = null;
         this.focusChange = new EventEmitter();
         this.valueChange = new EventEmitter();
         this.openChange = new EventEmitter(); // Emitted when overlay's open state change
@@ -788,11 +804,13 @@ class NzPickerComponent {
             });
         }
         this.datePickerService.inputPartChange$.pipe(takeUntil(this.destroy$)).subscribe(partType => {
+            var _a;
             if (partType) {
                 this.datePickerService.activeInput = partType;
             }
             this.focus();
             this.updateInputWidthAndArrowLeft();
+            (_a = this.panel) === null || _a === void 0 ? void 0 : _a.updateActiveDate();
         });
     }
     ngOnDestroy() {
@@ -823,6 +841,9 @@ class NzPickerComponent {
     }
     getInput(partType) {
         var _a, _b;
+        if (this.inline) {
+            return undefined;
+        }
         return this.isRange
             ? partType === 'left'
                 ? (_a = this.rangePickerInputs) === null || _a === void 0 ? void 0 : _a.first.nativeElement : (_b = this.rangePickerInputs) === null || _b === void 0 ? void 0 : _b.last.nativeElement
@@ -847,6 +868,9 @@ class NzPickerComponent {
     }
     // Show overlay content
     showOverlay() {
+        if (this.inline) {
+            return;
+        }
         if (!this.realOpenState && !this.disabled) {
             this.updateInputWidthAndArrowLeft();
             this.overlayOpen = true;
@@ -857,6 +881,9 @@ class NzPickerComponent {
         }
     }
     hideOverlay() {
+        if (this.inline) {
+            return;
+        }
         if (this.realOpenState) {
             this.overlayOpen = false;
             this.openChange.emit(false);
@@ -978,41 +1005,44 @@ NzPickerComponent.decorators = [
                 selector: '[nz-picker]',
                 exportAs: 'nzPicker',
                 template: `
-    <!-- Content of single picker -->
-    <div *ngIf="!isRange" class="{{ prefixCls }}-input">
-      <input
-        #pickerInput
-        [class.ant-input-disabled]="disabled"
-        [disabled]="disabled"
-        [readOnly]="inputReadOnly"
-        [(ngModel)]="inputValue"
-        placeholder="{{ getPlaceholder() }}"
-        [size]="inputSize"
-        (focus)="onFocus($event)"
-        (blur)="onBlur($event)"
-        (ngModelChange)="onInputChange($event)"
-        (keyup.enter)="onKeyupEnter($event)"
-      />
-      <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
-    </div>
+    <ng-container *ngIf="!inline; else inlineMode">
+      <!-- Content of single picker -->
+      <div *ngIf="!isRange" class="{{ prefixCls }}-input">
+        <input
+          #pickerInput
+          [attr.id]="nzId"
+          [class.ant-input-disabled]="disabled"
+          [disabled]="disabled"
+          [readOnly]="inputReadOnly"
+          [(ngModel)]="inputValue"
+          placeholder="{{ getPlaceholder() }}"
+          [size]="inputSize"
+          (focus)="onFocus($event)"
+          (blur)="onBlur($event)"
+          (ngModelChange)="onInputChange($event)"
+          (keyup.enter)="onKeyupEnter($event)"
+        />
+        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+      </div>
 
-    <!-- Content of range picker -->
-    <ng-container *ngIf="isRange">
-      <div class="{{ prefixCls }}-input">
-        <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
-      </div>
-      <div #separatorElement class="{{ prefixCls }}-range-separator">
-        <span class="{{ prefixCls }}-separator">
-          <ng-container *ngIf="separator; else defaultSeparator">{{ separator }}</ng-container>
-        </span>
-        <ng-template #defaultSeparator>
-          <i nz-icon nzType="swap-right" nzTheme="outline"></i>
-        </ng-template>
-      </div>
-      <div class="{{ prefixCls }}-input">
-        <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
-      </div>
-      <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+      <!-- Content of range picker -->
+      <ng-container *ngIf="isRange">
+        <div class="{{ prefixCls }}-input">
+          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
+        </div>
+        <div #separatorElement class="{{ prefixCls }}-range-separator">
+          <span class="{{ prefixCls }}-separator">
+            <ng-container *ngIf="separator; else defaultSeparator">{{ separator }}</ng-container>
+          </span>
+          <ng-template #defaultSeparator>
+            <i nz-icon nzType="swap-right" nzTheme="outline"></i>
+          </ng-template>
+        </div>
+        <div class="{{ prefixCls }}-input">
+          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
+        </div>
+        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+      </ng-container>
     </ng-container>
     <!-- Input for Range ONLY -->
     <ng-template #tplRangeInput let-partType="partType">
@@ -1044,6 +1074,26 @@ NzPickerComponent.decorators = [
       </span>
     </ng-template>
 
+    <ng-template #inlineMode>
+      <div class="ant-picker-wrapper" [nzNoAnimation]="noAnimation" [@slideMotion]="'enter'" style="position: relative;">
+        <div
+          class="{{ prefixCls }}-dropdown {{ dropdownClassName }}"
+          [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
+          [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
+          [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
+          [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
+          [class.ant-picker-dropdown-placement-topRight]="currentPositionY === 'top' && currentPositionX === 'end'"
+          [class.ant-picker-dropdown-range]="isRange"
+          [class.ant-picker-active-left]="datePickerService.activeInput === 'left'"
+          [class.ant-picker-active-right]="datePickerService.activeInput === 'right'"
+          [ngStyle]="popupStyle"
+        >
+          <!-- Compatible for overlay that not support offset dynamically and immediately -->
+          <ng-content></ng-content>
+        </div>
+      </div>
+    </ng-template>
+
     <!-- Overlay -->
     <ng-template
       cdkConnectedOverlay
@@ -1057,21 +1107,7 @@ NzPickerComponent.decorators = [
       (overlayKeydown)="onOverlayKeydown($event)"
       (overlayOutsideClick)="onClickOutside($event)"
     >
-      <div class="ant-picker-wrapper" [nzNoAnimation]="noAnimation" [@slideMotion]="'enter'" style="position: relative;">
-        <div
-          class="{{ prefixCls }}-dropdown {{ dropdownClassName }}"
-          [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
-          [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
-          [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
-          [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
-          [class.ant-picker-dropdown-placement-topRight]="currentPositionY === 'top' && currentPositionX === 'end'"
-          [class.ant-picker-dropdown-range]="isRange"
-          [ngStyle]="popupStyle"
-        >
-          <!-- Compatible for overlay that not support offset dynamically and immediately -->
-          <ng-content></ng-content>
-        </div>
-      </div>
+      <ng-container *ngTemplateOutlet="inlineMode"></ng-container>
     </ng-template>
   `,
                 animations: [slideMotion],
@@ -1093,6 +1129,7 @@ NzPickerComponent.propDecorators = {
     open: [{ type: Input }],
     disabled: [{ type: Input }],
     inputReadOnly: [{ type: Input }],
+    inline: [{ type: Input }],
     placeholder: [{ type: Input }],
     allowClear: [{ type: Input }],
     autoFocus: [{ type: Input }],
@@ -1102,6 +1139,7 @@ NzPickerComponent.propDecorators = {
     dropdownClassName: [{ type: Input }],
     suffixIcon: [{ type: Input }],
     dir: [{ type: Input }],
+    nzId: [{ type: Input }],
     focusChange: [{ type: Output }],
     valueChange: [{ type: Output }],
     openChange: [{ type: Output }],
@@ -1147,6 +1185,7 @@ class NzDatePickerComponent {
         this.nzDisabled = false;
         this.nzBorderless = false;
         this.nzInputReadOnly = false;
+        this.nzInline = false;
         this.nzPlaceHolder = '';
         this.nzPopupStyle = POPUP_STYLE_PATCH;
         this.nzSize = 'default';
@@ -1156,6 +1195,7 @@ class NzDatePickerComponent {
         this.nzDefaultPickerValue = null;
         this.nzSeparator = undefined;
         this.nzSuffixIcon = 'calendar';
+        this.nzId = null;
         // TODO(@wenqi73) The PanelMode need named for each pickers and export
         this.nzOnPanelChange = new EventEmitter();
         this.nzOnCalendarChange = new EventEmitter();
@@ -1382,6 +1422,7 @@ NzDatePickerComponent.decorators = [
       [separator]="nzSeparator"
       [disabled]="nzDisabled"
       [inputReadOnly]="nzInputReadOnly"
+      [inline]="nzInline"
       [format]="nzFormat"
       [allowClear]="nzAllowClear"
       [autoFocus]="nzAutoFocus"
@@ -1394,9 +1435,11 @@ NzDatePickerComponent.decorators = [
       [suffixIcon]="nzSuffixIcon"
       (openChange)="onOpenChange($event)"
       (focusChange)="onFocusChange($event)"
+      [nzId]="nzId"
     >
       <date-range-popup
         [isRange]="isRange"
+        [inline]="nzInline"
         [defaultPickerValue]="nzDefaultPickerValue"
         [showWeek]="nzMode === 'week'"
         [panelMode]="panelMode"
@@ -1423,6 +1466,7 @@ NzDatePickerComponent.decorators = [
                     '[class.ant-picker-disabled]': `nzDisabled`,
                     '[class.ant-picker-rtl]': `dir === 'rtl'`,
                     '[class.ant-picker-borderless]': `nzBorderless`,
+                    '[class.ant-picker-inline]': `nzInline`,
                     '(click)': 'picker.onClickInputBox($event)'
                 },
                 providers: [
@@ -1452,6 +1496,7 @@ NzDatePickerComponent.propDecorators = {
     nzDisabled: [{ type: Input }],
     nzBorderless: [{ type: Input }],
     nzInputReadOnly: [{ type: Input }],
+    nzInline: [{ type: Input }],
     nzOpen: [{ type: Input }],
     nzDisabledDate: [{ type: Input }],
     nzLocale: [{ type: Input }],
@@ -1470,6 +1515,7 @@ NzDatePickerComponent.propDecorators = {
     nzDefaultPickerValue: [{ type: Input }],
     nzSeparator: [{ type: Input }],
     nzSuffixIcon: [{ type: Input }],
+    nzId: [{ type: Input }],
     nzOnPanelChange: [{ type: Output }],
     nzOnCalendarChange: [{ type: Output }],
     nzOnOk: [{ type: Output }],
@@ -1497,6 +1543,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzDatePickerComponent.prototype, "nzInputReadOnly", void 0);
+__decorate([
+    InputBoolean(),
+    __metadata("design:type", Boolean)
+], NzDatePickerComponent.prototype, "nzInline", void 0);
 __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
@@ -2037,7 +2087,7 @@ class DateTableComponent extends AbstractTable {
             const row = {
                 isActive: false,
                 dateCells: [],
-                trackByIndex: `${weekStart.getYear()}`
+                trackByIndex: week
             };
             for (let day = 0; day < 7; day++) {
                 const date = weekStart.addDays(day);
@@ -2045,7 +2095,7 @@ class DateTableComponent extends AbstractTable {
                 const title = this.dateHelper.format(date.nativeDate, dateFormat);
                 const label = this.dateHelper.format(date.nativeDate, 'dd');
                 const cell = {
-                    trackByIndex: title,
+                    trackByIndex: day,
                     value: date.nativeDate,
                     label: label,
                     isSelected: false,
@@ -2198,14 +2248,14 @@ class DecadeTableComponent extends AbstractTable {
         for (let rowIndex = 0; rowIndex < MAX_ROW; rowIndex++) {
             const row = {
                 dateCells: [],
-                trackByIndex: previousYear
+                trackByIndex: rowIndex
             };
             for (let colIndex = 0; colIndex < MAX_COL; colIndex++) {
                 const start = previousYear + index * 10;
                 const end = previousYear + index * 10 + 9;
                 const content = `${start}-${end}`;
                 const cell = {
-                    trackByIndex: content,
+                    trackByIndex: colIndex,
                     value: this.activeDate.setYear(start).nativeDate,
                     content,
                     title: content,
@@ -2303,14 +2353,14 @@ class MonthTableComponent extends AbstractTable {
         for (let rowIndex = 0; rowIndex < this.MAX_ROW; rowIndex++) {
             const row = {
                 dateCells: [],
-                trackByIndex: this.activeDate.getYear()
+                trackByIndex: rowIndex
             };
             for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
                 const month = this.activeDate.setMonth(monthValue);
                 const isDisabled = this.isDisabledMonth(month);
                 const content = this.dateHelper.format(month.nativeDate, 'MMM');
                 const cell = {
-                    trackByIndex: content,
+                    trackByIndex: colIndex,
                     value: month.nativeDate,
                     isDisabled,
                     isSelected: month.isSameMonth(this.value),
@@ -2454,7 +2504,7 @@ class YearTableComponent extends AbstractTable {
         for (let rowIndex = 0; rowIndex < this.MAX_ROW; rowIndex++) {
             const row = {
                 dateCells: [],
-                trackByIndex: startYear
+                trackByIndex: rowIndex
             };
             for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
                 const yearNum = previousYear + yearValue;
@@ -2462,7 +2512,7 @@ class YearTableComponent extends AbstractTable {
                 const content = this.dateHelper.format(year.nativeDate, 'yyyy');
                 const isDisabled = this.isDisabledYear(year);
                 const cell = {
-                    trackByIndex: content,
+                    trackByIndex: colIndex,
                     value: year.nativeDate,
                     isDisabled,
                     isSameDecade: yearNum >= startYear && yearNum <= endYear,

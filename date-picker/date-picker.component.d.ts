@@ -33,6 +33,7 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     static ngAcceptInputType_nzDisabled: BooleanInput;
     static ngAcceptInputType_nzBorderless: BooleanInput;
     static ngAcceptInputType_nzInputReadOnly: BooleanInput;
+    static ngAcceptInputType_nzInline: BooleanInput;
     static ngAcceptInputType_nzOpen: BooleanInput;
     static ngAcceptInputType_nzShowToday: BooleanInput;
     static ngAcceptInputType_nzShowNow: BooleanInput;
@@ -52,6 +53,7 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     nzDisabled: boolean;
     nzBorderless: boolean;
     nzInputReadOnly: boolean;
+    nzInline: boolean;
     nzOpen?: boolean;
     nzDisabledDate?: (d: Date) => boolean;
     nzLocale: NzDatePickerI18nInterface;
@@ -70,6 +72,7 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     nzDefaultPickerValue: CompatibleDate | null;
     nzSeparator?: string;
     nzSuffixIcon: string | TemplateRef<NzSafeAny>;
+    nzId: string | null;
     readonly nzOnPanelChange: EventEmitter<string | NzDateMode[] | string[]>;
     readonly nzOnCalendarChange: EventEmitter<(Date | null)[]>;
     readonly nzOnOk: EventEmitter<Date | Date[] | null>;
