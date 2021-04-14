@@ -87,6 +87,7 @@ class NzDrawerComponent extends NzDrawerRef {
         this.placementChanging = false;
         this.placementChangeTimeoutId = -1;
         this.isOpen = false;
+        this.inAnimation = false;
         this.templateContext = {
             $implicit: undefined,
             drawerRef: this
@@ -213,6 +214,7 @@ class NzDrawerComponent extends NzDrawerRef {
     }
     close(result) {
         this.isOpen = false;
+        this.inAnimation = true;
         this.nzVisibleChange.emit(false);
         this.updateOverlayStyle();
         this.overlayKeyboardDispatcher.remove(this.overlayRef);
@@ -220,6 +222,7 @@ class NzDrawerComponent extends NzDrawerRef {
         setTimeout(() => {
             this.updateBodyOverflow();
             this.restoreFocus();
+            this.inAnimation = false;
             this.nzAfterClose.next(result);
             this.nzAfterClose.complete();
             this.componentInstance = null;
@@ -228,6 +231,7 @@ class NzDrawerComponent extends NzDrawerRef {
     open() {
         this.attachOverlay();
         this.isOpen = true;
+        this.inAnimation = true;
         this.nzVisibleChange.emit(true);
         this.overlayKeyboardDispatcher.add(this.overlayRef);
         this.updateOverlayStyle();
@@ -236,6 +240,8 @@ class NzDrawerComponent extends NzDrawerRef {
         this.trapFocus();
         this.changeDetectorRef.detectChanges();
         setTimeout(() => {
+            this.inAnimation = false;
+            this.changeDetectorRef.detectChanges();
             this.nzAfterOpen.next();
         }, this.getAnimationDuration());
     }
@@ -386,7 +392,7 @@ NzDrawerComponent.decorators = [
                   </ng-container>
                 </ng-container>
                 <ng-template #contentElseTemp>
-                  <ng-container *ngIf="contentFromContentChild">
+                  <ng-container *ngIf="contentFromContentChild && (isOpen || inAnimation)">
                     <ng-template [ngTemplateOutlet]="contentFromContentChild"></ng-template>
                   </ng-container>
                 </ng-template>

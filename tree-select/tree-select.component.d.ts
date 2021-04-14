@@ -13,7 +13,6 @@ import { NzFormatEmitEvent, NzTreeBase, NzTreeBaseService, NzTreeNode, NzTreeNod
 import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
-import { Subscription } from 'rxjs';
 import { NzTreeSelectService } from './tree-select.service';
 export declare function higherOrderServiceFactory(injector: Injector): NzTreeBaseService;
 export declare class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
@@ -67,6 +66,7 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     nzPlaceHolder: string;
     nzDropdownStyle: NgStyleInterface | null;
     nzDropdownClassName?: string;
+    nzBackdrop: boolean;
     set nzExpandedKeys(value: string[]);
     get nzExpandedKeys(): string[];
     nzDisplayWith: (node: NzTreeNode) => string | undefined;
@@ -104,8 +104,6 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     focused: boolean;
     inputValue: string;
     dropDownPosition: 'top' | 'center' | 'bottom';
-    selectionChangeSubscription: Subscription;
-    focusChangeSubscription: Subscription;
     selectedNodes: NzTreeNode[];
     expandedKeys: string[];
     value: string[];
@@ -133,7 +131,7 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     setInputValue(value: string): void;
     removeSelected(node: NzTreeNode, emit?: boolean): void;
     focusOnInput(): void;
-    subscribeSelectionChange(): Subscription;
+    subscribeSelectionChange(): void;
     updateSelectedNodes(init?: boolean): void;
     updatePosition(): void;
     onPositionChange(position: ConnectedOverlayPositionChange): void;

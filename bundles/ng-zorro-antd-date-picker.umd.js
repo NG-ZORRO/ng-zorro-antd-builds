@@ -450,18 +450,21 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     /**
@@ -917,6 +920,7 @@
             this.popupStyle = null;
             this.dir = 'ltr';
             this.nzId = null;
+            this.hasBackdrop = false;
             this.focusChange = new core.EventEmitter();
             this.valueChange = new core.EventEmitter();
             this.openChange = new core.EventEmitter(); // Emitted when overlay's open state change
@@ -1046,14 +1050,14 @@
         };
         NzPickerComponent.prototype.onFocus = function (event, partType) {
             event.preventDefault();
-            this.focusChange.emit(true);
+            this.focusChange.emit(event);
             if (partType) {
                 this.datePickerService.inputPartChange$.next(partType);
             }
         };
         NzPickerComponent.prototype.onBlur = function (event) {
             event.preventDefault();
-            this.focusChange.emit(false);
+            this.focusChange.emit(event);
         };
         // Show overlay content
         NzPickerComponent.prototype.showOverlay = function () {
@@ -1196,7 +1200,7 @@
                     encapsulation: core.ViewEncapsulation.None,
                     selector: '[nz-picker]',
                     exportAs: 'nzPicker',
-                    template: "\n    <ng-container *ngIf=\"!inline; else inlineMode\">\n      <!-- Content of single picker -->\n      <div *ngIf=\"!isRange\" class=\"{{ prefixCls }}-input\">\n        <input\n          #pickerInput\n          [attr.id]=\"nzId\"\n          [class.ant-input-disabled]=\"disabled\"\n          [disabled]=\"disabled\"\n          [readOnly]=\"inputReadOnly\"\n          [(ngModel)]=\"inputValue\"\n          placeholder=\"{{ getPlaceholder() }}\"\n          [size]=\"inputSize\"\n          (focus)=\"onFocus($event)\"\n          (blur)=\"onBlur($event)\"\n          (ngModelChange)=\"onInputChange($event)\"\n          (keyup.enter)=\"onKeyupEnter($event)\"\n        />\n        <ng-container *ngTemplateOutlet=\"tplRightRest\"></ng-container>\n      </div>\n\n      <!-- Content of range picker -->\n      <ng-container *ngIf=\"isRange\">\n        <div class=\"{{ prefixCls }}-input\">\n          <ng-container *ngTemplateOutlet=\"tplRangeInput; context: { partType: 'left' }\"></ng-container>\n        </div>\n        <div #separatorElement class=\"{{ prefixCls }}-range-separator\">\n          <span class=\"{{ prefixCls }}-separator\">\n            <ng-container *ngIf=\"separator; else defaultSeparator\">{{ separator }}</ng-container>\n          </span>\n          <ng-template #defaultSeparator>\n            <i nz-icon nzType=\"swap-right\" nzTheme=\"outline\"></i>\n          </ng-template>\n        </div>\n        <div class=\"{{ prefixCls }}-input\">\n          <ng-container *ngTemplateOutlet=\"tplRangeInput; context: { partType: 'right' }\"></ng-container>\n        </div>\n        <ng-container *ngTemplateOutlet=\"tplRightRest\"></ng-container>\n      </ng-container>\n    </ng-container>\n    <!-- Input for Range ONLY -->\n    <ng-template #tplRangeInput let-partType=\"partType\">\n      <input\n        #rangePickerInput\n        [disabled]=\"disabled\"\n        [readOnly]=\"inputReadOnly\"\n        [size]=\"inputSize\"\n        (click)=\"onClickInputBox($event)\"\n        (blur)=\"onBlur($event)\"\n        (focus)=\"onFocus($event, partType)\"\n        (keyup.enter)=\"onKeyupEnter($event)\"\n        [(ngModel)]=\"inputValue[datePickerService.getActiveIndex(partType)]\"\n        (ngModelChange)=\"onInputChange($event)\"\n        placeholder=\"{{ getPlaceholder(partType) }}\"\n      />\n    </ng-template>\n\n    <!-- Right operator icons -->\n    <ng-template #tplRightRest>\n      <div class=\"{{ prefixCls }}-active-bar\" [ngStyle]=\"activeBarStyle\"></div>\n      <span *ngIf=\"showClear()\" class=\"{{ prefixCls }}-clear\" (click)=\"onClickClear($event)\">\n        <i nz-icon nzType=\"close-circle\" nzTheme=\"fill\"></i>\n      </span>\n      <span class=\"{{ prefixCls }}-suffix\">\n        <ng-container *nzStringTemplateOutlet=\"suffixIcon; let suffixIcon\">\n          <i nz-icon [nzType]=\"suffixIcon\"></i>\n        </ng-container>\n      </span>\n    </ng-template>\n\n    <ng-template #inlineMode>\n      <div class=\"ant-picker-wrapper\" [nzNoAnimation]=\"noAnimation\" [@slideMotion]=\"'enter'\" style=\"position: relative;\">\n        <div\n          class=\"{{ prefixCls }}-dropdown {{ dropdownClassName }}\"\n          [class.ant-picker-dropdown-rtl]=\"dir === 'rtl'\"\n          [class.ant-picker-dropdown-placement-bottomLeft]=\"currentPositionY === 'bottom' && currentPositionX === 'start'\"\n          [class.ant-picker-dropdown-placement-topLeft]=\"currentPositionY === 'top' && currentPositionX === 'start'\"\n          [class.ant-picker-dropdown-placement-bottomRight]=\"currentPositionY === 'bottom' && currentPositionX === 'end'\"\n          [class.ant-picker-dropdown-placement-topRight]=\"currentPositionY === 'top' && currentPositionX === 'end'\"\n          [class.ant-picker-dropdown-range]=\"isRange\"\n          [class.ant-picker-active-left]=\"datePickerService.activeInput === 'left'\"\n          [class.ant-picker-active-right]=\"datePickerService.activeInput === 'right'\"\n          [ngStyle]=\"popupStyle\"\n        >\n          <!-- Compatible for overlay that not support offset dynamically and immediately -->\n          <ng-content></ng-content>\n        </div>\n      </div>\n    </ng-template>\n\n    <!-- Overlay -->\n    <ng-template\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayOpen]=\"realOpenState\"\n      [cdkConnectedOverlayPositions]=\"overlayPositions\"\n      [cdkConnectedOverlayTransformOriginOn]=\"'.ant-picker-wrapper'\"\n      (positionChange)=\"onPositionChange($event)\"\n      (detach)=\"onOverlayDetach()\"\n      (overlayKeydown)=\"onOverlayKeydown($event)\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n    >\n      <ng-container *ngTemplateOutlet=\"inlineMode\"></ng-container>\n    </ng-template>\n  ",
+                    template: "\n    <ng-container *ngIf=\"!inline; else inlineMode\">\n      <!-- Content of single picker -->\n      <div *ngIf=\"!isRange\" class=\"{{ prefixCls }}-input\">\n        <input\n          #pickerInput\n          [attr.id]=\"nzId\"\n          [class.ant-input-disabled]=\"disabled\"\n          [disabled]=\"disabled\"\n          [readOnly]=\"inputReadOnly\"\n          [(ngModel)]=\"inputValue\"\n          placeholder=\"{{ getPlaceholder() }}\"\n          [size]=\"inputSize\"\n          (focus)=\"onFocus($event)\"\n          (blur)=\"onBlur($event)\"\n          (ngModelChange)=\"onInputChange($event)\"\n          (keyup.enter)=\"onKeyupEnter($event)\"\n        />\n        <ng-container *ngTemplateOutlet=\"tplRightRest\"></ng-container>\n      </div>\n\n      <!-- Content of range picker -->\n      <ng-container *ngIf=\"isRange\">\n        <div class=\"{{ prefixCls }}-input\">\n          <ng-container *ngTemplateOutlet=\"tplRangeInput; context: { partType: 'left' }\"></ng-container>\n        </div>\n        <div #separatorElement class=\"{{ prefixCls }}-range-separator\">\n          <span class=\"{{ prefixCls }}-separator\">\n            <ng-container *ngIf=\"separator; else defaultSeparator\">{{ separator }}</ng-container>\n          </span>\n          <ng-template #defaultSeparator>\n            <i nz-icon nzType=\"swap-right\" nzTheme=\"outline\"></i>\n          </ng-template>\n        </div>\n        <div class=\"{{ prefixCls }}-input\">\n          <ng-container *ngTemplateOutlet=\"tplRangeInput; context: { partType: 'right' }\"></ng-container>\n        </div>\n        <ng-container *ngTemplateOutlet=\"tplRightRest\"></ng-container>\n      </ng-container>\n    </ng-container>\n    <!-- Input for Range ONLY -->\n    <ng-template #tplRangeInput let-partType=\"partType\">\n      <input\n        #rangePickerInput\n        [disabled]=\"disabled\"\n        [readOnly]=\"inputReadOnly\"\n        [size]=\"inputSize\"\n        (click)=\"onClickInputBox($event)\"\n        (blur)=\"onBlur($event)\"\n        (focus)=\"onFocus($event, partType)\"\n        (keyup.enter)=\"onKeyupEnter($event)\"\n        [(ngModel)]=\"inputValue[datePickerService.getActiveIndex(partType)]\"\n        (ngModelChange)=\"onInputChange($event)\"\n        placeholder=\"{{ getPlaceholder(partType) }}\"\n      />\n    </ng-template>\n\n    <!-- Right operator icons -->\n    <ng-template #tplRightRest>\n      <div class=\"{{ prefixCls }}-active-bar\" [ngStyle]=\"activeBarStyle\"></div>\n      <span *ngIf=\"showClear()\" class=\"{{ prefixCls }}-clear\" (click)=\"onClickClear($event)\">\n        <i nz-icon nzType=\"close-circle\" nzTheme=\"fill\"></i>\n      </span>\n      <span class=\"{{ prefixCls }}-suffix\">\n        <ng-container *nzStringTemplateOutlet=\"suffixIcon; let suffixIcon\">\n          <i nz-icon [nzType]=\"suffixIcon\"></i>\n        </ng-container>\n      </span>\n    </ng-template>\n\n    <ng-template #inlineMode>\n      <div class=\"ant-picker-wrapper\" [nzNoAnimation]=\"noAnimation\" [@slideMotion]=\"'enter'\" style=\"position: relative;\">\n        <div\n          class=\"{{ prefixCls }}-dropdown {{ dropdownClassName }}\"\n          [class.ant-picker-dropdown-rtl]=\"dir === 'rtl'\"\n          [class.ant-picker-dropdown-placement-bottomLeft]=\"currentPositionY === 'bottom' && currentPositionX === 'start'\"\n          [class.ant-picker-dropdown-placement-topLeft]=\"currentPositionY === 'top' && currentPositionX === 'start'\"\n          [class.ant-picker-dropdown-placement-bottomRight]=\"currentPositionY === 'bottom' && currentPositionX === 'end'\"\n          [class.ant-picker-dropdown-placement-topRight]=\"currentPositionY === 'top' && currentPositionX === 'end'\"\n          [class.ant-picker-dropdown-range]=\"isRange\"\n          [class.ant-picker-active-left]=\"datePickerService.activeInput === 'left'\"\n          [class.ant-picker-active-right]=\"datePickerService.activeInput === 'right'\"\n          [ngStyle]=\"popupStyle\"\n        >\n          <!-- Compatible for overlay that not support offset dynamically and immediately -->\n          <ng-content></ng-content>\n        </div>\n      </div>\n    </ng-template>\n\n    <!-- Overlay -->\n    <ng-template\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayHasBackdrop]=\"hasBackdrop\"\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayOpen]=\"realOpenState\"\n      [cdkConnectedOverlayPositions]=\"overlayPositions\"\n      [cdkConnectedOverlayTransformOriginOn]=\"'.ant-picker-wrapper'\"\n      (positionChange)=\"onPositionChange($event)\"\n      (detach)=\"onOverlayDetach()\"\n      (overlayKeydown)=\"onOverlayKeydown($event)\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n    >\n      <ng-container *ngTemplateOutlet=\"inlineMode\"></ng-container>\n    </ng-template>\n  ",
                     animations: [animation.slideMotion],
                     changeDetection: core.ChangeDetectionStrategy.OnPush
                 },] }
@@ -1227,6 +1231,7 @@
         suffixIcon: [{ type: core.Input }],
         dir: [{ type: core.Input }],
         nzId: [{ type: core.Input }],
+        hasBackdrop: [{ type: core.Input }],
         focusChange: [{ type: core.Output }],
         valueChange: [{ type: core.Output }],
         openChange: [{ type: core.Output }],
@@ -1282,6 +1287,7 @@
             this.nzDefaultPickerValue = null;
             this.nzSeparator = undefined;
             this.nzSuffixIcon = 'calendar';
+            this.nzBackdrop = false;
             this.nzId = null;
             // TODO(@wenqi73) The PanelMode need named for each pickers and export
             this.nzOnPanelChange = new core.EventEmitter();
@@ -1459,13 +1465,16 @@
             this.datePickerService.initialValue = newValue;
         };
         NzDatePickerComponent.prototype.onFocusChange = function (value) {
-            this.focused = value;
+            // When the relatedTarget is part of the elementRef, it means that it's a range-picker and you are navigating to
+            // the other input in that range picker. In that case we don't want to close the picker.
+            this.focused = (value.type === 'blur' && this.elementRef.nativeElement.contains(value.relatedTarget)) || value.type === 'focus';
             // TODO: avoid autoFocus cause change after checked error
             if (this.focused) {
                 this.renderer.addClass(this.elementRef.nativeElement, 'ant-picker-focused');
             }
             else {
                 this.renderer.removeClass(this.elementRef.nativeElement, 'ant-picker-focused');
+                this.close();
             }
         };
         NzDatePickerComponent.prototype.onPanelModeChange = function (panelMode) {
@@ -1506,7 +1515,7 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-year-picker,nz-range-picker',
                     exportAs: 'nzDatePicker',
-                    template: "\n    <div\n      nz-picker\n      [isRange]=\"isRange\"\n      [open]=\"nzOpen\"\n      [dir]=\"dir\"\n      [separator]=\"nzSeparator\"\n      [disabled]=\"nzDisabled\"\n      [inputReadOnly]=\"nzInputReadOnly\"\n      [inline]=\"nzInline\"\n      [format]=\"nzFormat\"\n      [allowClear]=\"nzAllowClear\"\n      [autoFocus]=\"nzAutoFocus\"\n      [placeholder]=\"nzPlaceHolder\"\n      style=\"display: inherit; align-items: center; width: 100%;\"\n      [dropdownClassName]=\"nzDropdownClassName\"\n      [class.ant-picker-dropdown-rtl]=\"dir === 'rtl'\"\n      [popupStyle]=\"nzPopupStyle\"\n      [noAnimation]=\"!!noAnimation?.nzNoAnimation\"\n      [suffixIcon]=\"nzSuffixIcon\"\n      (openChange)=\"onOpenChange($event)\"\n      (focusChange)=\"onFocusChange($event)\"\n      [nzId]=\"nzId\"\n    >\n      <date-range-popup\n        [isRange]=\"isRange\"\n        [inline]=\"nzInline\"\n        [defaultPickerValue]=\"nzDefaultPickerValue\"\n        [showWeek]=\"nzMode === 'week'\"\n        [panelMode]=\"panelMode\"\n        (panelModeChange)=\"onPanelModeChange($event)\"\n        (calendarChange)=\"onCalendarChange($event)\"\n        [locale]=\"nzLocale?.lang!\"\n        [showToday]=\"nzMode === 'date' && nzShowToday && !isRange && !nzShowTime\"\n        [showNow]=\"nzMode === 'date' && nzShowNow && !isRange && !!nzShowTime\"\n        [showTime]=\"nzShowTime\"\n        [dateRender]=\"nzDateRender\"\n        [disabledDate]=\"nzDisabledDate\"\n        [disabledTime]=\"nzDisabledTime\"\n        [extraFooter]=\"extraFooter\"\n        [ranges]=\"nzRanges\"\n        [dir]=\"dir\"\n        (resultOk)=\"onResultOk()\"\n      ></date-range-popup>\n    </div>\n  ",
+                    template: "\n    <div\n      nz-picker\n      style=\"display: inherit; align-items: center; width: 100%;\"\n      [id]=\"nzId\"\n      [isRange]=\"isRange\"\n      [open]=\"nzOpen\"\n      [dir]=\"dir\"\n      [separator]=\"nzSeparator\"\n      [disabled]=\"nzDisabled\"\n      [inputReadOnly]=\"nzInputReadOnly\"\n      [inline]=\"nzInline\"\n      [format]=\"nzFormat\"\n      [allowClear]=\"nzAllowClear\"\n      [autoFocus]=\"nzAutoFocus\"\n      [placeholder]=\"nzPlaceHolder\"\n      [dropdownClassName]=\"nzDropdownClassName\"\n      [class.ant-picker-dropdown-rtl]=\"dir === 'rtl'\"\n      [popupStyle]=\"nzPopupStyle\"\n      [noAnimation]=\"!!noAnimation?.nzNoAnimation\"\n      [suffixIcon]=\"nzSuffixIcon\"\n      [hasBackdrop]=\"nzBackdrop\"\n      (openChange)=\"onOpenChange($event)\"\n      (focusChange)=\"onFocusChange($event)\"\n      [nzId]=\"nzId\"\n    >\n      <date-range-popup\n        [isRange]=\"isRange\"\n        [inline]=\"nzInline\"\n        [defaultPickerValue]=\"nzDefaultPickerValue\"\n        [showWeek]=\"nzMode === 'week'\"\n        [panelMode]=\"panelMode\"\n        (panelModeChange)=\"onPanelModeChange($event)\"\n        (calendarChange)=\"onCalendarChange($event)\"\n        [locale]=\"nzLocale?.lang!\"\n        [showToday]=\"nzMode === 'date' && nzShowToday && !isRange && !nzShowTime\"\n        [showNow]=\"nzMode === 'date' && nzShowNow && !isRange && !!nzShowTime\"\n        [showTime]=\"nzShowTime\"\n        [dateRender]=\"nzDateRender\"\n        [disabledDate]=\"nzDisabledDate\"\n        [disabledTime]=\"nzDisabledTime\"\n        [extraFooter]=\"extraFooter\"\n        [ranges]=\"nzRanges\"\n        [dir]=\"dir\"\n        (resultOk)=\"onResultOk()\"\n      ></date-range-popup>\n    </div>\n  ",
                     host: {
                         '[class.ant-picker-range]': "isRange",
                         '[class.ant-picker-large]': "nzSize === 'large'",
@@ -1563,6 +1572,7 @@
         nzDefaultPickerValue: [{ type: core.Input }],
         nzSeparator: [{ type: core.Input }],
         nzSuffixIcon: [{ type: core.Input }],
+        nzBackdrop: [{ type: core.Input }],
         nzId: [{ type: core.Input }],
         nzOnPanelChange: [{ type: core.Output }],
         nzOnCalendarChange: [{ type: core.Output }],
@@ -1615,6 +1625,10 @@
         config.WithConfig(),
         __metadata("design:type", Object)
     ], NzDatePickerComponent.prototype, "nzSuffixIcon", void 0);
+    __decorate([
+        config.WithConfig(),
+        __metadata("design:type", Object)
+    ], NzDatePickerComponent.prototype, "nzBackdrop", void 0);
 
     /**
      * Use of this source code is governed by an MIT-style license that can be

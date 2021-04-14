@@ -65,6 +65,7 @@ export declare class NzTimePickerComponent implements ControlValueAccessor, OnIn
     nzAllowEmpty: boolean;
     nzDisabled: boolean;
     nzAutoFocus: boolean;
+    nzBackdrop: boolean;
     emitValue(value: Date | null): void;
     setValue(value: Date | null, syncPreValue?: boolean): void;
     open(): void;

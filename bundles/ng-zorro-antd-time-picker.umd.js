@@ -299,18 +299,21 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     /**
@@ -366,6 +369,7 @@
             this.nzAllowEmpty = true;
             this.nzDisabled = false;
             this.nzAutoFocus = false;
+            this.nzBackdrop = false;
             // TODO: move to host after View Engine deprecation
             this.elementRef.nativeElement.classList.add('ant-picker');
         }
@@ -534,7 +538,7 @@
                     changeDetection: core.ChangeDetectionStrategy.OnPush,
                     selector: 'nz-time-picker',
                     exportAs: 'nzTimePicker',
-                    template: "\n    <div class=\"ant-picker-input\">\n      <input\n        #inputElement\n        [attr.id]=\"nzId\"\n        type=\"text\"\n        [size]=\"inputSize\"\n        [placeholder]=\"nzPlaceHolder || (i18nPlaceHolder$ | async)\"\n        [(ngModel)]=\"inputValue\"\n        [disabled]=\"nzDisabled\"\n        (focus)=\"onFocus(true)\"\n        (blur)=\"onFocus(false)\"\n        (keyup.enter)=\"onKeyupEnter()\"\n        (keyup.escape)=\"onKeyupEsc()\"\n        (ngModelChange)=\"onInputChange($event)\"\n      />\n      <span class=\"ant-picker-suffix\">\n        <ng-container *nzStringTemplateOutlet=\"nzSuffixIcon; let suffixIcon\">\n          <i nz-icon [nzType]=\"suffixIcon\"></i>\n        </ng-container>\n      </span>\n      <span *ngIf=\"nzAllowEmpty && !nzDisabled && value\" class=\"ant-picker-clear\" (click)=\"onClickClearBtn($event)\">\n        <i nz-icon nzType=\"close-circle\" nzTheme=\"fill\" [attr.aria-label]=\"nzClearText\" [attr.title]=\"nzClearText\"></i>\n      </span>\n    </div>\n\n    <ng-template\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayPositions]=\"overlayPositions\"\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayOpen]=\"nzOpen\"\n      [cdkConnectedOverlayOffsetY]=\"-2\"\n      [cdkConnectedOverlayTransformOriginOn]=\"'.ant-picker-dropdown'\"\n      (detach)=\"close()\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n    >\n      <div [@slideMotion]=\"'enter'\" class=\"ant-picker-dropdown\">\n        <div class=\"ant-picker-panel-container\">\n          <div tabindex=\"-1\" class=\"ant-picker-panel\">\n            <nz-time-picker-panel\n              [ngClass]=\"nzPopupClassName\"\n              [format]=\"nzFormat\"\n              [nzHourStep]=\"nzHourStep\"\n              [nzMinuteStep]=\"nzMinuteStep\"\n              [nzSecondStep]=\"nzSecondStep\"\n              [nzDisabledHours]=\"nzDisabledHours\"\n              [nzDisabledMinutes]=\"nzDisabledMinutes\"\n              [nzDisabledSeconds]=\"nzDisabledSeconds\"\n              [nzPlaceHolder]=\"nzPlaceHolder || (i18nPlaceHolder$ | async)\"\n              [nzHideDisabledOptions]=\"nzHideDisabledOptions\"\n              [nzUse12Hours]=\"nzUse12Hours\"\n              [nzDefaultOpenValue]=\"nzDefaultOpenValue\"\n              [nzAddOn]=\"nzAddOn\"\n              [nzClearText]=\"nzClearText\"\n              [nzNowText]=\"nzNowText\"\n              [nzOkText]=\"nzOkText\"\n              [nzAllowEmpty]=\"nzAllowEmpty\"\n              [(ngModel)]=\"value\"\n              (ngModelChange)=\"onPanelValueChange($event)\"\n              (closePanel)=\"setCurrentValueAndClose()\"\n            ></nz-time-picker-panel>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  ",
+                    template: "\n    <div class=\"ant-picker-input\">\n      <input\n        #inputElement\n        [attr.id]=\"nzId\"\n        type=\"text\"\n        [size]=\"inputSize\"\n        [placeholder]=\"nzPlaceHolder || (i18nPlaceHolder$ | async)\"\n        [(ngModel)]=\"inputValue\"\n        [disabled]=\"nzDisabled\"\n        (focus)=\"onFocus(true)\"\n        (blur)=\"onFocus(false)\"\n        (keyup.enter)=\"onKeyupEnter()\"\n        (keyup.escape)=\"onKeyupEsc()\"\n        (ngModelChange)=\"onInputChange($event)\"\n      />\n      <span class=\"ant-picker-suffix\">\n        <ng-container *nzStringTemplateOutlet=\"nzSuffixIcon; let suffixIcon\">\n          <i nz-icon [nzType]=\"suffixIcon\"></i>\n        </ng-container>\n      </span>\n      <span *ngIf=\"nzAllowEmpty && !nzDisabled && value\" class=\"ant-picker-clear\" (click)=\"onClickClearBtn($event)\">\n        <i nz-icon nzType=\"close-circle\" nzTheme=\"fill\" [attr.aria-label]=\"nzClearText\" [attr.title]=\"nzClearText\"></i>\n      </span>\n    </div>\n\n    <ng-template\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayHasBackdrop]=\"nzBackdrop\"\n      [cdkConnectedOverlayPositions]=\"overlayPositions\"\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayOpen]=\"nzOpen\"\n      [cdkConnectedOverlayOffsetY]=\"-2\"\n      [cdkConnectedOverlayTransformOriginOn]=\"'.ant-picker-dropdown'\"\n      (detach)=\"close()\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n    >\n      <div [@slideMotion]=\"'enter'\" class=\"ant-picker-dropdown\">\n        <div class=\"ant-picker-panel-container\">\n          <div tabindex=\"-1\" class=\"ant-picker-panel\">\n            <nz-time-picker-panel\n              [ngClass]=\"nzPopupClassName\"\n              [format]=\"nzFormat\"\n              [nzHourStep]=\"nzHourStep\"\n              [nzMinuteStep]=\"nzMinuteStep\"\n              [nzSecondStep]=\"nzSecondStep\"\n              [nzDisabledHours]=\"nzDisabledHours\"\n              [nzDisabledMinutes]=\"nzDisabledMinutes\"\n              [nzDisabledSeconds]=\"nzDisabledSeconds\"\n              [nzPlaceHolder]=\"nzPlaceHolder || (i18nPlaceHolder$ | async)\"\n              [nzHideDisabledOptions]=\"nzHideDisabledOptions\"\n              [nzUse12Hours]=\"nzUse12Hours\"\n              [nzDefaultOpenValue]=\"nzDefaultOpenValue\"\n              [nzAddOn]=\"nzAddOn\"\n              [nzClearText]=\"nzClearText\"\n              [nzNowText]=\"nzNowText\"\n              [nzOkText]=\"nzOkText\"\n              [nzAllowEmpty]=\"nzAllowEmpty\"\n              [(ngModel)]=\"value\"\n              (ngModelChange)=\"onPanelValueChange($event)\"\n              (closePanel)=\"setCurrentValueAndClose()\"\n            ></nz-time-picker-panel>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  ",
                     host: {
                         '[class.ant-picker-large]': "nzSize === 'large'",
                         '[class.ant-picker-small]': "nzSize === 'small'",
@@ -583,7 +587,8 @@
         nzHideDisabledOptions: [{ type: core.Input }],
         nzAllowEmpty: [{ type: core.Input }],
         nzDisabled: [{ type: core.Input }],
-        nzAutoFocus: [{ type: core.Input }]
+        nzAutoFocus: [{ type: core.Input }],
+        nzBackdrop: [{ type: core.Input }]
     };
     __decorate([
         config.WithConfig(),
@@ -643,6 +648,10 @@
         util.InputBoolean(),
         __metadata("design:type", Object)
     ], NzTimePickerComponent.prototype, "nzAutoFocus", void 0);
+    __decorate([
+        config.WithConfig(),
+        __metadata("design:type", Object)
+    ], NzTimePickerComponent.prototype, "nzBackdrop", void 0);
 
     /**
      * Use of this source code is governed by an MIT-style license that can be

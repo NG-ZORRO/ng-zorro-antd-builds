@@ -46,10 +46,13 @@ export interface NzConfig {
     treeSelect?: TreeSelectConfig;
     typography?: TypographyConfig;
     image?: ImageConfig;
+    popconfirm?: PopConfirmConfig;
+    popover?: PopoverConfig;
 }
 export interface SelectConfig {
     nzBorderless?: boolean;
     nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
+    nzBackdrop?: boolean;
 }
 export interface AffixConfig {
     nzOffsetBottom?: number;
@@ -105,6 +108,7 @@ export interface CarouselConfig {
 }
 export interface CascaderConfig {
     nzSize?: string;
+    nzBackdrop?: boolean;
 }
 export interface CollapseConfig {
     nzAccordion?: boolean;
@@ -117,6 +121,7 @@ export interface CollapsePanelConfig {
 export interface DatePickerConfig {
     nzSeparator?: string;
     nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
+    nzBackdrop?: boolean;
 }
 export interface DescriptionsConfig {
     nzBordered?: boolean;
@@ -230,6 +235,7 @@ export interface TimePickerConfig {
     nzPopupClassName?: string;
     nzUse12Hours?: string;
     nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
+    nzBackdrop?: boolean;
 }
 export interface TreeConfig {
     nzBlockNode?: boolean;
@@ -242,6 +248,7 @@ export interface TreeSelectConfig {
     nzDropdownMatchSelectWidth?: boolean;
     nzHideUnMatched?: boolean;
     nzSize?: 'large' | 'small' | 'default';
+    nzBackdrop?: boolean;
 }
 export interface TypographyConfig {
     nzEllipsisRows?: number;
@@ -256,6 +263,12 @@ export interface ImageConfig {
     nzDisablePreview?: string;
     nzCloseOnNavigation?: boolean;
     nzDirection?: Direction;
+}
+export interface PopConfirmConfig {
+    nzPopconfirmBackdrop?: boolean;
+}
+export interface PopoverConfig {
+    nzPopoverBackdrop?: boolean;
 }
 export declare type NzConfigKey = keyof NzConfig;
 /**

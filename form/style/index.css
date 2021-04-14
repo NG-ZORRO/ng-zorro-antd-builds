@@ -644,9 +644,10 @@
   display: none;
 }
 .ant-form-item-label > label .ant-form-item-tooltip {
+  color: rgba(0, 0, 0, 0.45);
+  cursor: help;
   writing-mode: horizontal-tb;
   margin-inline-start: 4px;
-  color: rgba(0, 0, 0, 0.45);
 }
 .ant-form-item-label > label::after {
   content: ':';
@@ -685,37 +686,35 @@
   transition: color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 .ant-form-item .ant-input-textarea-show-count::after {
-  position: absolute;
-  bottom: -22px;
-  width: 100%;
+  margin-bottom: -22px;
 }
-.show-help-enter,
-.show-help-appear {
+.ant-show-help-enter,
+.ant-show-help-appear {
   animation-duration: 0.3s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.show-help-leave {
+.ant-show-help-leave {
   animation-duration: 0.3s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.show-help-enter.show-help-enter-active,
-.show-help-appear.show-help-appear-active {
+.ant-show-help-enter.ant-show-help-enter-active,
+.ant-show-help-appear.ant-show-help-appear-active {
   animation-name: antShowHelpIn;
   animation-play-state: running;
 }
-.show-help-leave.show-help-leave-active {
+.ant-show-help-leave.ant-show-help-leave-active {
   animation-name: antShowHelpOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.show-help-enter,
-.show-help-appear {
+.ant-show-help-enter,
+.ant-show-help-appear {
   opacity: 0;
   animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
 }
-.show-help-leave {
+.ant-show-help-leave {
   animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 @keyframes antShowHelpIn {

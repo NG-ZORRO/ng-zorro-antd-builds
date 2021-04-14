@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/color'), require('ng-zorro-antd/core/no-animation'), require('@angular/cdk/bidi'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/core/outlet')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/tooltip', ['exports', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/color', 'ng-zorro-antd/core/no-animation', '@angular/cdk/bidi', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/core/outlet'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].tooltip = {}), global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.color, global['ng-zorro-antd'].core['no-animation'], global.ng.cdk.bidi, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].core.outlet));
-}(this, (function (exports, core, animation, color, noAnimation, bidi, overlay, util, rxjs, operators, overlay$1, common, outlet) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/color'), require('ng-zorro-antd/core/no-animation'), require('@angular/cdk/bidi'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/core/outlet')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/tooltip', ['exports', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/color', 'ng-zorro-antd/core/no-animation', '@angular/cdk/bidi', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/core/outlet'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].tooltip = {}), global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.color, global['ng-zorro-antd'].core['no-animation'], global.ng.cdk.bidi, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].core.outlet));
+}(this, (function (exports, core, animation, color, noAnimation, bidi, config, overlay, util, rxjs, operators, overlay$1, common, outlet) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -299,27 +299,31 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     var NzTooltipBaseDirective = /** @class */ (function () {
-        function NzTooltipBaseDirective(elementRef, hostView, resolver, renderer, noAnimation) {
+        function NzTooltipBaseDirective(elementRef, hostView, resolver, renderer, noAnimation, nzConfigService) {
             this.elementRef = elementRef;
             this.hostView = hostView;
             this.resolver = resolver;
             this.renderer = renderer;
             this.noAnimation = noAnimation;
+            this.nzConfigService = nzConfigService;
             this.visibleChange = new core.EventEmitter();
             this.internalVisible = false;
             this.destroy$ = new rxjs.Subject();
@@ -399,8 +403,8 @@
             };
         };
         NzTooltipBaseDirective.prototype.ngOnChanges = function (changes) {
-            var specificTrigger = changes.specificTrigger;
-            if (specificTrigger && !specificTrigger.isFirstChange()) {
+            var trigger = changes.trigger;
+            if (trigger && !trigger.isFirstChange()) {
                 this.registerTriggers();
             }
             if (this.component) {
@@ -553,7 +557,8 @@
         { type: core.ViewContainerRef },
         { type: core.ComponentFactoryResolver },
         { type: core.Renderer2 },
-        { type: noAnimation.NzNoAnimationDirective }
+        { type: noAnimation.NzNoAnimationDirective },
+        { type: config.NzConfigService }
     ]; };
     // tslint:disable-next-line:directive-class-suffix
     var NzTooltipBaseComponent = /** @class */ (function () {
@@ -564,13 +569,13 @@
             this.nzTitle = null;
             this.nzContent = null;
             this.nzOverlayStyle = {};
+            this.nzBackdrop = false;
             this.nzVisibleChange = new rxjs.Subject();
             this._visible = false;
             this._trigger = 'hover';
             this.preferredPlacement = 'top';
             this.dir = 'ltr';
             this._classMap = {};
-            this._hasBackdrop = false;
             this._prefix = 'ant-tooltip';
             this._positions = __spread(overlay.DEFAULT_TOOLTIP_POSITIONS);
             this.destroy$ = new rxjs.Subject();
@@ -678,7 +683,7 @@
             this.cdr.markForCheck();
         };
         NzTooltipBaseComponent.prototype.onClickOutside = function (event) {
-            if (!this.origin.elementRef.nativeElement.contains(event.target)) {
+            if (!this.origin.elementRef.nativeElement.contains(event.target) && this.nzTrigger !== null) {
                 this.hide();
             }
         };

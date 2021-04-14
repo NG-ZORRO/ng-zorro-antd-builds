@@ -299,18 +299,21 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     /**
@@ -328,6 +331,14 @@
                     exportAs: 'nzMentionSuggestion'
                 },] }
     ];
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
+    var NZ_MENTION_CONFIG = {
+        split: ' '
+    };
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -389,7 +400,7 @@
         };
         NzMentionTriggerDirective.prototype.insertMention = function (mention) {
             var value = this.el.nativeElement.value;
-            var insertValue = mention.mention.trim() + ' ';
+            var insertValue = "" + mention.mention + NZ_MENTION_CONFIG.split;
             var newValue = [value.slice(0, mention.startPos + 1), insertValue, value.slice(mention.endPos, value.length)].join('');
             this.el.nativeElement.value = newValue;
             this.focus(mention.startPos + insertValue.length + 1);
@@ -635,15 +646,18 @@
             return !element.readOnly && !element.disabled;
         };
         NzMentionComponent.prototype.resetCursorMention = function () {
-            var value = this.triggerNativeElement.value.replace(/[\r\n]/g, ' ') || '';
+            var value = this.triggerNativeElement.value.replace(/[\r\n]/g, NZ_MENTION_CONFIG.split) || '';
             var selectionStart = this.triggerNativeElement.selectionStart;
             var prefix = typeof this.nzPrefix === 'string' ? [this.nzPrefix] : this.nzPrefix;
             var i = prefix.length;
             while (i >= 0) {
                 var startPos = value.lastIndexOf(prefix[i], selectionStart);
-                var endPos = value.indexOf(' ', selectionStart) > -1 ? value.indexOf(' ', selectionStart) : value.length;
+                var endPos = value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) > -1 ? value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) : value.length;
                 var mention = value.substring(startPos, endPos);
-                if ((startPos > 0 && value[startPos - 1] !== ' ') || startPos < 0 || mention.includes(prefix[i], 1) || mention.includes(' ')) {
+                if ((startPos > 0 && value[startPos - 1] !== NZ_MENTION_CONFIG.split) ||
+                    startPos < 0 ||
+                    mention.includes(prefix[i], 1) ||
+                    mention.includes(NZ_MENTION_CONFIG.split)) {
                     this.cursorMention = null;
                     this.cursorMentionStart = -1;
                     this.cursorMentionEnd = -1;

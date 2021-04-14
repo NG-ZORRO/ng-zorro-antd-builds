@@ -71,6 +71,7 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     nzServerSearch: boolean;
     nzDisabled: boolean;
     nzOpen: boolean;
+    nzBackdrop: boolean;
     nzOptions: NzSelectOptionInterface[];
     set nzShowArrow(value: boolean);
     get nzShowArrow(): boolean;

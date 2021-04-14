@@ -349,18 +349,21 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     /**
@@ -1222,6 +1225,33 @@
      * Use of this source code is governed by an MIT-style license that can be
      * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
      */
+    var NzModalTitleDirective = /** @class */ (function () {
+        function NzModalTitleDirective(nzModalRef, templateRef) {
+            this.nzModalRef = nzModalRef;
+            this.templateRef = templateRef;
+            if (this.nzModalRef) {
+                this.nzModalRef.updateConfig({
+                    nzTitle: this.templateRef
+                });
+            }
+        }
+        return NzModalTitleDirective;
+    }());
+    NzModalTitleDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: '[nzModalTitle]',
+                    exportAs: 'nzModalTitle'
+                },] }
+    ];
+    NzModalTitleDirective.ctorParameters = function () { return [
+        { type: NzModalRef, decorators: [{ type: core.Optional }] },
+        { type: core.TemplateRef }
+    ]; };
+
+    /**
+     * Use of this source code is governed by an MIT-style license that can be
+     * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+     */
     var NzModalComponent = /** @class */ (function () {
         function NzModalComponent(cdr, modal, viewContainerRef) {
             this.cdr = cdr;
@@ -1253,6 +1283,15 @@
             this.nzVisibleChange = new core.EventEmitter();
             this.modalRef = null;
         }
+        Object.defineProperty(NzModalComponent.prototype, "modalTitle", {
+            set: function (value) {
+                if (value) {
+                    this.setTitleWithTemplate(value);
+                }
+            },
+            enumerable: false,
+            configurable: true
+        });
         Object.defineProperty(NzModalComponent.prototype, "modalFooter", {
             set: function (value) {
                 if (value) {
@@ -1319,6 +1358,18 @@
         };
         NzModalComponent.prototype.getModalRef = function () {
             return this.modalRef;
+        };
+        NzModalComponent.prototype.setTitleWithTemplate = function (templateRef) {
+            var _this = this;
+            this.nzTitle = templateRef;
+            if (this.modalRef) {
+                // If modalRef already created, set the title in next tick
+                Promise.resolve().then(function () {
+                    _this.modalRef.updateConfig({
+                        nzTitle: _this.nzTitle
+                    });
+                });
+            }
         };
         NzModalComponent.prototype.setFooterWithTemplate = function (templateRef) {
             var _this = this;
@@ -1416,6 +1467,7 @@
         nzAfterClose: [{ type: core.Output }],
         nzVisibleChange: [{ type: core.Output }],
         contentTemplateRef: [{ type: core.ViewChild, args: [core.TemplateRef, { static: true },] }],
+        modalTitle: [{ type: core.ContentChild, args: [NzModalTitleDirective, { static: true, read: core.TemplateRef },] }],
         contentFromContentChild: [{ type: core.ContentChild, args: [NzModalContentDirective, { static: true, read: core.TemplateRef },] }],
         modalFooter: [{ type: core.ContentChild, args: [NzModalFooterDirective, { static: true, read: core.TemplateRef },] }]
     };
@@ -1558,7 +1610,7 @@
         { type: core.Component, args: [{
                     selector: 'div[nz-modal-footer]',
                     exportAs: 'NzModalFooterBuiltin',
-                    template: "\n    <ng-container *ngIf=\"config.nzFooter; else defaultFooterButtons\">\n      <ng-container *nzStringTemplateOutlet=\"config.nzFooter; context: { $implicit: config.nzComponentParams, modalRef: modalRef }\">\n        <div *ngIf=\"!buttonsFooter\" [innerHTML]=\"config.nzTitle\"></div>\n        <ng-container *ngIf=\"buttonsFooter\">\n          <button\n            *ngFor=\"let button of buttons\"\n            nz-button\n            (click)=\"onButtonClick(button)\"\n            [hidden]=\"!getButtonCallableProp(button, 'show')\"\n            [nzLoading]=\"getButtonCallableProp(button, 'loading')\"\n            [disabled]=\"getButtonCallableProp(button, 'disabled')\"\n            [nzType]=\"button.type!\"\n            [nzDanger]=\"button.danger\"\n            [nzShape]=\"button.shape!\"\n            [nzSize]=\"button.size!\"\n            [nzGhost]=\"button.ghost!\"\n          >\n            {{ button.label }}\n          </button>\n        </ng-container>\n      </ng-container>\n    </ng-container>\n    <ng-template #defaultFooterButtons>\n      <button\n        *ngIf=\"config.nzCancelText !== null\"\n        [attr.cdkFocusInitial]=\"config.nzAutofocus === 'cancel' || null\"\n        nz-button\n        (click)=\"onCancel()\"\n        [nzLoading]=\"!!config.nzCancelLoading\"\n        [disabled]=\"config.nzCancelDisabled\"\n      >\n        {{ config.nzCancelText || locale.cancelText }}\n      </button>\n      <button\n        *ngIf=\"config.nzOkText !== null\"\n        [attr.cdkFocusInitial]=\"config.nzAutofocus === 'ok' || null\"\n        nz-button\n        [nzType]=\"config.nzOkType!\"\n        [nzDanger]=\"config.nzOkDanger\"\n        (click)=\"onOk()\"\n        [nzLoading]=\"!!config.nzOkLoading\"\n        [disabled]=\"config.nzOkDisabled\"\n      >\n        {{ config.nzOkText || locale.okText }}\n      </button>\n    </ng-template>\n  ",
+                    template: "\n    <ng-container *ngIf=\"config.nzFooter; else defaultFooterButtons\">\n      <ng-container *nzStringTemplateOutlet=\"config.nzFooter; context: { $implicit: config.nzComponentParams, modalRef: modalRef }\">\n        <div *ngIf=\"!buttonsFooter\" [innerHTML]=\"config.nzFooter\"></div>\n        <ng-container *ngIf=\"buttonsFooter\">\n          <button\n            *ngFor=\"let button of buttons\"\n            nz-button\n            (click)=\"onButtonClick(button)\"\n            [hidden]=\"!getButtonCallableProp(button, 'show')\"\n            [nzLoading]=\"getButtonCallableProp(button, 'loading')\"\n            [disabled]=\"getButtonCallableProp(button, 'disabled')\"\n            [nzType]=\"button.type!\"\n            [nzDanger]=\"button.danger\"\n            [nzShape]=\"button.shape!\"\n            [nzSize]=\"button.size!\"\n            [nzGhost]=\"button.ghost!\"\n          >\n            {{ button.label }}\n          </button>\n        </ng-container>\n      </ng-container>\n    </ng-container>\n    <ng-template #defaultFooterButtons>\n      <button\n        *ngIf=\"config.nzCancelText !== null\"\n        [attr.cdkFocusInitial]=\"config.nzAutofocus === 'cancel' || null\"\n        nz-button\n        (click)=\"onCancel()\"\n        [nzLoading]=\"!!config.nzCancelLoading\"\n        [disabled]=\"config.nzCancelDisabled\"\n      >\n        {{ config.nzCancelText || locale.cancelText }}\n      </button>\n      <button\n        *ngIf=\"config.nzOkText !== null\"\n        [attr.cdkFocusInitial]=\"config.nzAutofocus === 'ok' || null\"\n        nz-button\n        [nzType]=\"config.nzOkType!\"\n        [nzDanger]=\"config.nzOkDanger\"\n        (click)=\"onOk()\"\n        [nzLoading]=\"!!config.nzOkLoading\"\n        [disabled]=\"config.nzOkDisabled\"\n      >\n        {{ config.nzOkText || locale.okText }}\n      </button>\n    </ng-template>\n  ",
                     host: {
                         class: 'ant-modal-footer'
                     },
@@ -1627,7 +1679,7 @@
                         noAnimation.NzNoAnimationModule,
                         pipes.NzPipesModule
                     ],
-                    exports: [NzModalComponent, NzModalFooterDirective, NzModalContentDirective],
+                    exports: [NzModalComponent, NzModalFooterDirective, NzModalContentDirective, NzModalTitleDirective],
                     providers: [NzModalService],
                     entryComponents: [NzModalContainerComponent, NzModalConfirmContainerComponent],
                     declarations: [
@@ -1637,6 +1689,7 @@
                         NzModalCloseComponent,
                         NzModalFooterComponent,
                         NzModalTitleComponent,
+                        NzModalTitleDirective,
                         NzModalContainerComponent,
                         NzModalConfirmContainerComponent,
                         NzModalComponent
@@ -1680,6 +1733,7 @@
     exports.NzModalRef = NzModalRef;
     exports.NzModalService = NzModalService;
     exports.NzModalTitleComponent = NzModalTitleComponent;
+    exports.NzModalTitleDirective = NzModalTitleDirective;
     exports.ZOOM_CLASS_NAME_MAP = ZOOM_CLASS_NAME_MAP;
     exports.applyConfigDefaults = applyConfigDefaults;
     exports.getConfigFromComponent = getConfigFromComponent;

@@ -72,6 +72,7 @@ class NzTimePickerComponent {
         this.nzAllowEmpty = true;
         this.nzDisabled = false;
         this.nzAutoFocus = false;
+        this.nzBackdrop = false;
         // TODO: move to host after View Engine deprecation
         this.elementRef.nativeElement.classList.add('ant-picker');
     }
@@ -266,6 +267,7 @@ NzTimePickerComponent.decorators = [
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayPositions]="overlayPositions"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="nzOpen"
@@ -352,7 +354,8 @@ NzTimePickerComponent.propDecorators = {
     nzHideDisabledOptions: [{ type: Input }],
     nzAllowEmpty: [{ type: Input }],
     nzDisabled: [{ type: Input }],
-    nzAutoFocus: [{ type: Input }]
+    nzAutoFocus: [{ type: Input }],
+    nzBackdrop: [{ type: Input }]
 };
 __decorate([
     WithConfig(),
@@ -412,6 +415,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzTimePickerComponent.prototype, "nzAutoFocus", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", Object)
+], NzTimePickerComponent.prototype, "nzBackdrop", void 0);
 
 /**
  * Use of this source code is governed by an MIT-style license that can be

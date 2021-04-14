@@ -167,6 +167,10 @@
 .ant-badge-not-a-wrapper:not(.ant-badge-status) {
   vertical-align: middle;
 }
+.ant-badge-not-a-wrapper .ant-scroll-number-custom-component {
+  transform: none;
+}
+.ant-badge-not-a-wrapper .ant-scroll-number-custom-component,
 .ant-badge-not-a-wrapper .ant-scroll-number {
   position: relative;
   top: auto;
@@ -190,13 +194,18 @@
   overflow: hidden;
 }
 .ant-scroll-number-only {
+  position: relative;
   display: inline-block;
   height: 20px;
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -webkit-transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
 }
 .ant-scroll-number-only > p.ant-scroll-number-only-unit {
   height: 20px;
   margin: 0;
+  -webkit-transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
 }
 .ant-scroll-number-symbol {
   vertical-align: top;

@@ -41,7 +41,9 @@ NzOptionGroupComponent.decorators = [
                 exportAs: 'nzOptionGroup',
                 encapsulation: ViewEncapsulation.None,
                 changeDetection: ChangeDetectionStrategy.OnPush,
-                template: ` <ng-content></ng-content> `
+                template: `
+    <ng-content></ng-content>
+  `
             },] }
 ];
 NzOptionGroupComponent.propDecorators = {
@@ -591,7 +593,7 @@ NzSelectTopControlComponent.propDecorators = {
  */
 const defaultFilterOption = (searchValue, item) => {
     if (item && item.nzLabel) {
-        return item.nzLabel.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
+        return item.nzLabel.toString().toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
     }
     else {
         return false;
@@ -640,6 +642,7 @@ class NzSelectComponent {
         this.nzServerSearch = false;
         this.nzDisabled = false;
         this.nzOpen = false;
+        this.nzBackdrop = false;
         this.nzOptions = [];
         this.nzOnSearch = new EventEmitter();
         this.nzScrollToBottom = new EventEmitter();
@@ -953,7 +956,7 @@ class NzSelectComponent {
             const listOfTransformedItem = listOfOptions.map(item => {
                 return {
                     template: item.label instanceof TemplateRef ? item.label : null,
-                    nzLabel: typeof item.label === 'string' ? item.label : null,
+                    nzLabel: typeof item.label === 'string' || typeof item.label === 'number' ? item.label : null,
                     nzValue: item.value,
                     nzDisabled: item.disabled || false,
                     nzHide: item.hide || false,
@@ -1002,6 +1005,12 @@ class NzSelectComponent {
         (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
             this.dir = direction;
             this.cdr.detectChanges();
+        });
+        this.nzConfigService
+            .getConfigChangeEventForComponent('select')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+            this.cdr.markForCheck();
         });
         this.dir = this.directionality.value;
     }
@@ -1082,6 +1091,7 @@ NzSelectComponent.decorators = [
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       [cdkConnectedOverlayOrigin]="origin"
@@ -1175,6 +1185,7 @@ NzSelectComponent.propDecorators = {
     nzServerSearch: [{ type: Input }],
     nzDisabled: [{ type: Input }],
     nzOpen: [{ type: Input }],
+    nzBackdrop: [{ type: Input }],
     nzOptions: [{ type: Input }],
     nzShowArrow: [{ type: Input }],
     nzOnSearch: [{ type: Output }],
@@ -1231,6 +1242,11 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Object)
 ], NzSelectComponent.prototype, "nzOpen", void 0);
+__decorate([
+    WithConfig(),
+    InputBoolean(),
+    __metadata("design:type", Object)
+], NzSelectComponent.prototype, "nzBackdrop", void 0);
 
 /**
  * Use of this source code is governed by an MIT-style license that can be

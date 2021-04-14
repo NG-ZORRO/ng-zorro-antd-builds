@@ -24,7 +24,7 @@ export declare class NzTableDataService implements OnDestroy {
     queryParams$: Observable<NzTableQueryParams>;
     private listOfDataAfterCalc$;
     private listOfFrontEndCurrentPageData$;
-    listOfCurrentPageData$: Observable<any[] | readonly any[]>;
+    listOfCurrentPageData$: Observable<any[]>;
     total$: Observable<number>;
     updatePageSize(size: number): void;
     updateFrontPagination(pagination: boolean): void;

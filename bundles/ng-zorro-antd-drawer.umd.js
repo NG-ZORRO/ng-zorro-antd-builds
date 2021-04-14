@@ -299,18 +299,21 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     /**
@@ -386,6 +389,7 @@
             _this.placementChanging = false;
             _this.placementChangeTimeoutId = -1;
             _this.isOpen = false;
+            _this.inAnimation = false;
             _this.templateContext = {
                 $implicit: undefined,
                 drawerRef: _this
@@ -549,6 +553,7 @@
         NzDrawerComponent.prototype.close = function (result) {
             var _this = this;
             this.isOpen = false;
+            this.inAnimation = true;
             this.nzVisibleChange.emit(false);
             this.updateOverlayStyle();
             this.overlayKeyboardDispatcher.remove(this.overlayRef);
@@ -556,6 +561,7 @@
             setTimeout(function () {
                 _this.updateBodyOverflow();
                 _this.restoreFocus();
+                _this.inAnimation = false;
                 _this.nzAfterClose.next(result);
                 _this.nzAfterClose.complete();
                 _this.componentInstance = null;
@@ -565,6 +571,7 @@
             var _this = this;
             this.attachOverlay();
             this.isOpen = true;
+            this.inAnimation = true;
             this.nzVisibleChange.emit(true);
             this.overlayKeyboardDispatcher.add(this.overlayRef);
             this.updateOverlayStyle();
@@ -573,6 +580,8 @@
             this.trapFocus();
             this.changeDetectorRef.detectChanges();
             setTimeout(function () {
+                _this.inAnimation = false;
+                _this.changeDetectorRef.detectChanges();
                 _this.nzAfterOpen.next();
             }, this.getAnimationDuration());
         };
@@ -681,7 +690,7 @@
         { type: i0.Component, args: [{
                     selector: 'nz-drawer',
                     exportAs: 'nzDrawer',
-                    template: "\n    <ng-template #drawerTemplate>\n      <div\n        class=\"ant-drawer\"\n        [nzNoAnimation]=\"nzNoAnimation\"\n        [class.ant-drawer-rtl]=\"dir === 'rtl'\"\n        [class.ant-drawer-open]=\"isOpen\"\n        [class.no-mask]=\"!nzMask\"\n        [class.ant-drawer-top]=\"nzPlacement === 'top'\"\n        [class.ant-drawer-bottom]=\"nzPlacement === 'bottom'\"\n        [class.ant-drawer-right]=\"nzPlacement === 'right'\"\n        [class.ant-drawer-left]=\"nzPlacement === 'left'\"\n        [style.transform]=\"offsetTransform\"\n        [style.transition]=\"placementChanging ? 'none' : null\"\n        [style.zIndex]=\"nzZIndex\"\n      >\n        <div class=\"ant-drawer-mask\" (click)=\"maskClick()\" *ngIf=\"nzMask\" [ngStyle]=\"nzMaskStyle\"></div>\n        <div\n          class=\"ant-drawer-content-wrapper {{ nzWrapClassName }}\"\n          [style.width]=\"width\"\n          [style.height]=\"height\"\n          [style.transform]=\"transform\"\n          [style.transition]=\"placementChanging ? 'none' : null\"\n        >\n          <div class=\"ant-drawer-content\">\n            <div class=\"ant-drawer-wrapper-body\" [style.height]=\"isLeftOrRight ? '100%' : null\">\n              <div *ngIf=\"nzTitle || nzClosable\" [class.ant-drawer-header]=\"!!nzTitle\" [class.ant-drawer-header-no-title]=\"!nzTitle\">\n                <div *ngIf=\"nzTitle\" class=\"ant-drawer-title\">\n                  <ng-container *nzStringTemplateOutlet=\"nzTitle\"><div [innerHTML]=\"nzTitle\"></div></ng-container>\n                </div>\n                <button *ngIf=\"nzClosable\" (click)=\"closeClick()\" aria-label=\"Close\" class=\"ant-drawer-close\" style=\"--scroll-bar: 0px;\">\n                  <ng-container *nzStringTemplateOutlet=\"nzCloseIcon; let closeIcon\">\n                    <i nz-icon [nzType]=\"closeIcon\"></i>\n                  </ng-container>\n                </button>\n              </div>\n              <div class=\"ant-drawer-body\" [ngStyle]=\"nzBodyStyle\">\n                <ng-template cdkPortalOutlet></ng-template>\n                <ng-container *ngIf=\"nzContent; else contentElseTemp\">\n                  <ng-container *ngIf=\"isTemplateRef(nzContent)\">\n                    <ng-container *ngTemplateOutlet=\"$any(nzContent); context: templateContext\"></ng-container>\n                  </ng-container>\n                </ng-container>\n                <ng-template #contentElseTemp>\n                  <ng-container *ngIf=\"contentFromContentChild\">\n                    <ng-template [ngTemplateOutlet]=\"contentFromContentChild\"></ng-template>\n                  </ng-container>\n                </ng-template>\n                <ng-content *ngIf=\"!(nzContent || contentFromContentChild)\"></ng-content>\n              </div>\n              <div *ngIf=\"nzFooter\" class=\"ant-drawer-footer\">\n                <ng-container *nzStringTemplateOutlet=\"nzFooter\"><div [innerHTML]=\"nzFooter\"></div></ng-container>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  ",
+                    template: "\n    <ng-template #drawerTemplate>\n      <div\n        class=\"ant-drawer\"\n        [nzNoAnimation]=\"nzNoAnimation\"\n        [class.ant-drawer-rtl]=\"dir === 'rtl'\"\n        [class.ant-drawer-open]=\"isOpen\"\n        [class.no-mask]=\"!nzMask\"\n        [class.ant-drawer-top]=\"nzPlacement === 'top'\"\n        [class.ant-drawer-bottom]=\"nzPlacement === 'bottom'\"\n        [class.ant-drawer-right]=\"nzPlacement === 'right'\"\n        [class.ant-drawer-left]=\"nzPlacement === 'left'\"\n        [style.transform]=\"offsetTransform\"\n        [style.transition]=\"placementChanging ? 'none' : null\"\n        [style.zIndex]=\"nzZIndex\"\n      >\n        <div class=\"ant-drawer-mask\" (click)=\"maskClick()\" *ngIf=\"nzMask\" [ngStyle]=\"nzMaskStyle\"></div>\n        <div\n          class=\"ant-drawer-content-wrapper {{ nzWrapClassName }}\"\n          [style.width]=\"width\"\n          [style.height]=\"height\"\n          [style.transform]=\"transform\"\n          [style.transition]=\"placementChanging ? 'none' : null\"\n        >\n          <div class=\"ant-drawer-content\">\n            <div class=\"ant-drawer-wrapper-body\" [style.height]=\"isLeftOrRight ? '100%' : null\">\n              <div *ngIf=\"nzTitle || nzClosable\" [class.ant-drawer-header]=\"!!nzTitle\" [class.ant-drawer-header-no-title]=\"!nzTitle\">\n                <div *ngIf=\"nzTitle\" class=\"ant-drawer-title\">\n                  <ng-container *nzStringTemplateOutlet=\"nzTitle\"><div [innerHTML]=\"nzTitle\"></div></ng-container>\n                </div>\n                <button *ngIf=\"nzClosable\" (click)=\"closeClick()\" aria-label=\"Close\" class=\"ant-drawer-close\" style=\"--scroll-bar: 0px;\">\n                  <ng-container *nzStringTemplateOutlet=\"nzCloseIcon; let closeIcon\">\n                    <i nz-icon [nzType]=\"closeIcon\"></i>\n                  </ng-container>\n                </button>\n              </div>\n              <div class=\"ant-drawer-body\" [ngStyle]=\"nzBodyStyle\">\n                <ng-template cdkPortalOutlet></ng-template>\n                <ng-container *ngIf=\"nzContent; else contentElseTemp\">\n                  <ng-container *ngIf=\"isTemplateRef(nzContent)\">\n                    <ng-container *ngTemplateOutlet=\"$any(nzContent); context: templateContext\"></ng-container>\n                  </ng-container>\n                </ng-container>\n                <ng-template #contentElseTemp>\n                  <ng-container *ngIf=\"contentFromContentChild && (isOpen || inAnimation)\">\n                    <ng-template [ngTemplateOutlet]=\"contentFromContentChild\"></ng-template>\n                  </ng-container>\n                </ng-template>\n                <ng-content *ngIf=\"!(nzContent || contentFromContentChild)\"></ng-content>\n              </div>\n              <div *ngIf=\"nzFooter\" class=\"ant-drawer-footer\">\n                <ng-container *nzStringTemplateOutlet=\"nzFooter\"><div [innerHTML]=\"nzFooter\"></div></ng-container>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  ",
                     preserveWhitespaces: false,
                     changeDetection: i0.ChangeDetectionStrategy.OnPush
                 },] }

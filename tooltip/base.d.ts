@@ -5,6 +5,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import { AfterViewInit, ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
+import { NzConfigService, PopConfirmConfig, PopoverConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NgClassInterface, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
@@ -18,6 +19,8 @@ export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDes
     protected resolver: ComponentFactoryResolver;
     protected renderer: Renderer2;
     protected noAnimation?: NzNoAnimationDirective | undefined;
+    protected nzConfigService?: NzConfigService | undefined;
+    config?: Required<PopoverConfig | PopConfirmConfig>;
     directiveTitle?: NzTSType | null;
     directiveContent?: NzTSType | null;
     title?: NzTSType | null;
@@ -53,7 +56,7 @@ export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDes
     protected readonly destroy$: Subject<void>;
     protected readonly triggerDisposables: Array<() => void>;
     private delayTimer?;
-    constructor(elementRef: ElementRef, hostView: ViewContainerRef, resolver: ComponentFactoryResolver, renderer: Renderer2, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(elementRef: ElementRef, hostView: ViewContainerRef, resolver: ComponentFactoryResolver, renderer: Renderer2, noAnimation?: NzNoAnimationDirective | undefined, nzConfigService?: NzConfigService | undefined);
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
@@ -86,6 +89,7 @@ export declare abstract class NzTooltipBaseComponent implements OnDestroy, OnIni
     nzContent: NzTSType | null;
     nzOverlayClassName: string;
     nzOverlayStyle: NgStyleInterface;
+    nzBackdrop: boolean;
     nzMouseEnterDelay?: number;
     nzMouseLeaveDelay?: number;
     nzVisibleChange: Subject<boolean>;
@@ -100,7 +104,6 @@ export declare abstract class NzTooltipBaseComponent implements OnDestroy, OnIni
     origin: CdkOverlayOrigin;
     dir: Direction;
     _classMap: NgClassInterface;
-    _hasBackdrop: boolean;
     _prefix: string;
     _positions: ConnectionPositionPair[];
     private destroy$;

@@ -1,34 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('date-fns/addMonths'), require('date-fns/addYears'), require('date-fns/differenceInCalendarDays'), require('date-fns/differenceInCalendarMonths'), require('date-fns/differenceInCalendarYears'), require('date-fns/differenceInHours'), require('date-fns/differenceInMinutes'), require('date-fns/differenceInSeconds'), require('date-fns/isFirstDayOfMonth'), require('date-fns/isLastDayOfMonth'), require('date-fns/isSameDay'), require('date-fns/isSameHour'), require('date-fns/isSameMinute'), require('date-fns/isSameMonth'), require('date-fns/isSameSecond'), require('date-fns/isSameYear'), require('date-fns/isToday'), require('date-fns/isValid'), require('date-fns/setDay'), require('date-fns/setMonth'), require('date-fns/setYear'), require('date-fns/startOfMonth'), require('date-fns/startOfWeek'), require('ng-zorro-antd/core/logger'), require('@angular/common'), require('ng-zorro-antd/core/util')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/core/time', ['exports', 'date-fns/addMonths', 'date-fns/addYears', 'date-fns/differenceInCalendarDays', 'date-fns/differenceInCalendarMonths', 'date-fns/differenceInCalendarYears', 'date-fns/differenceInHours', 'date-fns/differenceInMinutes', 'date-fns/differenceInSeconds', 'date-fns/isFirstDayOfMonth', 'date-fns/isLastDayOfMonth', 'date-fns/isSameDay', 'date-fns/isSameHour', 'date-fns/isSameMinute', 'date-fns/isSameMonth', 'date-fns/isSameSecond', 'date-fns/isSameYear', 'date-fns/isToday', 'date-fns/isValid', 'date-fns/setDay', 'date-fns/setMonth', 'date-fns/setYear', 'date-fns/startOfMonth', 'date-fns/startOfWeek', 'ng-zorro-antd/core/logger', '@angular/common', 'ng-zorro-antd/core/util'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].core = global['ng-zorro-antd'].core || {}, global['ng-zorro-antd'].core.time = {}), global.addMonths, global.addYears, global.differenceInCalendarDays, global.differenceInCalendarMonths, global.differenceInCalendarYears, global.differenceInHours, global.differenceInMinutes, global.differenceInSeconds, global.isFirstDayOfMonth, global.isLastDayOfMonth, global.isSameDay, global.isSameHour, global.isSameMinute, global.isSameMonth, global.isSameSecond, global.isSameYear, global.isToday, global.isValid, global.setDay, global.setMonth, global.setYear, global.startOfMonth, global.startOfWeek, global['ng-zorro-antd'].core.logger, global.ng.common, global['ng-zorro-antd'].core.util));
-}(this, (function (exports, addMonths, addYears, differenceInCalendarDays, differenceInCalendarMonths, differenceInCalendarYears, differenceInHours, differenceInMinutes, differenceInSeconds, isFirstDayOfMonth, isLastDayOfMonth, isSameDay, isSameHour, isSameMinute, isSameMonth, isSameSecond, isSameYear, isToday, isValid, setDay, setMonth, setYear, startOfMonth, startOfWeek, logger, common, util) { 'use strict';
-
-    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-    var addMonths__default = /*#__PURE__*/_interopDefaultLegacy(addMonths);
-    var addYears__default = /*#__PURE__*/_interopDefaultLegacy(addYears);
-    var differenceInCalendarDays__default = /*#__PURE__*/_interopDefaultLegacy(differenceInCalendarDays);
-    var differenceInCalendarMonths__default = /*#__PURE__*/_interopDefaultLegacy(differenceInCalendarMonths);
-    var differenceInCalendarYears__default = /*#__PURE__*/_interopDefaultLegacy(differenceInCalendarYears);
-    var differenceInHours__default = /*#__PURE__*/_interopDefaultLegacy(differenceInHours);
-    var differenceInMinutes__default = /*#__PURE__*/_interopDefaultLegacy(differenceInMinutes);
-    var differenceInSeconds__default = /*#__PURE__*/_interopDefaultLegacy(differenceInSeconds);
-    var isFirstDayOfMonth__default = /*#__PURE__*/_interopDefaultLegacy(isFirstDayOfMonth);
-    var isLastDayOfMonth__default = /*#__PURE__*/_interopDefaultLegacy(isLastDayOfMonth);
-    var isSameDay__default = /*#__PURE__*/_interopDefaultLegacy(isSameDay);
-    var isSameHour__default = /*#__PURE__*/_interopDefaultLegacy(isSameHour);
-    var isSameMinute__default = /*#__PURE__*/_interopDefaultLegacy(isSameMinute);
-    var isSameMonth__default = /*#__PURE__*/_interopDefaultLegacy(isSameMonth);
-    var isSameSecond__default = /*#__PURE__*/_interopDefaultLegacy(isSameSecond);
-    var isSameYear__default = /*#__PURE__*/_interopDefaultLegacy(isSameYear);
-    var isToday__default = /*#__PURE__*/_interopDefaultLegacy(isToday);
-    var isValid__default = /*#__PURE__*/_interopDefaultLegacy(isValid);
-    var setDay__default = /*#__PURE__*/_interopDefaultLegacy(setDay);
-    var setMonth__default = /*#__PURE__*/_interopDefaultLegacy(setMonth);
-    var setYear__default = /*#__PURE__*/_interopDefaultLegacy(setYear);
-    var startOfMonth__default = /*#__PURE__*/_interopDefaultLegacy(startOfMonth);
-    var startOfWeek__default = /*#__PURE__*/_interopDefaultLegacy(startOfWeek);
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('date-fns'), require('ng-zorro-antd/core/logger'), require('@angular/common'), require('ng-zorro-antd/core/util')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/core/time', ['exports', 'date-fns', 'ng-zorro-antd/core/logger', '@angular/common', 'ng-zorro-antd/core/util'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].core = global['ng-zorro-antd'].core || {}, global['ng-zorro-antd'].core.time = {}), global.dateFns, global['ng-zorro-antd'].core.logger, global.ng.common, global['ng-zorro-antd'].core.util));
+}(this, (function (exports, dateFns, logger, common, util) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -325,18 +299,21 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     function wrongSortOrder(rangeValue) {
@@ -401,7 +378,7 @@
             }
         }
         CandyDate.prototype.calendarStart = function (options) {
-            return new CandyDate(startOfWeek__default['default'](startOfMonth__default['default'](this.nativeDate), options));
+            return new CandyDate(dateFns.startOfWeek(dateFns.startOfMonth(this.nativeDate), options));
         };
         // ---------------------------------------------------------------------
         // | Native shortcuts
@@ -444,21 +421,21 @@
             return new CandyDate(newDate);
         };
         CandyDate.prototype.setYear = function (year) {
-            return new CandyDate(setYear__default['default'](this.nativeDate, year));
+            return new CandyDate(dateFns.setYear(this.nativeDate, year));
         };
         CandyDate.prototype.addYears = function (amount) {
-            return new CandyDate(addYears__default['default'](this.nativeDate, amount));
+            return new CandyDate(dateFns.addYears(this.nativeDate, amount));
         };
         // NOTE: month starts from 0
         // NOTE: Don't use the native API for month manipulation as it not restrict the date when it overflows, eg. (new Date('2018-7-31')).setMonth(1) will be date of 2018-3-03 instead of 2018-2-28
         CandyDate.prototype.setMonth = function (month) {
-            return new CandyDate(setMonth__default['default'](this.nativeDate, month));
+            return new CandyDate(dateFns.setMonth(this.nativeDate, month));
         };
         CandyDate.prototype.addMonths = function (amount) {
-            return new CandyDate(addMonths__default['default'](this.nativeDate, amount));
+            return new CandyDate(dateFns.addMonths(this.nativeDate, amount));
         };
         CandyDate.prototype.setDay = function (day, options) {
-            return new CandyDate(setDay__default['default'](this.nativeDate, day, options));
+            return new CandyDate(dateFns.setDay(this.nativeDate, day, options));
         };
         CandyDate.prototype.setDate = function (amount) {
             var date = new Date(this.nativeDate);
@@ -472,16 +449,12 @@
             switch (mode) {
                 case 'decade':
                     return this.addYears(amount * 10);
-                    break;
                 case 'year':
                     return this.addYears(amount);
-                    break;
                 case 'month':
                     return this.addMonths(amount);
-                    break;
                 default:
                     return this.addMonths(amount);
-                    break;
             }
         };
         CandyDate.prototype.isSame = function (date, grain) {
@@ -492,25 +465,25 @@
                     fn = function (pre, next) { return Math.abs(pre.getFullYear() - next.getFullYear()) < 11; };
                     break;
                 case 'year':
-                    fn = isSameYear__default['default'];
+                    fn = dateFns.isSameYear;
                     break;
                 case 'month':
-                    fn = isSameMonth__default['default'];
+                    fn = dateFns.isSameMonth;
                     break;
                 case 'day':
-                    fn = isSameDay__default['default'];
+                    fn = dateFns.isSameDay;
                     break;
                 case 'hour':
-                    fn = isSameHour__default['default'];
+                    fn = dateFns.isSameHour;
                     break;
                 case 'minute':
-                    fn = isSameMinute__default['default'];
+                    fn = dateFns.isSameMinute;
                     break;
                 case 'second':
-                    fn = isSameSecond__default['default'];
+                    fn = dateFns.isSameSecond;
                     break;
                 default:
-                    fn = isSameDay__default['default'];
+                    fn = dateFns.isSameDay;
                     break;
             }
             return fn(this.nativeDate, this.toNativeDate(date));
@@ -541,25 +514,25 @@
             var fn;
             switch (grain) {
                 case 'year':
-                    fn = differenceInCalendarYears__default['default'];
+                    fn = dateFns.differenceInCalendarYears;
                     break;
                 case 'month':
-                    fn = differenceInCalendarMonths__default['default'];
+                    fn = dateFns.differenceInCalendarMonths;
                     break;
                 case 'day':
-                    fn = differenceInCalendarDays__default['default'];
+                    fn = dateFns.differenceInCalendarDays;
                     break;
                 case 'hour':
-                    fn = differenceInHours__default['default'];
+                    fn = dateFns.differenceInHours;
                     break;
                 case 'minute':
-                    fn = differenceInMinutes__default['default'];
+                    fn = dateFns.differenceInMinutes;
                     break;
                 case 'second':
-                    fn = differenceInSeconds__default['default'];
+                    fn = dateFns.differenceInSeconds;
                     break;
                 default:
-                    fn = differenceInCalendarDays__default['default'];
+                    fn = dateFns.differenceInCalendarDays;
                     break;
             }
             return fn(this.nativeDate, this.toNativeDate(date)) < 0;
@@ -575,16 +548,16 @@
         };
         // Equal to today accurate to "day"
         CandyDate.prototype.isToday = function () {
-            return isToday__default['default'](this.nativeDate);
+            return dateFns.isToday(this.nativeDate);
         };
         CandyDate.prototype.isValid = function () {
-            return isValid__default['default'](this.nativeDate);
+            return dateFns.isValid(this.nativeDate);
         };
         CandyDate.prototype.isFirstDayOfMonth = function () {
-            return isFirstDayOfMonth__default['default'](this.nativeDate);
+            return dateFns.isFirstDayOfMonth(this.nativeDate);
         };
         CandyDate.prototype.isLastDayOfMonth = function () {
-            return isLastDayOfMonth__default['default'](this.nativeDate);
+            return dateFns.isLastDayOfMonth(this.nativeDate);
         };
         CandyDate.prototype.toNativeDate = function (date) {
             return date instanceof CandyDate ? date.nativeDate : date;

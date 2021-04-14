@@ -37,7 +37,8 @@ export declare class NzPickerComponent implements OnInit, AfterViewInit, OnChang
     suffixIcon?: string | TemplateRef<NzSafeAny>;
     dir: Direction;
     nzId: string | null;
-    readonly focusChange: EventEmitter<boolean>;
+    hasBackdrop: boolean;
+    readonly focusChange: EventEmitter<FocusEvent>;
     readonly valueChange: EventEmitter<CandyDate | CandyDate[] | null>;
     readonly openChange: EventEmitter<boolean>;
     cdkConnectedOverlay?: CdkConnectedOverlay;

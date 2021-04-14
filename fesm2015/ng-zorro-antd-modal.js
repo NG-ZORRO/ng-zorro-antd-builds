@@ -961,6 +961,32 @@ NzModalFooterDirective.ctorParameters = () => [
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+class NzModalTitleDirective {
+    constructor(nzModalRef, templateRef) {
+        this.nzModalRef = nzModalRef;
+        this.templateRef = templateRef;
+        if (this.nzModalRef) {
+            this.nzModalRef.updateConfig({
+                nzTitle: this.templateRef
+            });
+        }
+    }
+}
+NzModalTitleDirective.decorators = [
+    { type: Directive, args: [{
+                selector: '[nzModalTitle]',
+                exportAs: 'nzModalTitle'
+            },] }
+];
+NzModalTitleDirective.ctorParameters = () => [
+    { type: NzModalRef, decorators: [{ type: Optional }] },
+    { type: TemplateRef }
+];
+
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 class NzModalComponent {
     constructor(cdr, modal, viewContainerRef) {
         this.cdr = cdr;
@@ -991,6 +1017,11 @@ class NzModalComponent {
         this.nzAfterClose = new EventEmitter();
         this.nzVisibleChange = new EventEmitter();
         this.modalRef = null;
+    }
+    set modalTitle(value) {
+        if (value) {
+            this.setTitleWithTemplate(value);
+        }
     }
     set modalFooter(value) {
         if (value) {
@@ -1046,6 +1077,17 @@ class NzModalComponent {
     }
     getModalRef() {
         return this.modalRef;
+    }
+    setTitleWithTemplate(templateRef) {
+        this.nzTitle = templateRef;
+        if (this.modalRef) {
+            // If modalRef already created, set the title in next tick
+            Promise.resolve().then(() => {
+                this.modalRef.updateConfig({
+                    nzTitle: this.nzTitle
+                });
+            });
+        }
     }
     setFooterWithTemplate(templateRef) {
         this.nzFooter = templateRef;
@@ -1143,6 +1185,7 @@ NzModalComponent.propDecorators = {
     nzAfterClose: [{ type: Output }],
     nzVisibleChange: [{ type: Output }],
     contentTemplateRef: [{ type: ViewChild, args: [TemplateRef, { static: true },] }],
+    modalTitle: [{ type: ContentChild, args: [NzModalTitleDirective, { static: true, read: TemplateRef },] }],
     contentFromContentChild: [{ type: ContentChild, args: [NzModalContentDirective, { static: true, read: TemplateRef },] }],
     modalFooter: [{ type: ContentChild, args: [NzModalFooterDirective, { static: true, read: TemplateRef },] }]
 };
@@ -1291,7 +1334,7 @@ NzModalFooterComponent.decorators = [
                 template: `
     <ng-container *ngIf="config.nzFooter; else defaultFooterButtons">
       <ng-container *nzStringTemplateOutlet="config.nzFooter; context: { $implicit: config.nzComponentParams, modalRef: modalRef }">
-        <div *ngIf="!buttonsFooter" [innerHTML]="config.nzTitle"></div>
+        <div *ngIf="!buttonsFooter" [innerHTML]="config.nzFooter"></div>
         <ng-container *ngIf="buttonsFooter">
           <button
             *ngFor="let button of buttons"
@@ -1406,7 +1449,7 @@ NzModalModule.decorators = [
                     NzNoAnimationModule,
                     NzPipesModule
                 ],
-                exports: [NzModalComponent, NzModalFooterDirective, NzModalContentDirective],
+                exports: [NzModalComponent, NzModalFooterDirective, NzModalContentDirective, NzModalTitleDirective],
                 providers: [NzModalService],
                 entryComponents: [NzModalContainerComponent, NzModalConfirmContainerComponent],
                 declarations: [
@@ -1416,6 +1459,7 @@ NzModalModule.decorators = [
                     NzModalCloseComponent,
                     NzModalFooterComponent,
                     NzModalTitleComponent,
+                    NzModalTitleDirective,
                     NzModalContainerComponent,
                     NzModalConfirmContainerComponent,
                     NzModalComponent
@@ -1439,5 +1483,5 @@ class NzModalLegacyAPI {
  * Generated bundle index. Do not edit.
  */
 
-export { BaseModalContainerComponent, FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, ModalOptions, NZ_CONFIG_MODULE_NAME, NzModalCloseComponent, NzModalComponent, NzModalConfirmContainerComponent, NzModalContainerComponent, NzModalContentDirective, NzModalFooterComponent, NzModalFooterDirective, NzModalLegacyAPI, NzModalModule, NzModalRef, NzModalService, NzModalTitleComponent, ZOOM_CLASS_NAME_MAP, applyConfigDefaults, getConfigFromComponent, getValueWithConfig, nzModalAnimations, setContentInstanceParams, throwNzModalContentAlreadyAttachedError, ɵ0 };
+export { BaseModalContainerComponent, FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, ModalOptions, NZ_CONFIG_MODULE_NAME, NzModalCloseComponent, NzModalComponent, NzModalConfirmContainerComponent, NzModalContainerComponent, NzModalContentDirective, NzModalFooterComponent, NzModalFooterDirective, NzModalLegacyAPI, NzModalModule, NzModalRef, NzModalService, NzModalTitleComponent, NzModalTitleDirective, ZOOM_CLASS_NAME_MAP, applyConfigDefaults, getConfigFromComponent, getValueWithConfig, nzModalAnimations, setContentInstanceParams, throwNzModalContentAlreadyAttachedError, ɵ0 };
 //# sourceMappingURL=ng-zorro-antd-modal.js.map

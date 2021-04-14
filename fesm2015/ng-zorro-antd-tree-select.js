@@ -73,6 +73,7 @@ class NzTreeSelectComponent extends NzTreeBase {
         this.nzSize = 'default';
         this.nzPlaceHolder = '';
         this.nzDropdownStyle = null;
+        this.nzBackdrop = false;
         this.nzDisplayWith = (node) => node.title;
         this.nzMaxTagPlaceholder = null;
         this.nzOpenChange = new EventEmitter();
@@ -118,13 +119,16 @@ class NzTreeSelectComponent extends NzTreeBase {
     ngOnInit() {
         var _a;
         this.isDestroy = false;
-        this.selectionChangeSubscription = this.subscribeSelectionChange();
+        this.subscribeSelectionChange();
         (_a = this.directionality.change) === null || _a === void 0 ? void 0 : _a.pipe(takeUntil(this.destroy$)).subscribe((direction) => {
             this.dir = direction;
             this.cdr.detectChanges();
         });
         this.dir = this.directionality.value;
-        this.focusChangeSubscription = this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
+        this.focusMonitor
+            .monitor(this.elementRef, true)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(focusOrigin => {
             if (!focusOrigin) {
                 this.focused = false;
                 this.cdr.markForCheck();
@@ -141,10 +145,8 @@ class NzTreeSelectComponent extends NzTreeBase {
     ngOnDestroy() {
         this.isDestroy = true;
         this.closeDropDown();
-        this.selectionChangeSubscription.unsubscribe();
         this.destroy$.next();
         this.destroy$.complete();
-        this.focusChangeSubscription.unsubscribe();
     }
     isComposingChange(isComposing) {
         this.isComposing = isComposing;
@@ -271,7 +273,7 @@ class NzTreeSelectComponent extends NzTreeBase {
         }
     }
     subscribeSelectionChange() {
-        return merge(this.nzTreeClick.pipe(tap((event) => {
+        merge(this.nzTreeClick.pipe(tap((event) => {
             const node = event.node;
             if (this.nzCheckable && !node.isDisabled && !node.isDisableCheckbox) {
                 node.isChecked = !node.isChecked;
@@ -286,7 +288,9 @@ class NzTreeSelectComponent extends NzTreeBase {
         }), filter((event) => {
             const node = event.node;
             return this.nzCheckable ? !node.isDisabled && !node.isDisableCheckbox : !node.isDisabled && node.isSelectable;
-        })), this.nzCheckable ? this.nzTreeCheckBoxChange : of(), this.nzCleared, this.nzRemoved).subscribe(() => {
+        })), this.nzCheckable ? this.nzTreeCheckBoxChange : of(), this.nzCleared, this.nzRemoved)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
             this.updateSelectedNodes();
             const value = this.selectedNodes.map(node => node.key);
             this.value = [...value];
@@ -361,6 +365,7 @@ NzTreeSelectComponent.decorators = [
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-tree-dropdown'"
@@ -537,6 +542,7 @@ NzTreeSelectComponent.propDecorators = {
     nzPlaceHolder: [{ type: Input }],
     nzDropdownStyle: [{ type: Input }],
     nzDropdownClassName: [{ type: Input }],
+    nzBackdrop: [{ type: Input }],
     nzExpandedKeys: [{ type: Input }],
     nzDisplayWith: [{ type: Input }],
     nzMaxTagCount: [{ type: Input }],
@@ -613,6 +619,10 @@ __decorate([
     WithConfig(),
     __metadata("design:type", String)
 ], NzTreeSelectComponent.prototype, "nzSize", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", Object)
+], NzTreeSelectComponent.prototype, "nzBackdrop", void 0);
 
 /**
  * Use of this source code is governed by an MIT-style license that can be

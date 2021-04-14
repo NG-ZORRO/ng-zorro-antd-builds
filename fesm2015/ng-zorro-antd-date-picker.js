@@ -734,6 +734,7 @@ class NzPickerComponent {
         this.popupStyle = null;
         this.dir = 'ltr';
         this.nzId = null;
+        this.hasBackdrop = false;
         this.focusChange = new EventEmitter();
         this.valueChange = new EventEmitter();
         this.openChange = new EventEmitter(); // Emitted when overlay's open state change
@@ -857,14 +858,14 @@ class NzPickerComponent {
     }
     onFocus(event, partType) {
         event.preventDefault();
-        this.focusChange.emit(true);
+        this.focusChange.emit(event);
         if (partType) {
             this.datePickerService.inputPartChange$.next(partType);
         }
     }
     onBlur(event) {
         event.preventDefault();
-        this.focusChange.emit(false);
+        this.focusChange.emit(event);
     }
     // Show overlay content
     showOverlay() {
@@ -1098,6 +1099,7 @@ NzPickerComponent.decorators = [
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="hasBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="realOpenState"
       [cdkConnectedOverlayPositions]="overlayPositions"
@@ -1140,6 +1142,7 @@ NzPickerComponent.propDecorators = {
     suffixIcon: [{ type: Input }],
     dir: [{ type: Input }],
     nzId: [{ type: Input }],
+    hasBackdrop: [{ type: Input }],
     focusChange: [{ type: Output }],
     valueChange: [{ type: Output }],
     openChange: [{ type: Output }],
@@ -1195,6 +1198,7 @@ class NzDatePickerComponent {
         this.nzDefaultPickerValue = null;
         this.nzSeparator = undefined;
         this.nzSuffixIcon = 'calendar';
+        this.nzBackdrop = false;
         this.nzId = null;
         // TODO(@wenqi73) The PanelMode need named for each pickers and export
         this.nzOnPanelChange = new EventEmitter();
@@ -1367,13 +1371,16 @@ class NzDatePickerComponent {
         this.datePickerService.initialValue = newValue;
     }
     onFocusChange(value) {
-        this.focused = value;
+        // When the relatedTarget is part of the elementRef, it means that it's a range-picker and you are navigating to
+        // the other input in that range picker. In that case we don't want to close the picker.
+        this.focused = (value.type === 'blur' && this.elementRef.nativeElement.contains(value.relatedTarget)) || value.type === 'focus';
         // TODO: avoid autoFocus cause change after checked error
         if (this.focused) {
             this.renderer.addClass(this.elementRef.nativeElement, 'ant-picker-focused');
         }
         else {
             this.renderer.removeClass(this.elementRef.nativeElement, 'ant-picker-focused');
+            this.close();
         }
     }
     onPanelModeChange(panelMode) {
@@ -1416,6 +1423,8 @@ NzDatePickerComponent.decorators = [
                 template: `
     <div
       nz-picker
+      style="display: inherit; align-items: center; width: 100%;"
+      [id]="nzId"
       [isRange]="isRange"
       [open]="nzOpen"
       [dir]="dir"
@@ -1427,12 +1436,12 @@ NzDatePickerComponent.decorators = [
       [allowClear]="nzAllowClear"
       [autoFocus]="nzAutoFocus"
       [placeholder]="nzPlaceHolder"
-      style="display: inherit; align-items: center; width: 100%;"
       [dropdownClassName]="nzDropdownClassName"
       [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
       [popupStyle]="nzPopupStyle"
       [noAnimation]="!!noAnimation?.nzNoAnimation"
       [suffixIcon]="nzSuffixIcon"
+      [hasBackdrop]="nzBackdrop"
       (openChange)="onOpenChange($event)"
       (focusChange)="onFocusChange($event)"
       [nzId]="nzId"
@@ -1515,6 +1524,7 @@ NzDatePickerComponent.propDecorators = {
     nzDefaultPickerValue: [{ type: Input }],
     nzSeparator: [{ type: Input }],
     nzSuffixIcon: [{ type: Input }],
+    nzBackdrop: [{ type: Input }],
     nzId: [{ type: Input }],
     nzOnPanelChange: [{ type: Output }],
     nzOnCalendarChange: [{ type: Output }],
@@ -1567,6 +1577,10 @@ __decorate([
     WithConfig(),
     __metadata("design:type", Object)
 ], NzDatePickerComponent.prototype, "nzSuffixIcon", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", Object)
+], NzDatePickerComponent.prototype, "nzBackdrop", void 0);
 
 /**
  * Use of this source code is governed by an MIT-style license that can be

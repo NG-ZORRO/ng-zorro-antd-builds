@@ -393,7 +393,7 @@ class Minimap {
         svgStyle.remove();
         svgSelection.attr('width', '100%').attr('height', '100%');
         zoomGSelection.attr('transform', zoomTransform);
-        const image = new Image();
+        const image = document.createElement('img');
         image.onload = () => {
             // Draw the svg content onto the buffer canvas.
             const context = this.canvasBuffer.getContext('2d');

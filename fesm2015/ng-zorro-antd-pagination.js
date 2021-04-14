@@ -543,7 +543,7 @@ NzPaginationItemComponent.decorators = [
                     '[class.ant-pagination-jump-next]': `type === 'next_5'`,
                     '[class.ant-pagination-jump-next-custom-icon]': `type === 'next_5'`,
                     '[class.ant-pagination-disabled]': 'disabled',
-                    '[class.ant-pagination-item-active]]': 'active',
+                    '[class.ant-pagination-item-active]': 'active',
                     '[attr.title]': 'title',
                     '(click)': 'clickItem()'
                 }

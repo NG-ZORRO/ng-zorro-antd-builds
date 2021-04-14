@@ -72,6 +72,7 @@ export declare class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeA
     portal?: TemplatePortal;
     focusTrap?: FocusTrap;
     isOpen: boolean;
+    inAnimation: boolean;
     templateContext: {
         $implicit: D | undefined;
         drawerRef: NzDrawerRef<R>;

@@ -72,6 +72,7 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     nzDefaultPickerValue: CompatibleDate | null;
     nzSeparator?: string;
     nzSuffixIcon: string | TemplateRef<NzSafeAny>;
+    nzBackdrop: boolean;
     nzId: string | null;
     readonly nzOnPanelChange: EventEmitter<string | NzDateMode[] | string[]>;
     readonly nzOnCalendarChange: EventEmitter<(Date | null)[]>;
@@ -102,7 +103,7 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     private setDefaultPlaceHolder;
     private getPropertyOfLocale;
     private setValue;
-    onFocusChange(value: boolean): void;
+    onFocusChange(value: FocusEvent): void;
     onPanelModeChange(panelMode: NzDateMode | NzDateMode[]): void;
     onCalendarChange(value: CompatibleValue): void;
     onResultOk(): void;

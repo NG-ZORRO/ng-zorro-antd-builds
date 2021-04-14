@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Overlay } from '@angular/cdk/overlay';
-import { ElementRef, ExistingProvider, OnDestroy, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ElementRef, ExistingProvider, OnDestroy, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
@@ -11,7 +11,7 @@ import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
 export declare const NZ_AUTOCOMPLETE_VALUE_ACCESSOR: ExistingProvider;
 export declare function getNzAutocompleteMissingPanelError(): Error;
-export declare class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnDestroy {
+export declare class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor, OnDestroy {
     private elementRef;
     private overlay;
     private viewContainerRef;
@@ -33,6 +33,7 @@ export declare class NzAutocompleteTriggerDirective implements ControlValueAcces
     private optionsChangeSubscription;
     private overlayOutsideClickSubscription;
     constructor(elementRef: ElementRef, overlay: Overlay, viewContainerRef: ViewContainerRef, nzInputGroupWhitSuffixOrPrefixDirective: NzInputGroupWhitSuffixOrPrefixDirective, document: NzSafeAny);
+    ngAfterViewInit(): void;
     ngOnDestroy(): void;
     writeValue(value: NzSafeAny): void;
     registerOnChange(fn: (value: {}) => {}): void;

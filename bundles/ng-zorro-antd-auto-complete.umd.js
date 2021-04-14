@@ -323,18 +323,21 @@
   function __importDefault(mod) {
       return (mod && mod.__esModule) ? mod : { default: mod };
   }
-  function __classPrivateFieldGet(receiver, privateMap) {
-      if (!privateMap.has(receiver)) {
-          throw new TypeError("attempted to get private field on non-instance");
-      }
-      return privateMap.get(receiver);
+  function __classPrivateFieldGet(receiver, state, kind, f) {
+      if (kind === "a" && !f)
+          throw new TypeError("Private accessor was defined without a getter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+          throw new TypeError("Cannot read private member from an object whose class did not declare it");
+      return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
   }
-  function __classPrivateFieldSet(receiver, privateMap, value) {
-      if (!privateMap.has(receiver)) {
-          throw new TypeError("attempted to set private field on non-instance");
-      }
-      privateMap.set(receiver, value);
-      return value;
+  function __classPrivateFieldSet(receiver, state, value, kind, f) {
+      if (kind === "m")
+          throw new TypeError("Private method is not writable");
+      if (kind === "a" && !f)
+          throw new TypeError("Private accessor was defined without a setter");
+      if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+          throw new TypeError("Cannot write private member to an object whose class did not declare it");
+      return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
   }
 
   /**
@@ -495,6 +498,19 @@
           enumerable: false,
           configurable: true
       });
+      NzAutocompleteTriggerDirective.prototype.ngAfterViewInit = function () {
+          var _this = this;
+          if (this.nzAutocomplete) {
+              this.nzAutocomplete.animationStateChange.pipe(operators.takeUntil(this.destroy$)).subscribe(function (event) {
+                  if (event.toState === 'void') {
+                      if (_this.overlayRef) {
+                          _this.overlayRef.dispose();
+                          _this.overlayRef = null;
+                      }
+                  }
+              });
+          }
+      };
       NzAutocompleteTriggerDirective.prototype.ngOnDestroy = function () {
           this.destroyPanel();
       };
@@ -522,11 +538,10 @@
           if (this.panelOpen) {
               this.nzAutocomplete.isOpen = this.panelOpen = false;
               if (this.overlayRef && this.overlayRef.hasAttached()) {
+                  this.overlayRef.detach();
                   this.selectionChangeSubscription.unsubscribe();
                   this.overlayOutsideClickSubscription.unsubscribe();
                   this.optionsChangeSubscription.unsubscribe();
-                  this.overlayRef.dispose();
-                  this.overlayRef = null;
                   this.portal = null;
               }
           }
@@ -767,6 +782,7 @@
           this.isOpen = false;
           this.dir = 'ltr';
           this.destroy$ = new rxjs.Subject();
+          this.animationStateChange = new core.EventEmitter();
           this.activeItemIndex = -1;
           this.selectionChangeSubscription = rxjs.Subscription.EMPTY;
           this.optionMouseEnterSubscription = rxjs.Subscription.EMPTY;
@@ -809,6 +825,9 @@
               _this.changeDetectorRef.detectChanges();
           });
           this.dir = this.directionality.value;
+      };
+      NzAutocompleteComponent.prototype.onAnimationEvent = function (event) {
+          this.animationStateChange.emit(event);
       };
       NzAutocompleteComponent.prototype.ngAfterContentInit = function () {
           if (!this.nzDataSource) {
@@ -916,7 +935,7 @@
                   preserveWhitespaces: false,
                   changeDetection: core.ChangeDetectionStrategy.OnPush,
                   encapsulation: core.ViewEncapsulation.None,
-                  template: "\n    <ng-template>\n      <div\n        #panel\n        class=\"ant-select-dropdown ant-select-dropdown-placement-bottomLeft\"\n        [class.ant-select-dropdown-hidden]=\"!showPanel\"\n        [class.ant-select-dropdown-rtl]=\"dir === 'rtl'\"\n        [ngClass]=\"nzOverlayClassName\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@slideMotion]=\"'enter'\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n      >\n        <div style=\"max-height: 256px; overflow-y: auto; overflow-anchor: none;\">\n          <div style=\"display: flex; flex-direction: column;\">\n            <ng-template *ngTemplateOutlet=\"nzDataSource ? optionsTemplate : contentTemplate\"></ng-template>\n          </div>\n        </div>\n      </div>\n      <ng-template #contentTemplate>\n        <ng-content></ng-content>\n      </ng-template>\n      <ng-template #optionsTemplate>\n        <nz-auto-option\n          *ngFor=\"let option of nzDataSource!\"\n          [nzValue]=\"option\"\n          [nzLabel]=\"option && $any(option).label ? $any(option).label : $any(option)\"\n        >\n          {{ option && $any(option).label ? $any(option).label : $any(option) }}\n        </nz-auto-option>\n      </ng-template>\n    </ng-template>\n  ",
+                  template: "\n    <ng-template>\n      <div\n        #panel\n        class=\"ant-select-dropdown ant-select-dropdown-placement-bottomLeft\"\n        [class.ant-select-dropdown-hidden]=\"!showPanel\"\n        [class.ant-select-dropdown-rtl]=\"dir === 'rtl'\"\n        [ngClass]=\"nzOverlayClassName\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        @slideMotion\n        (@slideMotion.done)=\"onAnimationEvent($event)\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n      >\n        <div style=\"max-height: 256px; overflow-y: auto; overflow-anchor: none;\">\n          <div style=\"display: flex; flex-direction: column;\">\n            <ng-template *ngTemplateOutlet=\"nzDataSource ? optionsTemplate : contentTemplate\"></ng-template>\n          </div>\n        </div>\n      </div>\n      <ng-template #contentTemplate>\n        <ng-content></ng-content>\n      </ng-template>\n      <ng-template #optionsTemplate>\n        <nz-auto-option\n          *ngFor=\"let option of nzDataSource!\"\n          [nzValue]=\"option\"\n          [nzLabel]=\"option && $any(option).label ? $any(option).label : $any(option)\"\n        >\n          {{ option && $any(option).label ? $any(option).label : $any(option) }}\n        </nz-auto-option>\n      </ng-template>\n    </ng-template>\n  ",
                   animations: [animation.slideMotion]
               },] }
   ];

@@ -505,6 +505,7 @@ class NzCascaderComponent {
         this.nzLabelRender = null;
         this.nzLabelProperty = 'label';
         this.nzSize = 'default';
+        this.nzBackdrop = false;
         this.nzShowSearch = false;
         this.nzPlaceHolder = '';
         this.nzMenuStyle = null;
@@ -1032,6 +1033,7 @@ NzCascaderComponent.decorators = [
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayPositions]="positions"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-menus'"
@@ -1139,6 +1141,7 @@ NzCascaderComponent.propDecorators = {
     nzLabelProperty: [{ type: Input }],
     nzNotFoundContent: [{ type: Input }],
     nzSize: [{ type: Input }],
+    nzBackdrop: [{ type: Input }],
     nzShowSearch: [{ type: Input }],
     nzPlaceHolder: [{ type: Input }],
     nzMenuClassName: [{ type: Input }],
@@ -1188,6 +1191,10 @@ __decorate([
     WithConfig(),
     __metadata("design:type", String)
 ], NzCascaderComponent.prototype, "nzSize", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", Object)
+], NzCascaderComponent.prototype, "nzBackdrop", void 0);
 
 /**
  * Use of this source code is governed by an MIT-style license that can be

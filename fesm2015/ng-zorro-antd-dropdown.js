@@ -113,8 +113,10 @@ class NzDropDownDirective {
                             scrollStrategy: this.overlay.scrollStrategies.reposition()
                         });
                         merge(this.overlayRef.backdropClick(), this.overlayRef.detachments(), this.overlayRef.outsidePointerEvents().pipe(filter((e) => !this.elementRef.nativeElement.contains(e.target))), this.overlayRef.keydownEvents().pipe(filter(e => e.keyCode === ESCAPE && !hasModifierKey(e))))
-                            .pipe(mapTo(false), takeUntil(this.destroy$))
-                            .subscribe(this.overlayClose$);
+                            .pipe(takeUntil(this.destroy$))
+                            .subscribe(() => {
+                            this.overlayClose$.next(false);
+                        });
                     }
                     else {
                         /** update overlay config **/
@@ -134,6 +136,14 @@ class NzDropDownDirective {
                     if (this.overlayRef) {
                         this.overlayRef.detach();
                     }
+                }
+            });
+            this.nzDropdownMenu.animationStateChange$.pipe(takeUntil(this.destroy$)).subscribe(event => {
+                if (event.toState === 'void') {
+                    if (this.overlayRef) {
+                        this.overlayRef.dispose();
+                    }
+                    this.overlayRef = null;
                 }
             });
         }
@@ -297,10 +307,14 @@ class NzDropdownMenuComponent {
         this.mouseState$ = new BehaviorSubject(false);
         this.isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
         this.descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
+        this.animationStateChange$ = new EventEmitter();
         this.nzOverlayClassName = '';
         this.nzOverlayStyle = {};
         this.dir = 'ltr';
         this.destroy$ = new Subject();
+    }
+    onAnimationEvent(event) {
+        this.animationStateChange$.emit(event);
     }
     setMouseState(visible) {
         this.mouseState$.next(visible);
@@ -345,7 +359,8 @@ NzDropdownMenuComponent.decorators = [
         [class.ant-dropdown-rtl]="dir === 'rtl'"
         [ngClass]="nzOverlayClassName"
         [ngStyle]="nzOverlayStyle"
-        [@slideMotion]="'enter'"
+        @slideMotion
+        (@slideMotion.done)="onAnimationEvent($event)"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         (mouseenter)="setMouseState(true)"

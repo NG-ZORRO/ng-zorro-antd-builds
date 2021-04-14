@@ -72,11 +72,9 @@
   list-style: none;
   font-feature-settings: 'tnum';
   position: relative;
-  top: -0.09em;
-  display: inline-block;
+  top: 0.2em;
   line-height: 1;
   white-space: nowrap;
-  vertical-align: middle;
   outline: none;
   cursor: pointer;
 }
@@ -195,7 +193,8 @@
   line-height: 1.5715;
   list-style: none;
   font-feature-settings: 'tnum';
-  display: inline-block;
+  display: inline-flex;
+  align-items: baseline;
   line-height: unset;
   cursor: pointer;
 }
@@ -222,7 +221,6 @@
   display: inline-block;
 }
 .ant-tree-checkbox-group-item {
-  display: inline-block;
   margin-right: 8px;
 }
 .ant-tree-checkbox-group-item:last-child {
@@ -292,8 +290,8 @@
 .ant-tree .ant-tree-treenode-active .ant-tree-node-content-wrapper {
   background: #f5f5f5;
 }
-.ant-tree .ant-tree-treenode.filter-node .ant-tree-title {
-  color: #d4380d;
+.ant-tree .ant-tree-treenode:not(.ant-tree .ant-tree-treenode-disabled).filter-node .ant-tree-title {
+  color: inherit;
   font-weight: 500;
 }
 .ant-tree-indent {

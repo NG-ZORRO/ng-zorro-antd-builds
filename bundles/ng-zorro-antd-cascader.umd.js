@@ -314,18 +314,21 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     /**
@@ -800,6 +803,7 @@
             this.nzLabelRender = null;
             this.nzLabelProperty = 'label';
             this.nzSize = 'default';
+            this.nzBackdrop = false;
             this.nzShowSearch = false;
             this.nzPlaceHolder = '';
             this.nzMenuStyle = null;
@@ -1324,7 +1328,7 @@
                     selector: 'nz-cascader, [nz-cascader]',
                     exportAs: 'nzCascader',
                     preserveWhitespaces: false,
-                    template: "\n    <div cdkOverlayOrigin #origin=\"cdkOverlayOrigin\" #trigger>\n      <div *ngIf=\"nzShowInput\">\n        <input\n          #input\n          nz-input\n          class=\"ant-cascader-input\"\n          [class.ant-cascader-input-disabled]=\"nzDisabled\"\n          [class.ant-cascader-input-lg]=\"nzSize === 'large'\"\n          [class.ant-cascader-input-sm]=\"nzSize === 'small'\"\n          [attr.autoComplete]=\"'off'\"\n          [attr.placeholder]=\"showPlaceholder ? nzPlaceHolder || locale?.placeholder : null\"\n          [attr.autofocus]=\"nzAutoFocus ? 'autofocus' : null\"\n          [readonly]=\"!nzShowSearch\"\n          [disabled]=\"nzDisabled\"\n          [nzSize]=\"nzSize\"\n          [(ngModel)]=\"inputValue\"\n          (blur)=\"handleInputBlur()\"\n          (focus)=\"handleInputFocus()\"\n          (change)=\"$event.stopPropagation()\"\n        />\n        <i\n          *ngIf=\"clearIconVisible\"\n          nz-icon\n          nzType=\"close-circle\"\n          nzTheme=\"fill\"\n          class=\"ant-cascader-picker-clear\"\n          (click)=\"clearSelection($event)\"\n        ></i>\n        <ng-container *nzStringTemplateOutlet=\"nzSuffixIcon\">\n          <i\n            *ngIf=\"nzShowArrow && !isLoading\"\n            nz-icon\n            [nzType]=\"$any(nzSuffixIcon)\"\n            class=\"ant-cascader-picker-arrow\"\n            [class.ant-cascader-picker-arrow-expand]=\"menuVisible\"\n          ></i>\n        </ng-container>\n        <i *ngIf=\"isLoading\" nz-icon nzType=\"loading\" class=\"ant-cascader-picker-arrow\"></i>\n        <span\n          class=\"ant-cascader-picker-label\"\n          [class.ant-cascader-picker-show-search]=\"!!nzShowSearch\"\n          [class.ant-cascader-picker-focused]=\"!!nzShowSearch && isFocused && !inputValue\"\n        >\n          <ng-container *ngIf=\"!isLabelRenderTemplate; else labelTemplate\">{{ labelRenderText }}</ng-container>\n          <ng-template #labelTemplate>\n            <ng-template [ngTemplateOutlet]=\"nzLabelRender\" [ngTemplateOutletContext]=\"labelRenderContext\"></ng-template>\n          </ng-template>\n        </span>\n      </div>\n      <ng-content></ng-content>\n    </div>\n    <ng-template\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayPositions]=\"positions\"\n      [cdkConnectedOverlayTransformOriginOn]=\"'.ant-cascader-menus'\"\n      [cdkConnectedOverlayOpen]=\"menuVisible\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n      (detach)=\"closeMenu()\"\n    >\n      <div\n        #menu\n        class=\"ant-cascader-menus\"\n        [class.ant-cascader-menu-rtl]=\"dir === 'rtl'\"\n        [class.ant-cascader-menus-hidden]=\"!menuVisible\"\n        [ngClass]=\"menuCls\"\n        [ngStyle]=\"nzMenuStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@slideMotion]=\"'enter'\"\n        (mouseleave)=\"onTriggerMouseLeave($event)\"\n      >\n        <ul\n          *ngIf=\"shouldShowEmpty; else hasOptionsTemplate\"\n          class=\"ant-cascader-menu\"\n          [style.width]=\"dropdownWidthStyle\"\n          [style.height]=\"dropdownHeightStyle\"\n        >\n          <li class=\"ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled\">\n            <nz-embed-empty [nzComponentName]=\"'cascader'\" [specificContent]=\"nzNotFoundContent\"></nz-embed-empty>\n          </li>\n        </ul>\n        <ng-template #hasOptionsTemplate>\n          <ul\n            *ngFor=\"let options of cascaderService.columns; let i = index\"\n            class=\"ant-cascader-menu\"\n            [ngClass]=\"menuColumnCls\"\n            [style.height]=\"dropdownHeightStyle\"\n            [style.width]=\"dropdownWidthStyle\"\n          >\n            <li\n              nz-cascader-option\n              *ngFor=\"let option of options\"\n              [expandIcon]=\"nzExpandIcon\"\n              [columnIndex]=\"i\"\n              [nzLabelProperty]=\"nzLabelProperty\"\n              [optionTemplate]=\"nzOptionRender\"\n              [activated]=\"isOptionActivated(option, i)\"\n              [highlightText]=\"inSearchingMode ? inputValue : ''\"\n              [option]=\"option\"\n              [dir]=\"dir\"\n              (mouseenter)=\"onOptionMouseEnter(option, i, $event)\"\n              (mouseleave)=\"onOptionMouseLeave(option, i, $event)\"\n              (click)=\"onOptionClick(option, i, $event)\"\n            ></li>\n          </ul>\n        </ng-template>\n      </div>\n    </ng-template>\n  ",
+                    template: "\n    <div cdkOverlayOrigin #origin=\"cdkOverlayOrigin\" #trigger>\n      <div *ngIf=\"nzShowInput\">\n        <input\n          #input\n          nz-input\n          class=\"ant-cascader-input\"\n          [class.ant-cascader-input-disabled]=\"nzDisabled\"\n          [class.ant-cascader-input-lg]=\"nzSize === 'large'\"\n          [class.ant-cascader-input-sm]=\"nzSize === 'small'\"\n          [attr.autoComplete]=\"'off'\"\n          [attr.placeholder]=\"showPlaceholder ? nzPlaceHolder || locale?.placeholder : null\"\n          [attr.autofocus]=\"nzAutoFocus ? 'autofocus' : null\"\n          [readonly]=\"!nzShowSearch\"\n          [disabled]=\"nzDisabled\"\n          [nzSize]=\"nzSize\"\n          [(ngModel)]=\"inputValue\"\n          (blur)=\"handleInputBlur()\"\n          (focus)=\"handleInputFocus()\"\n          (change)=\"$event.stopPropagation()\"\n        />\n        <i\n          *ngIf=\"clearIconVisible\"\n          nz-icon\n          nzType=\"close-circle\"\n          nzTheme=\"fill\"\n          class=\"ant-cascader-picker-clear\"\n          (click)=\"clearSelection($event)\"\n        ></i>\n        <ng-container *nzStringTemplateOutlet=\"nzSuffixIcon\">\n          <i\n            *ngIf=\"nzShowArrow && !isLoading\"\n            nz-icon\n            [nzType]=\"$any(nzSuffixIcon)\"\n            class=\"ant-cascader-picker-arrow\"\n            [class.ant-cascader-picker-arrow-expand]=\"menuVisible\"\n          ></i>\n        </ng-container>\n        <i *ngIf=\"isLoading\" nz-icon nzType=\"loading\" class=\"ant-cascader-picker-arrow\"></i>\n        <span\n          class=\"ant-cascader-picker-label\"\n          [class.ant-cascader-picker-show-search]=\"!!nzShowSearch\"\n          [class.ant-cascader-picker-focused]=\"!!nzShowSearch && isFocused && !inputValue\"\n        >\n          <ng-container *ngIf=\"!isLabelRenderTemplate; else labelTemplate\">{{ labelRenderText }}</ng-container>\n          <ng-template #labelTemplate>\n            <ng-template [ngTemplateOutlet]=\"nzLabelRender\" [ngTemplateOutletContext]=\"labelRenderContext\"></ng-template>\n          </ng-template>\n        </span>\n      </div>\n      <ng-content></ng-content>\n    </div>\n    <ng-template\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayHasBackdrop]=\"nzBackdrop\"\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      [cdkConnectedOverlayPositions]=\"positions\"\n      [cdkConnectedOverlayTransformOriginOn]=\"'.ant-cascader-menus'\"\n      [cdkConnectedOverlayOpen]=\"menuVisible\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n      (detach)=\"closeMenu()\"\n    >\n      <div\n        #menu\n        class=\"ant-cascader-menus\"\n        [class.ant-cascader-menu-rtl]=\"dir === 'rtl'\"\n        [class.ant-cascader-menus-hidden]=\"!menuVisible\"\n        [ngClass]=\"menuCls\"\n        [ngStyle]=\"nzMenuStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@slideMotion]=\"'enter'\"\n        (mouseleave)=\"onTriggerMouseLeave($event)\"\n      >\n        <ul\n          *ngIf=\"shouldShowEmpty; else hasOptionsTemplate\"\n          class=\"ant-cascader-menu\"\n          [style.width]=\"dropdownWidthStyle\"\n          [style.height]=\"dropdownHeightStyle\"\n        >\n          <li class=\"ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled\">\n            <nz-embed-empty [nzComponentName]=\"'cascader'\" [specificContent]=\"nzNotFoundContent\"></nz-embed-empty>\n          </li>\n        </ul>\n        <ng-template #hasOptionsTemplate>\n          <ul\n            *ngFor=\"let options of cascaderService.columns; let i = index\"\n            class=\"ant-cascader-menu\"\n            [ngClass]=\"menuColumnCls\"\n            [style.height]=\"dropdownHeightStyle\"\n            [style.width]=\"dropdownWidthStyle\"\n          >\n            <li\n              nz-cascader-option\n              *ngFor=\"let option of options\"\n              [expandIcon]=\"nzExpandIcon\"\n              [columnIndex]=\"i\"\n              [nzLabelProperty]=\"nzLabelProperty\"\n              [optionTemplate]=\"nzOptionRender\"\n              [activated]=\"isOptionActivated(option, i)\"\n              [highlightText]=\"inSearchingMode ? inputValue : ''\"\n              [option]=\"option\"\n              [dir]=\"dir\"\n              (mouseenter)=\"onOptionMouseEnter(option, i, $event)\"\n              (mouseleave)=\"onOptionMouseLeave(option, i, $event)\"\n              (click)=\"onOptionClick(option, i, $event)\"\n            ></li>\n          </ul>\n        </ng-template>\n      </div>\n    </ng-template>\n  ",
                     animations: [animation.slideMotion],
                     providers: [
                         {
@@ -1375,6 +1379,7 @@
         nzLabelProperty: [{ type: core.Input }],
         nzNotFoundContent: [{ type: core.Input }],
         nzSize: [{ type: core.Input }],
+        nzBackdrop: [{ type: core.Input }],
         nzShowSearch: [{ type: core.Input }],
         nzPlaceHolder: [{ type: core.Input }],
         nzMenuClassName: [{ type: core.Input }],
@@ -1424,6 +1429,10 @@
         config.WithConfig(),
         __metadata("design:type", String)
     ], NzCascaderComponent.prototype, "nzSize", void 0);
+    __decorate([
+        config.WithConfig(),
+        __metadata("design:type", Object)
+    ], NzCascaderComponent.prototype, "nzBackdrop", void 0);
 
     /**
      * Use of this source code is governed by an MIT-style license that can be

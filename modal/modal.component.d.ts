@@ -64,6 +64,7 @@ export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements O
     readonly nzAfterClose: EventEmitter<R>;
     readonly nzVisibleChange: EventEmitter<boolean>;
     contentTemplateRef: TemplateRef<{}>;
+    set modalTitle(value: TemplateRef<NzSafeAny>);
     contentFromContentChild: TemplateRef<NzSafeAny>;
     set modalFooter(value: TemplateRef<NzSafeAny>);
     private modalRef;
@@ -78,6 +79,7 @@ export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements O
     getContentComponent(): T | void;
     getElement(): HTMLElement | void;
     getModalRef(): NzModalRef | null;
+    private setTitleWithTemplate;
     private setFooterWithTemplate;
     private getConfig;
     ngOnChanges(changes: SimpleChanges): void;

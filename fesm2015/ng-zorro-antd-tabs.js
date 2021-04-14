@@ -514,7 +514,7 @@ class NzTabNavBarComponent {
         this.keyManager = new FocusKeyManager(this.items)
             .withHorizontalOrientation(this.getLayoutDirection())
             .withWrap();
-        this.keyManager.updateActiveItem(0);
+        this.keyManager.updateActiveItem(this.selectedIndex);
         reqAnimFrame(realign);
         merge(this.nzResizeObserver.observe(this.navWarpRef), this.nzResizeObserver.observe(this.navListRef))
             .pipe(takeUntil(this.destroy$), auditTime(16, RESIZE_SCHEDULER))

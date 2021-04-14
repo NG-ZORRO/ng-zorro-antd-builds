@@ -17,9 +17,9 @@
   position: relative;
   display: block;
   box-sizing: border-box;
-  -webkit-touch-callout: none;
   -ms-touch-action: pan-y;
   touch-action: pan-y;
+  -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
 }
 .ant-carousel .slick-list {
@@ -167,6 +167,7 @@
 }
 .ant-carousel .slick-dots-top {
   top: 12px;
+  bottom: auto;
 }
 .ant-carousel .slick-dots li {
   position: relative;

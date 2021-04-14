@@ -2,6 +2,7 @@ import { __decorate, __metadata } from 'tslib';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { EventEmitter, Directive, ElementRef, ViewContainerRef, ComponentFactoryResolver, Renderer2, Host, Optional, Input, Output, Component, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, NgModule } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -19,13 +20,16 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+const NZ_CONFIG_MODULE_NAME = 'popconfirm';
 class NzPopconfirmDirective extends NzTooltipBaseDirective {
-    constructor(elementRef, hostView, resolver, renderer, noAnimation) {
-        super(elementRef, hostView, resolver, renderer, noAnimation);
+    constructor(elementRef, hostView, resolver, renderer, noAnimation, nzConfigService) {
+        super(elementRef, hostView, resolver, renderer, noAnimation, nzConfigService);
+        this._nzModuleName = NZ_CONFIG_MODULE_NAME;
         this.trigger = 'click';
         this.placement = 'top';
         this.nzCondition = false;
         this.nzPopconfirmShowArrow = true;
+        this.nzPopconfirmBackdrop = false;
         // tslint:disable-next-line:no-output-rename
         this.visibleChange = new EventEmitter();
         this.nzOnCancel = new EventEmitter();
@@ -33,7 +37,7 @@ class NzPopconfirmDirective extends NzTooltipBaseDirective {
         this.componentFactory = this.resolver.resolveComponentFactory(NzPopconfirmComponent);
     }
     getProxyPropertyMap() {
-        return Object.assign({ nzOkText: ['nzOkText', () => this.nzOkText], nzOkType: ['nzOkType', () => this.nzOkType], nzCancelText: ['nzCancelText', () => this.nzCancelText], nzCondition: ['nzCondition', () => this.nzCondition], nzIcon: ['nzIcon', () => this.nzIcon], nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', () => this.nzPopconfirmShowArrow] }, super.getProxyPropertyMap());
+        return Object.assign({ nzOkText: ['nzOkText', () => this.nzOkText], nzOkType: ['nzOkType', () => this.nzOkType], nzCancelText: ['nzCancelText', () => this.nzCancelText], nzCondition: ['nzCondition', () => this.nzCondition], nzIcon: ['nzIcon', () => this.nzIcon], nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', () => this.nzPopconfirmShowArrow], nzPopconfirmBackdrop: ['nzBackdrop', () => this.nzPopconfirmBackdrop] }, super.getProxyPropertyMap());
     }
     /**
      * @override
@@ -62,7 +66,8 @@ NzPopconfirmDirective.ctorParameters = () => [
     { type: ViewContainerRef },
     { type: ComponentFactoryResolver },
     { type: Renderer2 },
-    { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] }
+    { type: NzNoAnimationDirective, decorators: [{ type: Host }, { type: Optional }] },
+    { type: NzConfigService }
 ];
 NzPopconfirmDirective.propDecorators = {
     title: [{ type: Input, args: ['nzPopconfirmTitle',] }],
@@ -81,6 +86,7 @@ NzPopconfirmDirective.propDecorators = {
     nzIcon: [{ type: Input }],
     nzCondition: [{ type: Input }],
     nzPopconfirmShowArrow: [{ type: Input }],
+    nzPopconfirmBackdrop: [{ type: Input }],
     visibleChange: [{ type: Output, args: ['nzPopconfirmVisibleChange',] }],
     nzOnCancel: [{ type: Output }],
     nzOnConfirm: [{ type: Output }]
@@ -93,6 +99,10 @@ __decorate([
     InputBoolean(),
     __metadata("design:type", Boolean)
 ], NzPopconfirmDirective.prototype, "nzPopconfirmShowArrow", void 0);
+__decorate([
+    WithConfig(),
+    __metadata("design:type", Boolean)
+], NzPopconfirmDirective.prototype, "nzPopconfirmBackdrop", void 0);
 class NzPopconfirmComponent extends NzToolTipComponent {
     constructor(cdr, directionality, noAnimation) {
         super(cdr, directionality, noAnimation);
@@ -143,6 +153,7 @@ NzPopconfirmComponent.decorators = [
       #overlay="cdkConnectedOverlay"
       cdkConnectedOverlay
       nzConnectedOverlay
+      [cdkConnectedOverlayHasBackdrop]="nzBackdrop"
       [cdkConnectedOverlayOrigin]="origin"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"

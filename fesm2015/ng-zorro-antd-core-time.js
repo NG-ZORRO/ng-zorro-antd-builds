@@ -1,26 +1,4 @@
-import addMonths from 'date-fns/addMonths';
-import addYears from 'date-fns/addYears';
-import differenceInCalendarDays from 'date-fns/differenceInCalendarDays';
-import differenceInCalendarMonths from 'date-fns/differenceInCalendarMonths';
-import differenceInCalendarYears from 'date-fns/differenceInCalendarYears';
-import differenceInHours from 'date-fns/differenceInHours';
-import differenceInMinutes from 'date-fns/differenceInMinutes';
-import differenceInSeconds from 'date-fns/differenceInSeconds';
-import isFirstDayOfMonth from 'date-fns/isFirstDayOfMonth';
-import isLastDayOfMonth from 'date-fns/isLastDayOfMonth';
-import isSameDay from 'date-fns/isSameDay';
-import isSameHour from 'date-fns/isSameHour';
-import isSameMinute from 'date-fns/isSameMinute';
-import isSameMonth from 'date-fns/isSameMonth';
-import isSameSecond from 'date-fns/isSameSecond';
-import isSameYear from 'date-fns/isSameYear';
-import isToday from 'date-fns/isToday';
-import isValid from 'date-fns/isValid';
-import setDay from 'date-fns/setDay';
-import setMonth from 'date-fns/setMonth';
-import setYear from 'date-fns/setYear';
-import startOfMonth from 'date-fns/startOfMonth';
-import startOfWeek from 'date-fns/startOfWeek';
+import { startOfWeek, startOfMonth, setYear, addYears, setMonth, addMonths, setDay, isSameDay, isSameSecond, isSameMinute, isSameHour, isSameMonth, isSameYear, differenceInCalendarDays, differenceInSeconds, differenceInMinutes, differenceInHours, differenceInCalendarMonths, differenceInCalendarYears, isToday, isValid, isFirstDayOfMonth, isLastDayOfMonth } from 'date-fns';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { getLocaleDayPeriods, FormStyle, TranslationWidth } from '@angular/common';
 import { isNotNil } from 'ng-zorro-antd/core/util';
@@ -160,16 +138,12 @@ class CandyDate {
         switch (mode) {
             case 'decade':
                 return this.addYears(amount * 10);
-                break;
             case 'year':
                 return this.addYears(amount);
-                break;
             case 'month':
                 return this.addMonths(amount);
-                break;
             default:
                 return this.addMonths(amount);
-                break;
         }
     }
     isSame(date, grain = 'day') {

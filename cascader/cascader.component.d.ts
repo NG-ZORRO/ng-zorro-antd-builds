@@ -48,6 +48,7 @@ export declare class NzCascaderComponent implements NzCascaderComponentAsSource,
     nzLabelProperty: string;
     nzNotFoundContent?: string | TemplateRef<void>;
     nzSize: NzCascaderSize;
+    nzBackdrop: boolean;
     nzShowSearch: boolean | NzShowSearchOptions;
     nzPlaceHolder: string;
     nzMenuClassName?: string;

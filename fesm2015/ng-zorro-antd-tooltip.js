@@ -4,6 +4,7 @@ import { isPresetColor } from 'ng-zorro-antd/core/color';
 import { NzNoAnimationDirective, NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP, getPlacementName, NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { toBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -16,12 +17,13 @@ import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 class NzTooltipBaseDirective {
-    constructor(elementRef, hostView, resolver, renderer, noAnimation) {
+    constructor(elementRef, hostView, resolver, renderer, noAnimation, nzConfigService) {
         this.elementRef = elementRef;
         this.hostView = hostView;
         this.resolver = resolver;
         this.renderer = renderer;
         this.noAnimation = noAnimation;
+        this.nzConfigService = nzConfigService;
         this.visibleChange = new EventEmitter();
         this.internalVisible = false;
         this.destroy$ = new Subject();
@@ -64,8 +66,8 @@ class NzTooltipBaseDirective {
         };
     }
     ngOnChanges(changes) {
-        const { specificTrigger } = changes;
-        if (specificTrigger && !specificTrigger.isFirstChange()) {
+        const { trigger } = changes;
+        if (trigger && !trigger.isFirstChange()) {
             this.registerTriggers();
         }
         if (this.component) {
@@ -211,7 +213,8 @@ NzTooltipBaseDirective.ctorParameters = () => [
     { type: ViewContainerRef },
     { type: ComponentFactoryResolver },
     { type: Renderer2 },
-    { type: NzNoAnimationDirective }
+    { type: NzNoAnimationDirective },
+    { type: NzConfigService }
 ];
 // tslint:disable-next-line:directive-class-suffix
 class NzTooltipBaseComponent {
@@ -222,13 +225,13 @@ class NzTooltipBaseComponent {
         this.nzTitle = null;
         this.nzContent = null;
         this.nzOverlayStyle = {};
+        this.nzBackdrop = false;
         this.nzVisibleChange = new Subject();
         this._visible = false;
         this._trigger = 'hover';
         this.preferredPlacement = 'top';
         this.dir = 'ltr';
         this._classMap = {};
-        this._hasBackdrop = false;
         this._prefix = 'ant-tooltip';
         this._positions = [...DEFAULT_TOOLTIP_POSITIONS];
         this.destroy$ = new Subject();
@@ -321,7 +324,7 @@ class NzTooltipBaseComponent {
         this.cdr.markForCheck();
     }
     onClickOutside(event) {
-        if (!this.origin.elementRef.nativeElement.contains(event.target)) {
+        if (!this.origin.elementRef.nativeElement.contains(event.target) && this.nzTrigger !== null) {
             this.hide();
         }
     }

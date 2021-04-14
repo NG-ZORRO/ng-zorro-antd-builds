@@ -130,10 +130,10 @@
 }
 .ant-notification-fade-enter,
 .ant-notification-fade-appear {
-  opacity: 0;
   animation-duration: 0.24s;
   animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
   animation-fill-mode: both;
+  opacity: 0;
   animation-play-state: paused;
 }
 .ant-notification-fade-leave {

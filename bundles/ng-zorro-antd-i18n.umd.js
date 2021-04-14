@@ -1,14 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/logger'), require('rxjs'), require('@angular/common'), require('date-fns/format'), require('date-fns/getISOWeek'), require('date-fns/parse'), require('ng-zorro-antd/core/time')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/i18n', ['exports', '@angular/core', 'ng-zorro-antd/core/logger', 'rxjs', '@angular/common', 'date-fns/format', 'date-fns/getISOWeek', 'date-fns/parse', 'ng-zorro-antd/core/time'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].i18n = {}), global.ng.core, global['ng-zorro-antd'].core.logger, global.rxjs, global.ng.common, global.fnsFormat, global.fnsGetISOWeek, global.fnsParse, global['ng-zorro-antd'].core.time));
-}(this, (function (exports, i0, logger, rxjs, common, fnsFormat, fnsGetISOWeek, fnsParse, time) { 'use strict';
-
-    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-    var fnsFormat__default = /*#__PURE__*/_interopDefaultLegacy(fnsFormat);
-    var fnsGetISOWeek__default = /*#__PURE__*/_interopDefaultLegacy(fnsGetISOWeek);
-    var fnsParse__default = /*#__PURE__*/_interopDefaultLegacy(fnsParse);
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('ng-zorro-antd/core/logger'), require('rxjs'), require('@angular/common'), require('date-fns'), require('ng-zorro-antd/core/time')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/i18n', ['exports', '@angular/core', 'ng-zorro-antd/core/logger', 'rxjs', '@angular/common', 'date-fns', 'ng-zorro-antd/core/time'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].i18n = {}), global.ng.core, global['ng-zorro-antd'].core.logger, global.rxjs, global.ng.common, global.dateFns, global['ng-zorro-antd'].core.time));
+}(this, (function (exports, i0, logger, rxjs, common, dateFns, time) { 'use strict';
 
     /**
      * Use of this source code is governed by an MIT-style license that can be
@@ -798,18 +792,21 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     function DATE_HELPER_SERVICE_FACTORY(injector, config) {
@@ -849,7 +846,7 @@
             return _super !== null && _super.apply(this, arguments) || this;
         }
         DateHelperByDateFns.prototype.getISOWeek = function (date) {
-            return fnsGetISOWeek__default['default'](date);
+            return dateFns.getISOWeek(date);
         };
         // Use date-fns's "weekStartsOn" to support different locale when "config.firstDayOfWeek" is null
         // https://github.com/date-fns/date-fns/blob/v2.0.0-alpha.27/src/locale/en-US/index.js#L23
@@ -870,10 +867,10 @@
          * @param formatStr format string
          */
         DateHelperByDateFns.prototype.format = function (date, formatStr) {
-            return date ? fnsFormat__default['default'](date, formatStr, { locale: this.i18n.getDateLocale() }) : '';
+            return date ? dateFns.format(date, formatStr, { locale: this.i18n.getDateLocale() }) : '';
         };
         DateHelperByDateFns.prototype.parseDate = function (text, formatStr) {
-            return fnsParse__default['default'](text, formatStr, new Date(), {
+            return dateFns.parse(text, formatStr, new Date(), {
                 locale: this.i18n.getDateLocale(),
                 weekStartsOn: this.getFirstDayOfWeek()
             });
@@ -4722,12 +4719,10 @@
     var ka_GE = {
         locale: 'ka',
         Pagination: {
-            // Options.jsx
             items_per_page: '/ გვ.',
             jump_to: 'გადასვლა',
             jump_to_confirm: 'დადასტურება',
             page: '',
-            // Pagination.jsx
             prev_page: 'წინა გვერდი',
             next_page: 'შემდეგი გვერდი',
             prev_5: 'წინა 5 გვერდი',
@@ -4737,6 +4732,16 @@
         },
         DatePicker: {
             lang: {
+                placeholder: 'აირჩიეთ თარიღი',
+                yearPlaceholder: 'აირჩიეთ წელი',
+                quarterPlaceholder: 'აირჩიეთ კვარტალი',
+                monthPlaceholder: 'აირჩიეთ თვე',
+                weekPlaceholder: 'აირჩიეთ კვირა',
+                rangePlaceholder: ['დაწყების თარიღი', 'დასრულების თარიღი'],
+                rangeYearPlaceholder: ['დაწყების წელი', 'დასრულების წელი'],
+                rangeMonthPlaceholder: ['დაწყების თვე', 'დასრულების თვე'],
+                rangeWeekPlaceholder: ['დაწყების კვირა', 'დასრულების კვირა'],
+                locale: 'ka_GE',
                 today: 'დღეს',
                 now: 'ახლა',
                 backToToday: 'მიმდინარე თარიღი',
@@ -4765,14 +4770,26 @@
                 nextCentury: 'შემდეგი საუკუნე'
             },
             timePickerLocale: {
-                placeholder: 'აირჩიეთ დრო'
+                placeholder: 'აირჩიეთ დრო',
+                rangePlaceholder: ['დაწყების დრო', 'დასრულების დრო']
             }
         },
         TimePicker: {
-            placeholder: 'აირჩიეთ დრო'
+            placeholder: 'აირჩიეთ დრო',
+            rangePlaceholder: ['დაწყების დრო', 'დასრულების დრო']
         },
         Calendar: {
             lang: {
+                placeholder: 'აირჩიეთ თარიღი',
+                yearPlaceholder: 'აირჩიეთ წელი',
+                quarterPlaceholder: 'აირჩიეთ კვარტალი',
+                monthPlaceholder: 'აირჩიეთ თვე',
+                weekPlaceholder: 'აირჩიეთ კვირა',
+                rangePlaceholder: ['დაწყების თარიღი', 'დასრულების თარიღი'],
+                rangeYearPlaceholder: ['დაწყების წელი', 'დასრულების წელი'],
+                rangeMonthPlaceholder: ['დაწყების თვე', 'დასრულების თვე'],
+                rangeWeekPlaceholder: ['დაწყების კვირა', 'დასრულების კვირა'],
+                locale: 'ka_GE',
                 today: 'დღეს',
                 now: 'ახლა',
                 backToToday: 'მიმდინარე თარიღი',
@@ -4801,7 +4818,8 @@
                 nextCentury: 'შემდეგი საუკუნე'
             },
             timePickerLocale: {
-                placeholder: 'აირჩიეთ დრო'
+                placeholder: 'აირჩიეთ დრო',
+                rangePlaceholder: ['დაწყების დრო', 'დასრულების დრო']
             }
         },
         global: {
@@ -4811,9 +4829,17 @@
             filterTitle: 'ფილტრი',
             filterConfirm: 'დიახ',
             filterReset: 'განულება',
+            filterEmptyText: 'ფილტრები არ არის',
+            emptyText: 'მონაცემები არ არის',
             selectAll: 'აირჩიეთ მიმდინარე გვერდი',
             selectInvert: 'გვერდის მიმართულების შეცვლა',
-            sortTitle: 'სორტირება'
+            selectionAll: 'აირჩიეთ ყველა მონაცემი',
+            sortTitle: 'სორტირება',
+            expand: 'მწკრივის გაშლა',
+            collapse: 'მწკრივის ჩაკეცვა',
+            triggerDesc: 'დააჭირეთ კლებადობით დასალაგებლად',
+            triggerAsc: 'დააჭირეთ ზრდადობით დასალაგებლად',
+            cancelSort: 'დააჭირეთ დალაგების გასაუქმებლად'
         },
         Modal: {
             okText: 'დიახ',
@@ -4828,13 +4854,20 @@
             titles: ['', ''],
             searchPlaceholder: 'ძიება',
             itemUnit: 'ელემ.',
-            itemsUnit: 'ელემ.'
+            itemsUnit: 'ელემ.',
+            remove: 'Remove',
+            selectCurrent: 'აირჩიეთ მიმდინარე გვერდი',
+            removeCurrent: 'წაშალეთ მიმდინარე გვერდი',
+            selectAll: 'აირჩიეთ ყველა მონაცემი',
+            removeAll: 'წაშალეთ ყველა მონაცემი',
+            selectInvert: 'მიმდინარე გვერდის შებრუნება'
         },
         Upload: {
             uploading: 'იტვირტება...',
             removeFile: 'ფაილის წაშლა',
             uploadError: 'ატვირთვის შეცდომა',
-            previewFile: 'ფაილის გადახედვა'
+            previewFile: 'ფაილის გადახედვა',
+            downloadFile: 'ფაილის ჩამოტვირთვა'
         },
         Empty: {
             description: 'მონაცემი არ არის'

@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { AnimationEvent } from '@angular/animations';
 import { AfterContentInit, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnDestroy, OnInit, QueryList, TemplateRef } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -35,6 +36,7 @@ export declare class NzAutocompleteComponent implements AfterContentInit, AfterV
     activeItem: NzAutocompleteOptionComponent;
     dir: Direction;
     private destroy$;
+    animationStateChange: EventEmitter<AnimationEvent>;
     /**
      * Options accessor, its source may be content or dataSource
      */
@@ -56,6 +58,7 @@ export declare class NzAutocompleteComponent implements AfterContentInit, AfterV
     readonly optionMouseEnter: Observable<NzAutocompleteOptionComponent>;
     constructor(changeDetectorRef: ChangeDetectorRef, ngZone: NgZone, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnInit(): void;
+    onAnimationEvent(event: AnimationEvent): void;
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;

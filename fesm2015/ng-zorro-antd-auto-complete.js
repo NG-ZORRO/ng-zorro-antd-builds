@@ -179,6 +179,7 @@ class NzAutocompleteComponent {
         this.isOpen = false;
         this.dir = 'ltr';
         this.destroy$ = new Subject();
+        this.animationStateChange = new EventEmitter();
         this.activeItemIndex = -1;
         this.selectionChangeSubscription = Subscription.EMPTY;
         this.optionMouseEnterSubscription = Subscription.EMPTY;
@@ -216,6 +217,9 @@ class NzAutocompleteComponent {
             this.changeDetectorRef.detectChanges();
         });
         this.dir = this.directionality.value;
+    }
+    onAnimationEvent(event) {
+        this.animationStateChange.emit(event);
     }
     ngAfterContentInit() {
         if (!this.nzDataSource) {
@@ -327,7 +331,8 @@ NzAutocompleteComponent.decorators = [
         [ngClass]="nzOverlayClassName"
         [ngStyle]="nzOverlayStyle"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
-        [@slideMotion]="'enter'"
+        @slideMotion
+        (@slideMotion.done)="onAnimationEvent($event)"
         [@.disabled]="noAnimation?.nzNoAnimation"
       >
         <div style="max-height: 256px; overflow-y: auto; overflow-anchor: none;">
@@ -418,6 +423,18 @@ class NzAutocompleteTriggerDirective {
             return this.nzAutocomplete.activeItem;
         }
     }
+    ngAfterViewInit() {
+        if (this.nzAutocomplete) {
+            this.nzAutocomplete.animationStateChange.pipe(takeUntil(this.destroy$)).subscribe(event => {
+                if (event.toState === 'void') {
+                    if (this.overlayRef) {
+                        this.overlayRef.dispose();
+                        this.overlayRef = null;
+                    }
+                }
+            });
+        }
+    }
     ngOnDestroy() {
         this.destroyPanel();
     }
@@ -444,11 +461,10 @@ class NzAutocompleteTriggerDirective {
         if (this.panelOpen) {
             this.nzAutocomplete.isOpen = this.panelOpen = false;
             if (this.overlayRef && this.overlayRef.hasAttached()) {
+                this.overlayRef.detach();
                 this.selectionChangeSubscription.unsubscribe();
                 this.overlayOutsideClickSubscription.unsubscribe();
                 this.optionsChangeSubscription.unsubscribe();
-                this.overlayRef.dispose();
-                this.overlayRef = null;
                 this.portal = null;
             }
         }

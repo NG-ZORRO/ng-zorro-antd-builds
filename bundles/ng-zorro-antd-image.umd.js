@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/overlay'), require('@angular/cdk/portal'), require('@angular/cdk/keycodes'), require('ng-zorro-antd/core/animation'), require('@angular/cdk/drag-drop'), require('@angular/common'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/pipes')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/image', ['exports', '@angular/cdk/bidi', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/overlay', '@angular/cdk/portal', '@angular/cdk/keycodes', 'ng-zorro-antd/core/animation', '@angular/cdk/drag-drop', '@angular/common', 'ng-zorro-antd/icon', 'ng-zorro-antd/pipes'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].image = {}), global.ng.cdk.bidi, global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.overlay, global.ng.cdk.portal, global.ng.cdk.keycodes, global['ng-zorro-antd'].core.animation, global.ng.cdk.dragDrop, global.ng.common, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].pipes));
-}(this, (function (exports, bidi, core, config, util, rxjs, operators, overlay, portal, keycodes, animation, dragDrop, common, icon, pipes) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/common'), require('@angular/core'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/util'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/overlay'), require('@angular/cdk/portal'), require('@angular/cdk/keycodes'), require('ng-zorro-antd/core/animation'), require('@angular/cdk/drag-drop'), require('ng-zorro-antd/icon'), require('ng-zorro-antd/pipes')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/image', ['exports', '@angular/cdk/bidi', '@angular/common', '@angular/core', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/util', 'rxjs', 'rxjs/operators', '@angular/cdk/overlay', '@angular/cdk/portal', '@angular/cdk/keycodes', 'ng-zorro-antd/core/animation', '@angular/cdk/drag-drop', 'ng-zorro-antd/icon', 'ng-zorro-antd/pipes'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].image = {}), global.ng.cdk.bidi, global.ng.common, global.ng.core, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core.util, global.rxjs, global.rxjs.operators, global.ng.cdk.overlay, global.ng.cdk.portal, global.ng.cdk.keycodes, global['ng-zorro-antd'].core.animation, global.ng.cdk.dragDrop, global['ng-zorro-antd'].icon, global['ng-zorro-antd'].pipes));
+}(this, (function (exports, bidi, common, core, config, util, rxjs, operators, overlay, portal, keycodes, animation, dragDrop, icon, pipes) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -299,18 +299,21 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     /**
@@ -856,7 +859,8 @@
 
     var NZ_CONFIG_MODULE_NAME$1 = 'image';
     var NzImageDirective = /** @class */ (function () {
-        function NzImageDirective(nzConfigService, elementRef, nzImageService, cdr, parentGroup, directionality) {
+        function NzImageDirective(document, nzConfigService, elementRef, nzImageService, cdr, parentGroup, directionality) {
+            this.document = document;
             this.nzConfigService = nzConfigService;
             this.elementRef = elementRef;
             this.nzImageService = nzImageService;
@@ -932,7 +936,7 @@
          */
         NzImageDirective.prototype.backLoad = function () {
             var _this = this;
-            this.backLoadImage = new Image();
+            this.backLoadImage = this.document.createElement('img');
             this.backLoadImage.src = this.nzSrc;
             this.status = 'loading';
             if (this.backLoadImage.complete) {
@@ -970,6 +974,7 @@
                 },] }
     ];
     NzImageDirective.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] },
         { type: config.NzConfigService },
         { type: core.ElementRef },
         { type: NzImageService },

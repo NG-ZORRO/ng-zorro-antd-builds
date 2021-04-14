@@ -28,6 +28,14 @@ NzMentionSuggestionDirective.decorators = [
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+const NZ_MENTION_CONFIG = {
+    split: ' '
+};
+
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 class NzMentionService {
     constructor() {
         this.triggerChange$ = new Subject();
@@ -83,7 +91,7 @@ class NzMentionTriggerDirective {
     }
     insertMention(mention) {
         const value = this.el.nativeElement.value;
-        const insertValue = mention.mention.trim() + ' ';
+        const insertValue = `${mention.mention}${NZ_MENTION_CONFIG.split}`;
         const newValue = [value.slice(0, mention.startPos + 1), insertValue, value.slice(mention.endPos, value.length)].join('');
         this.el.nativeElement.value = newValue;
         this.focus(mention.startPos + insertValue.length + 1);
@@ -316,15 +324,18 @@ class NzMentionComponent {
         return !element.readOnly && !element.disabled;
     }
     resetCursorMention() {
-        const value = this.triggerNativeElement.value.replace(/[\r\n]/g, ' ') || '';
+        const value = this.triggerNativeElement.value.replace(/[\r\n]/g, NZ_MENTION_CONFIG.split) || '';
         const selectionStart = this.triggerNativeElement.selectionStart;
         const prefix = typeof this.nzPrefix === 'string' ? [this.nzPrefix] : this.nzPrefix;
         let i = prefix.length;
         while (i >= 0) {
             const startPos = value.lastIndexOf(prefix[i], selectionStart);
-            const endPos = value.indexOf(' ', selectionStart) > -1 ? value.indexOf(' ', selectionStart) : value.length;
+            const endPos = value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) > -1 ? value.indexOf(NZ_MENTION_CONFIG.split, selectionStart) : value.length;
             const mention = value.substring(startPos, endPos);
-            if ((startPos > 0 && value[startPos - 1] !== ' ') || startPos < 0 || mention.includes(prefix[i], 1) || mention.includes(' ')) {
+            if ((startPos > 0 && value[startPos - 1] !== NZ_MENTION_CONFIG.split) ||
+                startPos < 0 ||
+                mention.includes(prefix[i], 1) ||
+                mention.includes(NZ_MENTION_CONFIG.split)) {
                 this.cursorMention = null;
                 this.cursorMentionStart = -1;
                 this.cursorMentionEnd = -1;

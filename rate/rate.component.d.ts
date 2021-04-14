@@ -6,7 +6,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassType, NumberInput } from 'ng-zorro-antd/core/types';
 export declare class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
     nzConfigService: NzConfigService;
     private renderer;
@@ -17,7 +17,7 @@ export declare class NzRateComponent implements OnInit, OnDestroy, ControlValueA
     static ngAcceptInputType_nzAllowHalf: BooleanInput;
     static ngAcceptInputType_nzDisabled: BooleanInput;
     static ngAcceptInputType_nzAutoFocus: BooleanInput;
-    static ngAcceptInputType_nzCount: BooleanInput;
+    static ngAcceptInputType_nzCount: NumberInput;
     private ulElement?;
     nzAllowClear: boolean;
     nzAllowHalf: boolean;

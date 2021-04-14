@@ -299,18 +299,21 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
     var listOfPositions = [overlay.POSITION_MAP.bottomLeft, overlay.POSITION_MAP.bottomRight, overlay.POSITION_MAP.topRight, overlay.POSITION_MAP.topLeft];
@@ -407,8 +410,10 @@
                                 scrollStrategy: _this.overlay.scrollStrategies.reposition()
                             });
                             rxjs.merge(_this.overlayRef.backdropClick(), _this.overlayRef.detachments(), _this.overlayRef.outsidePointerEvents().pipe(operators.filter(function (e) { return !_this.elementRef.nativeElement.contains(e.target); })), _this.overlayRef.keydownEvents().pipe(operators.filter(function (e) { return e.keyCode === keycodes.ESCAPE && !keycodes.hasModifierKey(e); })))
-                                .pipe(operators.mapTo(false), operators.takeUntil(_this.destroy$))
-                                .subscribe(_this.overlayClose$);
+                                .pipe(operators.takeUntil(_this.destroy$))
+                                .subscribe(function () {
+                                _this.overlayClose$.next(false);
+                            });
                         }
                         else {
                             /** update overlay config **/
@@ -428,6 +433,14 @@
                         if (_this.overlayRef) {
                             _this.overlayRef.detach();
                         }
+                    }
+                });
+                this.nzDropdownMenu.animationStateChange$.pipe(operators.takeUntil(this.destroy$)).subscribe(function (event) {
+                    if (event.toState === 'void') {
+                        if (_this.overlayRef) {
+                            _this.overlayRef.dispose();
+                        }
+                        _this.overlayRef = null;
                     }
                 });
             }
@@ -597,11 +610,15 @@
             this.mouseState$ = new rxjs.BehaviorSubject(false);
             this.isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
             this.descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
+            this.animationStateChange$ = new i0.EventEmitter();
             this.nzOverlayClassName = '';
             this.nzOverlayStyle = {};
             this.dir = 'ltr';
             this.destroy$ = new rxjs.Subject();
         }
+        NzDropdownMenuComponent.prototype.onAnimationEvent = function (event) {
+            this.animationStateChange$.emit(event);
+        };
         NzDropdownMenuComponent.prototype.setMouseState = function (visible) {
             this.mouseState$.next(visible);
         };
@@ -640,7 +657,7 @@
                             useValue: true
                         }
                     ],
-                    template: "\n    <ng-template>\n      <div\n        class=\"ant-dropdown\"\n        [class.ant-dropdown-rtl]=\"dir === 'rtl'\"\n        [ngClass]=\"nzOverlayClassName\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@slideMotion]=\"'enter'\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        (mouseenter)=\"setMouseState(true)\"\n        (mouseleave)=\"setMouseState(false)\"\n      >\n        <ng-content></ng-content>\n      </div>\n    </ng-template>\n  ",
+                    template: "\n    <ng-template>\n      <div\n        class=\"ant-dropdown\"\n        [class.ant-dropdown-rtl]=\"dir === 'rtl'\"\n        [ngClass]=\"nzOverlayClassName\"\n        [ngStyle]=\"nzOverlayStyle\"\n        @slideMotion\n        (@slideMotion.done)=\"onAnimationEvent($event)\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        (mouseenter)=\"setMouseState(true)\"\n        (mouseleave)=\"setMouseState(false)\"\n      >\n        <ng-content></ng-content>\n      </div>\n    </ng-template>\n  ",
                     preserveWhitespaces: false,
                     encapsulation: i0.ViewEncapsulation.None,
                     changeDetection: i0.ChangeDetectionStrategy.OnPush

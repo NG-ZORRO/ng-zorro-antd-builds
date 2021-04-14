@@ -5,11 +5,13 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, ElementRef, EventEmitter, OnDestroy, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
 import { NzButtonType } from 'ng-zorro-antd/button';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
 import { Subject } from 'rxjs';
 export declare class NzPopconfirmDirective extends NzTooltipBaseDirective {
+    readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzCondition: BooleanInput;
     static ngAcceptInputType_nzPopconfirmShowArrow: BooleanInput;
     title?: NzTSType;
@@ -28,12 +30,13 @@ export declare class NzPopconfirmDirective extends NzTooltipBaseDirective {
     nzIcon?: string | TemplateRef<void>;
     nzCondition: boolean;
     nzPopconfirmShowArrow: boolean;
+    nzPopconfirmBackdrop?: boolean;
     readonly visibleChange: EventEmitter<boolean>;
     readonly nzOnCancel: EventEmitter<void>;
     readonly nzOnConfirm: EventEmitter<void>;
     protected readonly componentFactory: ComponentFactory<NzPopconfirmComponent>;
     protected getProxyPropertyMap(): PropertyMapping;
-    constructor(elementRef: ElementRef, hostView: ViewContainerRef, resolver: ComponentFactoryResolver, renderer: Renderer2, noAnimation?: NzNoAnimationDirective);
+    constructor(elementRef: ElementRef, hostView: ViewContainerRef, resolver: ComponentFactoryResolver, renderer: Renderer2, noAnimation?: NzNoAnimationDirective, nzConfigService?: NzConfigService);
     /**
      * @override
      */

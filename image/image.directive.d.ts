@@ -5,11 +5,12 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzImageGroupComponent } from './image-group.component';
 import { NzImageService } from './image.service';
 export declare type ImageStatusType = 'error' | 'loading' | 'normal';
 export declare class NzImageDirective implements OnInit, OnChanges, OnDestroy {
+    private document;
     nzConfigService: NzConfigService;
     private elementRef;
     private nzImageService;
@@ -27,7 +28,7 @@ export declare class NzImageDirective implements OnInit, OnChanges, OnDestroy {
     private status;
     private destroy$;
     get previewable(): boolean;
-    constructor(nzConfigService: NzConfigService, elementRef: ElementRef, nzImageService: NzImageService, cdr: ChangeDetectorRef, parentGroup: NzImageGroupComponent, directionality: Directionality);
+    constructor(document: NzSafeAny, nzConfigService: NzConfigService, elementRef: ElementRef, nzImageService: NzImageService, cdr: ChangeDetectorRef, parentGroup: NzImageGroupComponent, directionality: Directionality);
     ngOnInit(): void;
     ngOnDestroy(): void;
     onPreview(): void;

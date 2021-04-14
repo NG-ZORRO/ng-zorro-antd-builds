@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/tooltip'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/button'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/i18n'), require('ng-zorro-antd/icon')) :
-    typeof define === 'function' && define.amd ? define('ng-zorro-antd/popconfirm', ['exports', '@angular/cdk/bidi', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/util', 'ng-zorro-antd/tooltip', 'rxjs', 'rxjs/operators', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/button', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/i18n', 'ng-zorro-antd/icon'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].popconfirm = {}), global.ng.cdk.bidi, global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].tooltip, global.rxjs, global.rxjs.operators, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].button, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].i18n, global['ng-zorro-antd'].icon));
-}(this, (function (exports, bidi, core, animation, noAnimation, util, tooltip, rxjs, operators, overlay, common, button, outlet, overlay$1, i18n, icon) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/cdk/bidi'), require('@angular/core'), require('ng-zorro-antd/core/animation'), require('ng-zorro-antd/core/config'), require('ng-zorro-antd/core/no-animation'), require('ng-zorro-antd/core/util'), require('ng-zorro-antd/tooltip'), require('rxjs'), require('rxjs/operators'), require('@angular/cdk/overlay'), require('@angular/common'), require('ng-zorro-antd/button'), require('ng-zorro-antd/core/outlet'), require('ng-zorro-antd/core/overlay'), require('ng-zorro-antd/i18n'), require('ng-zorro-antd/icon')) :
+    typeof define === 'function' && define.amd ? define('ng-zorro-antd/popconfirm', ['exports', '@angular/cdk/bidi', '@angular/core', 'ng-zorro-antd/core/animation', 'ng-zorro-antd/core/config', 'ng-zorro-antd/core/no-animation', 'ng-zorro-antd/core/util', 'ng-zorro-antd/tooltip', 'rxjs', 'rxjs/operators', '@angular/cdk/overlay', '@angular/common', 'ng-zorro-antd/button', 'ng-zorro-antd/core/outlet', 'ng-zorro-antd/core/overlay', 'ng-zorro-antd/i18n', 'ng-zorro-antd/icon'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global['ng-zorro-antd'] = global['ng-zorro-antd'] || {}, global['ng-zorro-antd'].popconfirm = {}), global.ng.cdk.bidi, global.ng.core, global['ng-zorro-antd'].core.animation, global['ng-zorro-antd'].core.config, global['ng-zorro-antd'].core['no-animation'], global['ng-zorro-antd'].core.util, global['ng-zorro-antd'].tooltip, global.rxjs, global.rxjs.operators, global.ng.cdk.overlay, global.ng.common, global['ng-zorro-antd'].button, global['ng-zorro-antd'].core.outlet, global['ng-zorro-antd'].core.overlay, global['ng-zorro-antd'].i18n, global['ng-zorro-antd'].icon));
+}(this, (function (exports, bidi, core, animation, config, noAnimation, util, tooltip, rxjs, operators, overlay, common, button, outlet, overlay$1, i18n, icon) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -299,28 +299,34 @@
     function __importDefault(mod) {
         return (mod && mod.__esModule) ? mod : { default: mod };
     }
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
+    function __classPrivateFieldGet(receiver, state, kind, f) {
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a getter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot read private member from an object whose class did not declare it");
+        return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
     }
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
+    function __classPrivateFieldSet(receiver, state, value, kind, f) {
+        if (kind === "m")
+            throw new TypeError("Private method is not writable");
+        if (kind === "a" && !f)
+            throw new TypeError("Private accessor was defined without a setter");
+        if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
+            throw new TypeError("Cannot write private member to an object whose class did not declare it");
+        return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
     }
 
+    var NZ_CONFIG_MODULE_NAME = 'popconfirm';
     var NzPopconfirmDirective = /** @class */ (function (_super) {
         __extends(NzPopconfirmDirective, _super);
-        function NzPopconfirmDirective(elementRef, hostView, resolver, renderer, noAnimation) {
-            var _this = _super.call(this, elementRef, hostView, resolver, renderer, noAnimation) || this;
+        function NzPopconfirmDirective(elementRef, hostView, resolver, renderer, noAnimation, nzConfigService) {
+            var _this = _super.call(this, elementRef, hostView, resolver, renderer, noAnimation, nzConfigService) || this;
+            _this._nzModuleName = NZ_CONFIG_MODULE_NAME;
             _this.trigger = 'click';
             _this.placement = 'top';
             _this.nzCondition = false;
             _this.nzPopconfirmShowArrow = true;
+            _this.nzPopconfirmBackdrop = false;
             // tslint:disable-next-line:no-output-rename
             _this.visibleChange = new core.EventEmitter();
             _this.nzOnCancel = new core.EventEmitter();
@@ -330,7 +336,7 @@
         }
         NzPopconfirmDirective.prototype.getProxyPropertyMap = function () {
             var _this = this;
-            return Object.assign({ nzOkText: ['nzOkText', function () { return _this.nzOkText; }], nzOkType: ['nzOkType', function () { return _this.nzOkType; }], nzCancelText: ['nzCancelText', function () { return _this.nzCancelText; }], nzCondition: ['nzCondition', function () { return _this.nzCondition; }], nzIcon: ['nzIcon', function () { return _this.nzIcon; }], nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', function () { return _this.nzPopconfirmShowArrow; }] }, _super.prototype.getProxyPropertyMap.call(this));
+            return Object.assign({ nzOkText: ['nzOkText', function () { return _this.nzOkText; }], nzOkType: ['nzOkType', function () { return _this.nzOkType; }], nzCancelText: ['nzCancelText', function () { return _this.nzCancelText; }], nzCondition: ['nzCondition', function () { return _this.nzCondition; }], nzIcon: ['nzIcon', function () { return _this.nzIcon; }], nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', function () { return _this.nzPopconfirmShowArrow; }], nzPopconfirmBackdrop: ['nzBackdrop', function () { return _this.nzPopconfirmBackdrop; }] }, _super.prototype.getProxyPropertyMap.call(this));
         };
         /**
          * @override
@@ -361,7 +367,8 @@
         { type: core.ViewContainerRef },
         { type: core.ComponentFactoryResolver },
         { type: core.Renderer2 },
-        { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] }
+        { type: noAnimation.NzNoAnimationDirective, decorators: [{ type: core.Host }, { type: core.Optional }] },
+        { type: config.NzConfigService }
     ]; };
     NzPopconfirmDirective.propDecorators = {
         title: [{ type: core.Input, args: ['nzPopconfirmTitle',] }],
@@ -380,6 +387,7 @@
         nzIcon: [{ type: core.Input }],
         nzCondition: [{ type: core.Input }],
         nzPopconfirmShowArrow: [{ type: core.Input }],
+        nzPopconfirmBackdrop: [{ type: core.Input }],
         visibleChange: [{ type: core.Output, args: ['nzPopconfirmVisibleChange',] }],
         nzOnCancel: [{ type: core.Output }],
         nzOnConfirm: [{ type: core.Output }]
@@ -392,6 +400,10 @@
         util.InputBoolean(),
         __metadata("design:type", Boolean)
     ], NzPopconfirmDirective.prototype, "nzPopconfirmShowArrow", void 0);
+    __decorate([
+        config.WithConfig(),
+        __metadata("design:type", Boolean)
+    ], NzPopconfirmDirective.prototype, "nzPopconfirmBackdrop", void 0);
     var NzPopconfirmComponent = /** @class */ (function (_super) {
         __extends(NzPopconfirmComponent, _super);
         function NzPopconfirmComponent(cdr, directionality, noAnimation) {
@@ -440,7 +452,7 @@
                     exportAs: 'nzPopconfirmComponent',
                     preserveWhitespaces: false,
                     animations: [animation.zoomBigMotion],
-                    template: "\n    <ng-template\n      #overlay=\"cdkConnectedOverlay\"\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n      (detach)=\"hide()\"\n      (positionChange)=\"onPositionChange($event)\"\n      [cdkConnectedOverlayPositions]=\"_positions\"\n      [cdkConnectedOverlayOpen]=\"_visible\"\n      [cdkConnectedOverlayPush]=\"true\"\n    >\n      <div\n        class=\"ant-popover\"\n        [ngClass]=\"_classMap\"\n        [class.ant-popover-rtl]=\"dir === 'rtl'\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@zoomBigMotion]=\"'active'\"\n      >\n        <div class=\"ant-popover-content\">\n          <div class=\"ant-popover-arrow\" *ngIf=\"nzPopconfirmShowArrow\"></div>\n          <div class=\"ant-popover-inner\">\n            <div>\n              <div class=\"ant-popover-inner-content\">\n                <div class=\"ant-popover-message\">\n                  <ng-container *nzStringTemplateOutlet=\"nzTitle\">\n                    <ng-container *nzStringTemplateOutlet=\"nzIcon; let icon\">\n                      <i nz-icon [nzType]=\"icon || 'exclamation-circle'\" nzTheme=\"fill\"></i>\n                    </ng-container>\n                    <div class=\"ant-popover-message-title\">{{ nzTitle }}</div>\n                  </ng-container>\n                </div>\n                <div class=\"ant-popover-buttons\">\n                  <button nz-button [nzSize]=\"'small'\" (click)=\"onCancel()\">\n                    <ng-container *ngIf=\"nzCancelText\">{{ nzCancelText }}</ng-container>\n                    <ng-container *ngIf=\"!nzCancelText\">{{ 'Modal.cancelText' | nzI18n }}</ng-container>\n                  </button>\n                  <button nz-button [nzSize]=\"'small'\" [nzType]=\"nzOkType\" (click)=\"onConfirm()\">\n                    <ng-container *ngIf=\"nzOkText\">{{ nzOkText }}</ng-container>\n                    <ng-container *ngIf=\"!nzOkText\">{{ 'Modal.okText' | nzI18n }}</ng-container>\n                  </button>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  "
+                    template: "\n    <ng-template\n      #overlay=\"cdkConnectedOverlay\"\n      cdkConnectedOverlay\n      nzConnectedOverlay\n      [cdkConnectedOverlayHasBackdrop]=\"nzBackdrop\"\n      [cdkConnectedOverlayOrigin]=\"origin\"\n      (overlayOutsideClick)=\"onClickOutside($event)\"\n      (detach)=\"hide()\"\n      (positionChange)=\"onPositionChange($event)\"\n      [cdkConnectedOverlayPositions]=\"_positions\"\n      [cdkConnectedOverlayOpen]=\"_visible\"\n      [cdkConnectedOverlayPush]=\"true\"\n    >\n      <div\n        class=\"ant-popover\"\n        [ngClass]=\"_classMap\"\n        [class.ant-popover-rtl]=\"dir === 'rtl'\"\n        [ngStyle]=\"nzOverlayStyle\"\n        [@.disabled]=\"noAnimation?.nzNoAnimation\"\n        [nzNoAnimation]=\"noAnimation?.nzNoAnimation\"\n        [@zoomBigMotion]=\"'active'\"\n      >\n        <div class=\"ant-popover-content\">\n          <div class=\"ant-popover-arrow\" *ngIf=\"nzPopconfirmShowArrow\"></div>\n          <div class=\"ant-popover-inner\">\n            <div>\n              <div class=\"ant-popover-inner-content\">\n                <div class=\"ant-popover-message\">\n                  <ng-container *nzStringTemplateOutlet=\"nzTitle\">\n                    <ng-container *nzStringTemplateOutlet=\"nzIcon; let icon\">\n                      <i nz-icon [nzType]=\"icon || 'exclamation-circle'\" nzTheme=\"fill\"></i>\n                    </ng-container>\n                    <div class=\"ant-popover-message-title\">{{ nzTitle }}</div>\n                  </ng-container>\n                </div>\n                <div class=\"ant-popover-buttons\">\n                  <button nz-button [nzSize]=\"'small'\" (click)=\"onCancel()\">\n                    <ng-container *ngIf=\"nzCancelText\">{{ nzCancelText }}</ng-container>\n                    <ng-container *ngIf=\"!nzCancelText\">{{ 'Modal.cancelText' | nzI18n }}</ng-container>\n                  </button>\n                  <button nz-button [nzSize]=\"'small'\" [nzType]=\"nzOkType\" (click)=\"onConfirm()\">\n                    <ng-container *ngIf=\"nzOkText\">{{ nzOkText }}</ng-container>\n                    <ng-container *ngIf=\"!nzOkText\">{{ 'Modal.okText' | nzI18n }}</ng-container>\n                  </button>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </ng-template>\n  "
                 },] }
     ];
     NzPopconfirmComponent.ctorParameters = function () { return [

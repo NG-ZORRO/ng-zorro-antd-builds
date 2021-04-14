@@ -1,6 +1,7 @@
 import { __decorate, __metadata } from 'tslib';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
-import { Component, ChangeDetectionStrategy, ViewEncapsulation, EventEmitter, ChangeDetectorRef, ViewChild, Injector, Injectable, Optional, Directive, ElementRef, Input, NgModule } from '@angular/core';
+import { DOCUMENT, CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation, EventEmitter, ChangeDetectorRef, ViewChild, Injector, Injectable, Optional, Directive, Inject, ElementRef, Input, NgModule } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { isNotNil, InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -10,7 +11,6 @@ import { ComponentPortal, PortalModule } from '@angular/cdk/portal';
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CommonModule } from '@angular/common';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
@@ -599,7 +599,8 @@ NzImageService.ctorParameters = () => [
 
 const NZ_CONFIG_MODULE_NAME$1 = 'image';
 class NzImageDirective {
-    constructor(nzConfigService, elementRef, nzImageService, cdr, parentGroup, directionality) {
+    constructor(document, nzConfigService, elementRef, nzImageService, cdr, parentGroup, directionality) {
+        this.document = document;
         this.nzConfigService = nzConfigService;
         this.elementRef = elementRef;
         this.nzImageService = nzImageService;
@@ -668,7 +669,7 @@ class NzImageDirective {
      * @private
      */
     backLoad() {
-        this.backLoadImage = new Image();
+        this.backLoadImage = this.document.createElement('img');
         this.backLoadImage.src = this.nzSrc;
         this.status = 'loading';
         if (this.backLoadImage.complete) {
@@ -705,6 +706,7 @@ NzImageDirective.decorators = [
             },] }
 ];
 NzImageDirective.ctorParameters = () => [
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] },
     { type: NzConfigService },
     { type: ElementRef },
     { type: NzImageService },

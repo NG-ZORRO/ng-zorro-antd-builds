@@ -1514,7 +1514,7 @@ class NzTableDataService {
         }), map(([pageIndex, pageSize, listOfData]) => {
             return listOfData.slice((pageIndex - 1) * pageSize, pageIndex * pageSize);
         }));
-        this.listOfCurrentPageData$ = this.frontPagination$.pipe(switchMap(pagination => (pagination ? this.listOfFrontEndCurrentPageData$ : this.listOfData$)));
+        this.listOfCurrentPageData$ = this.frontPagination$.pipe(switchMap(pagination => (pagination ? this.listOfFrontEndCurrentPageData$ : this.listOfDataAfterCalc$)));
         this.total$ = this.frontPagination$.pipe(switchMap(pagination => (pagination ? this.listOfDataAfterCalc$ : this.listOfData$)), map(list => list.length), distinctUntilChanged());
     }
     updatePageSize(size) {

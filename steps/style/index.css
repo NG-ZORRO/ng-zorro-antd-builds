@@ -53,7 +53,7 @@
 }
 .ant-steps-item-icon .ant-steps-icon {
   position: relative;
-  top: -1px;
+  top: -0.5px;
   color: #1890ff;
   line-height: 1;
 }
@@ -712,6 +712,9 @@
 }
 .ant-steps-with-progress .ant-steps-item .ant-steps-item-tail {
   top: 4px !important;
+}
+.ant-steps-with-progress.ant-steps-horizontal .ant-steps-item:first-child {
+  padding-left: 4px;
 }
 .ant-steps-with-progress .ant-steps-item-icon {
   position: relative;
