@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9,30 +13,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const schematics_1 = require("@angular-devkit/schematics");
+const schematics_1 = require("@angular/cdk/schematics");
+const schematics_2 = require("@angular-devkit/schematics");
 const tasks_1 = require("@angular-devkit/schematics/tasks");
-const schematics_2 = require("@angular/cdk/schematics");
 const workspace_1 = require("@schematics/angular/utility/workspace");
 const package_config_1 = require("../utils/package-config");
 const project_style_1 = require("../utils/project-style");
 const version_names_1 = require("../utils/version-names");
 function default_1(options) {
-    return schematics_1.chain([
+    return (0, schematics_2.chain)([
         (host) => {
             if (!options.skipPackageJson) {
-                package_config_1.addPackageToPackageJson(host, 'ng-zorro-antd', version_names_1.zorroVersion);
+                (0, package_config_1.addPackageToPackageJson)(host, 'ng-zorro-antd', version_names_1.zorroVersion);
                 if (options.gestures) {
-                    package_config_1.addPackageToPackageJson(host, 'hammerjs', version_names_1.hammerjsVersion);
+                    (0, package_config_1.addPackageToPackageJson)(host, 'hammerjs', version_names_1.hammerjsVersion);
                 }
             }
         },
-        schematics_1.schematic('ng-add-setup-project', options),
+        (0, schematics_2.schematic)('ng-add-setup-project', options),
         (host) => __awaiter(this, void 0, void 0, function* () {
             if (options.template) {
-                const workspace = yield workspace_1.getWorkspace(host);
-                const project = schematics_2.getProjectFromWorkspace(workspace, options.project);
-                const style = project_style_1.getProjectStyle(project);
-                return schematics_1.schematic(options.template, Object.assign(Object.assign({}, options), { style: style }));
+                const workspace = yield (0, workspace_1.getWorkspace)(host);
+                const project = (0, schematics_1.getProjectFromWorkspace)(workspace, options.project);
+                const style = (0, project_style_1.getProjectStyle)(project);
+                return (0, schematics_2.schematic)(options.template, Object.assign(Object.assign({}, options), { style }));
             }
         }),
         (_, context) => {

@@ -1,11 +1,10 @@
 {
-  "main": "../bundles/ng-zorro-antd-tabs.umd.js",
-  "module": "../fesm2015/ng-zorro-antd-tabs.js",
-  "es2015": "../fesm2015/ng-zorro-antd-tabs.js",
-  "esm2015": "../esm2015/tabs/ng-zorro-antd-tabs.js",
-  "fesm2015": "../fesm2015/ng-zorro-antd-tabs.js",
+  "module": "../fesm2015/ng-zorro-antd-tabs.mjs",
+  "es2020": "../fesm2020/ng-zorro-antd-tabs.mjs",
+  "esm2020": "../esm2020/tabs/ng-zorro-antd-tabs.mjs",
+  "fesm2020": "../fesm2020/ng-zorro-antd-tabs.mjs",
+  "fesm2015": "../fesm2015/ng-zorro-antd-tabs.mjs",
   "typings": "ng-zorro-antd-tabs.d.ts",
-  "metadata": "ng-zorro-antd-tabs.metadata.json",
   "sideEffects": false,
   "name": "ng-zorro-antd/tabs"
 }

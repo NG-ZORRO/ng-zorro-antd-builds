@@ -35,7 +35,7 @@ describe('modal migration', () => {
             }
         });
         previousWorkingDir = shx.pwd();
-        tmpDirPath = core_1.getSystemPath(host.root);
+        tmpDirPath = (0, core_1.getSystemPath)(host.root);
         shx.cd(tmpDirPath);
         writeFakeAngular();
     });
@@ -47,9 +47,9 @@ describe('modal migration', () => {
         writeFile('/node_modules/@angular/core/index.d.ts', ``);
     }
     function writeFile(filePath, contents) {
-        host.sync.write(core_1.normalize(filePath), core_1.virtualFs.stringToFileBuffer(contents));
+        host.sync.write((0, core_1.normalize)(filePath), core_1.virtualFs.stringToFileBuffer(contents));
     }
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function runMigration() {
         return __awaiter(this, void 0, void 0, function* () {
             yield runner.runSchematicAsync('migration-v11', {}, tree).toPromise();

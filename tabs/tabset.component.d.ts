@@ -12,6 +12,7 @@ import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-an
 import { NzAnimatedInterface, NzTabChangeEvent, NzTabPosition, NzTabPositionMode, NzTabsCanDeactivateFn, NzTabScrollEvent, NzTabType } from './interfaces';
 import { NzTabNavBarComponent } from './tab-nav-bar.component';
 import { NzTabComponent } from './tab.component';
+import * as i0 from "@angular/core";
 export declare class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit {
     nzConfigService: NzConfigService;
     private cdr;
@@ -91,4 +92,6 @@ export declare class NzTabSetComponent implements OnInit, AfterContentChecked, O
     private getTabContentMarginValue;
     getTabContentMarginLeft(): string;
     getTabContentMarginRight(): string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTabSetComponent, [null, null, { optional: true; }, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTabSetComponent, "nz-tabset", ["nzTabset"], { "nzSelectedIndex": "nzSelectedIndex"; "nzTabPosition": "nzTabPosition"; "nzTabBarExtraContent": "nzTabBarExtraContent"; "nzCanDeactivate": "nzCanDeactivate"; "nzAddIcon": "nzAddIcon"; "nzTabBarStyle": "nzTabBarStyle"; "nzType": "nzType"; "nzSize": "nzSize"; "nzAnimated": "nzAnimated"; "nzTabBarGutter": "nzTabBarGutter"; "nzHideAdd": "nzHideAdd"; "nzCentered": "nzCentered"; "nzHideAll": "nzHideAll"; "nzLinkRouter": "nzLinkRouter"; "nzLinkExact": "nzLinkExact"; }, { "nzSelectChange": "nzSelectChange"; "nzSelectedIndexChange": "nzSelectedIndexChange"; "nzTabListScroll": "nzTabListScroll"; "nzClose": "nzClose"; "nzAdd": "nzAdd"; }, ["allTabs"], never>;
 }

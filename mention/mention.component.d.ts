@@ -1,12 +1,9 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 import { Overlay } from '@angular/cdk/overlay';
-import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzMentionTriggerDirective } from './mention-trigger';
 import { NzMentionService } from './mention.service';
+import * as i0 from "@angular/core";
 export interface MentionOnSearchTypes {
     value: string;
     prefix: string;
@@ -17,7 +14,8 @@ export interface Mention {
     mention: string;
 }
 export declare type MentionPlacement = 'top' | 'bottom';
-export declare class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
+export declare class NzMentionComponent implements OnDestroy, OnInit, AfterViewInit, OnChanges {
+    private ngZone;
     private ngDocument;
     private cdr;
     private overlay;
@@ -54,9 +52,10 @@ export declare class NzMentionComponent implements OnDestroy, OnInit, OnChanges 
     private overlayOutsideClickSubscription;
     private get triggerNativeElement();
     private get focusItemElement();
-    constructor(ngDocument: NzSafeAny, cdr: ChangeDetectorRef, overlay: Overlay, viewContainerRef: ViewContainerRef, nzMentionService: NzMentionService);
+    constructor(ngZone: NgZone, ngDocument: NzSafeAny, cdr: ChangeDetectorRef, overlay: Overlay, viewContainerRef: ViewContainerRef, nzMentionService: NzMentionService);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
+    ngAfterViewInit(): void;
     ngOnDestroy(): void;
     closeDropdown(): void;
     openDropdown(): void;
@@ -78,4 +77,6 @@ export declare class NzMentionComponent implements OnDestroy, OnInit, OnChanges 
     private attachOverlay;
     private getOverlayConfig;
     private getOverlayPosition;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzMentionComponent, [null, { optional: true; }, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzMentionComponent, "nz-mention", ["nzMention"], { "nzValueWith": "nzValueWith"; "nzPrefix": "nzPrefix"; "nzLoading": "nzLoading"; "nzNotFoundContent": "nzNotFoundContent"; "nzPlacement": "nzPlacement"; "nzSuggestions": "nzSuggestions"; }, { "nzOnSelect": "nzOnSelect"; "nzOnSearchChange": "nzOnSearchChange"; }, ["suggestionChild"], ["*"]>;
 }

@@ -68,7 +68,7 @@
 .ant-checkbox-inner::after {
   position: absolute;
   top: 50%;
-  left: 22%;
+  left: 21.5%;
   display: table;
   width: 5.71428571px;
   height: 9.14285714px;
@@ -148,6 +148,12 @@
   align-items: baseline;
   line-height: unset;
   cursor: pointer;
+}
+.ant-checkbox-wrapper::after {
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  content: '\a0';
 }
 .ant-checkbox-wrapper.ant-checkbox-wrapper-disabled {
   cursor: not-allowed;

@@ -8,7 +8,8 @@ import { NzThAddOnComponent } from '../cell/th-addon.component';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
 import { NzTrDirective } from './tr.directive';
-export declare class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewInit, OnInit {
+import * as i0 from "@angular/core";
+export declare class NzTheadComponent<T> implements AfterContentInit, OnDestroy, AfterViewInit, OnInit {
     private elementRef;
     private renderer;
     private nzTableStyleService;
@@ -17,14 +18,16 @@ export declare class NzTheadComponent implements AfterContentInit, OnDestroy, Af
     isInsideTable: boolean;
     templateRef: TemplateRef<NzSafeAny>;
     listOfNzTrDirective: QueryList<NzTrDirective>;
-    listOfNzThAddOnComponent: QueryList<NzThAddOnComponent>;
+    listOfNzThAddOnComponent: QueryList<NzThAddOnComponent<T>>;
     readonly nzSortOrderChange: EventEmitter<{
         key: NzSafeAny;
         value: string | null;
     }>;
-    constructor(elementRef: ElementRef, renderer: Renderer2, nzTableStyleService: NzTableStyleService, nzTableDataService: NzTableDataService);
+    constructor(elementRef: ElementRef, renderer: Renderer2, nzTableStyleService: NzTableStyleService, nzTableDataService: NzTableDataService<T>);
     ngOnInit(): void;
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTheadComponent<any>, [null, null, { optional: true; }, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTheadComponent<any>, "thead:not(.ant-table-thead)", never, {}, { "nzSortOrderChange": "nzSortOrderChange"; }, ["listOfNzTrDirective", "listOfNzThAddOnComponent"], ["*"]>;
 }

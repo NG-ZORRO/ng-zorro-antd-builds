@@ -8,6 +8,7 @@ import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzAnchorLinkComponent } from './anchor-link.component';
+import * as i0 from "@angular/core";
 export declare class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     private doc;
     nzConfigService: NzConfigService;
@@ -49,4 +50,6 @@ export declare class NzAnchorComponent implements OnDestroy, AfterViewInit, OnCh
     private setVisible;
     handleScrollTo(linkComp: NzAnchorLinkComponent): void;
     ngOnChanges(changes: SimpleChanges): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzAnchorComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzAnchorComponent, "nz-anchor", ["nzAnchor"], { "nzAffix": "nzAffix"; "nzShowInkInFixed": "nzShowInkInFixed"; "nzBounds": "nzBounds"; "nzOffsetTop": "nzOffsetTop"; "nzContainer": "nzContainer"; }, { "nzClick": "nzClick"; "nzScroll": "nzScroll"; }, never, ["*"]>;
 }

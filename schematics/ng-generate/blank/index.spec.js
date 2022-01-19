@@ -16,7 +16,7 @@ describe('ng-component schematic', () => {
     let appTree;
     beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
         runner = new testing_1.SchematicTestRunner('schematics', require.resolve('../../collection.json'));
-        appTree = yield test_app_1.createTestApp(runner);
+        appTree = yield (0, test_app_1.createTestApp)(runner);
     }));
     it('should update app.component.html', () => __awaiter(void 0, void 0, void 0, function* () {
         const appComponentHTMLPath = '/projects/ng-zorro/src/app/app.component.html';

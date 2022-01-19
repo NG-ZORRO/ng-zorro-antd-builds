@@ -3,12 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { AnimationEvent } from '@angular/animations';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { AfterContentInit, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnDestroy, OnInit, QueryList, TemplateRef } from '@angular/core';
+import { Observable } from 'rxjs';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, CompareWith, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Observable } from 'rxjs';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './autocomplete-option.component';
+import * as i0 from "@angular/core";
 export interface AutocompleteDataSourceItem {
     value: string;
     label: string;
@@ -33,7 +34,7 @@ export declare class NzAutocompleteComponent implements AfterContentInit, AfterV
     readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent>;
     showPanel: boolean;
     isOpen: boolean;
-    activeItem: NzAutocompleteOptionComponent;
+    activeItem: NzAutocompleteOptionComponent | null;
     dir: Direction;
     private destroy$;
     animationStateChange: EventEmitter<AnimationEvent>;
@@ -74,4 +75,6 @@ export declare class NzAutocompleteComponent implements AfterContentInit, AfterV
      */
     clearSelectedOptions(skip?: NzAutocompleteOptionComponent | null, deselect?: boolean): void;
     private subscribeOptionChanges;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzAutocompleteComponent, [null, null, { optional: true; }, { optional: true; host: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzAutocompleteComponent, "nz-autocomplete", ["nzAutocomplete"], { "nzWidth": "nzWidth"; "nzOverlayClassName": "nzOverlayClassName"; "nzOverlayStyle": "nzOverlayStyle"; "nzDefaultActiveFirstOption": "nzDefaultActiveFirstOption"; "nzBackfill": "nzBackfill"; "compareWith": "compareWith"; "nzDataSource": "nzDataSource"; }, { "selectionChange": "selectionChange"; }, ["fromContentOptions"], ["*"]>;
 }

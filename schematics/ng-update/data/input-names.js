@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.inputNames = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
@@ -344,13 +348,42 @@ exports.inputNames = {
             ]
         },
         {
-            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/4375',
+            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/7141',
             changes: [
                 {
                     replace: 'twoToneColor',
                     replaceWith: 'nzTwoToneColor',
                     limitedTo: {
                         attributes: ['nz-icon']
+                    }
+                }
+            ]
+        }
+    ],
+    [schematics_1.TargetVersion.V12]: [
+        {
+            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/6754',
+            changes: [
+                {
+                    replace: 'nzNodeWidth',
+                    replaceWith: 'nzItemSize',
+                    limitedTo: {
+                        elements: ['nz-tree-virtual-scroll-view']
+                    }
+                }
+            ]
+        }
+    ],
+    [schematics_1.TargetVersion.V13]: [
+        {
+            pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/7141',
+            changes: [
+                {
+                    replace: 'nzHasBackdrop',
+                    replaceWith: 'nzBackdrop',
+                    limitedTo: {
+                        elements: ['nz-filter-trigger'],
+                        attributes: ['nz-dropdown']
                     }
                 }
             ]

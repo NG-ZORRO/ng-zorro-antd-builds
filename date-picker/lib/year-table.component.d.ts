@@ -1,10 +1,7 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, YearCell } from './interface';
+import * as i0 from "@angular/core";
 export declare class YearTableComponent extends AbstractTable {
     private dateHelper;
     MAX_ROW: number;
@@ -18,4 +15,6 @@ export declare class YearTableComponent extends AbstractTable {
     private isDisabledYear;
     private addCellProperty;
     private chooseYear;
+    static ɵfac: i0.ɵɵFactoryDeclaration<YearTableComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<YearTableComponent, "year-table", ["yearTable"], {}, {}, never, never>;
 }

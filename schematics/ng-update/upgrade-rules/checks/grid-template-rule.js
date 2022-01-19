@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GridTemplateRule = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
@@ -9,8 +13,8 @@ class GridTemplateRule extends schematics_1.Migration {
     }
     visitTemplate(template) {
         const offsets = [];
-        offsets.push(...schematics_1.findInputsOnElementWithAttr(template.content, 'nzType', ['nz-row']));
-        offsets.push(...schematics_1.findInputsOnElementWithTag(template.content, 'nzType', ['nz-form-item', 'nz-row']));
+        offsets.push(...(0, schematics_1.findInputsOnElementWithAttr)(template.content, 'nzType', ['nz-row']));
+        offsets.push(...(0, schematics_1.findInputsOnElementWithTag)(template.content, 'nzType', ['nz-form-item', 'nz-row']));
         offsets.forEach(offset => {
             this.failures.push({
                 filePath: template.filePath,
@@ -18,7 +22,7 @@ class GridTemplateRule extends schematics_1.Migration {
                 message: `Found deprecated input '[nzType]'. Please manually remove this input.`
             });
         });
-        schematics_1.findInputsOnElementWithTag(template.content, 'nzFlex', ['nz-form-item']).forEach(offset => {
+        (0, schematics_1.findInputsOnElementWithTag)(template.content, 'nzFlex', ['nz-form-item']).forEach(offset => {
             this.failures.push({
                 filePath: template.filePath,
                 position: template.getCharacterAndLineOfPosition(offset),

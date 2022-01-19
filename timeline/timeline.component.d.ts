@@ -2,11 +2,12 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { AfterContentInit, ChangeDetectorRef, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { AfterContentInit, ChangeDetectorRef, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzTimelineItemComponent } from './timeline-item.component';
 import { TimelineService } from './timeline.service';
 import { NzTimelineMode } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
     private cdr;
     private timelineService;
@@ -19,6 +20,7 @@ export declare class NzTimelineComponent implements AfterContentInit, OnChanges,
     isPendingBoolean: boolean;
     timelineItems: NzTimelineItemComponent[];
     dir: Direction;
+    hasLabelItem: boolean;
     private destroy$;
     constructor(cdr: ChangeDetectorRef, timelineService: TimelineService, directionality: Directionality);
     ngOnChanges(changes: SimpleChanges): void;
@@ -26,4 +28,6 @@ export declare class NzTimelineComponent implements AfterContentInit, OnChanges,
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
     private updateChildren;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTimelineComponent, [null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTimelineComponent, "nz-timeline", ["nzTimeline"], { "nzMode": "nzMode"; "nzPending": "nzPending"; "nzPendingDot": "nzPendingDot"; "nzReverse": "nzReverse"; }, {}, ["listOfItems"], ["*"]>;
 }

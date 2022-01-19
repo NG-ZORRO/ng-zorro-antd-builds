@@ -6,6 +6,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
     nzConfigService: NzConfigService;
     private cdr;
@@ -29,4 +30,6 @@ export declare class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzSpinComponent, [null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzSpinComponent, "nz-spin", ["nzSpin"], { "nzIndicator": "nzIndicator"; "nzSize": "nzSize"; "nzTip": "nzTip"; "nzDelay": "nzDelay"; "nzSimple": "nzSimple"; "nzSpinning": "nzSpinning"; }, {}, never, ["*"]>;
 }

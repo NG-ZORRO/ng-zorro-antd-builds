@@ -4,6 +4,7 @@
  */
 import { ElementRef, OnChanges, Renderer2 } from '@angular/core';
 import { Subject } from 'rxjs';
+import * as i0 from "@angular/core";
 export declare class NzCellFixedDirective implements OnChanges {
     private renderer;
     private elementRef;
@@ -24,4 +25,6 @@ export declare class NzCellFixedDirective implements OnChanges {
     private setFixClass;
     constructor(renderer: Renderer2, elementRef: ElementRef);
     ngOnChanges(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzCellFixedDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzCellFixedDirective, "td[nzRight],th[nzRight],td[nzLeft],th[nzLeft]", never, { "nzRight": "nzRight"; "nzLeft": "nzLeft"; "colspan": "colspan"; "colSpan": "colSpan"; }, {}, never>;
 }

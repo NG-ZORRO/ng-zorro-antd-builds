@@ -6,14 +6,15 @@ import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Overlay, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef, Type, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef, Type, ViewContainerRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';
+import * as i0 from "@angular/core";
 export declare const DRAWER_ANIMATE_DURATION = 300;
-export declare class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<T, R> implements OnInit, OnDestroy, AfterViewInit, OnChanges, AfterContentInit, NzDrawerOptionsOfComponent {
+export declare class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<T, R> implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
     private cdr;
     private document;
     nzConfigService: NzConfigService;
@@ -92,7 +93,6 @@ export declare class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeA
     constructor(cdr: ChangeDetectorRef, document: NzSafeAny, nzConfigService: NzConfigService, renderer: Renderer2, overlay: Overlay, injector: Injector, changeDetectorRef: ChangeDetectorRef, focusTrapFactory: FocusTrapFactory, viewContainerRef: ViewContainerRef, overlayKeyboardDispatcher: OverlayKeyboardDispatcher, directionality: Directionality);
     ngOnInit(): void;
     ngAfterViewInit(): void;
-    ngAfterContentInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
     private getAnimationDuration;
@@ -111,4 +111,6 @@ export declare class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeA
     savePreviouslyFocusedElement(): void;
     private trapFocus;
     private restoreFocus;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzDrawerComponent<any, any, any>, [null, { optional: true; }, null, null, null, null, null, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzDrawerComponent<any, any, any>, "nz-drawer", ["nzDrawer"], { "nzContent": "nzContent"; "nzCloseIcon": "nzCloseIcon"; "nzClosable": "nzClosable"; "nzMaskClosable": "nzMaskClosable"; "nzMask": "nzMask"; "nzCloseOnNavigation": "nzCloseOnNavigation"; "nzNoAnimation": "nzNoAnimation"; "nzKeyboard": "nzKeyboard"; "nzTitle": "nzTitle"; "nzFooter": "nzFooter"; "nzPlacement": "nzPlacement"; "nzMaskStyle": "nzMaskStyle"; "nzBodyStyle": "nzBodyStyle"; "nzWrapClassName": "nzWrapClassName"; "nzWidth": "nzWidth"; "nzHeight": "nzHeight"; "nzZIndex": "nzZIndex"; "nzOffsetX": "nzOffsetX"; "nzOffsetY": "nzOffsetY"; "nzVisible": "nzVisible"; }, { "nzOnViewInit": "nzOnViewInit"; "nzOnClose": "nzOnClose"; "nzVisibleChange": "nzVisibleChange"; }, ["contentFromContentChild"], never>;
 }

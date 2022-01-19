@@ -1,11 +1,10 @@
 {
-  "main": "../bundles/ng-zorro-antd-mention.umd.js",
-  "module": "../fesm2015/ng-zorro-antd-mention.js",
-  "es2015": "../fesm2015/ng-zorro-antd-mention.js",
-  "esm2015": "../esm2015/mention/ng-zorro-antd-mention.js",
-  "fesm2015": "../fesm2015/ng-zorro-antd-mention.js",
+  "module": "../fesm2015/ng-zorro-antd-mention.mjs",
+  "es2020": "../fesm2020/ng-zorro-antd-mention.mjs",
+  "esm2020": "../esm2020/mention/ng-zorro-antd-mention.mjs",
+  "fesm2020": "../fesm2020/ng-zorro-antd-mention.mjs",
+  "fesm2015": "../fesm2015/ng-zorro-antd-mention.mjs",
   "typings": "ng-zorro-antd-mention.d.ts",
-  "metadata": "ng-zorro-antd-mention.metadata.json",
   "sideEffects": false,
   "name": "ng-zorro-antd/mention"
 }

@@ -7,10 +7,11 @@ import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
-import { Observable } from 'rxjs';
+import * as i0 from "@angular/core";
 export declare class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges, OnDestroy {
     nzConfigService: NzConfigService;
     protected i18n: NzI18nService;
@@ -19,7 +20,6 @@ export declare class NzTimePickerComponent implements ControlValueAccessor, OnIn
     private cdr;
     private dateHelper;
     private platform;
-    private elementRef;
     private directionality;
     readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzUse12Hours: BooleanInput;
@@ -81,7 +81,7 @@ export declare class NzTimePickerComponent implements ControlValueAccessor, OnIn
     onInputChange(str: string): void;
     onPanelValueChange(value: Date): void;
     setCurrentValueAndClose(): void;
-    constructor(nzConfigService: NzConfigService, i18n: NzI18nService, element: ElementRef, renderer: Renderer2, cdr: ChangeDetectorRef, dateHelper: DateHelperService, platform: Platform, elementRef: ElementRef, directionality: Directionality);
+    constructor(nzConfigService: NzConfigService, i18n: NzI18nService, element: ElementRef, renderer: Renderer2, cdr: ChangeDetectorRef, dateHelper: DateHelperService, platform: Platform, directionality: Directionality);
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;
@@ -91,4 +91,7 @@ export declare class NzTimePickerComponent implements ControlValueAccessor, OnIn
     registerOnChange(fn: (time: Date | null) => void): void;
     registerOnTouched(fn: () => void): void;
     setDisabledState(isDisabled: boolean): void;
+    private checkTimeValid;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTimePickerComponent, [null, null, null, null, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTimePickerComponent, "nz-time-picker", ["nzTimePicker"], { "nzId": "nzId"; "nzSize": "nzSize"; "nzHourStep": "nzHourStep"; "nzMinuteStep": "nzMinuteStep"; "nzSecondStep": "nzSecondStep"; "nzClearText": "nzClearText"; "nzNowText": "nzNowText"; "nzOkText": "nzOkText"; "nzPopupClassName": "nzPopupClassName"; "nzPlaceHolder": "nzPlaceHolder"; "nzAddOn": "nzAddOn"; "nzDefaultOpenValue": "nzDefaultOpenValue"; "nzDisabledHours": "nzDisabledHours"; "nzDisabledMinutes": "nzDisabledMinutes"; "nzDisabledSeconds": "nzDisabledSeconds"; "nzFormat": "nzFormat"; "nzOpen": "nzOpen"; "nzUse12Hours": "nzUse12Hours"; "nzSuffixIcon": "nzSuffixIcon"; "nzHideDisabledOptions": "nzHideDisabledOptions"; "nzAllowEmpty": "nzAllowEmpty"; "nzDisabled": "nzDisabled"; "nzAutoFocus": "nzAutoFocus"; "nzBackdrop": "nzBackdrop"; }, { "nzOpenChange": "nzOpenChange"; }, never, never>;
 }

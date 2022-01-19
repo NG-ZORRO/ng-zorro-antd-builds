@@ -26,7 +26,9 @@ export interface NzConfig {
     datePicker?: DatePickerConfig;
     descriptions?: DescriptionsConfig;
     drawer?: DrawerConfig;
+    dropDown?: DropDownConfig;
     empty?: EmptyConfig;
+    filterTrigger?: FilterTriggerConfig;
     form?: FormConfig;
     icon?: IconConfig;
     message?: MessageConfig;
@@ -48,6 +50,7 @@ export interface NzConfig {
     image?: ImageConfig;
     popconfirm?: PopConfirmConfig;
     popover?: PopoverConfig;
+    imageExperimental?: ImageExperimentalConfig;
 }
 export interface SelectConfig {
     nzBorderless?: boolean;
@@ -137,8 +140,14 @@ export interface DrawerConfig {
     nzCloseOnNavigation?: boolean;
     nzDirection?: Direction;
 }
+export interface DropDownConfig {
+    nzBackdrop?: boolean;
+}
 export interface EmptyConfig {
     nzDefaultEmptyContent?: Type<NzSafeAny> | TemplateRef<string> | string | undefined;
+}
+export interface FilterTriggerConfig {
+    nzBackdrop?: boolean;
 }
 export interface FormConfig {
     nzNoColon?: boolean;
@@ -264,8 +273,21 @@ export interface ImageConfig {
     nzCloseOnNavigation?: boolean;
     nzDirection?: Direction;
 }
+export interface ImageExperimentalConfig {
+    nzFallback?: string;
+    nzPlaceholder?: string;
+    nzDisablePreview?: string;
+    nzCloseOnNavigation?: boolean;
+    nzDirection?: Direction;
+    nzAutoSrcset?: boolean;
+    nzSrcLoader?(params: {
+        src: string;
+        width: number;
+    }): string;
+}
 export interface PopConfirmConfig {
     nzPopconfirmBackdrop?: boolean;
+    nzAutofocus?: null | 'ok' | 'cancel';
 }
 export interface PopoverConfig {
     nzPopoverBackdrop?: boolean;

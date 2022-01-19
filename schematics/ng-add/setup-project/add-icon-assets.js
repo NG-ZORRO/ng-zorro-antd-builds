@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addIconToAssets = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
@@ -11,13 +15,14 @@ const iconAssetObject = {
     'output': '/assets/'
 };
 function addIconToAssets(options) {
-    return workspace_1.updateWorkspace(workspace => {
-        const project = schematics_1.getProjectFromWorkspace(workspace, options.project);
-        const targetOptions = schematics_1.getProjectTargetOptions(project, 'build');
+    return (0, workspace_1.updateWorkspace)(workspace => {
+        const project = (0, schematics_1.getProjectFromWorkspace)(workspace, options.project);
+        const targetOptions = (0, schematics_1.getProjectTargetOptions)(project, 'build');
         if (!targetOptions.assets) {
             targetOptions.assets = [Object.assign({}, iconAssetObject)];
         }
         else {
+            // eslint-disable-next-line @typescript-eslint/ban-types
             const assets = targetOptions.assets;
             const assetsString = JSON.stringify(assets);
             if (!assetsString.includes(iconPathSegment)) {
@@ -25,10 +30,10 @@ function addIconToAssets(options) {
             }
             else {
                 console.log();
-                console.log(chalk_1.yellow(`Could not add the icon assets to the CLI project assets ` +
+                console.log((0, chalk_1.yellow)(`Could not add the icon assets to the CLI project assets ` +
                     `because there is already a icon assets file referenced.`));
-                console.log(chalk_1.yellow(`Please manually add the following config to your assets:`));
-                console.log(chalk_1.cyan(JSON.stringify(iconAssetObject, null, 2)));
+                console.log((0, chalk_1.yellow)(`Please manually add the following config to your assets:`));
+                console.log((0, chalk_1.cyan)(JSON.stringify(iconAssetObject, null, 2)));
                 return;
             }
         }

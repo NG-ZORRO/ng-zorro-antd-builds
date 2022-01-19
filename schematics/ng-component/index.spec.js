@@ -37,7 +37,7 @@ describe('ng-component schematic', () => {
     let appTree;
     beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
         runner = new testing_1.SchematicTestRunner('schematics', require.resolve('../collection.json'));
-        appTree = yield test_app_1.createTestApp(runner, appOptions);
+        appTree = yield (0, test_app_1.createTestApp)(runner, appOptions);
     }));
     it('should create a component', () => __awaiter(void 0, void 0, void 0, function* () {
         const options = Object.assign({}, defaultOptions);

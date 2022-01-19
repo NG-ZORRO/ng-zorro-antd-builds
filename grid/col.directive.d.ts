@@ -5,6 +5,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { AfterViewInit, ElementRef, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 import { NzRowDirective } from './row.directive';
+import * as i0 from "@angular/core";
 export interface EmbeddedProperty {
     span?: number;
     pull?: number;
@@ -42,4 +43,6 @@ export declare class NzColDirective implements OnInit, OnChanges, AfterViewInit,
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzColDirective, [null, { optional: true; host: true; }, null, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzColDirective, "[nz-col],nz-col,nz-form-control,nz-form-label", ["nzCol"], { "nzFlex": "nzFlex"; "nzSpan": "nzSpan"; "nzOrder": "nzOrder"; "nzOffset": "nzOffset"; "nzPush": "nzPush"; "nzPull": "nzPull"; "nzXs": "nzXs"; "nzSm": "nzSm"; "nzMd": "nzMd"; "nzLg": "nzLg"; "nzXl": "nzXl"; "nzXXl": "nzXXl"; }, {}, never>;
 }

@@ -5,10 +5,11 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { AfterContentInit, ChangeDetectorRef, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges } from '@angular/core';
 import { Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { MenuService } from './menu.service';
 import { NzSubmenuService } from './submenu.service';
+import * as i0 from "@angular/core";
 export declare class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterContentInit {
     private nzMenuService;
     private cdr;
@@ -47,4 +48,6 @@ export declare class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy
     ngAfterContentInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzMenuItemDirective, [null, null, { optional: true; }, null, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzMenuItemDirective, "[nz-menu-item]", ["nzMenuItem"], { "nzPaddingLeft": "nzPaddingLeft"; "nzDisabled": "nzDisabled"; "nzSelected": "nzSelected"; "nzDanger": "nzDanger"; "nzMatchRouterExact": "nzMatchRouterExact"; "nzMatchRouter": "nzMatchRouter"; }, {}, ["listOfRouterLink", "listOfRouterLinkWithHref"]>;
 }

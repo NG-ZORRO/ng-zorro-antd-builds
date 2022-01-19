@@ -18,7 +18,7 @@ describe('side-menu schematic', () => {
     let appTree;
     beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
         runner = new testing_1.SchematicTestRunner('schematics', require.resolve('../../collection.json'));
-        appTree = yield test_app_1.createTestApp(runner);
+        appTree = yield (0, test_app_1.createTestApp)(runner);
     }));
     it('should create side-menu files', () => __awaiter(void 0, void 0, void 0, function* () {
         const tree = yield runner.runSchematicAsync('sidemenu', {}, appTree).toPromise();
@@ -39,8 +39,8 @@ describe('side-menu schematic', () => {
     it('should set the style preprocessor correctly', () => __awaiter(void 0, void 0, void 0, function* () {
         const tree = yield runner.runSchematicAsync('sidemenu', { style: schema_1.Style.Less }, appTree).toPromise();
         const files = tree.files;
-        const appContent = test_1.getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
-        const welcomeContent = test_1.getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+        const appContent = (0, test_1.getFileContent)(tree, '/projects/ng-zorro/src/app/app.component.ts');
+        const welcomeContent = (0, test_1.getFileContent)(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
         expect(appContent).toContain('app.component.less');
         expect(welcomeContent).toContain('welcome.component.less');
         expect(files).toEqual(jasmine.arrayContaining([
@@ -49,7 +49,7 @@ describe('side-menu schematic', () => {
         ]));
     }));
     it('should fall back to the @schematics/angular:component option value', () => __awaiter(void 0, void 0, void 0, function* () {
-        appTree = yield test_app_1.createTestApp(runner, { style: schema_1.Style.Less });
+        appTree = yield (0, test_app_1.createTestApp)(runner, { style: schema_1.Style.Less });
         const tree = yield runner.runSchematicAsync('ng-add', { template: 'sidemenu' }, appTree).toPromise();
         expect(tree.files).toEqual(jasmine.arrayContaining([
             '/projects/ng-zorro/src/app/app.component.less',
@@ -57,19 +57,19 @@ describe('side-menu schematic', () => {
         ]));
     }));
     it('should fall back to the @schematics/angular:component option value', () => __awaiter(void 0, void 0, void 0, function* () {
-        appTree = yield test_app_1.createTestApp(runner, { inlineStyle: true });
+        appTree = yield (0, test_app_1.createTestApp)(runner, { inlineStyle: true });
         const tree = yield runner.runSchematicAsync('ng-add', { template: 'sidemenu' }, appTree).toPromise();
         expect(tree.files).not.toEqual('/projects/ng-zorro/src/app/pages/welcome/welcome.component.css');
     }));
     it('should fall back to the @schematics/angular:component option value', () => __awaiter(void 0, void 0, void 0, function* () {
-        appTree = yield test_app_1.createTestApp(runner, { inlineTemplate: true });
+        appTree = yield (0, test_app_1.createTestApp)(runner, { inlineTemplate: true });
         const tree = yield runner.runSchematicAsync('ng-add', { template: 'sidemenu' }, appTree).toPromise();
         expect(tree.files).not.toEqual('/projects/ng-zorro/src/app/pages/welcome/welcome.component.html');
     }));
     it('should set the prefix correctly', () => __awaiter(void 0, void 0, void 0, function* () {
         const tree = yield runner.runSchematicAsync('sidemenu', { prefix: 'nz' }, appTree).toPromise();
-        const appContent = test_1.getFileContent(tree, '/projects/ng-zorro/src/app/app.component.ts');
-        const welcomeContent = test_1.getFileContent(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
+        const appContent = (0, test_1.getFileContent)(tree, '/projects/ng-zorro/src/app/app.component.ts');
+        const welcomeContent = (0, test_1.getFileContent)(tree, '/projects/ng-zorro/src/app/pages/welcome/welcome.component.ts');
         expect(appContent).toContain(`selector: 'nz-root'`);
         expect(welcomeContent).toContain(`selector: 'nz-welcome'`);
     }));

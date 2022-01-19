@@ -1,10 +1,16 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPackageVersionFromPackageJson = exports.addPackageToPackageJson = void 0;
 /**
  * Sorts the keys of the given object.
+ *
  * @returns A new object instance with sorted keys
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 function sortObjectByKeys(obj) {
     return Object.keys(obj)
         .sort()

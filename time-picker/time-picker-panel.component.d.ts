@@ -2,13 +2,15 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ChangeDetectorRef, DebugElement, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, DebugElement, ElementRef, EventEmitter, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { TimeHolder } from './time-holder';
+import * as i0 from "@angular/core";
 export declare type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
 export declare class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
+    private ngZone;
     private cdr;
     dateHelper: DateHelperService;
     private elementRef;
@@ -124,16 +126,13 @@ export declare class NzTimePickerPanelComponent implements ControlValueAccessor,
         index: number;
         value: string;
     }): boolean;
-    constructor(cdr: ChangeDetectorRef, dateHelper: DateHelperService, elementRef: ElementRef);
+    constructor(ngZone: NgZone, cdr: ChangeDetectorRef, dateHelper: DateHelperService, elementRef: ElementRef<HTMLElement>);
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;
     writeValue(value: Date): void;
     registerOnChange(fn: (value: Date) => void): void;
     registerOnTouched(fn: () => void): void;
-    /**
-     * Prevent input losing focus when click panel
-     * @param event
-     */
-    onMousedown(event: MouseEvent): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTimePickerPanelComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTimePickerPanelComponent, "nz-time-picker-panel", ["nzTimePickerPanel"], { "nzInDatePicker": "nzInDatePicker"; "nzAddOn": "nzAddOn"; "nzHideDisabledOptions": "nzHideDisabledOptions"; "nzClearText": "nzClearText"; "nzNowText": "nzNowText"; "nzOkText": "nzOkText"; "nzPlaceHolder": "nzPlaceHolder"; "nzUse12Hours": "nzUse12Hours"; "nzDefaultOpenValue": "nzDefaultOpenValue"; "nzAllowEmpty": "nzAllowEmpty"; "nzDisabledHours": "nzDisabledHours"; "nzDisabledMinutes": "nzDisabledMinutes"; "nzDisabledSeconds": "nzDisabledSeconds"; "format": "format"; "nzHourStep": "nzHourStep"; "nzMinuteStep": "nzMinuteStep"; "nzSecondStep": "nzSecondStep"; }, { "closePanel": "closePanel"; }, never, never>;
 }

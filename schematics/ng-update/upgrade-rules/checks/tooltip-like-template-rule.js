@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TooltipLikeTemplateRule = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
@@ -10,7 +14,7 @@ class TooltipLikeTemplateRule extends schematics_1.Migration {
     }
     visitTemplate(template) {
         const deprecatedComponent = (deprecated, instead) => {
-            elements_1.findElementWithTag(template.content, deprecated)
+            (0, elements_1.findElementWithTag)(template.content, deprecated)
                 .forEach(offset => {
                 this.failures.push({
                     filePath: template.filePath,

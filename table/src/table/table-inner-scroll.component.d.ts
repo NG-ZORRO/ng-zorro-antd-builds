@@ -7,14 +7,13 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { AfterViewInit, ElementRef, NgZone, OnChanges, OnDestroy, Renderer2, SimpleChanges, TemplateRef, TrackByFunction } from '@angular/core';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzTableData } from '../table.types';
-export declare class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, OnDestroy {
+import * as i0 from "@angular/core";
+export declare class NzTableInnerScrollComponent<T> implements OnChanges, AfterViewInit, OnDestroy {
     private renderer;
     private ngZone;
     private platform;
     private resizeService;
-    private elementRef;
-    data: ReadonlyArray<NzTableData>;
+    data: readonly T[];
     scrollX: string | null;
     scrollY: string | null;
     contentTemplate: TemplateRef<NzSafeAny> | null;
@@ -26,7 +25,7 @@ export declare class NzTableInnerScrollComponent implements OnChanges, AfterView
     virtualMaxBufferPx: number;
     virtualMinBufferPx: number;
     tableMainElement?: HTMLDivElement;
-    virtualForTrackBy: TrackByFunction<NzTableData>;
+    virtualForTrackBy: TrackByFunction<T>;
     tableHeaderElement: ElementRef;
     tableBodyElement: ElementRef;
     cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
@@ -38,8 +37,10 @@ export declare class NzTableInnerScrollComponent implements OnChanges, AfterView
     private scroll$;
     private destroy$;
     setScrollPositionClassName(clear?: boolean): void;
-    constructor(renderer: Renderer2, ngZone: NgZone, platform: Platform, resizeService: NzResizeService, elementRef: ElementRef);
+    constructor(renderer: Renderer2, ngZone: NgZone, platform: Platform, resizeService: NzResizeService);
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTableInnerScrollComponent<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTableInnerScrollComponent<any>, "nz-table-inner-scroll", never, { "data": "data"; "scrollX": "scrollX"; "scrollY": "scrollY"; "contentTemplate": "contentTemplate"; "widthConfig": "widthConfig"; "listOfColWidth": "listOfColWidth"; "theadTemplate": "theadTemplate"; "virtualTemplate": "virtualTemplate"; "virtualItemSize": "virtualItemSize"; "virtualMaxBufferPx": "virtualMaxBufferPx"; "virtualMinBufferPx": "virtualMinBufferPx"; "tableMainElement": "tableMainElement"; "virtualForTrackBy": "virtualForTrackBy"; "verticalScrollBarWidth": "verticalScrollBarWidth"; }, {}, never, never>;
 }

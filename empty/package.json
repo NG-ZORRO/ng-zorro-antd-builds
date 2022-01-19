@@ -1,11 +1,10 @@
 {
-  "main": "../bundles/ng-zorro-antd-empty.umd.js",
-  "module": "../fesm2015/ng-zorro-antd-empty.js",
-  "es2015": "../fesm2015/ng-zorro-antd-empty.js",
-  "esm2015": "../esm2015/empty/ng-zorro-antd-empty.js",
-  "fesm2015": "../fesm2015/ng-zorro-antd-empty.js",
+  "module": "../fesm2015/ng-zorro-antd-empty.mjs",
+  "es2020": "../fesm2020/ng-zorro-antd-empty.mjs",
+  "esm2020": "../esm2020/empty/ng-zorro-antd-empty.mjs",
+  "fesm2020": "../fesm2020/ng-zorro-antd-empty.mjs",
+  "fesm2015": "../fesm2015/ng-zorro-antd-empty.mjs",
   "typings": "ng-zorro-antd-empty.d.ts",
-  "metadata": "ng-zorro-antd-empty.metadata.json",
   "sideEffects": false,
   "name": "ng-zorro-antd/empty"
 }

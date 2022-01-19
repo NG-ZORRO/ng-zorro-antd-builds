@@ -4,9 +4,14 @@
  */
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 import { AfterViewInit, ComponentFactoryResolver, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import * as i0 from "@angular/core";
 export declare class NzCommentAvatarDirective {
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzCommentAvatarDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzCommentAvatarDirective, "nz-avatar[nz-comment-avatar]", ["nzCommentAvatar"], {}, {}, never>;
 }
 export declare class NzCommentContentDirective {
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzCommentContentDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzCommentContentDirective, "nz-comment-content, [nz-comment-content]", ["nzCommentContent"], {}, {}, never>;
 }
 export declare class NzCommentActionHostDirective extends CdkPortalOutlet implements OnInit, OnDestroy, AfterViewInit {
     nzCommentActionHost?: TemplatePortal | null;
@@ -14,6 +19,8 @@ export declare class NzCommentActionHostDirective extends CdkPortalOutlet implem
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngAfterViewInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzCommentActionHostDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzCommentActionHostDirective, "[nzCommentActionHost]", ["nzCommentActionHost"], { "nzCommentActionHost": "nzCommentActionHost"; }, {}, never>;
 }
 export declare class NzCommentActionComponent implements OnInit {
     private viewContainerRef;
@@ -22,4 +29,6 @@ export declare class NzCommentActionComponent implements OnInit {
     get content(): TemplatePortal | null;
     constructor(viewContainerRef: ViewContainerRef);
     ngOnInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzCommentActionComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzCommentActionComponent, "nz-comment-action", ["nzCommentAction"], {}, {}, never, ["*"]>;
 }

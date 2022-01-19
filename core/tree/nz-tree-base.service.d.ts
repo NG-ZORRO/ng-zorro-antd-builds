@@ -1,11 +1,8 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject } from 'rxjs';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
 import { NzFormatEmitEvent } from './nz-tree-base.definitions';
+import * as i0 from "@angular/core";
 export declare class NzTreeBaseService {
     DRAG_SIDE_RANGE: number;
     DRAG_MIN_GAP: number;
@@ -71,6 +68,7 @@ export declare class NzTreeBaseService {
     setMatchedNodeList(node: NzTreeNode): void;
     /**
      * check state
+     *
      * @param isCheckStrictly
      */
     refreshCheckState(isCheckStrictly?: boolean): void;
@@ -115,6 +113,7 @@ export declare class NzTreeBaseService {
     /**
      * Render by nzCheckedKeys
      * When keys equals null, just render with checkStrictly
+     *
      * @param keys
      * @param checkStrictly
      */
@@ -123,7 +122,10 @@ export declare class NzTreeBaseService {
     conductSelectedKeys(keys: NzTreeNodeKey[], isMulti: boolean): void;
     /**
      * Expand parent nodes by child node
+     *
      * @param node
      */
     expandNodeAllParentBySearch(node: NzTreeNode): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTreeBaseService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzTreeBaseService>;
 }

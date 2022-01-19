@@ -10,6 +10,7 @@ import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { NzSliderHandleComponent } from './handle.component';
 import { NzSliderService } from './slider.service';
 import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSliderValue } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
     private sliderService;
     private cdr;
@@ -77,6 +78,7 @@ export declare class NzSliderComponent implements ControlValueAccessor, OnInit, 
      * Event handler is only triggered when a slider handler is focused.
      */
     onKeyDown(e: KeyboardEvent): void;
+    onHandleFocusIn(index: number): void;
     private setValue;
     private getValue;
     /**
@@ -119,4 +121,6 @@ export declare class NzSliderComponent implements ControlValueAccessor, OnInit, 
     private showHandleTooltip;
     private hideAllHandleTooltip;
     private generateMarkItems;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzSliderComponent, [null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzSliderComponent, "nz-slider", ["nzSlider"], { "nzDisabled": "nzDisabled"; "nzDots": "nzDots"; "nzIncluded": "nzIncluded"; "nzRange": "nzRange"; "nzVertical": "nzVertical"; "nzReverse": "nzReverse"; "nzDefaultValue": "nzDefaultValue"; "nzMarks": "nzMarks"; "nzMax": "nzMax"; "nzMin": "nzMin"; "nzStep": "nzStep"; "nzTooltipVisible": "nzTooltipVisible"; "nzTooltipPlacement": "nzTooltipPlacement"; "nzTipFormatter": "nzTipFormatter"; }, { "nzOnAfterChange": "nzOnAfterChange"; }, never, never>;
 }

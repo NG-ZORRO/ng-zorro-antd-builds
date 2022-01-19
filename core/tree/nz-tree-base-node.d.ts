@@ -55,6 +55,7 @@ export declare class NzTreeNode {
     get treeService(): NzTreeBaseService | null;
     /**
      * Init nzTreeNode
+     *
      * @param option: user's input
      * @param parent
      * @param service: base nzTreeService

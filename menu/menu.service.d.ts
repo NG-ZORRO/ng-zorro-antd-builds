@@ -1,10 +1,7 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
+import * as i0 from "@angular/core";
 export declare class MenuService {
     /** all descendant menu click **/
     descendantMenuItemClick$: Subject<any>;
@@ -19,4 +16,6 @@ export declare class MenuService {
     setMode(mode: NzMenuModeType): void;
     setTheme(theme: NzMenuThemeType): void;
     setInlineIndent(indent: number): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MenuService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<MenuService>;
 }

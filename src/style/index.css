@@ -6,17 +6,7 @@
 [class*= ant-] input::-ms-reveal {
   display: none;
 }
-[class^=ant-],
-[class*= ant-],
-[class^=ant-] *,
-[class*= ant-] *,
-[class^=ant-] *::before,
-[class*= ant-] *::before,
-[class^=ant-] *::after,
-[class*= ant-] *::after {
-  box-sizing: border-box;
-}
-/* stylelint-disable at-rule-no-unknown */
+/* stylelint-disable property-no-vendor-prefix, at-rule-no-vendor-prefix */
 html,
 body {
   width: 100%;
@@ -165,7 +155,6 @@ a:focus {
 a[disabled] {
   color: rgba(0, 0, 0, 0.25);
   cursor: not-allowed;
-  pointer-events: none;
 }
 pre,
 code,
@@ -209,9 +198,6 @@ caption {
   color: rgba(0, 0, 0, 0.45);
   text-align: left;
   caption-side: bottom;
-}
-th {
-  text-align: inherit;
 }
 input,
 button,
@@ -1309,6 +1295,10 @@ html {
 .nz-overlay-transparent-backdrop,
 .nz-overlay-transparent-backdrop.cdk-overlay-backdrop-showing {
   opacity: 0;
+}
+.nz-animate-disabled.ant-scroll-number-only {
+  animation: none;
+  transition: none;
 }
 .nz-animate-disabled.ant-drawer.ant-drawer-open .ant-drawer-mask {
   animation: none;

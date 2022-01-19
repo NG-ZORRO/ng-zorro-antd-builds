@@ -8,6 +8,7 @@ import { ChangeDetectorRef, EventEmitter, NgZone, OnChanges, OnDestroy, OnInit, 
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
     private doc;
     nzConfigService: NzConfigService;
@@ -38,4 +39,6 @@ export declare class NzBackTopComponent implements OnInit, OnDestroy, OnChanges 
     private registerScrollEvent;
     ngOnDestroy(): void;
     ngOnChanges(changes: SimpleChanges): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzBackTopComponent, [null, null, null, null, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzBackTopComponent, "nz-back-top", ["nzBackTop"], { "nzTemplate": "nzTemplate"; "nzVisibilityHeight": "nzVisibilityHeight"; "nzTarget": "nzTarget"; "nzDuration": "nzDuration"; }, { "nzClick": "nzClick"; }, never, never>;
 }

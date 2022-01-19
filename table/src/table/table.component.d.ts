@@ -5,16 +5,17 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, TrackByFunction } from '@angular/core';
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
-import { NzTableData, NzTableLayout, NzTablePaginationPosition, NzTablePaginationType, NzTableQueryParams, NzTableSize } from '../table.types';
+import { NzTableLayout, NzTablePaginationPosition, NzTablePaginationType, NzTableQueryParams, NzTableSize } from '../table.types';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
-export declare class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+import * as i0 from "@angular/core";
+export declare class NzTableComponent<T> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
     private elementRef;
     private nzResizeObserver;
     private nzConfigService;
@@ -46,13 +47,13 @@ export declare class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestro
     nzVirtualItemSize: number;
     nzVirtualMaxBufferPx: number;
     nzVirtualMinBufferPx: number;
-    nzVirtualForTrackBy: TrackByFunction<NzTableData>;
+    nzVirtualForTrackBy: TrackByFunction<T>;
     nzLoadingDelay: number;
     nzPageIndex: number;
     nzPageSize: number;
     nzTotal: number;
     nzWidthConfig: ReadonlyArray<string | null>;
-    nzData: ReadonlyArray<T>;
+    nzData: readonly T[];
     nzPaginationPosition: NzTablePaginationPosition;
     nzScroll: {
         x?: string | null;
@@ -74,9 +75,9 @@ export declare class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestro
     readonly nzPageSizeChange: EventEmitter<number>;
     readonly nzPageIndexChange: EventEmitter<number>;
     readonly nzQueryParams: EventEmitter<NzTableQueryParams>;
-    readonly nzCurrentPageDataChange: EventEmitter<readonly any[]>;
+    readonly nzCurrentPageDataChange: EventEmitter<readonly T[]>;
     /** public data for ngFor tr */
-    data: ReadonlyArray<T>;
+    data: readonly T[];
     cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
     scrollX: string | null;
     scrollY: string | null;
@@ -87,19 +88,20 @@ export declare class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestro
     hasFixRight: boolean;
     showPagination: boolean;
     private destroy$;
-    private loading$;
     private templateMode$;
     dir: Direction;
-    nzVirtualScrollDirective: NzTableVirtualScrollDirective;
-    nzTableInnerScrollComponent: NzTableInnerScrollComponent;
+    nzVirtualScrollDirective: NzTableVirtualScrollDirective<T>;
+    nzTableInnerScrollComponent: NzTableInnerScrollComponent<T>;
     verticalScrollBarWidth: number;
     onPageSizeChange(size: number): void;
     onPageIndexChange(index: number): void;
-    constructor(elementRef: ElementRef, nzResizeObserver: NzResizeObserver, nzConfigService: NzConfigService, cdr: ChangeDetectorRef, nzTableStyleService: NzTableStyleService, nzTableDataService: NzTableDataService, directionality: Directionality);
+    constructor(elementRef: ElementRef, nzResizeObserver: NzResizeObserver, nzConfigService: NzConfigService, cdr: ChangeDetectorRef, nzTableStyleService: NzTableStyleService, nzTableDataService: NzTableDataService<T>, directionality: Directionality);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     private setScrollOnChanges;
     private updateShowPagination;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTableComponent<any>, [null, null, null, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTableComponent<any>, "nz-table", ["nzTable"], { "nzTableLayout": "nzTableLayout"; "nzShowTotal": "nzShowTotal"; "nzItemRender": "nzItemRender"; "nzTitle": "nzTitle"; "nzFooter": "nzFooter"; "nzNoResult": "nzNoResult"; "nzPageSizeOptions": "nzPageSizeOptions"; "nzVirtualItemSize": "nzVirtualItemSize"; "nzVirtualMaxBufferPx": "nzVirtualMaxBufferPx"; "nzVirtualMinBufferPx": "nzVirtualMinBufferPx"; "nzVirtualForTrackBy": "nzVirtualForTrackBy"; "nzLoadingDelay": "nzLoadingDelay"; "nzPageIndex": "nzPageIndex"; "nzPageSize": "nzPageSize"; "nzTotal": "nzTotal"; "nzWidthConfig": "nzWidthConfig"; "nzData": "nzData"; "nzPaginationPosition": "nzPaginationPosition"; "nzScroll": "nzScroll"; "nzPaginationType": "nzPaginationType"; "nzFrontPagination": "nzFrontPagination"; "nzTemplateMode": "nzTemplateMode"; "nzShowPagination": "nzShowPagination"; "nzLoading": "nzLoading"; "nzOuterBordered": "nzOuterBordered"; "nzLoadingIndicator": "nzLoadingIndicator"; "nzBordered": "nzBordered"; "nzSize": "nzSize"; "nzShowSizeChanger": "nzShowSizeChanger"; "nzHideOnSinglePage": "nzHideOnSinglePage"; "nzShowQuickJumper": "nzShowQuickJumper"; "nzSimple": "nzSimple"; }, { "nzPageSizeChange": "nzPageSizeChange"; "nzPageIndexChange": "nzPageIndexChange"; "nzQueryParams": "nzQueryParams"; "nzCurrentPageDataChange": "nzCurrentPageDataChange"; }, ["nzVirtualScrollDirective"], ["*"]>;
 }

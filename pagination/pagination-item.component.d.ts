@@ -5,6 +5,7 @@
 import { EventEmitter, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext, PaginationItemType } from './pagination.types';
+import * as i0 from "@angular/core";
 export declare class NzPaginationItemComponent implements OnChanges {
     static ngAcceptInputType_type: PaginationItemType | string | null | undefined;
     static ngAcceptInputType_index: number | null | undefined;
@@ -20,4 +21,6 @@ export declare class NzPaginationItemComponent implements OnChanges {
     title: string | null;
     clickItem(): void;
     ngOnChanges(changes: SimpleChanges): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzPaginationItemComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzPaginationItemComponent, "li[nz-pagination-item]", never, { "active": "active"; "locale": "locale"; "index": "index"; "disabled": "disabled"; "direction": "direction"; "type": "type"; "itemRender": "itemRender"; }, { "diffIndex": "diffIndex"; "gotoIndex": "gotoIndex"; }, never, never>;
 }

@@ -4,8 +4,11 @@
  */
 import { CdkTreeNodeOutlet } from '@angular/cdk/tree';
 import { ViewContainerRef } from '@angular/core';
+import * as i0 from "@angular/core";
 export declare class NzTreeNodeOutletDirective implements CdkTreeNodeOutlet {
     viewContainer: ViewContainerRef;
     _node?: any;
     constructor(viewContainer: ViewContainerRef, _node?: any);
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTreeNodeOutletDirective, [null, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzTreeNodeOutletDirective, "[nzTreeNodeOutlet]", never, {}, {}, never>;
 }

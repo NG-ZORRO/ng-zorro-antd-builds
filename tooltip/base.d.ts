@@ -3,12 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
-import { AfterViewInit, ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
+import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { AfterViewInit, ChangeDetectorRef, ComponentFactoryResolver, ComponentRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Subject } from 'rxjs';
 import { NzConfigService, PopConfirmConfig, PopoverConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, NgClassInterface, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
-import { Subject } from 'rxjs';
+import { POSITION_TYPE } from 'ng-zorro-antd/core/overlay';
+import { BooleanInput, NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export interface PropertyMapping {
     [key: string]: [string, () => unknown];
 }
@@ -20,6 +22,7 @@ export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDes
     protected renderer: Renderer2;
     protected noAnimation?: NzNoAnimationDirective | undefined;
     protected nzConfigService?: NzConfigService | undefined;
+    arrowPointAtCenter?: boolean;
     config?: Required<PopoverConfig | PopConfirmConfig>;
     directiveTitle?: NzTSType | null;
     directiveContent?: NzTSType | null;
@@ -37,7 +40,7 @@ export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDes
     /**
      * For create tooltip dynamically. This should be override for each different component.
      */
-    protected componentFactory: ComponentFactory<NzTooltipBaseComponent>;
+    protected componentRef: ComponentRef<NzTooltipBaseComponent>;
     /**
      * This true title that would be used in other parts on this component.
      */
@@ -78,15 +81,19 @@ export declare abstract class NzTooltipBaseDirective implements OnChanges, OnDes
     private delayEnterLeave;
     private removeTriggerListeners;
     private clearTogglingTimer;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTooltipBaseDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzTooltipBaseDirective, never, never, {}, {}, never>;
 }
 export declare abstract class NzTooltipBaseComponent implements OnDestroy, OnInit {
     cdr: ChangeDetectorRef;
     private directionality;
     noAnimation?: NzNoAnimationDirective | undefined;
     static ngAcceptInputType_nzVisible: BooleanInput;
+    static ngAcceptInputType_nzArrowPointAtCenter: BooleanInput;
     overlay: CdkConnectedOverlay;
     nzTitle: NzTSType | null;
     nzContent: NzTSType | null;
+    nzArrowPointAtCenter: boolean;
     nzOverlayClassName: string;
     nzOverlayStyle: NgStyleInterface;
     nzBackdrop: boolean;
@@ -99,14 +106,14 @@ export declare abstract class NzTooltipBaseComponent implements OnDestroy, OnIni
     set nzTrigger(value: NzTooltipTrigger);
     get nzTrigger(): NzTooltipTrigger;
     protected _trigger: NzTooltipTrigger;
-    set nzPlacement(value: string[]);
+    set nzPlacement(value: POSITION_TYPE[]);
     preferredPlacement: string;
-    origin: CdkOverlayOrigin;
+    origin: ElementRef<NzSafeAny>;
     dir: Direction;
     _classMap: NgClassInterface;
     _prefix: string;
     _positions: ConnectionPositionPair[];
-    private destroy$;
+    protected destroy$: Subject<void>;
     constructor(cdr: ChangeDetectorRef, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnInit(): void;
     ngOnDestroy(): void;
@@ -118,16 +125,18 @@ export declare abstract class NzTooltipBaseComponent implements OnDestroy, OnIni
      */
     updatePosition(): void;
     onPositionChange(position: ConnectedOverlayPositionChange): void;
-    updateStyles(): void;
-    setOverlayOrigin(origin: CdkOverlayOrigin): void;
+    setOverlayOrigin(origin: ElementRef<HTMLElement>): void;
     onClickOutside(event: MouseEvent): void;
     /**
      * Hide the component while the content is empty.
      */
     private updateVisibilityByTitle;
+    protected updateStyles(): void;
     /**
      * Empty component cannot be opened.
      */
     protected abstract isEmpty(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTooltipBaseComponent, [null, { optional: true; }, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzTooltipBaseComponent, never, never, {}, {}, never>;
 }
 export declare function isTooltipEmpty(value: string | TemplateRef<void> | null): boolean;

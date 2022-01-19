@@ -3,13 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { AfterContentInit, ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
-import { BooleanInput, NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { AfterContentInit, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
+import { BooleanInput, NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { NzListGrid } from './interface';
 import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationComponent } from './list-cell';
+import * as i0 from "@angular/core";
 export declare class NzListComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
-    private elementRef;
     private directionality;
     static ngAcceptInputType_nzBordered: BooleanInput;
     static ngAcceptInputType_nzLoading: BooleanInput;
@@ -36,10 +36,12 @@ export declare class NzListComponent implements AfterContentInit, OnChanges, OnD
     private itemLayoutNotifySource;
     private destroy$;
     get itemLayoutNotify$(): Observable<NzDirectionVHType>;
-    constructor(elementRef: ElementRef, directionality: Directionality);
+    constructor(directionality: Directionality);
     ngOnInit(): void;
     getSomethingAfterLastItem(): boolean;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
     ngAfterContentInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzListComponent, [{ optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzListComponent, "nz-list, [nz-list]", ["nzList"], { "nzDataSource": "nzDataSource"; "nzBordered": "nzBordered"; "nzGrid": "nzGrid"; "nzHeader": "nzHeader"; "nzFooter": "nzFooter"; "nzItemLayout": "nzItemLayout"; "nzRenderItem": "nzRenderItem"; "nzLoading": "nzLoading"; "nzLoadMore": "nzLoadMore"; "nzPagination": "nzPagination"; "nzSize": "nzSize"; "nzSplit": "nzSplit"; "nzNoResult": "nzNoResult"; }, {}, ["nzListFooterComponent", "nzListPaginationComponent", "nzListLoadMoreDirective"], ["*", "nz-list-header", "nz-list-footer, [nz-list-footer]", "nz-list-load-more, [nz-list-load-more]", "nz-list-pagination, [nz-list-pagination]"]>;
 }

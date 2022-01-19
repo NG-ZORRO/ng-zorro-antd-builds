@@ -6,6 +6,7 @@ import { AfterViewInit, ChangeDetectorRef, ElementRef, OnDestroy, Renderer2, Tem
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { NzListItemExtraComponent } from './list-item-cell';
 import { NzListComponent } from './list.component';
+import * as i0 from "@angular/core";
 export declare class NzListItemComponent implements OnDestroy, AfterViewInit {
     private parentComp;
     private cdr;
@@ -21,4 +22,6 @@ export declare class NzListItemComponent implements OnDestroy, AfterViewInit {
     constructor(elementRef: ElementRef, renderer: Renderer2, parentComp: NzListComponent, cdr: ChangeDetectorRef);
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzListItemComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzListItemComponent, "nz-list-item, [nz-list-item]", ["nzListItem"], { "nzActions": "nzActions"; "nzContent": "nzContent"; "nzExtra": "nzExtra"; "nzNoFlex": "nzNoFlex"; }, {}, ["listItemExtraDirective"], ["nz-list-item-actions, [nz-list-item-actions]", "nz-list-item-meta, [nz-list-item-meta]", "*", "nz-list-item-extra, [nz-list-item-extra]"]>;
 }

@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -10,9 +14,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addThemeToAppStyles = void 0;
+const schematics_1 = require("@angular/cdk/schematics");
 const core_1 = require("@angular-devkit/core");
-const schematics_1 = require("@angular-devkit/schematics");
-const schematics_2 = require("@angular/cdk/schematics");
+const schematics_2 = require("@angular-devkit/schematics");
 const change_1 = require("@schematics/angular/utility/change");
 const workspace_1 = require("@schematics/angular/utility/workspace");
 const path_1 = require("path");
@@ -43,22 +47,22 @@ exports.addThemeToAppStyles = addThemeToAppStyles;
  */
 function insertCustomTheme(projectName, host, logger) {
     return __awaiter(this, void 0, void 0, function* () {
-        const workspace = yield workspace_1.getWorkspace(host);
-        const project = schematics_2.getProjectFromWorkspace(workspace, projectName);
-        const stylesPath = schematics_2.getProjectStyleFile(project, 'less');
-        const themeContent = create_custom_theme_1.createCustomTheme();
+        const workspace = yield (0, workspace_1.getWorkspace)(host);
+        const project = (0, schematics_1.getProjectFromWorkspace)(workspace, projectName);
+        const stylesPath = (0, schematics_1.getProjectStyleFile)(project, 'less');
+        const themeContent = (0, create_custom_theme_1.createCustomTheme)();
         if (!stylesPath) {
             if (!project.sourceRoot) {
-                throw new schematics_1.SchematicsException(`Could not find source root for project: "${projectName}". ` +
+                throw new schematics_2.SchematicsException(`Could not find source root for project: "${projectName}". ` +
                     `Please make sure that the "sourceRoot" property is set in the workspace config.`);
             }
             // Normalize the path through the devkit utilities because we want to avoid having
             // unnecessary path segments and windows backslash delimiters.
-            const customThemePath = core_1.normalize(path_1.join(project.sourceRoot, defaultCustomThemeFilename));
+            const customThemePath = (0, core_1.normalize)((0, path_1.join)(project.sourceRoot, defaultCustomThemeFilename));
             if (host.exists(customThemePath)) {
                 logger.warn(`Cannot create a custom NG-ZORRO theme because
           ${customThemePath} already exists. Skipping custom theme generation.`);
-                return schematics_1.noop();
+                return (0, schematics_2.noop)();
             }
             host.create(customThemePath, themeContent);
             return addThemeStyleToTarget(projectName, 'build', customThemePath, logger);
@@ -71,20 +75,20 @@ function insertCustomTheme(projectName, host, logger) {
 }
 /** Insert a pre-built theme into the angular.json file. */
 function insertCompiledTheme(project, logger) {
-    return schematics_1.chain([
+    return (0, schematics_2.chain)([
         addThemeStyleToTarget(project, 'build', compiledThemePath, logger),
         addThemeStyleToTarget(project, 'test', compiledThemePath, logger)
     ]);
 }
 /** Adds a theming style entry to the given project target options. */
 function addThemeStyleToTarget(projectName, targetName, assetPath, logger) {
-    return workspace_1.updateWorkspace(workspace => {
-        const project = schematics_2.getProjectFromWorkspace(workspace, projectName);
+    return (0, workspace_1.updateWorkspace)(workspace => {
+        const project = (0, schematics_1.getProjectFromWorkspace)(workspace, projectName);
         // Do not update the builder options in case the target does not use the default CLI builder.
         if (!validateDefaultTargetBuilder(project, targetName, logger)) {
             return;
         }
-        const targetOptions = schematics_2.getProjectTargetOptions(project, targetName);
+        const targetOptions = (0, schematics_1.getProjectTargetOptions)(project, targetName);
         const styles = targetOptions.styles;
         if (!styles) {
             targetOptions.styles = [assetPath];
@@ -125,7 +129,7 @@ function validateDefaultTargetBuilder(project, targetName, logger) {
     const targetConfig = project.targets && project.targets.get(targetName);
     const isDefaultBuilder = targetConfig && targetConfig.builder === defaultBuilder;
     if (!isDefaultBuilder && targetName === 'build') {
-        throw new schematics_1.SchematicsException(`Your project is not using the default builders for ` +
+        throw new schematics_2.SchematicsException(`Your project is not using the default builders for ` +
             `"${targetName}". The NG-ZORRO schematics cannot add a theme to the workspace ` +
             `configuration if the builder has been changed.`);
     }

@@ -1,8 +1,6 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
+import { NgZone } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare type EasyingFn = (t: number, b: number, c: number, d: number) => number;
 export interface NzScrollToOptions {
     /** Scroll container, default as window */
@@ -13,8 +11,9 @@ export interface NzScrollToOptions {
     duration?: number;
 }
 export declare class NzScrollService {
+    private ngZone;
     private doc;
-    constructor(doc: NzSafeAny);
+    constructor(ngZone: NgZone, doc: NzSafeAny);
     /** Set the position of the scroll bar of `el`. */
     setScrollTop(el: Element | Window, topValue?: number): void;
     /** Get position of `el` against window. */
@@ -32,4 +31,6 @@ export declare class NzScrollService {
      * @param y Scroll to `top`, 0 by default
      */
     scrollTo(containerEl?: Element | HTMLElement | Window | Document | null, y?: number, options?: NzScrollToOptions): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzScrollService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzScrollService>;
 }

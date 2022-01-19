@@ -8,6 +8,7 @@ import { editor } from 'monaco-editor';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzCodeEditorService } from './code-editor.service';
 import { JoinedEditorOptions, NzEditorMode } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     private nzCodeEditorService;
     private ngZone;
@@ -26,9 +27,10 @@ export declare class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     private destroy$;
     private resize$;
     private editorOption$;
-    private editorInstance?;
+    private editorInstance;
     private value;
     private modelSet;
+    private onDidChangeContentDisposable;
     constructor(nzCodeEditorService: NzCodeEditorService, ngZone: NgZone, elementRef: ElementRef, platform: Platform);
     /**
      * Initialize a monaco editor instance.
@@ -55,4 +57,6 @@ export declare class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     private setValueEmitter;
     private emitValue;
     private updateOptionToMonaco;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzCodeEditorComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzCodeEditorComponent, "nz-code-editor", ["nzCodeEditor"], { "nzEditorMode": "nzEditorMode"; "nzOriginalText": "nzOriginalText"; "nzLoading": "nzLoading"; "nzFullControl": "nzFullControl"; "nzToolkit": "nzToolkit"; "nzEditorOption": "nzEditorOption"; }, { "nzEditorInitialized": "nzEditorInitialized"; }, never, never>;
 }

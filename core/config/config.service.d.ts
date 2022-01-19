@@ -1,18 +1,18 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzConfig, NzConfigKey } from './config';
+import * as i0 from "@angular/core";
 export declare class NzConfigService {
     private configUpdated$;
     /** Global config holding property. */
-    private config;
+    private readonly config;
     constructor(defaultConfig?: NzConfig);
+    getConfig(): NzConfig;
     getConfigForComponent<T extends NzConfigKey>(componentName: T): NzConfig[T];
     getConfigChangeEventForComponent(componentName: NzConfigKey): Observable<void>;
     set<T extends NzConfigKey>(componentName: T, value: NzConfig[T]): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzConfigService, [{ optional: true; }]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzConfigService>;
 }
 /**
  * This decorator is used to decorate properties. If a property is decorated, it would try to load default value from

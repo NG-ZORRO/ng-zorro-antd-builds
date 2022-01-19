@@ -4,10 +4,12 @@
  */
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { BooleanInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
+    private ngZone;
     private elementRef;
     private cdr;
     private focusMonitor;
@@ -58,16 +60,17 @@ export declare class NzInputNumberComponent implements ControlValueAccessor, Aft
     stop(): void;
     setValue(value: number): void;
     updateDisplayValue(value: number): void;
-    onKeyDown(e: KeyboardEvent): void;
     writeValue(value: number): void;
     registerOnChange(fn: OnChangeType): void;
     registerOnTouched(fn: OnTouchedType): void;
     setDisabledState(disabled: boolean): void;
     focus(): void;
     blur(): void;
-    constructor(elementRef: ElementRef, cdr: ChangeDetectorRef, focusMonitor: FocusMonitor, directionality: Directionality);
+    constructor(ngZone: NgZone, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, focusMonitor: FocusMonitor, directionality: Directionality);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzInputNumberComponent, [null, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzInputNumberComponent, "nz-input-number", ["nzInputNumber"], { "nzSize": "nzSize"; "nzMin": "nzMin"; "nzMax": "nzMax"; "nzParser": "nzParser"; "nzPrecision": "nzPrecision"; "nzPrecisionMode": "nzPrecisionMode"; "nzPlaceHolder": "nzPlaceHolder"; "nzStep": "nzStep"; "nzInputMode": "nzInputMode"; "nzId": "nzId"; "nzDisabled": "nzDisabled"; "nzAutoFocus": "nzAutoFocus"; "nzFormatter": "nzFormatter"; }, { "nzBlur": "nzBlur"; "nzFocus": "nzFocus"; }, never, never>;
 }

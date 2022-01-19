@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { NzCellFixedDirective } from '../cell/cell-fixed.directive';
 import { NzThMeasureDirective } from '../cell/th-measure.directive';
 import { NzTableStyleService } from '../table-style.service';
+import * as i0 from "@angular/core";
 export declare class NzTrDirective implements AfterContentInit, OnDestroy {
     private nzTableStyleService;
     listOfNzThDirective: QueryList<NzThMeasureDirective>;
@@ -22,4 +23,6 @@ export declare class NzTrDirective implements AfterContentInit, OnDestroy {
     constructor(nzTableStyleService: NzTableStyleService);
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTrDirective, [{ optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzTrDirective, "tr:not([mat-row]):not([mat-header-row]):not([nz-table-measure-row]):not([nzExpand]):not([nz-table-fixed-row])", never, {}, {}, ["listOfNzThDirective", "listOfCellFixedDirective"]>;
 }

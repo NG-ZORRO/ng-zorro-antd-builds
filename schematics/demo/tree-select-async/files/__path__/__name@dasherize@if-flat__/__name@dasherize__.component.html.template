@@ -9,6 +9,5 @@
       [nzNodes]="nodes"
       [nzAsyncData]="true"
       (nzExpandChange)="onExpandChange($event)"
-    >
-    </nz-tree-select>
+    ></nz-tree-select>
   

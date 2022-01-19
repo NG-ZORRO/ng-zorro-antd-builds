@@ -4,10 +4,11 @@
  */
 import { PipeTransform } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare type ByteUnit = 'B' | 'kB' | 'KB' | 'MB' | 'GB' | 'TB';
 export declare class NzBytesPipe implements PipeTransform {
     static formats: {
-        [key: string]: {
+        [key in ByteUnit]: {
             max: number;
             prev?: ByteUnit;
         };
@@ -18,4 +19,6 @@ export declare class NzBytesPipe implements PipeTransform {
         max: number;
         prev?: ByteUnit;
     }, bytes: number): number;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzBytesPipe, never>;
+    static ɵpipe: i0.ɵɵPipeDeclaration<NzBytesPipe, "nzBytes">;
 }

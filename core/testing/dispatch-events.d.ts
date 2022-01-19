@@ -1,9 +1,6 @@
 /**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 /** Utility to dispatch any event on a Node. */
 export declare function dispatchEvent(node: Node | Window, event: Event): Event;

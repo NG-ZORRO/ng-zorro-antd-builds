@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
       [nzFilterOption]="nzFilterOption"
       (nzOnSearch)="search($event)"
     >
-      <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
+      <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"></nz-option>
     </nz-select>
   `<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>,
   <% if(inlineStyle) { %>styles: [`
@@ -25,7 +25,7 @@ import { Component } from '@angular/core';
 export class <%= classify(name) %>Component {
   selectedValue = null;
   listOfOption: Array<{ value: string; text: string }> = [];
-  nzFilterOption = () => true;
+  nzFilterOption = (): boolean => true;
 
   constructor(private httpClient: HttpClient) {}
 

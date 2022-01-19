@@ -4,8 +4,22 @@
  */
 import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 export declare const POSITION_MAP: {
-    [key: string]: ConnectionPositionPair;
+    top: ConnectionPositionPair;
+    topCenter: ConnectionPositionPair;
+    topLeft: ConnectionPositionPair;
+    topRight: ConnectionPositionPair;
+    right: ConnectionPositionPair;
+    rightTop: ConnectionPositionPair;
+    rightBottom: ConnectionPositionPair;
+    bottom: ConnectionPositionPair;
+    bottomCenter: ConnectionPositionPair;
+    bottomLeft: ConnectionPositionPair;
+    bottomRight: ConnectionPositionPair;
+    left: ConnectionPositionPair;
+    leftTop: ConnectionPositionPair;
+    leftBottom: ConnectionPositionPair;
 };
+export declare type POSITION_TYPE = keyof typeof POSITION_MAP;
 export declare const DEFAULT_TOOLTIP_POSITIONS: ConnectionPositionPair[];
 export declare const DEFAULT_CASCADER_POSITIONS: ConnectionPositionPair[];
 export declare const DEFAULT_MENTION_TOP_POSITIONS: ConnectionPositionPair[];

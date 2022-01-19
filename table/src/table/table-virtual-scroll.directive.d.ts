@@ -4,13 +4,20 @@
  */
 import { TemplateRef } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-export declare class NzTableVirtualScrollDirective {
+import * as i0 from "@angular/core";
+export declare class NzTableVirtualScrollDirective<T> {
     templateRef: TemplateRef<{
-        $implicit: NzSafeAny;
+        $implicit: T;
         index: number;
     }>;
     constructor(templateRef: TemplateRef<{
-        $implicit: NzSafeAny;
+        $implicit: T;
         index: number;
     }>);
+    static ngTemplateContextGuard<T>(_dir: NzTableVirtualScrollDirective<T>, _ctx: NzSafeAny): _ctx is {
+        $implicit: T;
+        index: number;
+    };
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTableVirtualScrollDirective<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzTableVirtualScrollDirective<any>, "[nz-virtual-scroll]", ["nzVirtualScroll"], {}, {}, never>;
 }

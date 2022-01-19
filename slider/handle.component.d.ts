@@ -8,6 +8,7 @@ import { BooleanInput, NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 import { NzSliderService } from './slider.service';
 import { NzSliderShowTooltip } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzSliderHandleComponent implements OnChanges {
     private sliderService;
     private cdr;
@@ -35,4 +36,6 @@ export declare class NzSliderHandleComponent implements OnChanges {
     private updateTooltipPosition;
     private updateStyle;
     private getHorizontalStylePosition;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzSliderHandleComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzSliderHandleComponent, "nz-slider-handle", ["nzSliderHandle"], { "vertical": "vertical"; "reverse": "reverse"; "offset": "offset"; "value": "value"; "tooltipVisible": "tooltipVisible"; "tooltipPlacement": "tooltipPlacement"; "tooltipFormatter": "tooltipFormatter"; "active": "active"; "dir": "dir"; }, {}, never, never>;
 }

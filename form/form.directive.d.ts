@@ -4,10 +4,11 @@
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ElementRef, OnChanges, OnDestroy, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { ThemeType } from '@ant-design/icons-angular';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput, InputObservable } from 'ng-zorro-antd/core/types';
-import { Observable, Subject } from 'rxjs';
+import * as i0 from "@angular/core";
 export declare type NzFormLayoutType = 'horizontal' | 'vertical' | 'inline';
 export declare const DefaultTooltipIcon: {
     readonly type: "question-circle";
@@ -35,4 +36,6 @@ export declare class NzFormDirective implements OnChanges, OnDestroy, InputObser
     constructor(nzConfigService: NzConfigService, elementRef: ElementRef, renderer: Renderer2, directionality: Directionality);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzFormDirective, [null, null, null, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzFormDirective, "[nz-form]", ["nzForm"], { "nzLayout": "nzLayout"; "nzNoColon": "nzNoColon"; "nzAutoTips": "nzAutoTips"; "nzDisableAutoTips": "nzDisableAutoTips"; "nzTooltipIcon": "nzTooltipIcon"; }, {}, never>;
 }

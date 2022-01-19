@@ -4,6 +4,7 @@
  */
 import { EventEmitter } from '@angular/core';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzTreeNodeCheckboxComponent {
     static ngAcceptInputType_nzDisabled: BooleanInput;
     nzChecked?: boolean;
@@ -11,4 +12,6 @@ export declare class NzTreeNodeCheckboxComponent {
     nzDisabled?: boolean;
     readonly nzClick: EventEmitter<MouseEvent>;
     onClick(e: MouseEvent): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTreeNodeCheckboxComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTreeNodeCheckboxComponent, "nz-tree-node-checkbox:not([builtin])", never, { "nzChecked": "nzChecked"; "nzIndeterminate": "nzIndeterminate"; "nzDisabled": "nzDisabled"; }, { "nzClick": "nzClick"; }, never, never>;
 }

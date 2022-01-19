@@ -6,9 +6,10 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, ElementRef, NgZone, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 import { NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { IndexableObject } from 'ng-zorro-antd/core/types';
-import { ReplaySubject } from 'rxjs';
+import * as i0 from "@angular/core";
 export declare type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 export declare type NzAlign = 'top' | 'middle' | 'bottom';
 export declare class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
@@ -32,4 +33,6 @@ export declare class NzRowDirective implements OnInit, OnChanges, AfterViewInit,
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzRowDirective, [null, null, null, null, null, null, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzRowDirective, "[nz-row],nz-row,nz-form-item", ["nzRow"], { "nzAlign": "nzAlign"; "nzJustify": "nzJustify"; "nzGutter": "nzGutter"; }, {}, never>;
 }

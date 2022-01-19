@@ -7,6 +7,7 @@ import { Selection } from 'd3-selection';
 import { ZoomBehavior } from 'd3-zoom';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzZoomTransform } from './interface';
+import * as i0 from "@angular/core";
 export declare class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
     private element;
     private cdr;
@@ -29,15 +30,19 @@ export declare class NzGraphZoomDirective implements OnDestroy, AfterViewInit {
     focus(id: NzSafeAny, duration?: number): void;
     /**
      * Handle zoom event
+     *
      * @param transform
      */
     private zoomed;
     /**
      * Scale with zoom and duration
+     *
      * @param duration
      * @param scale
      * @private
      */
     private reScale;
     private getRelativePositionInfo;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzGraphZoomDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzGraphZoomDirective, "[nz-graph-zoom]", ["nzGraphZoom"], { "nzZoom": "nzZoom"; "nzMinZoom": "nzMinZoom"; "nzMaxZoom": "nzMaxZoom"; }, { "nzTransformEvent": "nzTransformEvent"; "nzZoomChange": "nzZoomChange"; }, never>;
 }

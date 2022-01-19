@@ -1,7 +1,3 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 import { Overlay } from '@angular/cdk/overlay';
 import { AfterViewInit, ElementRef, ExistingProvider, OnDestroy, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
@@ -9,6 +5,7 @@ import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types
 import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
+import * as i0 from "@angular/core";
 export declare const NZ_AUTOCOMPLETE_VALUE_ACCESSOR: ExistingProvider;
 export declare function getNzAutocompleteMissingPanelError(): Error;
 export declare class NzAutocompleteTriggerDirective implements AfterViewInit, ControlValueAccessor, OnDestroy {
@@ -23,7 +20,7 @@ export declare class NzAutocompleteTriggerDirective implements AfterViewInit, Co
     onTouched: OnTouchedType;
     panelOpen: boolean;
     /** Current active option */
-    get activeOption(): NzAutocompleteOptionComponent | void;
+    get activeOption(): NzAutocompleteOptionComponent | null;
     private destroy$;
     private overlayRef;
     private portal;
@@ -66,4 +63,6 @@ export declare class NzAutocompleteTriggerDirective implements AfterViewInit, Co
     private setTriggerValue;
     private doBackfill;
     private canOpen;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzAutocompleteTriggerDirective, [null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzAutocompleteTriggerDirective, "input[nzAutocomplete], textarea[nzAutocomplete]", ["nzAutocompleteTrigger"], { "nzAutocomplete": "nzAutocomplete"; }, {}, never>;
 }

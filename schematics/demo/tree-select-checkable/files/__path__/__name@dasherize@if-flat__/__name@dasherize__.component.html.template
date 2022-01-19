@@ -7,6 +7,5 @@
       nzShowSearch
       nzCheckable
       nzPlaceHolder="Please select"
-    >
-    </nz-tree-select>
+    ></nz-tree-select>
   

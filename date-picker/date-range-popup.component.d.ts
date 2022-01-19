@@ -2,17 +2,20 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { Direction } from '@angular/cdk/bidi';
+import { ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { Subject } from 'rxjs';
 import { CandyDate, CompatibleValue, SingleValue } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { Subject } from 'rxjs';
 import { DatePickerService } from './date-picker.service';
 import { CompatibleDate, DisabledDateFn, DisabledTimeFn, NzDateMode, PresetRanges, RangePartType, SupportTimeOptions } from './standard-types';
+import * as i0 from "@angular/core";
 export declare class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     datePickerService: DatePickerService;
     cdr: ChangeDetectorRef;
+    private ngZone;
+    private host;
     isRange: boolean;
     inline: boolean;
     showWeek: boolean;
@@ -27,10 +30,10 @@ export declare class DateRangePopupComponent implements OnInit, OnChanges, OnDes
     dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
     panelMode: NzDateMode | NzDateMode[];
     defaultPickerValue: CompatibleDate | undefined | null;
-    readonly panelModeChange: EventEmitter<"decade" | "year" | "month" | "week" | "date" | "time" | NzDateMode[]>;
+    dir: Direction;
+    readonly panelModeChange: EventEmitter<NzDateMode | NzDateMode[]>;
     readonly calendarChange: EventEmitter<CompatibleValue>;
     readonly resultOk: EventEmitter<void>;
-    dir: Direction;
     prefixCls: string;
     endPanelMode: NzDateMode | NzDateMode[];
     timeOptions: SupportTimeOptions | SupportTimeOptions[] | null;
@@ -39,17 +42,11 @@ export declare class DateRangePopupComponent implements OnInit, OnChanges, OnDes
     destroy$: Subject<unknown>;
     get hasTimePicker(): boolean;
     get hasFooter(): boolean;
-    constructor(datePickerService: DatePickerService, cdr: ChangeDetectorRef);
+    constructor(datePickerService: DatePickerService, cdr: ChangeDetectorRef, ngZone: NgZone, host: ElementRef<HTMLElement>);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
     updateActiveDate(): void;
-    init(): void;
-    /**
-     * Prevent input losing focus when click panel
-     * @param event
-     */
-    onMousedown(event: MouseEvent): void;
     onClickOk(): void;
     onClickToday(value: CandyDate): void;
     onCellHover(value: CandyDate): void;
@@ -76,4 +73,6 @@ export declare class DateRangePopupComponent implements OnInit, OnChanges, OnDes
     private buildTimeOptions;
     private overrideTimeOptions;
     private overrideHms;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DateRangePopupComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DateRangePopupComponent, "date-range-popup", ["dateRangePopup"], { "isRange": "isRange"; "inline": "inline"; "showWeek": "showWeek"; "locale": "locale"; "disabledDate": "disabledDate"; "disabledTime": "disabledTime"; "showToday": "showToday"; "showNow": "showNow"; "showTime": "showTime"; "extraFooter": "extraFooter"; "ranges": "ranges"; "dateRender": "dateRender"; "panelMode": "panelMode"; "defaultPickerValue": "defaultPickerValue"; "dir": "dir"; }, { "panelModeChange": "panelModeChange"; "calendarChange": "calendarChange"; "resultOk": "resultOk"; }, never, never>;
 }

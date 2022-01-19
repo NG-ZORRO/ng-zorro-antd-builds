@@ -5,6 +5,7 @@
 import { ElementRef, EventEmitter, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { NzTabScrollEvent, NzTabScrollEventHandlerFun, NzTabScrollListOffset, NzTabScrollListOffsetEvent } from './interfaces';
+import * as i0 from "@angular/core";
 export declare class NzTabScrollListDirective implements OnInit, OnDestroy {
     private ngZone;
     private elementRef;
@@ -29,4 +30,6 @@ export declare class NzTabScrollListDirective implements OnInit, OnDestroy {
     onWheel: (e: WheelEvent) => void;
     onOffset(x: number, y: number, event: Event): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTabScrollListDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzTabScrollListDirective, "[nzTabScrollList]", never, {}, { "offsetChange": "offsetChange"; "tabScroll": "tabScroll"; }, never>;
 }

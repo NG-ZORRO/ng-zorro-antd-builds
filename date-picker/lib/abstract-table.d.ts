@@ -8,6 +8,7 @@ import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { DateBodyRow, DateCell } from './interface';
+import * as i0 from "@angular/core";
 export declare abstract class AbstractTable implements OnInit, OnChanges {
     isTemplateRef: typeof isTemplateRef;
     isNonEmptyString: typeof isNonEmptyString;
@@ -40,4 +41,6 @@ export declare abstract class AbstractTable implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void;
     private isDateRealChange;
     private isSameDate;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AbstractTable, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<AbstractTable, never, never, { "prefixCls": "prefixCls"; "value": "value"; "locale": "locale"; "activeDate": "activeDate"; "showWeek": "showWeek"; "selectedValue": "selectedValue"; "hoverValue": "hoverValue"; "disabledDate": "disabledDate"; "cellRender": "cellRender"; "fullCellRender": "fullCellRender"; }, { "valueChange": "valueChange"; "cellHover": "cellHover"; }, never>;
 }

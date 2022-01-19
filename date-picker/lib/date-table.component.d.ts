@@ -7,6 +7,7 @@ import { CandyDate } from 'ng-zorro-antd/core/time';
 import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
+import * as i0 from "@angular/core";
 export declare class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
     private i18n;
     private dateHelper;
@@ -20,4 +21,6 @@ export declare class DateTableComponent extends AbstractTable implements OnChang
     getClassMap(cell: DateCell): {
         [key: string]: boolean;
     };
+    static ɵfac: i0.ɵɵFactoryDeclaration<DateTableComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DateTableComponent, "date-table", ["dateTable"], { "locale": "locale"; }, {}, never, never>;
 }

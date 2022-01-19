@@ -3,11 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
+import * as i0 from "@angular/core";
 export declare class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnChanges {
-    private elementRef;
     private directionality;
     menuClass: string;
     theme: NzMenuThemeType;
@@ -18,7 +18,7 @@ export declare class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnI
     nzDisabled: boolean;
     nzOpen: boolean;
     readonly subMenuMouseState: EventEmitter<boolean>;
-    constructor(elementRef: ElementRef, directionality: Directionality);
+    constructor(directionality: Directionality);
     setMouseState(state: boolean): void;
     expandState: string;
     dir: Direction;
@@ -27,4 +27,6 @@ export declare class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnI
     calcMotionState(): void;
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzSubmenuNoneInlineChildComponent, [{ optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzSubmenuNoneInlineChildComponent, "[nz-submenu-none-inline-child]", ["nzSubmenuNoneInlineChild"], { "menuClass": "menuClass"; "theme": "theme"; "templateOutlet": "templateOutlet"; "isMenuInsideDropDown": "isMenuInsideDropDown"; "mode": "mode"; "position": "position"; "nzDisabled": "nzDisabled"; "nzOpen": "nzOpen"; }, { "subMenuMouseState": "subMenuMouseState"; }, never, never>;
 }

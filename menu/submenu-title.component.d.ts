@@ -5,6 +5,7 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, EventEmitter, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { NzMenuModeType } from './menu.types';
+import * as i0 from "@angular/core";
 export declare class NzSubMenuTitleComponent implements OnDestroy, OnInit {
     private cdr;
     private directionality;
@@ -23,4 +24,6 @@ export declare class NzSubMenuTitleComponent implements OnDestroy, OnInit {
     ngOnDestroy(): void;
     setMouseState(state: boolean): void;
     clickTitle(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzSubMenuTitleComponent, [null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzSubMenuTitleComponent, "[nz-submenu-title]", ["nzSubmenuTitle"], { "nzIcon": "nzIcon"; "nzTitle": "nzTitle"; "isMenuInsideDropDown": "isMenuInsideDropDown"; "nzDisabled": "nzDisabled"; "paddingLeft": "paddingLeft"; "mode": "mode"; }, { "toggleSubMenu": "toggleSubMenu"; "subMenuMouseState": "subMenuMouseState"; }, never, ["*"]>;
 }

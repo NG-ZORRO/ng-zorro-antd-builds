@@ -4,8 +4,7 @@
       [nzCheckedChildren]="'customize'"
       [(ngModel)]="customize"
       (ngModelChange)="onConfigChange()"
-    >
-    </nz-switch>
+    ></nz-switch>
 
     <nz-divider></nz-divider>
 

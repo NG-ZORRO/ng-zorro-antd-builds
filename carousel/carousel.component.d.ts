@@ -4,15 +4,17 @@
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnChanges, OnDestroy, OnInit, QueryList, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 import { FromToInterface, NzCarouselDotPosition, NzCarouselEffects, NzCarouselStrategyRegistryItem } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges, OnInit {
     readonly nzConfigService: NzConfigService;
+    private readonly ngZone;
     private readonly renderer;
     private readonly cdr;
     private readonly platform;
@@ -27,8 +29,8 @@ export declare class NzCarouselComponent implements AfterContentInit, AfterViewI
     static ngAcceptInputType_nzAutoPlaySpeed: NumberInput;
     static ngAcceptInputType_nzTransitionSpeed: NumberInput;
     carouselContents: QueryList<NzCarouselContentDirective>;
-    slickList?: ElementRef;
-    slickTrack?: ElementRef;
+    slickList: ElementRef<HTMLElement>;
+    slickTrack: ElementRef<HTMLElement>;
     nzDotRender?: TemplateRef<{
         $implicit: number;
     }>;
@@ -60,13 +62,12 @@ export declare class NzCarouselComponent implements AfterContentInit, AfterViewI
     private pointerDelta;
     private isTransiting;
     private isDragging;
-    constructor(elementRef: ElementRef, nzConfigService: NzConfigService, renderer: Renderer2, cdr: ChangeDetectorRef, platform: Platform, resizeService: NzResizeService, nzDragService: NzDragService, directionality: Directionality, customStrategies: NzCarouselStrategyRegistryItem[]);
+    constructor(elementRef: ElementRef, nzConfigService: NzConfigService, ngZone: NgZone, renderer: Renderer2, cdr: ChangeDetectorRef, platform: Platform, resizeService: NzResizeService, nzDragService: NzDragService, directionality: Directionality, customStrategies: NzCarouselStrategyRegistryItem[]);
     ngOnInit(): void;
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
-    onKeyDown(e: KeyboardEvent): void;
     onLiClick: (index: number) => void;
     next(): void;
     pre(): void;
@@ -80,4 +81,6 @@ export declare class NzCarouselComponent implements AfterContentInit, AfterViewI
      */
     pointerDown: (event: TouchEvent | MouseEvent) => void;
     layout(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzCarouselComponent, [null, null, null, null, null, null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzCarouselComponent, "nz-carousel", ["nzCarousel"], { "nzDotRender": "nzDotRender"; "nzEffect": "nzEffect"; "nzEnableSwipe": "nzEnableSwipe"; "nzDots": "nzDots"; "nzAutoPlay": "nzAutoPlay"; "nzAutoPlaySpeed": "nzAutoPlaySpeed"; "nzTransitionSpeed": "nzTransitionSpeed"; "nzStrategyOptions": "nzStrategyOptions"; "nzDotPosition": "nzDotPosition"; }, { "nzBeforeChange": "nzBeforeChange"; "nzAfterChange": "nzAfterChange"; }, ["carouselContents"], ["*"]>;
 }

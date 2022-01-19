@@ -5,6 +5,7 @@
 import { EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { NzTreeNodeComponent } from './node';
+import * as i0 from "@angular/core";
 export declare class NzTreeNodeOptionComponent<T> implements OnChanges {
     private treeNode;
     static ngAcceptInputType_nzSelected: BooleanInput;
@@ -16,4 +17,6 @@ export declare class NzTreeNodeOptionComponent<T> implements OnChanges {
     get isExpanded(): boolean;
     onClick(e: MouseEvent): void;
     ngOnChanges(changes: SimpleChanges): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTreeNodeOptionComponent<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTreeNodeOptionComponent<any>, "nz-tree-node-option", never, { "nzSelected": "nzSelected"; "nzDisabled": "nzDisabled"; }, { "nzClick": "nzClick"; }, never, ["*"]>;
 }

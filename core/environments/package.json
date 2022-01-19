@@ -1,11 +1,10 @@
 {
-  "main": "../../bundles/ng-zorro-antd-core-environments.umd.js",
-  "module": "../../fesm2015/ng-zorro-antd-core-environments.js",
-  "es2015": "../../fesm2015/ng-zorro-antd-core-environments.js",
-  "esm2015": "../../esm2015/core/environments/ng-zorro-antd-core-environments.js",
-  "fesm2015": "../../fesm2015/ng-zorro-antd-core-environments.js",
+  "module": "../../fesm2015/ng-zorro-antd-core-environments.mjs",
+  "es2020": "../../fesm2020/ng-zorro-antd-core-environments.mjs",
+  "esm2020": "../../esm2020/core/environments/ng-zorro-antd-core-environments.mjs",
+  "fesm2020": "../../fesm2020/ng-zorro-antd-core-environments.mjs",
+  "fesm2015": "../../fesm2015/ng-zorro-antd-core-environments.mjs",
   "typings": "ng-zorro-antd-core-environments.d.ts",
-  "metadata": "ng-zorro-antd-core-environments.metadata.json",
   "sideEffects": false,
   "name": "ng-zorro-antd/core/environments"
 }

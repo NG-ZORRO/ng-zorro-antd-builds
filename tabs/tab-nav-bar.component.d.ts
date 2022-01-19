@@ -1,18 +1,15 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 import { Directionality } from '@angular/cdk/bidi';
 import { ViewportRuler } from '@angular/cdk/overlay';
-import { AfterContentChecked, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
+import { AfterContentChecked, AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnChanges, OnDestroy, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from './interfaces';
 import { NzTabAddButtonComponent } from './tab-add-button.component';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
 import { NzTabNavOperationComponent } from './tab-nav-operation.component';
 import { NzTabsInkBarDirective } from './tabs-ink-bar.directive';
-export declare class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
+import * as i0 from "@angular/core";
+export declare class NzTabNavBarComponent implements AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
     private cdr;
     private ngZone;
     private viewportRuler;
@@ -65,7 +62,6 @@ export declare class NzTabNavBarComponent implements OnInit, AfterViewInit, Afte
     private lockAnimationTimeoutId;
     private cssTransformTimeWaitingId;
     constructor(cdr: ChangeDetectorRef, ngZone: NgZone, viewportRuler: ViewportRuler, nzResizeObserver: NzResizeObserver, dir: Directionality);
-    ngOnInit(): void;
     ngAfterViewInit(): void;
     ngAfterContentChecked(): void;
     ngOnDestroy(): void;
@@ -86,4 +82,6 @@ export declare class NzTabNavBarComponent implements OnInit, AfterViewInit, Afte
     private getLayoutDirection;
     private setTabFocus;
     ngOnChanges(changes: SimpleChanges): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTabNavBarComponent, [null, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTabNavBarComponent, "nz-tabs-nav", ["nzTabsNav"], { "position": "position"; "addable": "addable"; "hideBar": "hideBar"; "addIcon": "addIcon"; "inkBarAnimated": "inkBarAnimated"; "extraTemplate": "extraTemplate"; "selectedIndex": "selectedIndex"; }, { "indexFocused": "indexFocused"; "selectFocusedIndex": "selectFocusedIndex"; "addClicked": "addClicked"; "tabScroll": "tabScroll"; }, ["items"], ["*"]>;
 }

@@ -4,8 +4,8 @@
  */
 import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectorRef, QueryList, Renderer2 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCarouselContentDirective } from '../carousel-content.directive';
 import { FromToInterface, NzCarouselComponentAsSource, PointerVector } from '../typings';
 export declare abstract class NzCarouselBaseStrategy<T = NzSafeAny> {
@@ -26,6 +26,7 @@ export declare abstract class NzCarouselBaseStrategy<T = NzSafeAny> {
     constructor(carouselComponent: NzCarouselComponentAsSource, cdr: ChangeDetectorRef, renderer: Renderer2, platform: Platform, options?: T | undefined);
     /**
      * Initialize dragging sequences.
+     *
      * @param contents
      */
     withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void;
@@ -35,6 +36,7 @@ export declare abstract class NzCarouselBaseStrategy<T = NzSafeAny> {
     abstract switch(_f: number, _t: number): Observable<void>;
     /**
      * When user drag the carousel component.
+     *
      * @optional
      */
     dragging(_vector: PointerVector): void;

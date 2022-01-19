@@ -1,11 +1,10 @@
 {
-  "main": "../bundles/ng-zorro-antd-back-top.umd.js",
-  "module": "../fesm2015/ng-zorro-antd-back-top.js",
-  "es2015": "../fesm2015/ng-zorro-antd-back-top.js",
-  "esm2015": "../esm2015/back-top/ng-zorro-antd-back-top.js",
-  "fesm2015": "../fesm2015/ng-zorro-antd-back-top.js",
+  "module": "../fesm2015/ng-zorro-antd-back-top.mjs",
+  "es2020": "../fesm2020/ng-zorro-antd-back-top.mjs",
+  "esm2020": "../esm2020/back-top/ng-zorro-antd-back-top.mjs",
+  "fesm2020": "../fesm2020/ng-zorro-antd-back-top.mjs",
+  "fesm2015": "../fesm2015/ng-zorro-antd-back-top.mjs",
   "typings": "ng-zorro-antd-back-top.d.ts",
-  "metadata": "ng-zorro-antd-back-top.metadata.json",
   "sideEffects": false,
   "name": "ng-zorro-antd/back-top"
 }

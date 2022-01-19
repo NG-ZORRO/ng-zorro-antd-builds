@@ -7,6 +7,7 @@ import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzDateMode } from '../standard-types';
 import { PanelSelector } from './interface';
+import * as i0 from "@angular/core";
 export declare abstract class AbstractPanelHeader implements OnInit, OnChanges {
     prefixCls: string;
     selectors: PanelSelector[];
@@ -32,4 +33,6 @@ export declare abstract class AbstractPanelHeader implements OnInit, OnChanges {
     private render;
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AbstractPanelHeader, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<AbstractPanelHeader, never, never, { "value": "value"; "locale": "locale"; "showSuperPreBtn": "showSuperPreBtn"; "showSuperNextBtn": "showSuperNextBtn"; "showPreBtn": "showPreBtn"; "showNextBtn": "showNextBtn"; }, { "panelModeChange": "panelModeChange"; "valueChange": "valueChange"; }, never>;
 }

@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -18,18 +22,18 @@ const chalk_1 = require("chalk");
 const ts = require("typescript");
 function registerLocale(options) {
     return (host) => __awaiter(this, void 0, void 0, function* () {
-        const workspace = yield workspace_1.getWorkspace(host);
-        const project = schematics_1.getProjectFromWorkspace(workspace, options.project);
-        const appModulePath = ng_ast_utils_1.getAppModulePath(host, schematics_1.getProjectMainFile(project));
-        const moduleSource = schematics_1.parseSourceFile(host, appModulePath);
+        const workspace = yield (0, workspace_1.getWorkspace)(host);
+        const project = (0, schematics_1.getProjectFromWorkspace)(workspace, options.project);
+        const appModulePath = (0, ng_ast_utils_1.getAppModulePath)(host, (0, schematics_1.getProjectMainFile)(project));
+        const moduleSource = (0, schematics_1.parseSourceFile)(host, appModulePath);
         const locale = options.locale || 'en_US';
         const localePrefix = locale.split('_')[0];
         const recorder = host.beginUpdate(appModulePath);
         const changes = [
-            schematics_1.insertImport(moduleSource, appModulePath, 'NZ_I18N', 'ng-zorro-antd/i18n'),
-            schematics_1.insertImport(moduleSource, appModulePath, locale, 'ng-zorro-antd/i18n'),
-            schematics_1.insertImport(moduleSource, appModulePath, 'registerLocaleData', '@angular/common'),
-            schematics_1.insertImport(moduleSource, appModulePath, localePrefix, `@angular/common/locales/${localePrefix}`, true),
+            (0, schematics_1.insertImport)(moduleSource, appModulePath, 'NZ_I18N', 'ng-zorro-antd/i18n'),
+            (0, schematics_1.insertImport)(moduleSource, appModulePath, locale, 'ng-zorro-antd/i18n'),
+            (0, schematics_1.insertImport)(moduleSource, appModulePath, 'registerLocaleData', '@angular/common'),
+            (0, schematics_1.insertImport)(moduleSource, appModulePath, localePrefix, `@angular/common/locales/${localePrefix}`, true),
             registerLocaleData(moduleSource, appModulePath, localePrefix),
             ...insertI18nTokenProvide(moduleSource, appModulePath, locale)
         ];
@@ -44,30 +48,31 @@ function registerLocale(options) {
 }
 exports.registerLocale = registerLocale;
 function registerLocaleData(moduleSource, modulePath, locale) {
-    const allImports = schematics_1.findNodes(moduleSource, ts.SyntaxKind.ImportDeclaration);
-    const allFun = schematics_1.findNodes(moduleSource, ts.SyntaxKind.ExpressionStatement);
+    const allImports = (0, schematics_1.findNodes)(moduleSource, ts.SyntaxKind.ImportDeclaration);
+    const allFun = (0, schematics_1.findNodes)(moduleSource, ts.SyntaxKind.ExpressionStatement);
     const registerLocaleDataFun = allFun.filter(node => {
         var _a;
         const fun = node.getChildren();
         return ((_a = fun[0].getChildren()[0]) === null || _a === void 0 ? void 0 : _a.getText()) === 'registerLocaleData';
     });
     if (registerLocaleDataFun.length === 0) {
-        return schematics_1.insertAfterLastOccurrence(allImports, `\n\nregisterLocaleData(${locale});`, modulePath, 0);
+        return (0, schematics_1.insertAfterLastOccurrence)(allImports, `\n\nregisterLocaleData(${locale});`, modulePath, 0);
     }
     else {
         console.log();
-        console.log(chalk_1.yellow(`Could not add the registerLocaleData to your app.module file (${chalk_1.blue(modulePath)}).` +
+        console.log((0, chalk_1.yellow)(`Could not add the registerLocaleData to your app.module file (${(0, chalk_1.blue)(modulePath)}).` +
             `because there is already a registerLocaleData function.`));
-        console.log(chalk_1.yellow(`Please manually add the following code to your app.module:`));
-        console.log(chalk_1.cyan(`registerLocaleData(${locale});`));
+        console.log((0, chalk_1.yellow)(`Please manually add the following code to your app.module:`));
+        console.log((0, chalk_1.cyan)(`registerLocaleData(${locale});`));
         return new change_1.NoopChange();
     }
 }
 function insertI18nTokenProvide(moduleSource, modulePath, locale) {
     const metadataField = 'providers';
-    const nodes = schematics_1.getDecoratorMetadata(moduleSource, 'NgModule', '@angular/core');
-    const addProvide = schematics_1.addSymbolToNgModuleMetadata(moduleSource, modulePath, 'providers', `{ provide: NZ_I18N, useValue: ${locale} }`, null);
-    let node = nodes[0]; // tslint:disable-line:no-any
+    const nodes = (0, schematics_1.getDecoratorMetadata)(moduleSource, 'NgModule', '@angular/core');
+    const addProvide = (0, schematics_1.addSymbolToNgModuleMetadata)(moduleSource, modulePath, 'providers', `{ provide: NZ_I18N, useValue: ${locale} }`, null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let node = nodes[0];
     if (!node) {
         return [];
     }
@@ -102,10 +107,10 @@ function insertI18nTokenProvide(moduleSource, modulePath, locale) {
             }
             else {
                 console.log();
-                console.log(chalk_1.yellow(`Could not provide the locale token to your app.module file (${chalk_1.blue(modulePath)}).` +
+                console.log((0, chalk_1.yellow)(`Could not provide the locale token to your app.module file (${(0, chalk_1.blue)(modulePath)}).` +
                     `because there is already a locale token in provides.`));
-                console.log(chalk_1.yellow(`Please manually add the following code to your provides:`));
-                console.log(chalk_1.cyan(`{ provide: NZ_I18N, useValue: ${locale} }`));
+                console.log((0, chalk_1.yellow)(`Please manually add the following code to your provides:`));
+                console.log((0, chalk_1.cyan)(`{ provide: NZ_I18N, useValue: ${locale} }`));
                 return [];
             }
         }

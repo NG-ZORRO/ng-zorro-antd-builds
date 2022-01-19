@@ -18,7 +18,7 @@ describe('top-nav schematic', () => {
     let appTree;
     beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
         runner = new testing_1.SchematicTestRunner('schematics', require.resolve('../../collection.json'));
-        appTree = yield test_app_1.createTestApp(runner, { name: 'ng-zorro-top-nav' });
+        appTree = yield (0, test_app_1.createTestApp)(runner, { name: 'ng-zorro-top-nav' });
     }));
     it('should create top-nav files', () => __awaiter(void 0, void 0, void 0, function* () {
         const tree = yield runner.runSchematicAsync('topnav', {}, appTree).toPromise();
@@ -38,8 +38,8 @@ describe('top-nav schematic', () => {
     it('should set the style preprocessor correctly', () => __awaiter(void 0, void 0, void 0, function* () {
         const tree = yield runner.runSchematicAsync('topnav', { style: schema_1.Style.Less }, appTree).toPromise();
         const files = tree.files;
-        const appContent = test_1.getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/app.component.ts');
-        const welcomeContent = test_1.getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.ts');
+        const appContent = (0, test_1.getFileContent)(tree, '/projects/ng-zorro-top-nav/src/app/app.component.ts');
+        const welcomeContent = (0, test_1.getFileContent)(tree, '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.ts');
         expect(appContent).toContain('app.component.less');
         expect(welcomeContent).toContain('welcome.component.less');
         expect(files).toEqual(jasmine.arrayContaining([
@@ -49,8 +49,8 @@ describe('top-nav schematic', () => {
     }));
     it('should set the prefix correctly', () => __awaiter(void 0, void 0, void 0, function* () {
         const tree = yield runner.runSchematicAsync('topnav', { prefix: 'nz' }, appTree).toPromise();
-        const appContent = test_1.getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/app.component.ts');
-        const welcomeContent = test_1.getFileContent(tree, '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.ts');
+        const appContent = (0, test_1.getFileContent)(tree, '/projects/ng-zorro-top-nav/src/app/app.component.ts');
+        const welcomeContent = (0, test_1.getFileContent)(tree, '/projects/ng-zorro-top-nav/src/app/pages/welcome/welcome.component.ts');
         expect(appContent).toContain(`selector: 'nz-root'`);
         expect(welcomeContent).toContain(`selector: 'nz-welcome'`);
     }));

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { ChangeDetectorRef, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
+import * as i0 from "@angular/core";
 export declare type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | null;
 /** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
 export declare class NzFormItemComponent implements OnDestroy, OnDestroy {
@@ -16,4 +17,6 @@ export declare class NzFormItemComponent implements OnDestroy, OnDestroy {
     setHasFeedback(hasFeedback: boolean): void;
     constructor(elementRef: ElementRef, renderer: Renderer2, cdr: ChangeDetectorRef);
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzFormItemComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzFormItemComponent, "nz-form-item", ["nzFormItem"], {}, {}, never, ["*"]>;
 }

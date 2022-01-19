@@ -11,6 +11,5 @@
       (nzClick)="nzEvent($event)"
       (nzExpandChange)="nzEvent($event)"
       (nzSearchValueChange)="nzEvent($event)"
-    >
-    </nz-tree>
+    ></nz-tree>
   

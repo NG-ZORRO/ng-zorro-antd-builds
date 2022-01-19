@@ -7,6 +7,7 @@ import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import * as i0 from "@angular/core";
 export declare class CalendarFooterComponent implements OnChanges {
     private dateHelper;
     locale: NzCalendarI18nInterface;
@@ -28,4 +29,6 @@ export declare class CalendarFooterComponent implements OnChanges {
     constructor(dateHelper: DateHelperService);
     ngOnChanges(changes: SimpleChanges): void;
     onClickToday(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<CalendarFooterComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CalendarFooterComponent, "calendar-footer", ["calendarFooter"], { "locale": "locale"; "showToday": "showToday"; "showNow": "showNow"; "hasTimePicker": "hasTimePicker"; "isRange": "isRange"; "okDisabled": "okDisabled"; "disabledDate": "disabledDate"; "extraFooter": "extraFooter"; "rangeQuickSelector": "rangeQuickSelector"; }, { "clickOk": "clickOk"; "clickToday": "clickToday"; }, never, never>;
 }

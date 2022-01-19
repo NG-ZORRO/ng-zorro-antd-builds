@@ -3,10 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChange, TemplateRef } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzTreeBaseService, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { Observable, Subject } from 'rxjs';
+import * as i0 from "@angular/core";
 export declare class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, OnDestroy {
     nzTreeService: NzTreeBaseService;
     private ngZone;
@@ -79,6 +80,7 @@ export declare class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, On
     dragPosClass: {
         [key: string]: string;
     };
+    draggingKey: string | null;
     showIndicator: boolean;
     /**
      * default set
@@ -86,9 +88,9 @@ export declare class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, On
     get displayStyle(): string;
     get isSwitcherOpen(): boolean;
     get isSwitcherClose(): boolean;
-    onMousedown(event: MouseEvent): void;
     /**
      * collapse node
+     *
      * @param event
      */
     clickExpand(event: MouseEvent): void;
@@ -97,12 +99,14 @@ export declare class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, On
     contextMenu(event: MouseEvent): void;
     /**
      * check node
+     *
      * @param event
      */
     clickCheckBox(event: MouseEvent): void;
     clearDragClass(): void;
     /**
      * drag event
+     *
      * @param e
      */
     handleDragStart(e: DragEvent): void;
@@ -116,11 +120,13 @@ export declare class NzTreeNodeBuiltinComponent implements OnInit, OnChanges, On
      */
     handDragEvent(): void;
     markForCheck(): void;
-    constructor(nzTreeService: NzTreeBaseService, ngZone: NgZone, renderer: Renderer2, elementRef: ElementRef, cdr: ChangeDetectorRef, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(nzTreeService: NzTreeBaseService, ngZone: NgZone, renderer: Renderer2, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnInit(): void;
     ngOnChanges(changes: {
         [propertyName: string]: SimpleChange;
     }): void;
     ngOnDestroy(): void;
     private renderIndicator;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTreeNodeBuiltinComponent, [null, null, null, null, null, { optional: true; host: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTreeNodeBuiltinComponent, "nz-tree-node[builtin]", ["nzTreeBuiltinNode"], { "icon": "icon"; "title": "title"; "isLoading": "isLoading"; "isSelected": "isSelected"; "isDisabled": "isDisabled"; "isMatched": "isMatched"; "isExpanded": "isExpanded"; "isLeaf": "isLeaf"; "isChecked": "isChecked"; "isHalfChecked": "isHalfChecked"; "isDisableCheckbox": "isDisableCheckbox"; "isSelectable": "isSelectable"; "canHide": "canHide"; "isStart": "isStart"; "isEnd": "isEnd"; "nzTreeNode": "nzTreeNode"; "nzShowLine": "nzShowLine"; "nzShowExpand": "nzShowExpand"; "nzCheckable": "nzCheckable"; "nzAsyncData": "nzAsyncData"; "nzHideUnMatched": "nzHideUnMatched"; "nzNoAnimation": "nzNoAnimation"; "nzSelectMode": "nzSelectMode"; "nzShowIcon": "nzShowIcon"; "nzExpandedIcon": "nzExpandedIcon"; "nzTreeTemplate": "nzTreeTemplate"; "nzBeforeDrop": "nzBeforeDrop"; "nzSearchValue": "nzSearchValue"; "nzDraggable": "nzDraggable"; }, { "nzClick": "nzClick"; "nzDblClick": "nzDblClick"; "nzContextMenu": "nzContextMenu"; "nzCheckBoxChange": "nzCheckBoxChange"; "nzExpandChange": "nzExpandChange"; "nzOnDragStart": "nzOnDragStart"; "nzOnDragEnter": "nzOnDragEnter"; "nzOnDragOver": "nzOnDragOver"; "nzOnDragLeave": "nzOnDragLeave"; "nzOnDrop": "nzOnDrop"; "nzOnDragEnd": "nzOnDragEnd"; }, never, never>;
 }

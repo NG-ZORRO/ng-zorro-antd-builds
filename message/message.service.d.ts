@@ -8,6 +8,7 @@ import { NzSingletonService } from 'ng-zorro-antd/core/services';
 import { NzMNService } from './base';
 import { NzMessageContainerComponent } from './message-container.component';
 import { NzMessageDataOptions, NzMessageRef } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzMessageService extends NzMNService {
     protected container?: NzMessageContainerComponent;
     protected componentPrefix: string;
@@ -19,4 +20,6 @@ export declare class NzMessageService extends NzMNService {
     loading(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageRef;
     create(type: 'success' | 'info' | 'warning' | 'error' | 'loading' | string, content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageRef;
     private createInstance;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzMessageService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzMessageService>;
 }

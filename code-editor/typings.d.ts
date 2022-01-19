@@ -9,7 +9,7 @@ export declare type EditorOptions = IStandAloneEditorConstructionOptions;
 export declare type DiffEditorOptions = IDiffEditorConstructionOptions;
 export declare type JoinedEditorOptions = EditorOptions | DiffEditorOptions;
 export declare type NzEditorMode = 'normal' | 'diff';
-export declare enum NzCodeEditorLoadingStatus {
+export declare const enum NzCodeEditorLoadingStatus {
     UNLOAD = "unload",
     LOADING = "loading",
     LOADED = "LOADED"

@@ -8,6 +8,7 @@ import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzImageGroupComponent } from './image-group.component';
 import { NzImageService } from './image.service';
+import * as i0 from "@angular/core";
 export declare type ImageStatusType = 'error' | 'loading' | 'normal';
 export declare class NzImageDirective implements OnInit, OnChanges, OnDestroy {
     private document;
@@ -20,12 +21,14 @@ export declare class NzImageDirective implements OnInit, OnChanges, OnDestroy {
     readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzDisablePreview: BooleanInput;
     nzSrc: string;
+    nzSrcset: string;
     nzDisablePreview: boolean;
     nzFallback: string | null;
     nzPlaceholder: string | null;
     dir?: Direction;
     backLoadImage: HTMLImageElement;
-    private status;
+    status: ImageStatusType;
+    private backLoadDestroy$;
     private destroy$;
     get previewable(): boolean;
     constructor(document: NzSafeAny, nzConfigService: NzConfigService, elementRef: ElementRef, nzImageService: NzImageService, cdr: ChangeDetectorRef, parentGroup: NzImageGroupComponent, directionality: Directionality);
@@ -36,7 +39,10 @@ export declare class NzImageDirective implements OnInit, OnChanges, OnDestroy {
     ngOnChanges(changes: SimpleChanges): void;
     /**
      * use internal Image object handle fallback & placeholder
+     *
      * @private
      */
     private backLoad;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzImageDirective, [null, null, null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzImageDirective, "img[nz-image]", ["nzImage"], { "nzSrc": "nzSrc"; "nzSrcset": "nzSrcset"; "nzDisablePreview": "nzDisablePreview"; "nzFallback": "nzFallback"; "nzPlaceholder": "nzPlaceholder"; }, {}, never>;
 }

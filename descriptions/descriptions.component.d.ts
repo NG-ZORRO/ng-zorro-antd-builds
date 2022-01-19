@@ -9,6 +9,7 @@ import { NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/servic
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { NzDescriptionsItemComponent } from './descriptions-item.component';
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit, OnInit {
     nzConfigService: NzConfigService;
     private cdr;
@@ -42,4 +43,6 @@ export declare class NzDescriptionsComponent implements OnChanges, OnDestroy, Af
      */
     private prepareMatrix;
     private getColumn;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzDescriptionsComponent, [null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzDescriptionsComponent, "nz-descriptions", ["nzDescriptions"], { "nzBordered": "nzBordered"; "nzLayout": "nzLayout"; "nzColumn": "nzColumn"; "nzSize": "nzSize"; "nzTitle": "nzTitle"; "nzExtra": "nzExtra"; "nzColon": "nzColon"; }, {}, ["items"], never>;
 }

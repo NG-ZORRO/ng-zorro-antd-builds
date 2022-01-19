@@ -1,6 +1,5 @@
 /**
  * Generated bundle index. Do not edit.
  */
+/// <amd-module name="ng-zorro-antd/badge" />
 export * from './public-api';
-export { NzBadgeSupComponent as ɵa } from './badge-sup.component';
-export { NzRibbonComponent as ɵb } from './ribbon.component';

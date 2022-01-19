@@ -5,8 +5,9 @@
       [nzCondition]="switchValue"
       (nzOnConfirm)="confirm()"
       (nzOnCancel)="cancel()"
-      >Delete a task</a
     >
+      Delete a task
+    </a>
     <br />
     <br />
     Whether directly execute:

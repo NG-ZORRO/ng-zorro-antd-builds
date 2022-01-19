@@ -5,8 +5,9 @@
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
+import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     ngControl: NgControl;
     private directionality;
@@ -24,4 +25,6 @@ export declare class NzInputDirective implements OnChanges, OnInit, OnDestroy {
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzInputDirective, [{ optional: true; self: true; }, null, null, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzInputDirective, "input[nz-input],textarea[nz-input]", ["nzInput"], { "nzBorderless": "nzBorderless"; "nzSize": "nzSize"; "disabled": "disabled"; }, {}, never>;
 }

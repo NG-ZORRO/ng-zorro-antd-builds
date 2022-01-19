@@ -6,6 +6,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzStatisticValueType } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzStatisticComponent implements OnDestroy, OnInit {
     protected cdr: ChangeDetectorRef;
     private directionality;
@@ -22,4 +23,6 @@ export declare class NzStatisticComponent implements OnDestroy, OnInit {
     constructor(cdr: ChangeDetectorRef, directionality: Directionality);
     ngOnInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzStatisticComponent, [null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzStatisticComponent, "nz-statistic", ["nzStatistic"], { "nzPrefix": "nzPrefix"; "nzSuffix": "nzSuffix"; "nzTitle": "nzTitle"; "nzValue": "nzValue"; "nzValueStyle": "nzValueStyle"; "nzValueTemplate": "nzValueTemplate"; }, {}, never, never>;
 }

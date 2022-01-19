@@ -2,15 +2,16 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, ChangeDetectorRef, ElementRef, EmbeddedViewRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTextCopyComponent } from './text-copy.component';
 import { NzTextEditComponent } from './text-edit.component';
+import * as i0 from "@angular/core";
 export declare class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
     nzConfigService: NzConfigService;
     private host;
@@ -91,4 +92,6 @@ export declare class NzTypographyComponent implements OnInit, AfterViewInit, OnD
     ngAfterViewInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTypographyComponent, [null, null, null, null, null, null, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTypographyComponent, "  nz-typography,  [nz-typography],  p[nz-paragraph],  span[nz-text],  h1[nz-title], h2[nz-title], h3[nz-title], h4[nz-title]  ", ["nzTypography"], { "nzCopyable": "nzCopyable"; "nzEditable": "nzEditable"; "nzDisabled": "nzDisabled"; "nzExpandable": "nzExpandable"; "nzEllipsis": "nzEllipsis"; "nzCopyTooltips": "nzCopyTooltips"; "nzCopyIcons": "nzCopyIcons"; "nzEditTooltip": "nzEditTooltip"; "nzEditIcon": "nzEditIcon"; "nzContent": "nzContent"; "nzEllipsisRows": "nzEllipsisRows"; "nzType": "nzType"; "nzCopyText": "nzCopyText"; "nzSuffix": "nzSuffix"; }, { "nzContentChange": "nzContentChange"; "nzCopy": "nzCopy"; "nzExpandChange": "nzExpandChange"; "nzOnEllipsis": "nzOnEllipsis"; }, never, ["*"]>;
 }

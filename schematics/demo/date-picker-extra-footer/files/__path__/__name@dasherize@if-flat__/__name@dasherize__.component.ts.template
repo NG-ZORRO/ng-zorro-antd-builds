@@ -19,5 +19,5 @@ import { Component } from '@angular/core';
 })
 export class <%= classify(name) %>Component {
   plainFooter = 'plain extra footer';
-  footerRender = () => 'extra footer';
+  footerRender = (): string => 'extra footer';
 }

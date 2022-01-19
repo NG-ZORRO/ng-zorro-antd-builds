@@ -1,22 +1,20 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 import { HttpClient } from '@angular/common/http';
-import { ElementRef, OnDestroy } from '@angular/core';
+import { ElementRef, NgZone, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NzUploadFile, ZipButtonOptions } from './interface';
-export declare class NzUploadBtnComponent implements OnDestroy {
+import * as i0 from "@angular/core";
+export declare class NzUploadBtnComponent implements OnInit, OnDestroy {
+    private ngZone;
     private http;
     private elementRef;
     reqs: {
         [key: string]: Subscription;
     };
     private destroy;
-    file: ElementRef;
+    private destroy$;
+    file: ElementRef<HTMLInputElement>;
     options: ZipButtonOptions;
     onClick(): void;
-    onKeyDown(e: KeyboardEvent): void;
     onFileDrop(e: DragEvent): void;
     onChange(e: Event): void;
     private traverseFileTree;
@@ -28,6 +26,9 @@ export declare class NzUploadBtnComponent implements OnDestroy {
     private xhr;
     private clean;
     abort(file?: NzUploadFile): void;
-    constructor(http: HttpClient, elementRef: ElementRef);
+    constructor(ngZone: NgZone, http: HttpClient, elementRef: ElementRef);
+    ngOnInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzUploadBtnComponent, [null, { optional: true; }, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzUploadBtnComponent, "[nz-upload-btn]", ["nzUploadBtn"], { "options": "options"; }, {}, never, ["*"]>;
 }

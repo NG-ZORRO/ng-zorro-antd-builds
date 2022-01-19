@@ -11,8 +11,7 @@ import { Component, OnInit } from '@angular/core';
       nzPlaceHolder="Please select"
       [(ngModel)]="value"
       (ngModelChange)="onChange($event)"
-    >
-    </nz-tree-select>
+    ></nz-tree-select>
   `<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>
 })
 export class <%= classify(name) %>Component implements OnInit {

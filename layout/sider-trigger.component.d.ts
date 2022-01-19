@@ -4,6 +4,7 @@
  */
 import { OnChanges, OnInit, TemplateRef } from '@angular/core';
 import { NzBreakpointKey } from 'ng-zorro-antd/core/services';
+import * as i0 from "@angular/core";
 export declare class NzSiderTriggerComponent implements OnChanges, OnInit {
     nzCollapsed: boolean;
     nzReverseArrow: boolean;
@@ -18,4 +19,6 @@ export declare class NzSiderTriggerComponent implements OnChanges, OnInit {
     updateTriggerType(): void;
     ngOnInit(): void;
     ngOnChanges(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzSiderTriggerComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzSiderTriggerComponent, "[nz-sider-trigger]", ["nzSiderTrigger"], { "nzCollapsed": "nzCollapsed"; "nzReverseArrow": "nzReverseArrow"; "nzZeroTrigger": "nzZeroTrigger"; "nzTrigger": "nzTrigger"; "matchBreakPoint": "matchBreakPoint"; "nzCollapsedWidth": "nzCollapsedWidth"; "siderWidth": "siderWidth"; "nzBreakpoint": "nzBreakpoint"; }, {}, never, never>;
 }

@@ -55,6 +55,9 @@
   border-radius: 100%;
   box-shadow: 0 0 0 1px #fff;
 }
+.ant-badge-dot.ant-scroll-number {
+  transition: background 1.5s;
+}
 .ant-badge-count,
 .ant-badge-dot,
 .ant-badge .ant-scroll-number-custom-component {
@@ -63,6 +66,11 @@
   right: 0;
   transform: translate(50%, -50%);
   transform-origin: 100% 0%;
+}
+.ant-badge-count.anticon-spin,
+.ant-badge-dot.anticon-spin,
+.ant-badge .ant-scroll-number-custom-component.anticon-spin {
+  animation: antBadgeLoadingCircle 1s infinite linear;
 }
 .ant-badge-status {
   line-height: inherit;
@@ -167,7 +175,8 @@
 .ant-badge-not-a-wrapper:not(.ant-badge-status) {
   vertical-align: middle;
 }
-.ant-badge-not-a-wrapper .ant-scroll-number-custom-component {
+.ant-badge-not-a-wrapper .ant-scroll-number-custom-component,
+.ant-badge-not-a-wrapper .ant-badge-count {
   transform: none;
 }
 .ant-badge-not-a-wrapper .ant-scroll-number-custom-component,
@@ -176,9 +185,6 @@
   top: auto;
   display: block;
   transform-origin: 50% 50%;
-}
-.ant-badge-not-a-wrapper .ant-badge-count {
-  transform: none;
 }
 @keyframes antStatusProcessing {
   0% {
@@ -192,20 +198,25 @@
 }
 .ant-scroll-number {
   overflow: hidden;
+  direction: ltr;
 }
 .ant-scroll-number-only {
   position: relative;
   display: inline-block;
   height: 20px;
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  /* stylelint-disable property-no-vendor-prefix */
   -webkit-transform-style: preserve-3d;
   -webkit-backface-visibility: hidden;
+  /* stylelint-enable property-no-vendor-prefix */
 }
 .ant-scroll-number-only > p.ant-scroll-number-only-unit {
   height: 20px;
   margin: 0;
+  /* stylelint-disable property-no-vendor-prefix */
   -webkit-transform-style: preserve-3d;
   -webkit-backface-visibility: hidden;
+  /* stylelint-enable property-no-vendor-prefix */
 }
 .ant-scroll-number-symbol {
   vertical-align: top;
@@ -244,6 +255,15 @@
   100% {
     transform: scale(0);
     opacity: 0;
+  }
+}
+@keyframes antBadgeLoadingCircle {
+  0% {
+    transform-origin: 50%;
+  }
+  100% {
+    transform: translate(50%, -50%) rotate(360deg);
+    transform-origin: 50%;
   }
 }
 .ant-ribbon-wrapper {
@@ -363,16 +383,16 @@
 .ant-badge-rtl {
   direction: rtl;
 }
-.ant-badge-rtl .ant-badge-count,
-.ant-badge-rtl .ant-badge-dot,
-.ant-badge-rtl .ant-badge .ant-scroll-number-custom-component {
+.ant-badge-rtl .ant-badge:not(.ant-badge-not-a-wrapper) .ant-badge-count,
+.ant-badge-rtl .ant-badge:not(.ant-badge-not-a-wrapper) .ant-badge-dot,
+.ant-badge-rtl .ant-badge:not(.ant-badge-not-a-wrapper) .ant-scroll-number-custom-component {
   right: auto;
   left: 0;
   direction: ltr;
   transform: translate(-50%, -50%);
   transform-origin: 0% 0%;
 }
-.ant-badge-rtl.ant-badge .ant-scroll-number-custom-component {
+.ant-badge-rtl.ant-badge:not(.ant-badge-not-a-wrapper) .ant-scroll-number-custom-component {
   right: auto;
   left: 0;
   transform: translate(-50%, -50%);
@@ -381,16 +401,6 @@
 .ant-badge-rtl .ant-badge-status-text {
   margin-right: 8px;
   margin-left: 0;
-}
-.ant-badge-rtl .ant-badge-zoom-appear,
-.ant-badge-rtl .ant-badge-zoom-enter {
-  animation-name: antZoomBadgeInRtl;
-}
-.ant-badge-rtl .ant-badge-zoom-leave {
-  animation-name: antZoomBadgeOutRtl;
-}
-.ant-badge-not-a-wrapper .ant-badge-count {
-  transform: none;
 }
 .ant-ribbon-rtl {
   direction: rtl;
@@ -422,24 +432,6 @@
 }
 .ant-ribbon-rtl.ant-ribbon-placement-start .ant-ribbon-corner::after {
   border-color: currentColor transparent transparent currentColor;
-}
-@keyframes antZoomBadgeInRtl {
-  0% {
-    transform: scale(0) translate(-50%, -50%);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1) translate(-50%, -50%);
-  }
-}
-@keyframes antZoomBadgeOutRtl {
-  0% {
-    transform: scale(1) translate(-50%, -50%);
-  }
-  100% {
-    transform: scale(0) translate(-50%, -50%);
-    opacity: 0;
-  }
 }
 .ant-badge .ant-scroll-number:only-child {
   position: relative;

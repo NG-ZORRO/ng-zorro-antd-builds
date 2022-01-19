@@ -3,6 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { TemplateRef } from '@angular/core';
+import * as i0 from "@angular/core";
 export declare class NzCardTabComponent {
     template: TemplateRef<void>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzCardTabComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzCardTabComponent, "nz-card-tab", ["nzCardTab"], {}, {}, never, ["*"]>;
 }

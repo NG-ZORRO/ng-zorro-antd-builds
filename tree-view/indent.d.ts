@@ -2,22 +2,26 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { OnDestroy } from '@angular/core';
-import { NzTreeNodeComponent } from './node';
+import { ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { NzNodeBase } from './node-base';
 import { NzTreeView } from './tree';
+import * as i0 from "@angular/core";
 export declare class NzTreeNodeIndentsComponent {
     indents: boolean[];
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTreeNodeIndentsComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTreeNodeIndentsComponent, "nz-tree-node-indents", never, { "indents": "indents"; }, {}, never, never>;
 }
 export declare class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
     private treeNode;
     private tree;
+    private cdr;
     isLast: boolean | 'unset';
     isLeaf: boolean;
     private preNodeRef;
     private nextNodeRef;
     private currentIndents;
     private changeSubscription;
-    constructor(treeNode: NzTreeNodeComponent<T>, tree: NzTreeView<T>);
+    constructor(treeNode: NzNodeBase<T>, tree: NzTreeView<T>, cdr: ChangeDetectorRef);
     private getIndents;
     private buildIndents;
     /**
@@ -27,4 +31,6 @@ export declare class NzTreeNodeIndentLineDirective<T> implements OnDestroy {
     private checkAdjacent;
     private checkLast;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTreeNodeIndentLineDirective<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzTreeNodeIndentLineDirective<any>, "nz-tree-node[nzTreeNodeIndentLine]", never, {}, {}, never>;
 }

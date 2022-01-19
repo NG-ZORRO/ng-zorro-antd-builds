@@ -1,7 +1,6 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
+import * as i0 from "@angular/core";
 /** Decorates the `ng-template` tags and reads out the template from it. */
 export declare class NzTabDirective {
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTabDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzTabDirective, "[nz-tab]", ["nzTab"], {}, {}, never>;
 }

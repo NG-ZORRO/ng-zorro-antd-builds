@@ -1,13 +1,10 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 import { Direction } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
-import { ChangeDetectorRef, ElementRef, NgZone, OnChanges } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { ChangeDetectorRef, NgZone, OnChanges, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconRenderTemplate, NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
+import * as i0 from "@angular/core";
 declare type UploadListIconType = '' | 'uploading' | 'thumbnail';
 interface UploadListFile extends NzUploadFile {
     isImageUrl?: boolean;
@@ -15,12 +12,11 @@ interface UploadListFile extends NzUploadFile {
     iconType?: UploadListIconType;
     showDownload?: boolean;
 }
-export declare class NzUploadListComponent implements OnChanges {
+export declare class NzUploadListComponent implements OnChanges, OnDestroy {
     private cdr;
     private doc;
     private ngZone;
     private platform;
-    private elementRef;
     list: UploadListFile[];
     private get showPic();
     locale: NzSafeAny;
@@ -34,6 +30,7 @@ export declare class NzUploadListComponent implements OnChanges {
     previewIsImage?: (file: NzUploadFile) => boolean;
     iconRender: NzIconRenderTemplate | null;
     dir: Direction;
+    private destroy$;
     private genErr;
     private extname;
     isImageUrl(file: NzUploadFile): boolean;
@@ -45,8 +42,11 @@ export declare class NzUploadListComponent implements OnChanges {
     handlePreview(file: NzUploadFile, e: Event): void;
     handleRemove(file: NzUploadFile, e: Event): void;
     handleDownload(file: NzUploadFile): void;
-    constructor(cdr: ChangeDetectorRef, doc: NzSafeAny, ngZone: NgZone, platform: Platform, elementRef: ElementRef);
+    constructor(cdr: ChangeDetectorRef, doc: NzSafeAny, ngZone: NgZone, platform: Platform);
     detectChanges(): void;
     ngOnChanges(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzUploadListComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzUploadListComponent, "nz-upload-list", ["nzUploadList"], { "locale": "locale"; "listType": "listType"; "items": "items"; "icons": "icons"; "onPreview": "onPreview"; "onRemove": "onRemove"; "onDownload": "onDownload"; "previewFile": "previewFile"; "previewIsImage": "previewIsImage"; "iconRender": "iconRender"; "dir": "dir"; }, {}, never, never>;
 }
 export {};

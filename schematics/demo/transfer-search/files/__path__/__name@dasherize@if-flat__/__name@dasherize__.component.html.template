@@ -7,8 +7,7 @@
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
-    >
-    </nz-transfer>
+    ></nz-transfer>
     <div style="margin-top: 8px;">
       <nz-switch [(ngModel)]="disabled" nzCheckedChildren="disabled" nzUnCheckedChildren="disabled"></nz-switch>
       <div></div>

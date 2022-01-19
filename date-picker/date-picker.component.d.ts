@@ -2,29 +2,35 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair, HorizontalConnectionPos, VerticalConnectionPos } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
+import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, QueryList, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { CompatibleValue } from 'ng-zorro-antd/core/time';
+import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
 import { BooleanInput, FunctionProp, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { DatePickerService } from './date-picker.service';
-import { Direction, Directionality } from '@angular/cdk/bidi';
-import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
-import { NzPickerComponent } from './picker.component';
-import { CompatibleDate, DisabledTimeFn, NzDateMode, PresetRanges, SupportTimeOptions } from './standard-types';
+import { DateRangePopupComponent } from './date-range-popup.component';
+import { CompatibleDate, DisabledTimeFn, NzDateMode, PresetRanges, RangePartType, SupportTimeOptions } from './standard-types';
+import * as i0 from "@angular/core";
 export declare type NzDatePickerSizeType = 'large' | 'default' | 'small';
 /**
  * The base picker for all common APIs
  */
-export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
+export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit, ControlValueAccessor {
     nzConfigService: NzConfigService;
     datePickerService: DatePickerService;
     protected i18n: NzI18nService;
     protected cdr: ChangeDetectorRef;
     private renderer;
     private elementRef;
-    protected dateHelper: DateHelperService;
+    private dateHelper;
+    private nzResizeObserver;
+    private platform;
     private directionality;
     noAnimation?: NzNoAnimationDirective | undefined;
     readonly _nzModuleName: NzConfigKey;
@@ -40,7 +46,6 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     static ngAcceptInputType_nzMode: NzDateMode | NzDateMode[] | string | string[] | null | undefined;
     static ngAcceptInputType_nzShowTime: BooleanInput | SupportTimeOptions | null | undefined;
     isRange: boolean;
-    focused: boolean;
     extraFooter?: TemplateRef<NzSafeAny> | string;
     dir: Direction;
     panelMode: NzDateMode | NzDateMode[];
@@ -76,23 +81,60 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     nzId: string | null;
     readonly nzOnPanelChange: EventEmitter<string | NzDateMode[] | string[]>;
     readonly nzOnCalendarChange: EventEmitter<(Date | null)[]>;
-    readonly nzOnOk: EventEmitter<Date | Date[] | null>;
+    readonly nzOnOk: EventEmitter<CompatibleDate | null>;
     readonly nzOnOpenChange: EventEmitter<boolean>;
-    picker: NzPickerComponent;
     get nzShowTime(): SupportTimeOptions | boolean;
     set nzShowTime(value: SupportTimeOptions | boolean);
-    constructor(nzConfigService: NzConfigService, datePickerService: DatePickerService, i18n: NzI18nService, cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef, dateHelper: DateHelperService, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
+    cdkConnectedOverlay?: CdkConnectedOverlay;
+    panel: DateRangePopupComponent;
+    separatorElement?: ElementRef;
+    pickerInput?: ElementRef<HTMLInputElement>;
+    rangePickerInputs?: QueryList<ElementRef<HTMLInputElement>>;
+    origin: CdkOverlayOrigin;
+    document: Document;
+    inputSize: number;
+    inputWidth?: number;
+    prefixCls: string;
+    inputValue: NzSafeAny;
+    activeBarStyle: object;
+    overlayOpen: boolean;
+    overlayPositions: ConnectionPositionPair[];
+    currentPositionX: HorizontalConnectionPos;
+    currentPositionY: VerticalConnectionPos;
+    get realOpenState(): boolean;
+    ngAfterViewInit(): void;
+    updateInputWidthAndArrowLeft(): void;
+    getInput(partType?: RangePartType): HTMLInputElement | undefined;
+    focus(): void;
+    onFocus(event: FocusEvent, partType?: RangePartType): void;
+    onFocusout(event: FocusEvent): void;
+    open(): void;
+    close(): void;
+    showClear(): boolean;
+    checkAndClose(): void;
+    onClickInputBox(event: MouseEvent): void;
+    onOverlayKeydown(event: KeyboardEvent): void;
+    onPositionChange(position: ConnectedOverlayPositionChange): void;
+    onClickClear(event: MouseEvent): void;
+    updateInputValue(): void;
+    formatValue(value: CandyDate): string;
+    onInputChange(value: string, isEnter?: boolean): void;
+    onKeyupEnter(event: Event): void;
+    private checkValidDate;
+    getPlaceholder(partType?: RangePartType): string;
+    isEmptyValue(value: CompatibleValue): boolean;
+    isOpenHandledByUser(): boolean;
+    constructor(nzConfigService: NzConfigService, datePickerService: DatePickerService, i18n: NzI18nService, cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef, dateHelper: DateHelperService, nzResizeObserver: NzResizeObserver, platform: Platform, doc: NzSafeAny, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
     setModeAndFormat(): void;
     /**
      * Triggered when overlayOpen changes (different with realOpenState)
+     *
      * @param open The overlayOpen in picker component
      */
     onOpenChange(open: boolean): void;
-    open(): void;
-    close(): void;
     onChangeFn: OnChangeType;
     onTouchedFn: OnTouchedType;
     writeValue(value: CompatibleDate): void;
@@ -103,8 +145,10 @@ export declare class NzDatePickerComponent implements OnInit, OnChanges, OnDestr
     private setDefaultPlaceHolder;
     private getPropertyOfLocale;
     private setValue;
-    onFocusChange(value: FocusEvent): void;
+    renderClass(value: boolean): void;
     onPanelModeChange(panelMode: NzDateMode | NzDateMode[]): void;
     onCalendarChange(value: CompatibleValue): void;
     onResultOk(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzDatePickerComponent, [null, null, null, null, null, null, null, null, null, null, { optional: true; }, { optional: true; host: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzDatePickerComponent, "nz-date-picker,nz-week-picker,nz-month-picker,nz-year-picker,nz-range-picker", ["nzDatePicker"], { "nzAllowClear": "nzAllowClear"; "nzAutoFocus": "nzAutoFocus"; "nzDisabled": "nzDisabled"; "nzBorderless": "nzBorderless"; "nzInputReadOnly": "nzInputReadOnly"; "nzInline": "nzInline"; "nzOpen": "nzOpen"; "nzDisabledDate": "nzDisabledDate"; "nzLocale": "nzLocale"; "nzPlaceHolder": "nzPlaceHolder"; "nzPopupStyle": "nzPopupStyle"; "nzDropdownClassName": "nzDropdownClassName"; "nzSize": "nzSize"; "nzFormat": "nzFormat"; "nzDateRender": "nzDateRender"; "nzDisabledTime": "nzDisabledTime"; "nzRenderExtraFooter": "nzRenderExtraFooter"; "nzShowToday": "nzShowToday"; "nzMode": "nzMode"; "nzShowNow": "nzShowNow"; "nzRanges": "nzRanges"; "nzDefaultPickerValue": "nzDefaultPickerValue"; "nzSeparator": "nzSeparator"; "nzSuffixIcon": "nzSuffixIcon"; "nzBackdrop": "nzBackdrop"; "nzId": "nzId"; "nzShowTime": "nzShowTime"; }, { "nzOnPanelChange": "nzOnPanelChange"; "nzOnCalendarChange": "nzOnCalendarChange"; "nzOnOk": "nzOnOk"; "nzOnOpenChange": "nzOnOpenChange"; }, never, never>;
 }

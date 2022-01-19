@@ -4,6 +4,7 @@
  */
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { AfterViewInit, ElementRef, EventEmitter, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
+import * as i0 from "@angular/core";
 export declare class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     private elementRef;
     private renderer;
@@ -28,4 +29,6 @@ export declare class NzSelectSearchComponent implements AfterViewInit, OnChanges
     constructor(elementRef: ElementRef, renderer: Renderer2, focusMonitor: FocusMonitor);
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzSelectSearchComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzSelectSearchComponent, "nz-select-search", never, { "nzId": "nzId"; "disabled": "disabled"; "mirrorSync": "mirrorSync"; "showInput": "showInput"; "focusTrigger": "focusTrigger"; "value": "value"; "autofocus": "autofocus"; }, { "valueChange": "valueChange"; "isComposingChange": "isComposingChange"; }, never, never>;
 }

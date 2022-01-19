@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { TemplateRef } from '@angular/core';
-import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, Subscription } from 'rxjs';
+import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 /** Status */
 export declare type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';
 export declare type NzUploadType = 'select' | 'drag';

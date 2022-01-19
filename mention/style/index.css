@@ -30,6 +30,7 @@
   border: 1px solid #d9d9d9;
   border-radius: 2px;
   transition: all 0.3s;
+  /* stylelint-disable-next-line selector-no-vendor-prefix */
   display: block;
   height: auto;
   min-height: 32px;
@@ -41,6 +42,7 @@
 }
 .ant-mention-wrapper .ant-mention-editor::placeholder {
   color: #bfbfbf;
+  user-select: none;
 }
 .ant-mention-wrapper .ant-mention-editor:placeholder-shown {
   text-overflow: ellipsis;
@@ -52,13 +54,15 @@
 .ant-mention-wrapper .ant-mention-editor:focus,
 .ant-mention-wrapper .ant-mention-editor-focused {
   border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
   border-right-width: 1px !important;
   outline: 0;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
 }
 .ant-mention-wrapper .ant-mention-editor-disabled {
   color: rgba(0, 0, 0, 0.25);
   background-color: #f5f5f5;
+  border-color: #d9d9d9;
+  box-shadow: none;
   cursor: not-allowed;
   opacity: 1;
 }
@@ -69,6 +73,8 @@
 .ant-mention-wrapper .ant-mention-editor[disabled] {
   color: rgba(0, 0, 0, 0.25);
   background-color: #f5f5f5;
+  border-color: #d9d9d9;
+  box-shadow: none;
   cursor: not-allowed;
   opacity: 1;
 }
@@ -107,13 +113,15 @@ textarea.ant-mention-wrapper .ant-mention-editor {
 }
 .ant-mention-wrapper.ant-mention-active:not(.disabled) .ant-mention-editor {
   border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
   border-right-width: 1px !important;
   outline: 0;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
 }
 .ant-mention-wrapper.disabled .ant-mention-editor {
   color: rgba(0, 0, 0, 0.25);
   background-color: #f5f5f5;
+  border-color: #d9d9d9;
+  box-shadow: none;
   cursor: not-allowed;
   opacity: 1;
 }

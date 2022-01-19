@@ -4,12 +4,13 @@
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { Observable, Subscription } from 'rxjs';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzUploadI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzIconRenderTemplate, NzShowUploadList, NzUploadChangeParam, NzUploadFile, NzUploadListType, NzUploadTransformFileType, NzUploadType, NzUploadXHRArgs, UploadFilter, ZipButtonOptions } from './interface';
 import { NzUploadBtnComponent } from './upload-btn.component';
 import { NzUploadListComponent } from './upload-list.component';
+import * as i0 from "@angular/core";
 export declare class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     private cdr;
     private i18n;
@@ -81,4 +82,6 @@ export declare class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     ngOnInit(): void;
     ngOnChanges(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzUploadComponent, [null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzUploadComponent, "nz-upload", ["nzUpload"], { "nzType": "nzType"; "nzLimit": "nzLimit"; "nzSize": "nzSize"; "nzFileType": "nzFileType"; "nzAccept": "nzAccept"; "nzAction": "nzAction"; "nzDirectory": "nzDirectory"; "nzOpenFileDialogOnClick": "nzOpenFileDialogOnClick"; "nzBeforeUpload": "nzBeforeUpload"; "nzCustomRequest": "nzCustomRequest"; "nzData": "nzData"; "nzFilter": "nzFilter"; "nzFileList": "nzFileList"; "nzDisabled": "nzDisabled"; "nzHeaders": "nzHeaders"; "nzListType": "nzListType"; "nzMultiple": "nzMultiple"; "nzName": "nzName"; "nzShowUploadList": "nzShowUploadList"; "nzShowButton": "nzShowButton"; "nzWithCredentials": "nzWithCredentials"; "nzRemove": "nzRemove"; "nzPreview": "nzPreview"; "nzPreviewFile": "nzPreviewFile"; "nzPreviewIsImage": "nzPreviewIsImage"; "nzTransformFile": "nzTransformFile"; "nzDownload": "nzDownload"; "nzIconRender": "nzIconRender"; "nzFileListRender": "nzFileListRender"; }, { "nzChange": "nzChange"; "nzFileListChange": "nzFileListChange"; }, never, ["*"]>;
 }

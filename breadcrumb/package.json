@@ -1,11 +1,10 @@
 {
-  "main": "../bundles/ng-zorro-antd-breadcrumb.umd.js",
-  "module": "../fesm2015/ng-zorro-antd-breadcrumb.js",
-  "es2015": "../fesm2015/ng-zorro-antd-breadcrumb.js",
-  "esm2015": "../esm2015/breadcrumb/ng-zorro-antd-breadcrumb.js",
-  "fesm2015": "../fesm2015/ng-zorro-antd-breadcrumb.js",
+  "module": "../fesm2015/ng-zorro-antd-breadcrumb.mjs",
+  "es2020": "../fesm2020/ng-zorro-antd-breadcrumb.mjs",
+  "esm2020": "../esm2020/breadcrumb/ng-zorro-antd-breadcrumb.mjs",
+  "fesm2020": "../fesm2020/ng-zorro-antd-breadcrumb.mjs",
+  "fesm2015": "../fesm2015/ng-zorro-antd-breadcrumb.mjs",
   "typings": "ng-zorro-antd-breadcrumb.d.ts",
-  "metadata": "ng-zorro-antd-breadcrumb.metadata.json",
   "sideEffects": false,
   "name": "ng-zorro-antd/breadcrumb"
 }

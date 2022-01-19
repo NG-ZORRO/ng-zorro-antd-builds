@@ -3,4 +3,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 export * from './avatar.component';
+export * from './avatar-group.component';
 export * from './avatar.module';

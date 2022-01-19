@@ -7,6 +7,7 @@ import { ControlValueAccessor } from '@angular/forms';
 import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { Mention } from './mention.component';
 import { NzMentionService } from './mention.service';
+import * as i0 from "@angular/core";
 export declare const NZ_MENTION_TRIGGER_ACCESSOR: ExistingProvider;
 export declare class NzMentionTriggerDirective implements ControlValueAccessor, OnDestroy, AfterViewInit {
     el: ElementRef;
@@ -28,4 +29,6 @@ export declare class NzMentionTriggerDirective implements ControlValueAccessor, 
     registerOnTouched(fn: () => void): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzMentionTriggerDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzMentionTriggerDirective, "input[nzMentionTrigger], textarea[nzMentionTrigger]", ["nzMentionTrigger"], {}, {}, never>;
 }

@@ -4,8 +4,9 @@
  */
 import { OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { NzTableData, NzTableFilterFn, NzTableFilterValue, NzTableQueryParams, NzTableSortFn, NzTableSortOrder } from './table.types';
-export declare class NzTableDataService implements OnDestroy {
+import { NzTableFilterFn, NzTableFilterValue, NzTableQueryParams, NzTableSortFn, NzTableSortOrder } from './table.types';
+import * as i0 from "@angular/core";
+export declare class NzTableDataService<T> implements OnDestroy {
     private destroy$;
     private pageIndex$;
     private frontPagination$;
@@ -15,21 +16,23 @@ export declare class NzTableDataService implements OnDestroy {
     pageSizeDistinct$: Observable<number>;
     listOfCalcOperator$: BehaviorSubject<{
         key?: string | undefined;
-        sortFn: NzTableSortFn | null | boolean;
+        sortFn: NzTableSortFn<T> | null | boolean;
         sortOrder: NzTableSortOrder;
-        filterFn: NzTableFilterFn | null | boolean;
+        filterFn: NzTableFilterFn<T> | null | boolean;
         filterValue: NzTableFilterValue;
         sortPriority: number | boolean;
     }[]>;
     queryParams$: Observable<NzTableQueryParams>;
     private listOfDataAfterCalc$;
     private listOfFrontEndCurrentPageData$;
-    listOfCurrentPageData$: Observable<any[]>;
+    listOfCurrentPageData$: Observable<T[]>;
     total$: Observable<number>;
     updatePageSize(size: number): void;
     updateFrontPagination(pagination: boolean): void;
     updatePageIndex(index: number): void;
-    updateListOfData(list: ReadonlyArray<NzTableData>): void;
+    updateListOfData(list: readonly T[]): void;
     constructor();
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTableDataService<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzTableDataService<any>>;
 }

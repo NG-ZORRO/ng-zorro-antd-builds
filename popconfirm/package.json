@@ -1,11 +1,10 @@
 {
-  "main": "../bundles/ng-zorro-antd-popconfirm.umd.js",
-  "module": "../fesm2015/ng-zorro-antd-popconfirm.js",
-  "es2015": "../fesm2015/ng-zorro-antd-popconfirm.js",
-  "esm2015": "../esm2015/popconfirm/ng-zorro-antd-popconfirm.js",
-  "fesm2015": "../fesm2015/ng-zorro-antd-popconfirm.js",
+  "module": "../fesm2015/ng-zorro-antd-popconfirm.mjs",
+  "es2020": "../fesm2020/ng-zorro-antd-popconfirm.mjs",
+  "esm2020": "../esm2020/popconfirm/ng-zorro-antd-popconfirm.mjs",
+  "fesm2020": "../fesm2020/ng-zorro-antd-popconfirm.mjs",
+  "fesm2015": "../fesm2015/ng-zorro-antd-popconfirm.mjs",
   "typings": "ng-zorro-antd-popconfirm.d.ts",
-  "metadata": "ng-zorro-antd-popconfirm.metadata.json",
   "sideEffects": false,
   "name": "ng-zorro-antd/popconfirm"
 }

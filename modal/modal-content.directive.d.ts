@@ -3,7 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { TemplateRef } from '@angular/core';
+import * as i0 from "@angular/core";
 export declare class NzModalContentDirective {
     templateRef: TemplateRef<{}>;
     constructor(templateRef: TemplateRef<{}>);
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzModalContentDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzModalContentDirective, "[nzModalContent]", ["nzModalContent"], {}, {}, never>;
 }

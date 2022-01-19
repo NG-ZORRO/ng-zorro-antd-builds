@@ -5,6 +5,7 @@
       nzPopconfirmPlacement="bottom"
       (nzOnConfirm)="confirm()"
       (nzOnCancel)="cancel()"
-      >Delete</a
     >
+      Delete
+    </a>
   

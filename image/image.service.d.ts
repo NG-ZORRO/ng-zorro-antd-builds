@@ -8,6 +8,7 @@ import { Injector } from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzImage, NzImagePreviewOptions } from './image-preview-options';
 import { NzImagePreviewRef } from './image-preview-ref';
+import * as i0 from "@angular/core";
 export interface NzImageService {
     preview(images: NzImage[], option?: NzImagePreviewOptions): NzImagePreviewRef;
 }
@@ -20,4 +21,6 @@ export declare class NzImageService {
     private display;
     private attachPreviewComponent;
     private createOverlay;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzImageService, [null, null, null, { optional: true; }]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzImageService>;
 }

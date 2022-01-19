@@ -1,10 +1,7 @@
 "use strict";
 /**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -17,9 +14,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildComponent = void 0;
+const schematics_1 = require("@angular/cdk/schematics");
 const core_1 = require("@angular-devkit/core");
-const schematics_1 = require("@angular-devkit/schematics");
-const schematics_2 = require("@angular/cdk/schematics");
+const schematics_2 = require("@angular-devkit/schematics");
 const schema_1 = require("@schematics/angular/component/schema");
 const ts = require("@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript");
 const ast_utils_1 = require("@schematics/angular/utility/ast-utils");
@@ -39,7 +36,7 @@ function findClassDeclarationParent(node) {
 }
 function getFirstNgModuleName(source) {
     // First, find the @NgModule decorators.
-    const ngModulesMetadata = ast_utils_1.getDecoratorMetadata(source, 'NgModule', '@angular/core');
+    const ngModulesMetadata = (0, ast_utils_1.getDecoratorMetadata)(source, 'NgModule', '@angular/core');
     if (ngModulesMetadata.length === 0) {
         return undefined;
     }
@@ -54,6 +51,7 @@ function getFirstNgModuleName(source) {
 }
 /**
  * Build a default project path for generating.
+ *
  * @param project The project to build the path for.
  */
 function buildDefaultPath(project) {
@@ -68,15 +66,15 @@ function buildDefaultPath(project) {
  * found here: angular/angular-cli/master/packages/schematics/angular/ng-new/schema.json#L118-L122
  */
 const supportedCssExtensions = ['css', 'scss', 'sass', 'less'];
-// tslint:disable-next-line no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function readIntoSourceFile(host, modulePath) {
     const text = host.read(modulePath);
     if (text === null) {
-        throw new schematics_1.SchematicsException(`File ${modulePath} does not exist.`);
+        throw new schematics_2.SchematicsException(`File ${modulePath} does not exist.`);
     }
     return ts.createSourceFile(modulePath, text.toString('utf-8'), ts.ScriptTarget.Latest, true);
 }
-// tslint:disable-next-line no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getModuleClassnamePrefix(source) {
     var _a;
     const className = getFirstNgModuleName(source);
@@ -95,8 +93,8 @@ function addDeclarationToNgModule(options) {
         }
         const modulePath = options.module;
         let source = readIntoSourceFile(host, modulePath);
-        const componentPath = `/${options.path}/${options.flat ? '' : core_1.strings.dasherize(options.name) + '/'}${core_1.strings.dasherize(options.name)}.component`;
-        const relativePath = find_module_1.buildRelativePath(modulePath, componentPath);
+        const componentPath = `/${options.path}/${options.flat ? '' : `${core_1.strings.dasherize(options.name)}/`}${core_1.strings.dasherize(options.name)}.component`;
+        const relativePath = (0, find_module_1.buildRelativePath)(modulePath, componentPath);
         let classifiedName = core_1.strings.classify(`${options.name}Component`);
         if (options.classnameWithModule) {
             const modulePrefix = getModuleClassnamePrefix(source);
@@ -104,7 +102,7 @@ function addDeclarationToNgModule(options) {
                 classifiedName = `${modulePrefix}${classifiedName}`;
             }
         }
-        const declarationChanges = ast_utils_1.addDeclarationToModule(source, modulePath, classifiedName, relativePath);
+        const declarationChanges = (0, ast_utils_1.addDeclarationToModule)(source, modulePath, classifiedName, relativePath);
         const declarationRecorder = host.beginUpdate(modulePath);
         for (const change of declarationChanges) {
             if (change instanceof change_1.InsertChange) {
@@ -116,25 +114,13 @@ function addDeclarationToNgModule(options) {
             // Need to refresh the AST because we overwrote the file in the host.
             source = readIntoSourceFile(host, modulePath);
             const exportRecorder = host.beginUpdate(modulePath);
-            const exportChanges = ast_utils_1.addExportToModule(source, modulePath, core_1.strings.classify(`${options.name}Component`), relativePath);
+            const exportChanges = (0, ast_utils_1.addExportToModule)(source, modulePath, core_1.strings.classify(`${options.name}Component`), relativePath);
             for (const change of exportChanges) {
                 if (change instanceof change_1.InsertChange) {
                     exportRecorder.insertLeft(change.pos, change.toAdd);
                 }
             }
             host.commitUpdate(exportRecorder);
-        }
-        if (options.entryComponent) {
-            // Need to refresh the AST because we overwrote the file in the host.
-            source = readIntoSourceFile(host, modulePath);
-            const entryComponentRecorder = host.beginUpdate(modulePath);
-            const entryComponentChanges = ast_utils_1.addEntryComponentToModule(source, modulePath, core_1.strings.classify(`${options.name}Component`), relativePath);
-            for (const change of entryComponentChanges) {
-                if (change instanceof change_1.InsertChange) {
-                    entryComponentRecorder.insertLeft(change.pos, change.toAdd);
-                }
-            }
-            host.commitUpdate(entryComponentRecorder);
         }
         return host;
     };
@@ -143,7 +129,7 @@ function buildSelector(options, projectPrefix, modulePrefixName) {
     let selector = core_1.strings.dasherize(options.name);
     let modulePrefix = '';
     if (modulePrefixName) {
-        modulePrefix = core_1.strings.dasherize(modulePrefixName) + '-';
+        modulePrefix = `${core_1.strings.dasherize(modulePrefixName)}-`;
     }
     if (options.prefix) {
         selector = `${options.prefix}-${modulePrefix}${selector}`;
@@ -173,19 +159,19 @@ function indentTextContent(text, numSpaces) {
  */
 function buildComponent(options, additionalFiles = {}) {
     return (host, context) => __awaiter(this, void 0, void 0, function* () {
-        const workspace = yield workspace_1.getWorkspace(host);
-        const project = schematics_2.getProjectFromWorkspace(workspace, options.project);
-        const defaultZorroComponentOptions = schematics_2.getDefaultComponentOptions(project);
+        const workspace = yield (0, workspace_1.getWorkspace)(host);
+        const project = (0, schematics_1.getProjectFromWorkspace)(workspace, options.project);
+        const defaultZorroComponentOptions = (0, schematics_1.getDefaultComponentOptions)(project);
         let modulePrefix = '';
         // TODO(devversion): Remove if we drop support for older CLI versions.
         // This handles an unreported breaking change from the @angular-devkit/schematics. Previously
         // the description path resolved to the factory file, but starting from 6.2.0, it resolves
         // to the factory directory.
-        const schematicPath = fs_1.statSync(context.schematic.description.path).isDirectory() ?
+        const schematicPath = (0, fs_1.statSync)(context.schematic.description.path).isDirectory() ?
             context.schematic.description.path :
-            path_1.dirname(context.schematic.description.path);
+            (0, path_1.dirname)(context.schematic.description.path);
         const schematicFilesUrl = './files';
-        const schematicFilesPath = path_1.resolve(schematicPath, schematicFilesUrl);
+        const schematicFilesPath = (0, path_1.resolve)(schematicPath, schematicFilesUrl);
         options.style = options.style || schema_1.Style.Css;
         // Add the default component option values to the options if an option is not explicitly
         // specified but a default component option is available.
@@ -195,11 +181,11 @@ function buildComponent(options, additionalFiles = {}) {
         if (options.path === undefined) {
             // TODO(jelbourn): figure out if the need for this `as any` is a bug due to two different
             // incompatible `WorkspaceProject` classes in @angular-devkit
-            // tslint:disable-next-line no-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             options.path = buildDefaultPath(project);
         }
-        options.module = find_module_1.findModuleFromOptions(host, options);
-        const parsedPath = parse_name_1.parseName(options.path, options.name);
+        options.module = (0, find_module_1.findModuleFromOptions)(host, options);
+        const parsedPath = (0, parse_name_1.parseName)(options.path, options.name);
         if (options.classnameWithModule && !options.skipImport && options.module) {
             const source = readIntoSourceFile(host, options.module);
             modulePrefix = getModuleClassnamePrefix(source);
@@ -207,8 +193,7 @@ function buildComponent(options, additionalFiles = {}) {
         options.name = parsedPath.name;
         options.path = parsedPath.path;
         options.selector = options.selector || buildSelector(options, project.prefix, modulePrefix);
-        validation_1.validateName(options.name);
-        validation_1.validateHtmlSelector(options.selector);
+        (0, validation_1.validateHtmlSelector)(options.selector);
         // In case the specified style extension is not part of the supported CSS supersets,
         // we generate the stylesheets with the "css" extension. This ensures that we don't
         // accidentally generate invalid stylesheets (e.g. drag-drop-comp.styl) which will
@@ -228,28 +213,28 @@ function buildComponent(options, additionalFiles = {}) {
         const resolvedFiles = {};
         for (const key in additionalFiles) {
             if (additionalFiles[key]) {
-                const fileContent = fs_1.readFileSync(path_1.join(schematicFilesPath, additionalFiles[key]), 'utf-8');
+                const fileContent = (0, fs_1.readFileSync)((0, path_1.join)(schematicFilesPath, additionalFiles[key]), 'utf-8');
                 // Interpolate the additional files with the base EJS template context.
-                resolvedFiles[key] = core_1.template(fileContent)(baseTemplateContext);
+                resolvedFiles[key] = (0, core_1.template)(fileContent)(baseTemplateContext);
             }
         }
-        const templateSource = schematics_1.apply(schematics_1.url(schematicFilesUrl), [
-            options.skipTests ? schematics_1.filter(path => !path.endsWith('.spec.ts.template')) : schematics_1.noop(),
-            options.inlineStyle ? schematics_1.filter(path => !path.endsWith('.__style__.template')) : schematics_1.noop(),
-            options.inlineTemplate ? schematics_1.filter(path => !path.endsWith('.html.template')) : schematics_1.noop(),
+        const templateSource = (0, schematics_2.apply)((0, schematics_2.url)(schematicFilesUrl), [
+            options.skipTests ? (0, schematics_2.filter)(path => !path.endsWith('.spec.ts.template')) : (0, schematics_2.noop)(),
+            options.inlineStyle ? (0, schematics_2.filter)(path => !path.endsWith('.__style__.template')) : (0, schematics_2.noop)(),
+            options.inlineTemplate ? (0, schematics_2.filter)(path => !path.endsWith('.html.template')) : (0, schematics_2.noop)(),
             // Treat the template options as any, because the type definition for the template options
             // is made unnecessarily explicit. Every type of object can be used in the EJS template.
-            // tslint:disable-next-line no-any
-            schematics_1.applyTemplates(Object.assign({ indentTextContent, resolvedFiles }, baseTemplateContext)),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (0, schematics_2.applyTemplates)(Object.assign({ indentTextContent, resolvedFiles }, baseTemplateContext)),
             // TODO(devversion): figure out why we cannot just remove the first parameter
             // See for example: angular-cli#schematics/angular/component/index.ts#L160
-            // tslint:disable-next-line no-any
-            schematics_1.move(null, parsedPath.path)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (0, schematics_2.move)(null, parsedPath.path)
         ]);
-        return () => schematics_1.chain([
-            schematics_1.branchAndMerge(schematics_1.chain([
+        return () => (0, schematics_2.chain)([
+            (0, schematics_2.branchAndMerge)((0, schematics_2.chain)([
                 addDeclarationToNgModule(options),
-                schematics_1.mergeWith(templateSource)
+                (0, schematics_2.mergeWith)(templateSource)
             ]))
         ])(host, context);
     });

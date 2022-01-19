@@ -4,7 +4,10 @@
  */
 import { TemplateRef } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzTableTitleFooterComponent {
     title: string | TemplateRef<NzSafeAny> | null;
     footer: string | TemplateRef<NzSafeAny> | null;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTableTitleFooterComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTableTitleFooterComponent, "nz-table-title-footer", never, { "title": "title"; "footer": "footer"; }, {}, never, never>;
 }

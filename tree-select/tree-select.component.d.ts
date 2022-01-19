@@ -14,6 +14,7 @@ import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedT
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 import { NzTreeSelectService } from './tree-select.service';
+import * as i0 from "@angular/core";
 export declare function higherOrderServiceFactory(injector: Injector): NzTreeBaseService;
 export declare class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
     nzConfigService: NzConfigService;
@@ -140,4 +141,6 @@ export declare class NzTreeSelectComponent extends NzTreeBase implements Control
     setSearchValues($event: NzFormatEmitEvent): void;
     updateCdkConnectedOverlayStatus(): void;
     trackValue(_index: number, option: NzTreeNode): string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTreeSelectComponent, [null, null, null, null, null, { optional: true; }, null, { optional: true; host: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTreeSelectComponent, "nz-tree-select", ["nzTreeSelect"], { "nzId": "nzId"; "nzAllowClear": "nzAllowClear"; "nzShowExpand": "nzShowExpand"; "nzShowLine": "nzShowLine"; "nzDropdownMatchSelectWidth": "nzDropdownMatchSelectWidth"; "nzCheckable": "nzCheckable"; "nzHideUnMatched": "nzHideUnMatched"; "nzShowIcon": "nzShowIcon"; "nzShowSearch": "nzShowSearch"; "nzDisabled": "nzDisabled"; "nzAsyncData": "nzAsyncData"; "nzMultiple": "nzMultiple"; "nzDefaultExpandAll": "nzDefaultExpandAll"; "nzCheckStrictly": "nzCheckStrictly"; "nzVirtualItemSize": "nzVirtualItemSize"; "nzVirtualMaxBufferPx": "nzVirtualMaxBufferPx"; "nzVirtualMinBufferPx": "nzVirtualMinBufferPx"; "nzVirtualHeight": "nzVirtualHeight"; "nzExpandedIcon": "nzExpandedIcon"; "nzNotFoundContent": "nzNotFoundContent"; "nzNodes": "nzNodes"; "nzOpen": "nzOpen"; "nzSize": "nzSize"; "nzPlaceHolder": "nzPlaceHolder"; "nzDropdownStyle": "nzDropdownStyle"; "nzDropdownClassName": "nzDropdownClassName"; "nzBackdrop": "nzBackdrop"; "nzExpandedKeys": "nzExpandedKeys"; "nzDisplayWith": "nzDisplayWith"; "nzMaxTagCount": "nzMaxTagCount"; "nzMaxTagPlaceholder": "nzMaxTagPlaceholder"; "nzTreeTemplate": "nzTreeTemplate"; }, { "nzOpenChange": "nzOpenChange"; "nzCleared": "nzCleared"; "nzRemoved": "nzRemoved"; "nzExpandChange": "nzExpandChange"; "nzTreeClick": "nzTreeClick"; "nzTreeCheckBoxChange": "nzTreeCheckBoxChange"; }, ["nzTreeTemplateChild"], never>;
 }

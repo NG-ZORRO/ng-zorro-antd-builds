@@ -7,6 +7,5 @@
       nzPlaceHolder="Please select"
       [(ngModel)]="value"
       (ngModelChange)="onChange($event)"
-    >
-    </nz-tree-select>
+    ></nz-tree-select>
   

@@ -1,11 +1,8 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 import { Injector } from '@angular/core';
 import { WeekDayIndex } from 'ng-zorro-antd/core/time';
 import { NzDateConfig } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
+import * as i0 from "@angular/core";
 export declare function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig): DateHelperService;
 /**
  * Abstract DateHelperService(Token via Class)
@@ -20,6 +17,8 @@ export declare abstract class DateHelperService {
     abstract format(date: Date | null, formatStr: string): string;
     abstract parseDate(text: string, formatStr?: string): Date;
     abstract parseTime(text: string, formatStr?: string): Date | undefined;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DateHelperService, [null, { optional: true; }]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DateHelperService>;
 }
 /**
  * DateHelper that handles date formats with date-fns
@@ -29,6 +28,7 @@ export declare class DateHelperByDateFns extends DateHelperService {
     getFirstDayOfWeek(): WeekDayIndex;
     /**
      * Format a date
+     *
      * @see https://date-fns.org/docs/format#description
      * @param date Date
      * @param formatStr format string

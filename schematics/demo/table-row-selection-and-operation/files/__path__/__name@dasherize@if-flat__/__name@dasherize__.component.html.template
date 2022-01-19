@@ -1,6 +1,12 @@
 
     <div class="send-request">
-      <button nz-button nzType="primary" [disabled]="setOfCheckedId.size === 0" [nzLoading]="loading" (click)="sendRequest()">
+      <button
+        nz-button
+        nzType="primary"
+        [disabled]="setOfCheckedId.size === 0"
+        [nzLoading]="loading"
+        (click)="sendRequest()"
+      >
         Send Request
       </button>
       <span>Selected {{ setOfCheckedId.size }} items</span>

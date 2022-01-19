@@ -1,11 +1,10 @@
 {
-  "main": "../bundles/ng-zorro-antd-avatar.umd.js",
-  "module": "../fesm2015/ng-zorro-antd-avatar.js",
-  "es2015": "../fesm2015/ng-zorro-antd-avatar.js",
-  "esm2015": "../esm2015/avatar/ng-zorro-antd-avatar.js",
-  "fesm2015": "../fesm2015/ng-zorro-antd-avatar.js",
+  "module": "../fesm2015/ng-zorro-antd-avatar.mjs",
+  "es2020": "../fesm2020/ng-zorro-antd-avatar.mjs",
+  "esm2020": "../esm2020/avatar/ng-zorro-antd-avatar.mjs",
+  "fesm2020": "../fesm2020/ng-zorro-antd-avatar.mjs",
+  "fesm2015": "../fesm2015/ng-zorro-antd-avatar.mjs",
   "typings": "ng-zorro-antd-avatar.d.ts",
-  "metadata": "ng-zorro-antd-avatar.metadata.json",
   "sideEffects": false,
   "name": "ng-zorro-antd/avatar"
 }

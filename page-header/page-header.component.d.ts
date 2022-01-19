@@ -2,13 +2,14 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
-import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
+import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { Subject } from 'rxjs';
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
+import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
+import * as i0 from "@angular/core";
 export declare class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
     private location;
     nzConfigService: NzConfigService;
@@ -33,4 +34,6 @@ export declare class NzPageHeaderComponent implements AfterViewInit, OnDestroy, 
     onBack(): void;
     ngOnDestroy(): void;
     getBackIcon(): string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzPageHeaderComponent, [{ optional: true; }, null, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzPageHeaderComponent, "nz-page-header", ["nzPageHeader"], { "nzBackIcon": "nzBackIcon"; "nzTitle": "nzTitle"; "nzSubtitle": "nzSubtitle"; "nzGhost": "nzGhost"; }, { "nzBack": "nzBack"; }, ["nzPageHeaderFooter", "nzPageHeaderBreadcrumb"], ["nz-breadcrumb[nz-page-header-breadcrumb]", "nz-avatar[nz-page-header-avatar]", "nz-page-header-title, [nz-page-header-title]", "nz-page-header-subtitle, [nz-page-header-subtitle]", "nz-page-header-tags, [nz-page-header-tags]", "nz-page-header-extra, [nz-page-header-extra]", "nz-page-header-content, [nz-page-header-content]", "nz-page-header-footer, [nz-page-header-footer]"]>;
 }

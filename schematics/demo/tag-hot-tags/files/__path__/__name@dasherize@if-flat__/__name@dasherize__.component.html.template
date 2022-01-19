@@ -1,5 +1,5 @@
 
-    <strong>Categories: </strong>
+    <strong>Categories:</strong>
     <nz-tag
       *ngFor="let tag of hotTags"
       nzMode="checkable"

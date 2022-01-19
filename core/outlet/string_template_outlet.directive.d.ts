@@ -4,6 +4,7 @@
  */
 import { OnChanges, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges {
     private viewContainer;
     private templateRef;
@@ -16,6 +17,8 @@ export declare class NzStringTemplateOutletDirective<_T = unknown> implements On
     private updateContext;
     constructor(viewContainer: ViewContainerRef, templateRef: TemplateRef<NzSafeAny>);
     ngOnChanges(changes: SimpleChanges): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzStringTemplateOutletDirective<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzStringTemplateOutletDirective<any>, "[nzStringTemplateOutlet]", ["nzStringTemplateOutlet"], { "nzStringTemplateOutletContext": "nzStringTemplateOutletContext"; "nzStringTemplateOutlet": "nzStringTemplateOutlet"; }, {}, never>;
 }
 export declare class NzStringTemplateOutletContext {
     $implicit: NzSafeAny;

@@ -1,10 +1,10 @@
 
     <div class="slider-container">
-      <span>Horizontal Gutter (px): </span>
+      <span>Horizontal Gutter (px):</span>
       <div class="slider">
         <nz-slider [nzMarks]="marksHGutter" [nzStep]="null" [nzMin]="8" [nzMax]="48" [(ngModel)]="hGutter"></nz-slider>
       </div>
-      <span>Vertical Gutter (px): </span>
+      <span>Vertical Gutter (px):</span>
       <div class="slider">
         <nz-slider [nzMarks]="marksVGutter" [nzStep]="null" [nzMin]="8" [nzMax]="48" [(ngModel)]="vGutter"></nz-slider>
       </div>

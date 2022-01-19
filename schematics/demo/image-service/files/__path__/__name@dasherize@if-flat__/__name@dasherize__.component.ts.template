@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+
 import { NzImageService } from 'ng-zorro-antd/image';
 
 @Component({
   selector: '<%= selector %>',
-  <% if(inlineTemplate) { %>template: `
-    <button nz-button nzType="primary" (click)="onClick()">Preview</button>
-  `<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>
+  <% if(inlineTemplate) { %>template: ` <button nz-button nzType="primary" (click)="onClick()">Preview</button> `<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>
 })
 export class <%= classify(name) %>Component {
   constructor(private nzImageService: NzImageService) {}

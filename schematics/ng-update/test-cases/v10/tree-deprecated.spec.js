@@ -28,7 +28,7 @@ describe('upload migration', () => {
         writeFile('/tsconfig.json', JSON.stringify(config_1.SchematicsTestTsConfig));
         writeFile('/angular.json', JSON.stringify(config_1.SchematicsTestNGConfig));
         previousWorkingDir = shx.pwd();
-        tmpDirPath = core_1.getSystemPath(host.root);
+        tmpDirPath = (0, core_1.getSystemPath)(host.root);
         shx.cd(tmpDirPath);
         writeFakeAngular();
     });
@@ -36,11 +36,13 @@ describe('upload migration', () => {
         shx.cd(previousWorkingDir);
         shx.rm('-r', tmpDirPath);
     });
-    function writeFakeAngular() { writeFile('/node_modules/@angular/core/index.d.ts', ``); }
-    function writeFile(filePath, contents) {
-        host.sync.write(core_1.normalize(filePath), core_1.virtualFs.stringToFileBuffer(contents));
+    function writeFakeAngular() {
+        writeFile('/node_modules/@angular/core/index.d.ts', ``);
     }
-    // tslint:disable-next-line:no-any
+    function writeFile(filePath, contents) {
+        host.sync.write((0, core_1.normalize)(filePath), core_1.virtualFs.stringToFileBuffer(contents));
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function runMigration() {
         return __awaiter(this, void 0, void 0, function* () {
             yield runner.runSchematicAsync('migration-v10', {}, tree).toPromise();

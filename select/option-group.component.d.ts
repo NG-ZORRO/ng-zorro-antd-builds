@@ -3,10 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { OnChanges, TemplateRef } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzOptionGroupComponent implements OnChanges {
     nzLabel: string | number | TemplateRef<NzSafeAny> | null;
     changes: Subject<void>;
     ngOnChanges(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzOptionGroupComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzOptionGroupComponent, "nz-option-group", ["nzOptionGroup"], { "nzLabel": "nzLabel"; }, {}, never, ["*"]>;
 }

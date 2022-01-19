@@ -4,9 +4,10 @@
  */
 import { Portal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, Injector, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewContainerRef } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzEmptyCustomContent, NzEmptySize } from './config';
+import * as i0 from "@angular/core";
 declare type NzEmptyContentType = 'component' | 'template' | 'string';
 export declare class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
     private configService;
@@ -27,5 +28,7 @@ export declare class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestr
     private renderEmpty;
     private subscribeDefaultEmptyContentChange;
     private getUserDefaultEmptyContent;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzEmbedEmptyComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzEmbedEmptyComponent, "nz-embed-empty", ["nzEmbedEmpty"], { "nzComponentName": "nzComponentName"; "specificContent": "specificContent"; }, {}, never, never>;
 }
 export {};

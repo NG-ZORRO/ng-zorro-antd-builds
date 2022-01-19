@@ -4,8 +4,9 @@
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
-import { NzPresetColor } from 'ng-zorro-antd/core/color';
+import { NzPresetColor, NzStatusColor } from 'ng-zorro-antd/core/color';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzTagComponent implements OnChanges, OnDestroy, OnInit {
     private cdr;
     private renderer;
@@ -14,16 +15,20 @@ export declare class NzTagComponent implements OnChanges, OnDestroy, OnInit {
     static ngAcceptInputType_nzChecked: BooleanInput;
     isPresetColor: boolean;
     nzMode: 'default' | 'closeable' | 'checkable';
-    nzColor?: string | NzPresetColor;
+    nzColor?: string | NzStatusColor | NzPresetColor;
     nzChecked: boolean;
     readonly nzOnClose: EventEmitter<MouseEvent>;
     readonly nzCheckedChange: EventEmitter<boolean>;
     dir: Direction;
     private destroy$;
+    constructor(cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef, directionality: Directionality);
     updateCheckedStatus(): void;
     closeTag(e: MouseEvent): void;
-    constructor(cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef, directionality: Directionality);
+    private clearPresetColor;
+    private setPresetColor;
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTagComponent, [null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTagComponent, "nz-tag", ["nzTag"], { "nzMode": "nzMode"; "nzColor": "nzColor"; "nzChecked": "nzChecked"; }, { "nzOnClose": "nzOnClose"; "nzCheckedChange": "nzCheckedChange"; }, never, ["*"]>;
 }

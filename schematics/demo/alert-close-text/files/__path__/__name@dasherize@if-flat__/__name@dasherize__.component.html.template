@@ -1,3 +1,1 @@
-
-    <nz-alert nzType="info" nzMessage="Info Text" nzCloseText="Close Now"></nz-alert>
-  
+ <nz-alert nzType="info" nzMessage="Info Text" nzCloseText="Close Now"></nz-alert> 

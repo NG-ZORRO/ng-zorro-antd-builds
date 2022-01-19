@@ -4,6 +4,7 @@
  */
 import { ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzTreeDropIndicatorComponent implements OnChanges {
     private cdr;
     dropPosition?: number;
@@ -13,4 +14,6 @@ export declare class NzTreeDropIndicatorComponent implements OnChanges {
     constructor(cdr: ChangeDetectorRef);
     ngOnChanges(_changes: SimpleChanges): void;
     renderIndicator(dropPosition: number, direction?: string): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTreeDropIndicatorComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTreeDropIndicatorComponent, "nz-tree-drop-indicator", ["NzTreeDropIndicator"], { "dropPosition": "dropPosition"; "level": "level"; "direction": "direction"; }, {}, never, never>;
 }

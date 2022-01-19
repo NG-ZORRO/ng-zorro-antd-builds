@@ -21,7 +21,7 @@ describe('v10 form components migration', () => {
     beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
         runner = new testing_1.SchematicTestRunner('test', require.resolve('../../../migration.json'));
         host = new schematics_1.HostTree();
-        tree = yield test_app_1.createTestApp(runner, { name: 'testing' }, host);
+        tree = yield (0, test_app_1.createTestApp)(runner, { name: 'testing' }, host);
         tree.files.forEach(f => writeFile(f, tree.readContent(f)));
         writeFile('/tsconfig.json', JSON.stringify(config_1.SchematicsTestTsConfig));
         writeFile('/angular.json', JSON.stringify(config_1.SchematicsTestNGConfig));
@@ -40,7 +40,7 @@ describe('v10 form components migration', () => {
             host.create(filePath, content);
         }
     }
-    // tslint:disable-next-line:no-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function runMigration() {
         return __awaiter(this, void 0, void 0, function* () {
             yield runner.runSchematicAsync('migration-v10', {}, tree).toPromise();

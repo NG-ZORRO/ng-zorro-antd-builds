@@ -3,9 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { OnDestroy } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCascaderComponentAsSource, NzCascaderOption, NzCascaderSearchOption } from './typings';
+import * as i0 from "@angular/core";
 /**
  * All data is stored and parsed in NzCascaderService.
  */
@@ -60,6 +61,7 @@ export declare class NzCascaderService implements OnDestroy {
     withOptions(options: NzCascaderOption[] | null): void;
     /**
      * Try to set a option as activated.
+     *
      * @param option Cascader option
      * @param columnIndex Of which column this option is in
      * @param performSelect Select
@@ -70,16 +72,19 @@ export declare class NzCascaderService implements OnDestroy {
     setOptionDeactivatedSinceColumn(column: number): void;
     /**
      * Set a searching option as selected, finishing up things.
+     *
      * @param option
      */
     setSearchOptionSelected(option: NzCascaderSearchOption): void;
     /**
      * Filter cascader options to reset `columns`.
+     *
      * @param searchValue The string user wants to search.
      */
     prepareSearchOptions(searchValue: string): void;
     /**
      * Toggle searching mode by UI. It deals with things not directly related to UI.
+     *
      * @param toSearching If this cascader is entering searching mode
      */
     toggleSearchingMode(toSearching: boolean): void;
@@ -91,6 +96,7 @@ export declare class NzCascaderService implements OnDestroy {
     getOptionValue(o: NzCascaderOption): NzSafeAny;
     /**
      * Try to insert options into a column.
+     *
      * @param options Options to insert
      * @param columnIndex Position
      */
@@ -111,4 +117,6 @@ export declare class NzCascaderService implements OnDestroy {
      */
     private findOptionWithValue;
     private prepareEmitValue;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzCascaderService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzCascaderService>;
 }

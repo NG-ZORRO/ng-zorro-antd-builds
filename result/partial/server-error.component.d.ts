@@ -1,6 +1,5 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
+import * as i0 from "@angular/core";
 export declare class NzResultServerErrorComponent {
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzResultServerErrorComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzResultServerErrorComponent, "nz-result-server-error", ["nzResultServerError"], {}, {}, never, never>;
 }

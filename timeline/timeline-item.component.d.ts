@@ -5,6 +5,7 @@
 import { ChangeDetectorRef, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
 import { TimelineService } from './timeline.service';
 import { NzTimelineItemColor, NzTimelinePosition } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzTimelineItemComponent implements OnChanges {
     private cdr;
     private timelineService;
@@ -12,6 +13,7 @@ export declare class NzTimelineItemComponent implements OnChanges {
     nzPosition?: NzTimelinePosition;
     nzColor: NzTimelineItemColor;
     nzDot?: string | TemplateRef<void>;
+    nzLabel?: string | TemplateRef<void>;
     isLast: boolean;
     borderColor: string | null;
     position?: NzTimelinePosition;
@@ -19,4 +21,6 @@ export declare class NzTimelineItemComponent implements OnChanges {
     ngOnChanges(changes: SimpleChanges): void;
     detectChanges(): void;
     private updateCustomColor;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTimelineItemComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTimelineItemComponent, "nz-timeline-item, [nz-timeline-item]", ["nzTimelineItem"], { "nzPosition": "nzPosition"; "nzColor": "nzColor"; "nzDot": "nzDot"; "nzLabel": "nzLabel"; }, {}, never, ["*"]>;
 }

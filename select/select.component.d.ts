@@ -10,13 +10,16 @@ import { AfterContentInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChange
 import { ControlValueAccessor } from '@angular/forms';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionComponent } from './option.component';
 import { NzSelectTopControlComponent } from './select-top-control.component';
 import { NzFilterOptionType, NzSelectItemInterface, NzSelectModeType, NzSelectOptionInterface } from './select.types';
+import * as i0 from "@angular/core";
 export declare type NzSelectSizeType = 'large' | 'default' | 'small';
-export declare class NzSelectComponent implements ControlValueAccessor, OnInit, OnDestroy, AfterContentInit, OnChanges {
+export declare class NzSelectComponent implements ControlValueAccessor, OnInit, AfterContentInit, OnChanges, OnDestroy {
+    private destroy$;
     nzConfigService: NzConfigService;
     private cdr;
     private elementRef;
@@ -93,8 +96,8 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     private searchValue;
     private isReactiveDriven;
     private value;
-    private destroy$;
     private _nzShowArrow;
+    private requestId;
     onChange: OnChangeType;
     onTouched: OnTouchedType;
     dropDownPosition: 'top' | 'center' | 'bottom';
@@ -125,7 +128,7 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     onPositionChange(position: ConnectedOverlayPositionChange): void;
     updateCdkConnectedOverlayStatus(): void;
     updateCdkConnectedOverlayPositions(): void;
-    constructor(nzConfigService: NzConfigService, cdr: ChangeDetectorRef, elementRef: ElementRef, platform: Platform, focusMonitor: FocusMonitor, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(destroy$: NzDestroyService, nzConfigService: NzConfigService, cdr: ChangeDetectorRef, elementRef: ElementRef, platform: Platform, focusMonitor: FocusMonitor, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
     writeValue(modelValue: NzSafeAny | NzSafeAny[]): void;
     registerOnChange(fn: OnChangeType): void;
     registerOnTouched(fn: OnTouchedType): void;
@@ -134,4 +137,6 @@ export declare class NzSelectComponent implements ControlValueAccessor, OnInit, 
     ngOnInit(): void;
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzSelectComponent, [null, null, null, null, null, null, { optional: true; }, { optional: true; host: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzSelectComponent, "nz-select", ["nzSelect"], { "nzId": "nzId"; "nzSize": "nzSize"; "nzOptionHeightPx": "nzOptionHeightPx"; "nzOptionOverflowSize": "nzOptionOverflowSize"; "nzDropdownClassName": "nzDropdownClassName"; "nzDropdownMatchSelectWidth": "nzDropdownMatchSelectWidth"; "nzDropdownStyle": "nzDropdownStyle"; "nzNotFoundContent": "nzNotFoundContent"; "nzPlaceHolder": "nzPlaceHolder"; "nzMaxTagCount": "nzMaxTagCount"; "nzDropdownRender": "nzDropdownRender"; "nzCustomTemplate": "nzCustomTemplate"; "nzSuffixIcon": "nzSuffixIcon"; "nzClearIcon": "nzClearIcon"; "nzRemoveIcon": "nzRemoveIcon"; "nzMenuItemSelectedIcon": "nzMenuItemSelectedIcon"; "nzTokenSeparators": "nzTokenSeparators"; "nzMaxTagPlaceholder": "nzMaxTagPlaceholder"; "nzMaxMultipleCount": "nzMaxMultipleCount"; "nzMode": "nzMode"; "nzFilterOption": "nzFilterOption"; "compareWith": "compareWith"; "nzAllowClear": "nzAllowClear"; "nzBorderless": "nzBorderless"; "nzShowSearch": "nzShowSearch"; "nzLoading": "nzLoading"; "nzAutoFocus": "nzAutoFocus"; "nzAutoClearSearchValue": "nzAutoClearSearchValue"; "nzServerSearch": "nzServerSearch"; "nzDisabled": "nzDisabled"; "nzOpen": "nzOpen"; "nzBackdrop": "nzBackdrop"; "nzOptions": "nzOptions"; "nzShowArrow": "nzShowArrow"; }, { "nzOnSearch": "nzOnSearch"; "nzScrollToBottom": "nzScrollToBottom"; "nzOpenChange": "nzOpenChange"; "nzBlur": "nzBlur"; "nzFocus": "nzFocus"; }, ["listOfNzOptionComponent", "listOfNzOptionGroupComponent"], never>;
 }

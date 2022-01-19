@@ -1,10 +1,7 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
-import { ElementRef } from '@angular/core';
+import * as i0 from "@angular/core";
 export declare class NzRowIndentDirective {
-    private elementRef;
     indentSize: number;
-    constructor(elementRef: ElementRef);
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzRowIndentDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzRowIndentDirective, "nz-row-indent", never, { "indentSize": "indentSize"; }, {}, never>;
 }

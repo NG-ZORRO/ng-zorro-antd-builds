@@ -4,6 +4,7 @@
  */
 import { Overlay } from '@angular/cdk/overlay';
 import { NzDropdownMenuComponent } from './dropdown-menu.component';
+import * as i0 from "@angular/core";
 export declare class NzContextMenuService {
     private overlay;
     private overlayRef;
@@ -14,4 +15,6 @@ export declare class NzContextMenuService {
         y: number;
     }, nzDropdownMenuComponent: NzDropdownMenuComponent): void;
     close(clear?: boolean): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzContextMenuService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzContextMenuService>;
 }

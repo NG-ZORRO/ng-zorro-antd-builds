@@ -4,7 +4,10 @@
  */
 import { TemplateRef } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzDrawerContentDirective {
     templateRef: TemplateRef<NzSafeAny>;
     constructor(templateRef: TemplateRef<NzSafeAny>);
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzDrawerContentDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzDrawerContentDirective, "[nzDrawerContent]", ["nzDrawerContent"], {}, {}, never>;
 }

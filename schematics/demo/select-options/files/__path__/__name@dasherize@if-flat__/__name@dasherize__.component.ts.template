@@ -4,7 +4,12 @@ import { Component } from '@angular/core';
   selector: '<%= selector %>',
   <% if(inlineTemplate) { %>template: `
     <nz-select ngModel="lucy" [nzOptions]="listOfOption"></nz-select>
-    <nz-select [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose" [nzOptions]="listOfGroupOption"></nz-select>
+    <nz-select
+      [(ngModel)]="selectedValue"
+      nzAllowClear
+      nzPlaceHolder="Choose"
+      [nzOptions]="listOfGroupOption"
+    ></nz-select>
   `<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>,
   <% if(inlineStyle) { %>styles: [`
       nz-select {

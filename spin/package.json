@@ -1,11 +1,10 @@
 {
-  "main": "../bundles/ng-zorro-antd-spin.umd.js",
-  "module": "../fesm2015/ng-zorro-antd-spin.js",
-  "es2015": "../fesm2015/ng-zorro-antd-spin.js",
-  "esm2015": "../esm2015/spin/ng-zorro-antd-spin.js",
-  "fesm2015": "../fesm2015/ng-zorro-antd-spin.js",
+  "module": "../fesm2015/ng-zorro-antd-spin.mjs",
+  "es2020": "../fesm2020/ng-zorro-antd-spin.mjs",
+  "esm2020": "../esm2020/spin/ng-zorro-antd-spin.mjs",
+  "fesm2020": "../fesm2020/ng-zorro-antd-spin.mjs",
+  "fesm2015": "../fesm2015/ng-zorro-antd-spin.mjs",
   "typings": "ng-zorro-antd-spin.d.ts",
-  "metadata": "ng-zorro-antd-spin.metadata.json",
   "sideEffects": false,
   "name": "ng-zorro-antd/spin"
 }

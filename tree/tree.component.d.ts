@@ -6,12 +6,13 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzTreeBase, NzTreeBaseService, NzTreeNode, NzTreeNodeKey, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Observable, Subject } from 'rxjs';
 import { NzTreeService } from './tree.service';
+import * as i0 from "@angular/core";
 export declare function NzTreeServiceFactory(higherOrderService: NzTreeBaseService, treeService: NzTreeService): NzTreeBaseService;
 export declare class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, ControlValueAccessor, OnChanges, AfterViewInit {
     nzConfigService: NzConfigService;
@@ -95,6 +96,13 @@ export declare class NzTreeComponent extends NzTreeBase implements OnInit, OnDes
         padding: number;
         margin: number;
     };
+    HIDDEN_NODE_STYLE: {
+        position: string;
+        pointerEvents: string;
+        visibility: string;
+        height: number;
+        overflow: string;
+    };
     destroy$: Subject<unknown>;
     onChange: (value: NzTreeNode[]) => void;
     onTouched: () => void;
@@ -103,6 +111,7 @@ export declare class NzTreeComponent extends NzTreeBase implements OnInit, OnDes
     registerOnTouched(fn: () => void): void;
     /**
      * Render all properties of nzTree
+     *
      * @param changes: all changes from @Input
      */
     renderTreeProperties(changes: {
@@ -111,6 +120,7 @@ export declare class NzTreeComponent extends NzTreeBase implements OnInit, OnDes
     trackByFlattenNode(_: number, node: NzTreeNode): string;
     /**
      * nzData
+     *
      * @param value
      */
     handleNzData(value: NzSafeAny[]): void;
@@ -121,6 +131,7 @@ export declare class NzTreeComponent extends NzTreeBase implements OnInit, OnDes
     handleSearchValue(value: string, searchFunc?: (node: NzTreeNodeOptions) => boolean): void;
     /**
      * Handle emit event
+     *
      * @param event
      * handle each event
      */
@@ -136,4 +147,6 @@ export declare class NzTreeComponent extends NzTreeBase implements OnInit, OnDes
     }): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTreeComponent, [null, null, null, { optional: true; }, { optional: true; host: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTreeComponent, "nz-tree", ["nzTree"], { "nzShowIcon": "nzShowIcon"; "nzHideUnMatched": "nzHideUnMatched"; "nzBlockNode": "nzBlockNode"; "nzExpandAll": "nzExpandAll"; "nzSelectMode": "nzSelectMode"; "nzCheckStrictly": "nzCheckStrictly"; "nzShowExpand": "nzShowExpand"; "nzShowLine": "nzShowLine"; "nzCheckable": "nzCheckable"; "nzAsyncData": "nzAsyncData"; "nzDraggable": "nzDraggable"; "nzMultiple": "nzMultiple"; "nzExpandedIcon": "nzExpandedIcon"; "nzVirtualItemSize": "nzVirtualItemSize"; "nzVirtualMaxBufferPx": "nzVirtualMaxBufferPx"; "nzVirtualMinBufferPx": "nzVirtualMinBufferPx"; "nzVirtualHeight": "nzVirtualHeight"; "nzTreeTemplate": "nzTreeTemplate"; "nzBeforeDrop": "nzBeforeDrop"; "nzData": "nzData"; "nzExpandedKeys": "nzExpandedKeys"; "nzSelectedKeys": "nzSelectedKeys"; "nzCheckedKeys": "nzCheckedKeys"; "nzSearchValue": "nzSearchValue"; "nzSearchFunc": "nzSearchFunc"; }, { "nzExpandedKeysChange": "nzExpandedKeysChange"; "nzSelectedKeysChange": "nzSelectedKeysChange"; "nzCheckedKeysChange": "nzCheckedKeysChange"; "nzSearchValueChange": "nzSearchValueChange"; "nzClick": "nzClick"; "nzDblClick": "nzDblClick"; "nzContextMenu": "nzContextMenu"; "nzCheckBoxChange": "nzCheckBoxChange"; "nzExpandChange": "nzExpandChange"; "nzOnDragStart": "nzOnDragStart"; "nzOnDragEnter": "nzOnDragEnter"; "nzOnDragOver": "nzOnDragOver"; "nzOnDragLeave": "nzOnDragLeave"; "nzOnDrop": "nzOnDrop"; "nzOnDragEnd": "nzOnDragEnd"; }, ["nzTreeTemplateChild"], never>;
 }

@@ -6,8 +6,9 @@ import { AfterContentInit, ChangeDetectorRef, ElementRef, OnChanges, OnDestroy, 
 import { AbstractControl, FormControlDirective, FormControlName, NgModel } from '@angular/forms';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
-import { NzFormDirective } from './form.directive';
 import { NzFormControlStatusType, NzFormItemComponent } from './form-item.component';
+import { NzFormDirective } from './form.directive';
+import * as i0 from "@angular/core";
 declare const iconTypeMap: {
     readonly error: "close-circle-fill";
     readonly validating: "loading";
@@ -66,5 +67,7 @@ export declare class NzFormControlComponent implements OnChanges, OnDestroy, OnI
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngAfterContentInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzFormControlComponent, [null, { optional: true; host: true; }, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzFormControlComponent, "nz-form-control", ["nzFormControl"], { "nzSuccessTip": "nzSuccessTip"; "nzWarningTip": "nzWarningTip"; "nzErrorTip": "nzErrorTip"; "nzValidatingTip": "nzValidatingTip"; "nzExtra": "nzExtra"; "nzAutoTips": "nzAutoTips"; "nzDisableAutoTips": "nzDisableAutoTips"; "nzHasFeedback": "nzHasFeedback"; "nzValidateStatus": "nzValidateStatus"; }, {}, ["defaultValidateControl"], ["*"]>;
 }
 export {};

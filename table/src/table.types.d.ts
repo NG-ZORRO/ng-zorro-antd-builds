@@ -3,9 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-export declare type NzTableData = NzSafeAny | {
-    [key: string]: NzTableData;
-};
 export declare type NzTableLayout = 'fixed' | 'auto';
 export declare type NzTablePaginationPosition = 'top' | 'bottom' | 'both';
 export declare type NzTablePaginationType = 'default' | 'small';
@@ -16,9 +13,9 @@ export declare type NzTableFilterList = Array<{
     byDefault?: boolean;
 }>;
 export declare type NzTableSortOrder = string | 'ascend' | 'descend' | null;
-export declare type NzTableSortFn = (a: NzTableData, b: NzTableData, sortOrder?: NzTableSortOrder) => number;
+export declare type NzTableSortFn<T = unknown> = (a: T, b: T, sortOrder?: NzTableSortOrder) => number;
 export declare type NzTableFilterValue = NzSafeAny[] | NzSafeAny;
-export declare type NzTableFilterFn = (value: NzTableFilterValue, data: NzTableData) => boolean;
+export declare type NzTableFilterFn<T = unknown> = (value: NzTableFilterValue, data: T) => boolean;
 export interface NzTableQueryParams {
     pageIndex: number;
     pageSize: number;

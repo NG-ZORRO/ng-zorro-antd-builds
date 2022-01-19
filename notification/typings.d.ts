@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { TemplateRef } from '@angular/core';
-import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
+import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
 export declare type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 export interface NzNotificationDataOptions<T = {}> {
     nzKey?: string;

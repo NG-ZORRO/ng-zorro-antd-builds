@@ -4,8 +4,11 @@
  */
 import { TemplateRef } from '@angular/core';
 import { NzModalRef } from './modal-ref';
+import * as i0 from "@angular/core";
 export declare class NzModalFooterDirective {
     private nzModalRef;
     templateRef: TemplateRef<{}>;
     constructor(nzModalRef: NzModalRef, templateRef: TemplateRef<{}>);
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzModalFooterDirective, [{ optional: true; }, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzModalFooterDirective, "[nzModalFooter]", ["nzModalFooter"], {}, {}, never>;
 }

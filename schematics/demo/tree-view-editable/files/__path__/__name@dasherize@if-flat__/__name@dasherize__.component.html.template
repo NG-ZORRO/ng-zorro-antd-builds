@@ -8,6 +8,9 @@
         >
           {{ node.name }}
         </nz-tree-node-option>
+        <button nz-button nzType="text" nzSize="small" (click)="delete(node)">
+          <i nz-icon nzType="minus" nzTheme="outline"></i>
+        </button>
       </nz-tree-node>
 
       <nz-tree-node *nzTreeNodeDef="let node; when: hasNoContent" nzTreeNodeIndentLine>

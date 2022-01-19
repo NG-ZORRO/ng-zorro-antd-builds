@@ -6,6 +6,7 @@ import { EventEmitter, OnDestroy } from '@angular/core';
 import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzModalRef } from './modal-ref';
 import { ModalButtonOptions, ModalOptions } from './modal-types';
+import * as i0 from "@angular/core";
 export declare class NzModalFooterComponent implements OnDestroy {
     private i18n;
     config: ModalOptions;
@@ -29,4 +30,6 @@ export declare class NzModalFooterComponent implements OnDestroy {
      */
     onButtonClick(options: ModalButtonOptions): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzModalFooterComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzModalFooterComponent, "div[nz-modal-footer]", ["NzModalFooterBuiltin"], { "modalRef": "modalRef"; }, { "cancelTriggered": "cancelTriggered"; "okTriggered": "okTriggered"; }, never, never>;
 }

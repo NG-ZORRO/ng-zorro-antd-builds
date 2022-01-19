@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: '<%= selector %>',
-  <% if(inlineTemplate) { %>template: `
-    <button nz-button (click)="success()">Success</button>
-  `<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>
+  <% if(inlineTemplate) { %>template: ` <button nz-button (click)="success()">Success</button> `<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>
 })
 export class <%= classify(name) %>Component {
   constructor(private modalService: NzModalService) {}

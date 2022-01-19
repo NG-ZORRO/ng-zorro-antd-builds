@@ -8,6 +8,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzPaginationItemComponent } from './pagination-item.component';
 import { PaginationItemRenderContext } from './pagination.types';
+import * as i0 from "@angular/core";
 export declare class NzPaginationDefaultComponent implements OnChanges, OnDestroy, OnInit {
     private cdr;
     private renderer;
@@ -47,4 +48,6 @@ export declare class NzPaginationDefaultComponent implements OnChanges, OnDestro
     buildIndexes(): void;
     getListOfPageItem(pageIndex: number, lastIndex: number): Array<Partial<NzPaginationItemComponent>>;
     ngOnChanges(changes: SimpleChanges): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzPaginationDefaultComponent, [null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzPaginationDefaultComponent, "nz-pagination-default", never, { "nzSize": "nzSize"; "itemRender": "itemRender"; "showTotal": "showTotal"; "disabled": "disabled"; "locale": "locale"; "showSizeChanger": "showSizeChanger"; "showQuickJumper": "showQuickJumper"; "total": "total"; "pageIndex": "pageIndex"; "pageSize": "pageSize"; "pageSizeOptions": "pageSizeOptions"; }, { "pageIndexChange": "pageIndexChange"; "pageSizeChange": "pageSizeChange"; }, never, never>;
 }

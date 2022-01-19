@@ -10,6 +10,7 @@ export declare function getPosition(level: string | number, index: number): stri
 export declare function getKey(key: NzTreeNodeKey, pos: string): NzTreeNodeKey;
 /**
  * Flat nest tree data into flatten list. This is used for virtual list render.
+ *
  * @param treeNodeList Origin data node list
  * @param expandedKeys
  * need expanded keys, provides `true` means all expanded (used in `rc-tree-select`).

@@ -6,6 +6,7 @@ import { OnChanges, OnInit } from '@angular/core';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell } from './interface';
+import * as i0 from "@angular/core";
 export declare class MonthTableComponent extends AbstractTable implements OnChanges, OnInit {
     private dateHelper;
     MAX_ROW: number;
@@ -16,4 +17,6 @@ export declare class MonthTableComponent extends AbstractTable implements OnChan
     private isDisabledMonth;
     private addCellProperty;
     private chooseMonth;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MonthTableComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MonthTableComponent, "month-table", ["monthTable"], {}, {}, never, never>;
 }

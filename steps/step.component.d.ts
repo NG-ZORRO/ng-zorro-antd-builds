@@ -2,17 +2,24 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { ChangeDetectorRef, OnDestroy, TemplateRef } from '@angular/core';
-import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
+import { ChangeDetectorRef, ElementRef, NgZone, OnInit, TemplateRef } from '@angular/core';
 import { Subject } from 'rxjs';
-export declare class NzStepComponent implements OnDestroy {
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
+import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
+import { NzProgressFormatter } from 'ng-zorro-antd/progress';
+import * as i0 from "@angular/core";
+export declare class NzStepComponent implements OnInit {
     private cdr;
+    private ngZone;
+    private destroy$;
     static ngAcceptInputType_nzDisabled: BooleanInput;
     processDotTemplate?: TemplateRef<void>;
+    itemContainer: ElementRef<HTMLElement>;
     nzTitle?: string | TemplateRef<void>;
     nzSubtitle?: string | TemplateRef<void>;
     nzDescription?: string | TemplateRef<void>;
     nzDisabled: boolean;
+    nzPercentage: number | null;
     get nzStatus(): string;
     set nzStatus(status: string);
     isCustomStatus: boolean;
@@ -32,14 +39,17 @@ export declare class NzStepComponent implements OnDestroy {
     outStatus: string;
     showProcessDot: boolean;
     clickable: boolean;
-    click$: Subject<number>;
+    clickOutsideAngular$: Subject<number>;
+    readonly nullProcessFormat: NzProgressFormatter;
+    get showProgress(): boolean;
     get currentIndex(): number;
     set currentIndex(current: number);
     private _currentIndex;
-    constructor(cdr: ChangeDetectorRef);
-    onClick(): void;
+    constructor(cdr: ChangeDetectorRef, ngZone: NgZone, destroy$: NzDestroyService);
+    ngOnInit(): void;
     enable(): void;
     disable(): void;
     markForCheck(): void;
-    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzStepComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzStepComponent, "nz-step", ["nzStep"], { "nzTitle": "nzTitle"; "nzSubtitle": "nzSubtitle"; "nzDescription": "nzDescription"; "nzDisabled": "nzDisabled"; "nzPercentage": "nzPercentage"; "nzStatus": "nzStatus"; "nzIcon": "nzIcon"; }, {}, never, never>;
 }

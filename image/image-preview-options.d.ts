@@ -15,6 +15,7 @@ export declare class NzImagePreviewOptions {
 }
 export interface NzImage {
     src: string;
+    srcset?: string;
     alt?: string;
     width?: string | number;
     height?: string | number;

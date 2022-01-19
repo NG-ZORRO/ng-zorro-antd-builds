@@ -4,7 +4,7 @@
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overlay';
-import { ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, OnInit, QueryList, Renderer2, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnDestroy, OnInit, QueryList, Renderer2, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
@@ -13,9 +13,11 @@ import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzCascaderOptionComponent } from './cascader-li.component';
 import { NzCascaderService } from './cascader.service';
 import { NzCascaderComponentAsSource, NzCascaderExpandTrigger, NzCascaderOption, NzCascaderSize, NzCascaderTriggerType, NzShowSearchOptions } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
     cascaderService: NzCascaderService;
     nzConfigService: NzConfigService;
+    private ngZone;
     private cdr;
     private i18nService;
     private directionality;
@@ -27,6 +29,7 @@ export declare class NzCascaderComponent implements NzCascaderComponentAsSource,
     static ngAcceptInputType_nzAutoFocus: BooleanInput;
     static ngAcceptInputType_nzChangeOnSelect: BooleanInput;
     static ngAcceptInputType_nzDisabled: BooleanInput;
+    selectContainer: ElementRef;
     input: ElementRef;
     menu: ElementRef;
     overlay: CdkConnectedOverlay;
@@ -102,10 +105,11 @@ export declare class NzCascaderComponent implements NzCascaderComponentAsSource,
     get menuColumnCls(): NgClassType;
     private get hasInput();
     private get hasValue();
+    get showLabelRender(): boolean;
     get showPlaceholder(): boolean;
     get clearIconVisible(): boolean;
     get isLabelRenderTemplate(): boolean;
-    constructor(cascaderService: NzCascaderService, nzConfigService: NzConfigService, cdr: ChangeDetectorRef, i18nService: NzI18nService, elementRef: ElementRef, renderer: Renderer2, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
+    constructor(cascaderService: NzCascaderService, nzConfigService: NzConfigService, ngZone: NgZone, cdr: ChangeDetectorRef, i18nService: NzI18nService, elementRef: ElementRef, renderer: Renderer2, directionality: Directionality, noAnimation?: NzNoAnimationDirective | undefined);
     ngOnInit(): void;
     ngOnDestroy(): void;
     registerOnChange(fn: () => {}): void;
@@ -120,7 +124,6 @@ export declare class NzCascaderComponent implements NzCascaderComponentAsSource,
     blur(): void;
     handleInputBlur(): void;
     handleInputFocus(): void;
-    onKeyDown(event: KeyboardEvent): void;
     onTriggerClick(): void;
     onTriggerMouseEnter(): void;
     onTriggerMouseLeave(event: MouseEvent): void;
@@ -152,4 +155,7 @@ export declare class NzCascaderComponent implements NzCascaderComponentAsSource,
     private setDropdownStyles;
     private setLocale;
     private scrollToActivatedOptions;
+    private setupKeydownListener;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzCascaderComponent, [null, null, null, null, null, null, null, { optional: true; }, { optional: true; host: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzCascaderComponent, "nz-cascader, [nz-cascader]", ["nzCascader"], { "nzOptionRender": "nzOptionRender"; "nzShowInput": "nzShowInput"; "nzShowArrow": "nzShowArrow"; "nzAllowClear": "nzAllowClear"; "nzAutoFocus": "nzAutoFocus"; "nzChangeOnSelect": "nzChangeOnSelect"; "nzDisabled": "nzDisabled"; "nzColumnClassName": "nzColumnClassName"; "nzExpandTrigger": "nzExpandTrigger"; "nzValueProperty": "nzValueProperty"; "nzLabelRender": "nzLabelRender"; "nzLabelProperty": "nzLabelProperty"; "nzNotFoundContent": "nzNotFoundContent"; "nzSize": "nzSize"; "nzBackdrop": "nzBackdrop"; "nzShowSearch": "nzShowSearch"; "nzPlaceHolder": "nzPlaceHolder"; "nzMenuClassName": "nzMenuClassName"; "nzMenuStyle": "nzMenuStyle"; "nzMouseEnterDelay": "nzMouseEnterDelay"; "nzMouseLeaveDelay": "nzMouseLeaveDelay"; "nzTriggerAction": "nzTriggerAction"; "nzChangeOn": "nzChangeOn"; "nzLoadData": "nzLoadData"; "nzSuffixIcon": "nzSuffixIcon"; "nzExpandIcon": "nzExpandIcon"; "nzOptions": "nzOptions"; }, { "nzVisibleChange": "nzVisibleChange"; "nzSelectionChange": "nzSelectionChange"; "nzSelect": "nzSelect"; "nzClear": "nzClear"; }, never, ["*"]>;
 }

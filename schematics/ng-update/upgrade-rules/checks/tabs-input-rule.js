@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TabsInputRule = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
@@ -8,7 +12,7 @@ class TabsInputRule extends schematics_1.Migration {
         this.enabled = this.targetVersion === schematics_1.TargetVersion.V11;
     }
     visitTemplate(template) {
-        schematics_1.findInputsOnElementWithTag(template.content, 'nzShowPagination', ['nz-tabset'])
+        (0, schematics_1.findInputsOnElementWithTag)(template.content, 'nzShowPagination', ['nz-tabset'])
             .forEach(offset => {
             this.failures.push({
                 filePath: template.filePath,

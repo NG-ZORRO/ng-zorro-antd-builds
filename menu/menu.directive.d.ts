@@ -9,6 +9,7 @@ import { NzMenuItemDirective } from './menu-item.directive';
 import { MenuService } from './menu.service';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 import { NzSubMenuComponent } from './submenu.component';
+import * as i0 from "@angular/core";
 export declare function MenuServiceFactory(serviceInsideDropDown: MenuService, serviceOutsideDropDown: MenuService): MenuService;
 export declare function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): boolean;
 export declare class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
@@ -39,4 +40,6 @@ export declare class NzMenuDirective implements AfterContentInit, OnInit, OnChan
     ngAfterContentInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzMenuDirective, [null, null, null, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzMenuDirective, "[nz-menu]", ["nzMenu"], { "nzInlineIndent": "nzInlineIndent"; "nzTheme": "nzTheme"; "nzMode": "nzMode"; "nzInlineCollapsed": "nzInlineCollapsed"; "nzSelectable": "nzSelectable"; }, { "nzClick": "nzClick"; }, ["listOfNzMenuItemDirective", "listOfNzSubMenuComponent"]>;
 }

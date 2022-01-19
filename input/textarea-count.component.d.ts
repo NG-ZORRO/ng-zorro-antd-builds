@@ -4,6 +4,7 @@
  */
 import { AfterContentInit, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 import { NzInputDirective } from './input.directive';
+import * as i0 from "@angular/core";
 export declare class NzTextareaCountComponent implements AfterContentInit, OnDestroy {
     private renderer;
     private elementRef;
@@ -17,4 +18,6 @@ export declare class NzTextareaCountComponent implements AfterContentInit, OnDes
     ngAfterContentInit(): void;
     setDataCount(value: string): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTextareaCountComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTextareaCountComponent, "nz-textarea-count", never, { "nzMaxCharacterCount": "nzMaxCharacterCount"; "nzComputeCharacterCount": "nzComputeCharacterCount"; "nzFormatter": "nzFormatter"; }, {}, ["nzInputDirective"], ["textarea[nz-input]"]>;
 }

@@ -6,6 +6,7 @@ import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, ElementRef, EventEmitter, NgZone, OnDestroy, Renderer2 } from '@angular/core';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { NzResizableService } from './resizable.service';
+import * as i0 from "@angular/core";
 export interface NzResizeEvent {
     width?: number;
     height?: number;
@@ -43,8 +44,6 @@ export declare class NzResizableDirective implements AfterViewInit, OnDestroy {
     private sizeCache;
     private destroy$;
     constructor(elementRef: ElementRef<HTMLElement>, renderer: Renderer2, nzResizableService: NzResizableService, platform: Platform, ngZone: NgZone);
-    onMouseenter(): void;
-    onMouseleave(): void;
     setPosition(): void;
     calcSize(width: number, height: number, ratio: number): NzResizeEvent;
     setCursor(): void;
@@ -55,4 +54,6 @@ export declare class NzResizableDirective implements AfterViewInit, OnDestroy {
     removeGhostElement(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzResizableDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzResizableDirective, "[nz-resizable]", ["nzResizable"], { "nzBounds": "nzBounds"; "nzMaxHeight": "nzMaxHeight"; "nzMaxWidth": "nzMaxWidth"; "nzMinHeight": "nzMinHeight"; "nzMinWidth": "nzMinWidth"; "nzGridColumnCount": "nzGridColumnCount"; "nzMaxColumn": "nzMaxColumn"; "nzMinColumn": "nzMinColumn"; "nzLockAspectRatio": "nzLockAspectRatio"; "nzPreview": "nzPreview"; "nzDisabled": "nzDisabled"; }, { "nzResize": "nzResize"; "nzResizeEnd": "nzResizeEnd"; "nzResizeStart": "nzResizeStart"; }, never>;
 }

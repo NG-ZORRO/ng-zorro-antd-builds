@@ -2,19 +2,22 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { NzResizeObserver } from 'ng-zorro-antd/cdk/resize-observer';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 import { SimpleRect } from './utils';
+import * as i0 from "@angular/core";
 export declare class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, OnInit {
     nzConfigService: NzConfigService;
     private scrollSrv;
     private ngZone;
     private platform;
     private renderer;
+    private nzResizeObserver;
     private cdr;
     private directionality;
     readonly _nzModuleName: NzConfigKey;
@@ -35,7 +38,7 @@ export declare class NzAffixComponent implements AfterViewInit, OnChanges, OnDes
     private timeout?;
     private document;
     private get target();
-    constructor(el: ElementRef, doc: NzSafeAny, nzConfigService: NzConfigService, scrollSrv: NzScrollService, ngZone: NgZone, platform: Platform, renderer: Renderer2, cdr: ChangeDetectorRef, directionality: Directionality);
+    constructor(el: ElementRef, doc: NzSafeAny, nzConfigService: NzConfigService, scrollSrv: NzScrollService, ngZone: NgZone, platform: Platform, renderer: Renderer2, nzResizeObserver: NzResizeObserver, cdr: ChangeDetectorRef, directionality: Directionality);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterViewInit(): void;
@@ -48,4 +51,6 @@ export declare class NzAffixComponent implements AfterViewInit, OnChanges, OnDes
     private syncPlaceholderStyle;
     updatePosition(e: Event): void;
     private updateRtlClass;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzAffixComponent, [null, null, null, null, null, null, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzAffixComponent, "nz-affix", ["nzAffix"], { "nzTarget": "nzTarget"; "nzOffsetTop": "nzOffsetTop"; "nzOffsetBottom": "nzOffsetBottom"; }, { "nzChange": "nzChange"; }, never, ["*"]>;
 }

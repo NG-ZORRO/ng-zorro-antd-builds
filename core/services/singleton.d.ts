@@ -1,8 +1,5 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 /**
  * Some singletons should have life cycle that is same to Angular's. This service make sure that
  * those singletons get destroyed in HMR.
@@ -19,4 +16,6 @@ export declare class NzSingletonService {
     registerSingletonWithKey(key: string, target: NzSafeAny): void;
     getSingletonWithKey<T>(key: string): T | null;
     private withNewTarget;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzSingletonService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzSingletonService>;
 }

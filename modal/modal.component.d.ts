@@ -3,13 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, SimpleChanges, TemplateRef, Type, ViewContainerRef } from '@angular/core';
+import { Observable } from 'rxjs';
 import { NzButtonType } from 'ng-zorro-antd/button';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Observable } from 'rxjs';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { NzModalRef } from './modal-ref';
 import { ModalButtonOptions, ModalTypes, OnClickCallback, StyleObjectLike } from './modal-types';
 import { NzModalService } from './modal.service';
+import * as i0 from "@angular/core";
 export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R>, OnDestroy {
     private cdr;
     private modal;
@@ -63,11 +64,11 @@ export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements O
     readonly nzAfterOpen: EventEmitter<void>;
     readonly nzAfterClose: EventEmitter<R>;
     readonly nzVisibleChange: EventEmitter<boolean>;
-    contentTemplateRef: TemplateRef<{}>;
     set modalTitle(value: TemplateRef<NzSafeAny>);
     contentFromContentChild: TemplateRef<NzSafeAny>;
     set modalFooter(value: TemplateRef<NzSafeAny>);
     private modalRef;
+    private destroy$;
     get afterOpen(): Observable<void>;
     get afterClose(): Observable<R>;
     constructor(cdr: ChangeDetectorRef, modal: NzModalService, viewContainerRef: ViewContainerRef);
@@ -84,4 +85,6 @@ export declare class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements O
     private getConfig;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzModalComponent<any, any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzModalComponent<any, any>, "nz-modal", ["nzModal"], { "nzMask": "nzMask"; "nzMaskClosable": "nzMaskClosable"; "nzCloseOnNavigation": "nzCloseOnNavigation"; "nzVisible": "nzVisible"; "nzClosable": "nzClosable"; "nzOkLoading": "nzOkLoading"; "nzOkDisabled": "nzOkDisabled"; "nzCancelDisabled": "nzCancelDisabled"; "nzCancelLoading": "nzCancelLoading"; "nzKeyboard": "nzKeyboard"; "nzNoAnimation": "nzNoAnimation"; "nzCentered": "nzCentered"; "nzContent": "nzContent"; "nzComponentParams": "nzComponentParams"; "nzFooter": "nzFooter"; "nzZIndex": "nzZIndex"; "nzWidth": "nzWidth"; "nzWrapClassName": "nzWrapClassName"; "nzClassName": "nzClassName"; "nzStyle": "nzStyle"; "nzTitle": "nzTitle"; "nzCloseIcon": "nzCloseIcon"; "nzMaskStyle": "nzMaskStyle"; "nzBodyStyle": "nzBodyStyle"; "nzOkText": "nzOkText"; "nzCancelText": "nzCancelText"; "nzOkType": "nzOkType"; "nzOkDanger": "nzOkDanger"; "nzIconType": "nzIconType"; "nzModalType": "nzModalType"; "nzAutofocus": "nzAutofocus"; "nzOnOk": "nzOnOk"; "nzOnCancel": "nzOnCancel"; }, { "nzOnOk": "nzOnOk"; "nzOnCancel": "nzOnCancel"; "nzAfterOpen": "nzAfterOpen"; "nzAfterClose": "nzAfterClose"; "nzVisibleChange": "nzVisibleChange"; }, ["modalTitle", "contentFromContentChild", "modalFooter"], never>;
 }

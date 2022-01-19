@@ -3,30 +3,35 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { AnimationBuilder } from '@angular/animations';
-import { ElementRef, EventEmitter, Renderer2, TemplateRef } from '@angular/core';
+import { ElementRef, NgZone, OnDestroy, OnInit, Renderer2, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
+import { NzGraph } from './graph';
 import { NzGraphGroupNode, NzGraphNode } from './interface';
+import * as i0 from "@angular/core";
 interface Info {
     x: number;
     y: number;
     width: number;
     height: number;
 }
-export declare class NzGraphNodeComponent {
+export declare class NzGraphNodeComponent implements OnInit, OnDestroy {
+    private ngZone;
     private el;
     private builder;
     private renderer2;
+    private graphComponent;
     node: NzGraphNode | NzGraphGroupNode;
     noAnimation?: boolean;
     customTemplate?: TemplateRef<{
         $implicit: NzGraphNode | NzGraphGroupNode;
     }>;
-    readonly nodeClick: EventEmitter<NzGraphNode | NzGraphGroupNode>;
-    triggerClick(event: MouseEvent): void;
     animationInfo: Info | null;
     initialState: boolean;
+    private destroy$;
     private animationPlayer;
-    constructor(el: ElementRef, builder: AnimationBuilder, renderer2: Renderer2);
+    constructor(ngZone: NgZone, el: ElementRef<HTMLElement>, builder: AnimationBuilder, renderer2: Renderer2, graphComponent: NzGraph);
+    ngOnInit(): void;
+    ngOnDestroy(): void;
     makeAnimation(): Observable<void>;
     makeNoAnimation(): void;
     getAnimationInfo(): Info;
@@ -35,5 +40,7 @@ export declare class NzGraphNodeComponent {
         y: number;
     };
     computeCXPositionOfNodeShape(): number;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzGraphNodeComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzGraphNodeComponent, "[nz-graph-node]", never, { "node": "node"; "noAnimation": "noAnimation"; "customTemplate": "customTemplate"; }, {}, never, never>;
 }
 export {};

@@ -6,6 +6,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
+import * as i0 from "@angular/core";
 export declare class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges {
     private host;
     private cdr;
@@ -32,4 +33,6 @@ export declare class NzTextCopyComponent implements OnInit, OnDestroy, OnChanges
     onCopied(): void;
     private updateTooltips;
     private updateIcons;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTextCopyComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTextCopyComponent, "nz-text-copy", ["nzTextCopy"], { "text": "text"; "tooltips": "tooltips"; "icons": "icons"; }, { "textCopy": "textCopy"; }, never, never>;
 }

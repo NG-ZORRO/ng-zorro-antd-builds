@@ -4,6 +4,7 @@
  */
 import { TemplateRef } from '@angular/core';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
+import * as i0 from "@angular/core";
 export declare class NzTreeNodeSwitcherComponent {
     nzShowExpand?: boolean;
     nzShowLine?: boolean;
@@ -20,4 +21,6 @@ export declare class NzTreeNodeSwitcherComponent {
     get isShowSwitchIcon(): boolean;
     get isSwitcherOpen(): boolean;
     get isSwitcherClose(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTreeNodeSwitcherComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTreeNodeSwitcherComponent, "nz-tree-node-switcher", never, { "nzShowExpand": "nzShowExpand"; "nzShowLine": "nzShowLine"; "nzExpandedIcon": "nzExpandedIcon"; "nzSelectMode": "nzSelectMode"; "context": "context"; "isLeaf": "isLeaf"; "isLoading": "isLoading"; "isExpanded": "isExpanded"; }, {}, never, never>;
 }

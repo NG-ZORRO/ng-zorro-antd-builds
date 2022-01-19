@@ -3,17 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare type NzCalendarMode = 'month' | 'year';
 declare type NzCalendarDateTemplate = TemplateRef<{
     $implicit: Date;
 }>;
 export declare class NzCalendarComponent implements ControlValueAccessor, OnChanges, OnInit, OnDestroy {
     private cdr;
-    private elementRef;
     private directionality;
     static ngAcceptInputType_nzFullscreen: BooleanInput;
     activeDate: CandyDate;
@@ -49,7 +49,7 @@ export declare class NzCalendarComponent implements ControlValueAccessor, OnChan
     nzMonthFullCellChild?: NzCalendarDateTemplate;
     get monthFullCell(): NzCalendarDateTemplate;
     nzFullscreen: boolean;
-    constructor(cdr: ChangeDetectorRef, elementRef: ElementRef, directionality: Directionality);
+    constructor(cdr: ChangeDetectorRef, directionality: Directionality);
     ngOnInit(): void;
     onModeChange(mode: NzCalendarMode): void;
     onYearSelect(year: number): void;
@@ -61,5 +61,7 @@ export declare class NzCalendarComponent implements ControlValueAccessor, OnChan
     private updateDate;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzCalendarComponent, [null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzCalendarComponent, "nz-calendar", ["nzCalendar"], { "nzMode": "nzMode"; "nzValue": "nzValue"; "nzDisabledDate": "nzDisabledDate"; "nzDateCell": "nzDateCell"; "nzDateFullCell": "nzDateFullCell"; "nzMonthCell": "nzMonthCell"; "nzMonthFullCell": "nzMonthFullCell"; "nzFullscreen": "nzFullscreen"; }, { "nzModeChange": "nzModeChange"; "nzPanelChange": "nzPanelChange"; "nzSelectChange": "nzSelectChange"; "nzValueChange": "nzValueChange"; }, ["nzDateCellChild", "nzDateFullCellChild", "nzMonthCellChild", "nzMonthFullCellChild"], never>;
 }
 export {};

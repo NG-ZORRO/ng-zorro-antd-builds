@@ -4,6 +4,10 @@
  */
 import { HierarchyBaseEdgeInfo, HierarchyBaseNodeInfo, HierarchyGraphDef, HierarchyGraphEdgeDef, HierarchyGraphNodeDef, HierarchyGraphNodeInfo, HierarchyGraphOption, LayoutConfig } from 'dagre-compound';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+export declare enum NzGraphEdgeType {
+    LINE = "line",
+    CURVE = "curve"
+}
 export interface NzGraphDataDef extends HierarchyGraphDef {
     nodes: NzGraphNodeDef[];
     edges: NzGraphEdgeDef[];
@@ -59,6 +63,9 @@ export interface NzGraphBaseLayout {
         height: number;
         labelOffset: number;
         maxLabelWidth: number;
+    };
+    defaultEdge: {
+        type: NzGraphEdgeType | string;
     };
 }
 export declare function nzTypeDefinition<T>(): (item: unknown) => T;

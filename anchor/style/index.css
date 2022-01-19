@@ -19,7 +19,7 @@
   margin-left: -4px;
   padding-left: 4px;
   overflow: auto;
-  background-color: #fff;
+  background-color: transparent;
 }
 .ant-anchor-ink {
   position: absolute;
@@ -51,7 +51,7 @@
 .ant-anchor-ink-ball.visible {
   display: inline-block;
 }
-.ant-anchor.fixed .ant-anchor-ink .ant-anchor-ink-ball {
+.ant-anchor-fixed .ant-anchor-ink .ant-anchor-ink-ball {
   display: none;
 }
 .ant-anchor-link {

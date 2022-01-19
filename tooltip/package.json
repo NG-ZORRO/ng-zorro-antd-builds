@@ -1,11 +1,10 @@
 {
-  "main": "../bundles/ng-zorro-antd-tooltip.umd.js",
-  "module": "../fesm2015/ng-zorro-antd-tooltip.js",
-  "es2015": "../fesm2015/ng-zorro-antd-tooltip.js",
-  "esm2015": "../esm2015/tooltip/ng-zorro-antd-tooltip.js",
-  "fesm2015": "../fesm2015/ng-zorro-antd-tooltip.js",
+  "module": "../fesm2015/ng-zorro-antd-tooltip.mjs",
+  "es2020": "../fesm2020/ng-zorro-antd-tooltip.mjs",
+  "esm2020": "../esm2020/tooltip/ng-zorro-antd-tooltip.mjs",
+  "fesm2020": "../fesm2020/ng-zorro-antd-tooltip.mjs",
+  "fesm2015": "../fesm2015/ng-zorro-antd-tooltip.mjs",
   "typings": "ng-zorro-antd-tooltip.d.ts",
-  "metadata": "ng-zorro-antd-tooltip.metadata.json",
   "sideEffects": false,
   "name": "ng-zorro-antd/tooltip"
 }

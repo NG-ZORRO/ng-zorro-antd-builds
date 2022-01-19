@@ -5,6 +5,7 @@
 import { ElementRef, InjectionToken, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzWaveRenderer } from './nz-wave-renderer';
+import * as i0 from "@angular/core";
 export interface NzWaveConfig {
     disabled?: boolean;
 }
@@ -29,4 +30,6 @@ export declare class NzWaveDirective implements OnInit, OnDestroy {
     renderWaveIfEnabled(): void;
     disable(): void;
     enable(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzWaveDirective, [null, null, { optional: true; }, { optional: true; }, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzWaveDirective, "[nz-wave],button[nz-button]:not([nzType=\"link\"]):not([nzType=\"text\"])", ["nzWave"], { "nzWaveExtraNode": "nzWaveExtraNode"; }, {}, never>;
 }

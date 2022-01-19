@@ -1,7 +1,11 @@
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 import { OverlayRef } from '@angular/cdk/overlay';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
-import { BaseModalContainerComponent } from './modal-container';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BaseModalContainerComponent } from './modal-container.directive';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { ModalOptions } from './modal-types';
 export declare const enum NzModalState {
@@ -23,6 +27,7 @@ export declare class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModal
     afterClose: Subject<R>;
     afterOpen: Subject<void>;
     private closeTimeout?;
+    private destroy$;
     constructor(overlayRef: OverlayRef, config: ModalOptions, containerInstance: BaseModalContainerComponent);
     getContentComponent(): T;
     getElement(): HTMLElement;

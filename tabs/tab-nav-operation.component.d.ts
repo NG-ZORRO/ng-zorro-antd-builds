@@ -5,6 +5,7 @@
 import { ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, TemplateRef } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
+import * as i0 from "@angular/core";
 export declare class NzTabNavOperationComponent implements OnDestroy {
     cdr: ChangeDetectorRef;
     private elementRef;
@@ -24,4 +25,6 @@ export declare class NzTabNavOperationComponent implements OnDestroy {
     getElementWidth(): number;
     getElementHeight(): number;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTabNavOperationComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTabNavOperationComponent, "nz-tab-nav-operation", ["nzTabNavOperation"], { "items": "items"; "addable": "addable"; "addIcon": "addIcon"; }, { "addClicked": "addClicked"; "selected": "selected"; }, never, never>;
 }

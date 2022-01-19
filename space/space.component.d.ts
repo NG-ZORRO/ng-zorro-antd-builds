@@ -5,8 +5,8 @@
 import { AfterContentInit, ChangeDetectorRef, OnChanges, OnDestroy, QueryList, TemplateRef } from '@angular/core';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzSpaceItemLegacyComponent } from './space-item.component';
 import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize } from './types';
+import * as i0 from "@angular/core";
 export declare class NzSpaceComponent implements OnChanges, OnDestroy, AfterContentInit {
     nzConfigService: NzConfigService;
     private cdr;
@@ -19,11 +19,6 @@ export declare class NzSpaceComponent implements OnChanges, OnDestroy, AfterCont
     }> | null;
     nzWrap: boolean;
     nzSize: NzSpaceSize;
-    /**
-     * @deprecated NzSpaceItemLegacyComponent will be removed on 12.0.0, use NzSpaceItemDirective instead.
-     * @breaking-change 12.0.0
-     */
-    nzSpaceItemComponents: QueryList<NzSpaceItemLegacyComponent>;
     items: QueryList<TemplateRef<NzSafeAny>>;
     mergedAlign?: NzSpaceAlign;
     spaceSize: number;
@@ -33,4 +28,6 @@ export declare class NzSpaceComponent implements OnChanges, OnDestroy, AfterCont
     ngOnChanges(): void;
     ngOnDestroy(): void;
     ngAfterContentInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzSpaceComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzSpaceComponent, "nz-space, [nz-space]", ["NzSpace"], { "nzDirection": "nzDirection"; "nzAlign": "nzAlign"; "nzSplit": "nzSplit"; "nzWrap": "nzWrap"; "nzSize": "nzSize"; }, {}, ["items"], ["*"]>;
 }

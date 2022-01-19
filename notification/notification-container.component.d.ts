@@ -7,6 +7,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzMNContainerComponent } from 'ng-zorro-antd/message';
 import { NzNotificationData, NzNotificationDataOptions } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzNotificationContainerComponent extends NzMNContainerComponent {
     dir: Direction;
     bottom?: string | null;
@@ -25,4 +26,6 @@ export declare class NzNotificationContainerComponent extends NzMNContainerCompo
     private replaceNotification;
     protected readyInstances(): void;
     protected mergeOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzNotificationContainerComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzNotificationContainerComponent, "nz-notification-container", ["nzNotificationContainer"], {}, {}, never, never>;
 }

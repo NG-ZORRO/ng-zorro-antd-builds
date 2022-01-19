@@ -3,13 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { AfterViewInit, ChangeDetectorRef, ElementRef, OnDestroy, OnInit } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { AfterViewInit, ChangeDetectorRef, ElementRef, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { ControlValueAccessor } from '@angular/forms';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzRadioButtonDirective } from './radio-button.directive';
 import { NzRadioService } from './radio.service';
+import * as i0 from "@angular/core";
 export declare class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
+    private ngZone;
     private elementRef;
     private cdr;
     private focusMonitor;
@@ -30,10 +32,9 @@ export declare class NzRadioComponent implements ControlValueAccessor, AfterView
     nzDisabled: boolean;
     nzAutoFocus: boolean;
     dir: Direction;
-    onHostClick(event: MouseEvent): void;
     focus(): void;
     blur(): void;
-    constructor(elementRef: ElementRef, cdr: ChangeDetectorRef, focusMonitor: FocusMonitor, directionality: Directionality, nzRadioService: NzRadioService, nzRadioButtonDirective: NzRadioButtonDirective);
+    constructor(ngZone: NgZone, elementRef: ElementRef, cdr: ChangeDetectorRef, focusMonitor: FocusMonitor, directionality: Directionality, nzRadioService: NzRadioService, nzRadioButtonDirective: NzRadioButtonDirective);
     setDisabledState(disabled: boolean): void;
     writeValue(value: boolean): void;
     registerOnChange(fn: OnChangeType): void;
@@ -41,4 +42,7 @@ export declare class NzRadioComponent implements ControlValueAccessor, AfterView
     ngOnInit(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    private setupClickListener;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzRadioComponent, [null, null, null, null, { optional: true; }, { optional: true; }, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzRadioComponent, "[nz-radio],[nz-radio-button]", ["nzRadio"], { "nzValue": "nzValue"; "nzDisabled": "nzDisabled"; "nzAutoFocus": "nzAutoFocus"; }, {}, never, ["*"]>;
 }

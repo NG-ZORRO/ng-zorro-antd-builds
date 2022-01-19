@@ -19,7 +19,7 @@ export declare type NzProgressColorGradient = {
     direction?: string;
 } & (NzProgressGradientProgress | NzProgressGradientFromTo);
 export declare type NzProgressStrokeColorType = string | NzProgressColorGradient;
-export declare type NzProgressFormatter = ((percent: number) => string) | TemplateRef<{
+export declare type NzProgressFormatter = ((percent: number) => string | null) | TemplateRef<{
     $implicit: number;
 }>;
 export interface NzProgressCirclePath {

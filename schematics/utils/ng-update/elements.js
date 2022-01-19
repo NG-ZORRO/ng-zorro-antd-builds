@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findElementWithClassName = exports.findElementWithTag = exports.findElementWithoutStructuralDirective = void 0;
 const parse5_1 = require("parse5");
@@ -7,9 +11,9 @@ const hasClassName = (node, className) => {
     return (_b = (_a = node.attrs) === null || _a === void 0 ? void 0 : _a.find) === null || _b === void 0 ? void 0 : _b.call(_a, attr => attr.name === 'class' && attr.value.indexOf(className) !== -1);
 };
 function findElementWithoutStructuralDirective(html, tagName, directiveName, attr) {
-    const document = parse5_1.parseFragment(html, { sourceCodeLocationInfo: true });
+    const document = (0, parse5_1.parseFragment)(html, { sourceCodeLocationInfo: true });
     const elements = [];
-    const visitNodes = nodes => {
+    const visitNodes = (nodes) => {
         nodes.forEach(node => {
             var _a;
             if (node.childNodes && !(node.tagName === 'ng-template' && !!node.attrs.find(a => a.name.toLowerCase() === directiveName.toLowerCase()))) {
@@ -27,9 +31,9 @@ function findElementWithoutStructuralDirective(html, tagName, directiveName, att
 }
 exports.findElementWithoutStructuralDirective = findElementWithoutStructuralDirective;
 function findElementWithTag(html, tagName) {
-    const document = parse5_1.parseFragment(html, { sourceCodeLocationInfo: true });
+    const document = (0, parse5_1.parseFragment)(html, { sourceCodeLocationInfo: true });
     const elements = [];
-    const visitNodes = nodes => {
+    const visitNodes = (nodes) => {
         nodes.forEach(node => {
             var _a;
             if (node.childNodes) {
@@ -47,9 +51,9 @@ function findElementWithTag(html, tagName) {
 }
 exports.findElementWithTag = findElementWithTag;
 function findElementWithClassName(html, className, tagName) {
-    const document = parse5_1.parseFragment(html, { sourceCodeLocationInfo: true });
+    const document = (0, parse5_1.parseFragment)(html, { sourceCodeLocationInfo: true });
     const elements = [];
-    const visitNodes = nodes => {
+    const visitNodes = (nodes) => {
         nodes.forEach(node => {
             var _a;
             if (node.childNodes) {

@@ -5,6 +5,7 @@
 import { OnDestroy, TemplateRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { NzTableStyleService } from '../table-style.service';
+import * as i0 from "@angular/core";
 export declare class NzTbodyComponent implements OnDestroy {
     private nzTableStyleService;
     isInsideTable: boolean;
@@ -15,4 +16,6 @@ export declare class NzTbodyComponent implements OnDestroy {
     constructor(nzTableStyleService: NzTableStyleService);
     onListOfAutoWidthChange(listOfAutoWidth: number[]): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTbodyComponent, [{ optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTbodyComponent, "tbody", never, {}, {}, never, ["*"]>;
 }

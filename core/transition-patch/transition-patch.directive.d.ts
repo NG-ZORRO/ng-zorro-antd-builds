@@ -4,6 +4,7 @@
  */
 import { AfterViewInit, ElementRef, OnChanges, Renderer2 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 /**
  * hack the bug
  * angular router change with unexpected transition trigger after calling applicationRef.attachView
@@ -17,4 +18,6 @@ export declare class NzTransitionPatchDirective implements AfterViewInit, OnChan
     constructor(elementRef: ElementRef, renderer: Renderer2);
     ngOnChanges(): void;
     ngAfterViewInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTransitionPatchDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzTransitionPatchDirective, "[nz-button], nz-button-group, [nz-icon], [nz-menu-item], [nz-submenu], nz-select-top-control, nz-select-placeholder, nz-input-group", never, { "hidden": "hidden"; }, {}, never>;
 }

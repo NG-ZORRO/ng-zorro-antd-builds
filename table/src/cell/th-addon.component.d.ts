@@ -3,15 +3,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { NzTableFilterFn, NzTableFilterList, NzTableFilterValue, NzTableSortFn, NzTableSortOrder } from '../table.types';
-export declare class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
+import * as i0 from "@angular/core";
+export declare class NzThAddOnComponent<T> implements OnChanges, OnInit, OnDestroy {
     private cdr;
     static ngAcceptInputType_nzShowSort: BooleanInput;
     static ngAcceptInputType_nzShowFilter: BooleanInput;
     static ngAcceptInputType_nzCustomFilter: BooleanInput;
-    manualClickOrder$: Subject<NzThAddOnComponent>;
+    manualClickOrder$: Subject<NzThAddOnComponent<T>>;
     calcOperatorChange$: Subject<unknown>;
     nzFilterValue: NzTableFilterValue;
     sortOrder: NzTableSortOrder;
@@ -26,13 +27,13 @@ export declare class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy 
     nzSortPriority: number | boolean;
     nzSortDirections: NzTableSortOrder[];
     nzFilters: NzTableFilterList;
-    nzSortFn: NzTableSortFn | boolean | null;
-    nzFilterFn: NzTableFilterFn | boolean | null;
+    nzSortFn: NzTableSortFn<T> | boolean | null;
+    nzFilterFn: NzTableFilterFn<T> | boolean | null;
     nzShowSort: boolean;
     nzShowFilter: boolean;
     nzCustomFilter: boolean;
     readonly nzCheckedChange: EventEmitter<boolean>;
-    readonly nzSortOrderChange: EventEmitter<NzTableSortOrder>;
+    readonly nzSortOrderChange: EventEmitter<string | null>;
     readonly nzFilterChange: EventEmitter<any>;
     getNextSortDirection(sortDirections: NzTableSortOrder[], current: NzTableSortOrder): NzTableSortOrder;
     emitNextSortValue(): void;
@@ -44,4 +45,6 @@ export declare class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy 
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzThAddOnComponent<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzThAddOnComponent<any>, "th[nzColumnKey], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter]", never, { "nzColumnKey": "nzColumnKey"; "nzFilterMultiple": "nzFilterMultiple"; "nzSortOrder": "nzSortOrder"; "nzSortPriority": "nzSortPriority"; "nzSortDirections": "nzSortDirections"; "nzFilters": "nzFilters"; "nzSortFn": "nzSortFn"; "nzFilterFn": "nzFilterFn"; "nzShowSort": "nzShowSort"; "nzShowFilter": "nzShowFilter"; "nzCustomFilter": "nzCustomFilter"; }, { "nzCheckedChange": "nzCheckedChange"; "nzSortOrderChange": "nzSortOrderChange"; "nzFilterChange": "nzFilterChange"; }, never, ["[nz-th-extra]", "nz-filter-trigger", "*"]>;
 }

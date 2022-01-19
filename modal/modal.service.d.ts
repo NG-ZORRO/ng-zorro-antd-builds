@@ -5,11 +5,12 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { Overlay } from '@angular/cdk/overlay';
 import { Injector, OnDestroy } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Observable, Subject } from 'rxjs';
 import { NzModalRef } from './modal-ref';
 import { ConfirmType, ModalOptions } from './modal-types';
+import * as i0 from "@angular/core";
 export declare class NzModalService implements OnDestroy {
     private overlay;
     private injector;
@@ -38,4 +39,6 @@ export declare class NzModalService implements OnDestroy {
     private createInjector;
     private confirmFactory;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzModalService, [null, null, null, { optional: true; skipSelf: true; }, { optional: true; }]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzModalService>;
 }

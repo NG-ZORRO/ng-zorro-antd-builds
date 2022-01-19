@@ -3,22 +3,26 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectorRef, EventEmitter, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, EventEmitter, NgZone, OnChanges, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
+import { NzDestroyService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgClassType, NumberInput } from 'ng-zorro-antd/core/types';
-export declare class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
+import * as i0 from "@angular/core";
+export declare class NzRateComponent implements OnInit, ControlValueAccessor, OnChanges {
     nzConfigService: NzConfigService;
+    private ngZone;
     private renderer;
     private cdr;
     private directionality;
+    private destroy$;
     readonly _nzModuleName: NzConfigKey;
     static ngAcceptInputType_nzAllowClear: BooleanInput;
     static ngAcceptInputType_nzAllowHalf: BooleanInput;
     static ngAcceptInputType_nzDisabled: BooleanInput;
     static ngAcceptInputType_nzAutoFocus: BooleanInput;
     static ngAcceptInputType_nzCount: NumberInput;
-    private ulElement?;
+    ulElement: ElementRef<HTMLUListElement>;
     nzAllowClear: boolean;
     nzAllowHalf: boolean;
     nzDisabled: boolean;
@@ -34,22 +38,18 @@ export declare class NzRateComponent implements OnInit, OnDestroy, ControlValueA
     starArray: number[];
     starStyleArray: NgClassType[];
     dir: Direction;
-    private readonly destroy$;
     private hasHalf;
     private hoverValue;
     private isFocused;
     private _value;
     get nzValue(): number;
     set nzValue(input: number);
-    constructor(nzConfigService: NzConfigService, renderer: Renderer2, cdr: ChangeDetectorRef, directionality: Directionality);
+    constructor(nzConfigService: NzConfigService, ngZone: NgZone, renderer: Renderer2, cdr: ChangeDetectorRef, directionality: Directionality, destroy$: NzDestroyService);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
-    ngOnDestroy(): void;
     onItemClick(index: number, isHalf: boolean): void;
     onItemHover(index: number, isHalf: boolean): void;
     onRateLeave(): void;
-    onFocus(e: FocusEvent): void;
-    onBlur(e: FocusEvent): void;
     focus(): void;
     blur(): void;
     onKeyDown(e: KeyboardEvent): void;
@@ -61,4 +61,6 @@ export declare class NzRateComponent implements OnInit, OnDestroy, ControlValueA
     registerOnTouched(fn: () => void): void;
     onChange: (value: number) => void;
     onTouched: () => void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzRateComponent, [null, null, null, null, { optional: true; }, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzRateComponent, "nz-rate", ["nzRate"], { "nzAllowClear": "nzAllowClear"; "nzAllowHalf": "nzAllowHalf"; "nzDisabled": "nzDisabled"; "nzAutoFocus": "nzAutoFocus"; "nzCharacter": "nzCharacter"; "nzCount": "nzCount"; "nzTooltips": "nzTooltips"; }, { "nzOnBlur": "nzOnBlur"; "nzOnFocus": "nzOnFocus"; "nzOnHoverChange": "nzOnHoverChange"; "nzOnKeyDown": "nzOnKeyDown"; }, never, never>;
 }

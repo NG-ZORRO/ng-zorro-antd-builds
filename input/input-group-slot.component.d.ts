@@ -3,8 +3,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { TemplateRef } from '@angular/core';
+import * as i0 from "@angular/core";
 export declare class NzInputGroupSlotComponent {
     icon?: string | null;
     type: 'addon' | 'prefix' | 'suffix' | null;
     template?: string | TemplateRef<void> | null;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzInputGroupSlotComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzInputGroupSlotComponent, "[nz-input-group-slot]", never, { "icon": "icon"; "type": "type"; "template": "template"; }, {}, never, never>;
 }

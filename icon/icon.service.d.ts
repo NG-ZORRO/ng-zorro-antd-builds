@@ -1,14 +1,11 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 import { HttpBackend } from '@angular/common/http';
-import { InjectionToken, RendererFactory2 } from '@angular/core';
+import { InjectionToken, OnDestroy, RendererFactory2 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Subject } from 'rxjs';
+import * as i0 from "@angular/core";
 export interface NzIconfontOption {
     scriptUrl: string;
 }
@@ -18,10 +15,12 @@ export declare const DEFAULT_TWOTONE_COLOR = "#1890ff";
 /**
  * It should be a global singleton, otherwise registered icons could not be found.
  */
-export declare class NzIconService extends IconService {
+export declare class NzIconService extends IconService implements OnDestroy {
     protected nzConfigService: NzConfigService;
     configUpdated$: Subject<void>;
     private iconfontCache;
+    private subscription;
+    ngOnDestroy(): void;
     normalizeSvgElement(svg: SVGElement): void;
     fetchFromIconfont(opt: NzIconfontOption): void;
     createIconfontIcon(type: string): SVGElement;
@@ -30,6 +29,8 @@ export declare class NzIconService extends IconService {
     private configDefaultTheme;
     private configDefaultTwotoneColor;
     private getConfig;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzIconService, [null, null, null, { optional: true; }, { optional: true; }, { optional: true; }]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzIconService>;
 }
 export declare const NZ_ICONS_PATCH: InjectionToken<unknown>;
 export declare class NzIconPatchService {
@@ -38,4 +39,6 @@ export declare class NzIconPatchService {
     patched: boolean;
     constructor(extraIcons: IconDefinition[], rootIconService: NzIconService);
     doPatch(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzIconPatchService, [{ self: true; }, null]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NzIconPatchService>;
 }

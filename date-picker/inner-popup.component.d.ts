@@ -7,6 +7,7 @@ import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { DisabledDateFn, NzDateMode, RangePartType, SupportTimeOptions } from './standard-types';
+import * as i0 from "@angular/core";
 export declare class InnerPopupComponent implements OnChanges {
     activeDate: CandyDate;
     endPanelMode: NzDateMode;
@@ -30,6 +31,7 @@ export declare class InnerPopupComponent implements OnChanges {
     /**
      * Hide "next" arrow in left panel,
      * hide "prev" arrow in right panel
+     *
      * @param direction
      * @param panelMode
      */
@@ -40,4 +42,6 @@ export declare class InnerPopupComponent implements OnChanges {
     onChooseYear(value: CandyDate): void;
     onChooseDecade(value: CandyDate): void;
     ngOnChanges(changes: SimpleChanges): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<InnerPopupComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<InnerPopupComponent, "inner-popup", ["innerPopup"], { "activeDate": "activeDate"; "endPanelMode": "endPanelMode"; "panelMode": "panelMode"; "showWeek": "showWeek"; "locale": "locale"; "showTimePicker": "showTimePicker"; "timeOptions": "timeOptions"; "disabledDate": "disabledDate"; "dateRender": "dateRender"; "selectedValue": "selectedValue"; "hoverValue": "hoverValue"; "value": "value"; "partType": "partType"; }, { "panelModeChange": "panelModeChange"; "headerChange": "headerChange"; "selectDate": "selectDate"; "selectTime": "selectTime"; "cellHover": "cellHover"; }, never, never>;
 }

@@ -4,7 +4,12 @@ import { Component } from '@angular/core';
   selector: '<%= selector %>',
   <% if(inlineTemplate) { %>template: `
     <nz-time-picker [(ngModel)]="time" [nzUse12Hours]="true" (ngModelChange)="log($event)"></nz-time-picker>
-    <nz-time-picker [(ngModel)]="time" [nzUse12Hours]="true" (ngModelChange)="log($event)" nzFormat="h:mm a"></nz-time-picker>
+    <nz-time-picker
+      [(ngModel)]="time"
+      [nzUse12Hours]="true"
+      (ngModelChange)="log($event)"
+      nzFormat="h:mm a"
+    ></nz-time-picker>
   `<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>,
   <% if(inlineStyle) { %>styles: [`
       nz-time-picker {

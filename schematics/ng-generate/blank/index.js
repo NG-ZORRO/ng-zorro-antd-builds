@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9,8 +13,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const schematics_1 = require("@angular-devkit/schematics");
-const schematics_2 = require("@angular/cdk/schematics");
+const schematics_1 = require("@angular/cdk/schematics");
+const schematics_2 = require("@angular-devkit/schematics");
 const workspace_1 = require("@schematics/angular/utility/workspace");
 const fs_1 = require("fs");
 const bootPageHTML = `<!-- NG-ZORRO -->
@@ -19,16 +23,16 @@ const bootPageHTML = `<!-- NG-ZORRO -->
 </a>`;
 function default_1(options) {
     return (host, context) => __awaiter(this, void 0, void 0, function* () {
-        const workspace = yield workspace_1.getWorkspace(host);
-        const project = schematics_2.getProjectFromWorkspace(workspace, options.project);
+        const workspace = yield (0, workspace_1.getWorkspace)(host);
+        const project = (0, schematics_1.getProjectFromWorkspace)(workspace, options.project);
         const appHTMLFile = `${project.sourceRoot}/app/app.component.html`;
         const buffer = host.read(appHTMLFile);
         if (!buffer) {
             context.logger.error(`Could not find the project ${appHTMLFile} file inside of the ` + `workspace config`);
-            return schematics_1.noop();
+            return (0, schematics_2.noop)();
         }
-        if (fs_1.existsSync(appHTMLFile)) {
-            const stat = fs_1.statSync(appHTMLFile);
+        if ((0, fs_1.existsSync)(appHTMLFile)) {
+            const stat = (0, fs_1.statSync)(appHTMLFile);
             if (stat.mtimeMs === stat.ctimeMs) {
                 host.overwrite(appHTMLFile, bootPageHTML);
             }
@@ -36,7 +40,7 @@ function default_1(options) {
         else {
             host.overwrite(appHTMLFile, bootPageHTML);
         }
-        return schematics_1.noop();
+        return (0, schematics_2.noop)();
     });
 }
 exports.default = default_1;

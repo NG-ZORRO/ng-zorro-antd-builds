@@ -1,4 +1,8 @@
 "use strict";
+/**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClassNamesMigration = void 0;
 const schematics_1 = require("@angular/cdk/schematics");
@@ -8,7 +12,7 @@ class ClassNamesMigration extends schematics_1.Migration {
     constructor() {
         super(...arguments);
         /** Change data that upgrades to the specified target version. */
-        this.data = schematics_1.getVersionUpgradeData(this, 'classNames');
+        this.data = (0, schematics_1.getVersionUpgradeData)(this, 'classNames');
         /**
          * List of identifier names that have been imported from `@ng-zorro-antd`
          * in the current source file and therefore can be considered trusted.
@@ -29,14 +33,14 @@ class ClassNamesMigration extends schematics_1.Migration {
         if (!this.data.some(data => data.replace === identifier.text)) {
             return;
         }
-        if (schematics_1.isNamespaceImportNode(identifier) && module_specifiers_1.isNgZorroImportDeclaration(identifier)) {
+        if ((0, schematics_1.isNamespaceImportNode)(identifier) && (0, module_specifiers_1.isNgZorroImportDeclaration)(identifier)) {
             this.trustedNamespaces.add(identifier.text);
             return this._createFailureWithReplacement(identifier);
         }
-        if (schematics_1.isExportSpecifierNode(identifier) && module_specifiers_1.isNgZorroExportDeclaration(identifier)) {
+        if ((0, schematics_1.isExportSpecifierNode)(identifier) && (0, module_specifiers_1.isNgZorroExportDeclaration)(identifier)) {
             return this._createFailureWithReplacement(identifier);
         }
-        if (schematics_1.isImportSpecifierNode(identifier) && module_specifiers_1.isNgZorroImportDeclaration(identifier)) {
+        if ((0, schematics_1.isImportSpecifierNode)(identifier) && (0, module_specifiers_1.isNgZorroImportDeclaration)(identifier)) {
             this.trustedIdentifiers.add(identifier.text);
             return this._createFailureWithReplacement(identifier);
         }

@@ -4,6 +4,7 @@
  */
 import { ElementRef, TemplateRef } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import * as i0 from "@angular/core";
 export declare class NzTabAddButtonComponent {
     private elementRef;
     addIcon: string | TemplateRef<NzSafeAny>;
@@ -11,4 +12,6 @@ export declare class NzTabAddButtonComponent {
     constructor(elementRef: ElementRef<HTMLElement>);
     getElementWidth(): number;
     getElementHeight(): number;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTabAddButtonComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzTabAddButtonComponent, "nz-tab-add-button, button[nz-tab-add-button]", never, { "addIcon": "addIcon"; }, {}, never, never>;
 }

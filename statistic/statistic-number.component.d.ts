@@ -1,9 +1,6 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
 import { OnChanges, TemplateRef } from '@angular/core';
 import { NzStatisticValueType } from './typings';
+import * as i0 from "@angular/core";
 export declare class NzStatisticNumberComponent implements OnChanges {
     private locale_id;
     nzValue?: NzStatisticValueType;
@@ -15,4 +12,6 @@ export declare class NzStatisticNumberComponent implements OnChanges {
     constructor(locale_id: string);
     ngOnChanges(): void;
     private formatNumber;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzStatisticNumberComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzStatisticNumberComponent, "nz-statistic-number", ["nzStatisticNumber"], { "nzValue": "nzValue"; "nzValueTemplate": "nzValueTemplate"; }, {}, never, never>;
 }

@@ -6,6 +6,7 @@ import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, TemplateRef } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzMenuModeType } from './menu.types';
+import * as i0 from "@angular/core";
 export declare class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChanges {
     private elementRef;
     private renderer;
@@ -23,4 +24,6 @@ export declare class NzSubmenuInlineChildComponent implements OnDestroy, OnInit,
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzSubmenuInlineChildComponent, [null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzSubmenuInlineChildComponent, "[nz-submenu-inline-child]", ["nzSubmenuInlineChild"], { "templateOutlet": "templateOutlet"; "menuClass": "menuClass"; "mode": "mode"; "nzOpen": "nzOpen"; }, {}, never, never>;
 }

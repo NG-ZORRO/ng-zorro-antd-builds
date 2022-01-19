@@ -1,6 +1,5 @@
-/**
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
+import * as i0 from "@angular/core";
 export declare class NzTransButtonDirective {
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzTransButtonDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<NzTransButtonDirective, "button[nz-trans-button]", never, {}, {}, never>;
 }

@@ -5,10 +5,11 @@
 import { AnimationEvent } from '@angular/animations';
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { AfterContentInit, ChangeDetectorRef, ElementRef, EventEmitter, OnDestroy, OnInit, Renderer2, TemplateRef, ViewContainerRef } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { MenuService } from 'ng-zorro-antd/menu';
-import { BehaviorSubject, Subject } from 'rxjs';
+import * as i0 from "@angular/core";
 export declare type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 export declare class NzDropdownMenuComponent implements AfterContentInit, OnDestroy, OnInit {
     private cdr;
@@ -34,4 +35,6 @@ export declare class NzDropdownMenuComponent implements AfterContentInit, OnDest
     ngOnInit(): void;
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NzDropdownMenuComponent, [null, null, null, null, null, { optional: true; }, { optional: true; host: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NzDropdownMenuComponent, "nz-dropdown-menu", ["nzDropdownMenu"], {}, {}, never, ["*"]>;
 }
